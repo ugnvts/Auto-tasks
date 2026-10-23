@@ -60,15 +60,16 @@ iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; bac
 // Ekranai ir jų variantai. Naujas variantas: pridėk eilutę ir failą puslapiai/.
 // Kai ekranas turi vieną variantą, variantų eilutė nerodoma.
 var PAGES = [
-  { id: "picker", name: "Picker accounts", variants: [
-    { id: "picker-accounts", name: "Su „Dirba dabar“", file: "puslapiai/picker-accounts.html",
-      note: "Surinkėjų lentelė ir „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas." }
-  ]},
   { id: "dashboard", name: "Dashboard", variants: [
-    { id: "dashboard", name: "„Dirba dabar“ prisegtas", file: "puslapiai/dashboard.html",
+    { id: "dashboard", name: "„Dirba dabar“ prisegtas", file: "puslapiai/prototipas.html#dashboard",
       note: "Bangos kairėje, „Dirba dabar“ visada matomas dešinėje." }
+  ]},
+  { id: "picker", name: "Picker accounts", variants: [
+    { id: "picker-accounts", name: "Su „Dirba dabar“", file: "puslapiai/prototipas.html#picker-accounts",
+      note: "Surinkėjų lentelė ir paskyra; „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas." }
   ]}
 ];
+// Abu ekranai yra viename prototipe su bendrais duomenimis; perėjus per kairįjį meniu skirtukas persijungia pats.
 // Senos nuorodos iš ankstesnių versijų
 var ALIAS = { "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
 
@@ -117,5 +118,10 @@ document.addEventListener("keydown", function (e) {
   if (n >= 1 && n <= ALL.length && ALL[n - 1] !== cur) { e.preventDefault(); show(ALL[n - 1]); }
 });
 window.addEventListener("hashchange", function () { var v = fromHash(); if (v !== cur) show(v); });
+window.addEventListener("message", function (e) {
+  if (e.source !== view.contentWindow || !e.data || !e.data.proto) return;
+  var id = e.data.proto === "dash" ? "dashboard" : "picker-accounts";
+  for (var i = 0; i < ALL.length; i++) if (ALL[i].id === id && ALL[i] !== cur) show(ALL[i]);
+});
 show(fromHash());
 </script>

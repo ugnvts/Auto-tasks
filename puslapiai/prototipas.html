@@ -1,8 +1,7 @@
 <!doctype html>
-<html lang="lt"><head>
-<meta name="robots" content="noindex, nofollow"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
-<title>Auto tasks · Prototipas · Dashboard B – Dirba dabar prisegtas</title>
+<title>Auto tasks · Prototipas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
@@ -230,7 +229,7 @@ td,th{white-space:nowrap}
           <button id="fName" class="fb" style="cursor:default" title="Prototipe neveikia">Name</button>
           <button id="fLast" class="fb" style="cursor:default" title="Prototipe neveikia">Last name</button>
           <button id="fTc" class="fb" style="cursor:default" title="Prototipe neveikia">Time card</button>
-          <input type="hidden" id="fShift" value=""><button data-f="fShift" data-o="Morning|Evening" class="fb" aria-haspopup="true" onclick="fpop(this)">Shift name</button>
+          <input type="hidden" id="fShift" value=""><button data-f="fShift" data-o="Morning|Evening|Night" class="fb" aria-haspopup="true" onclick="fpop(this)">Shift name</button>
           <input type="hidden" id="fRole" value=""><button data-f="fRole" data-o="Picker|Inspector" class="fb" aria-haspopup="true" onclick="fpop(this)">Role</button>
           <input type="hidden" id="fSt" value=""><button data-f="fSt" data-o="Renka|Laukia užduoties|Nesinchronizavo|Nerenka" class="fb" aria-haspopup="true" onclick="fpop(this)">Būsena</button>
           <input type="hidden" id="fAuto" value=""><button data-f="fAuto" data-o="Įjungta|Išjungta" class="fb" aria-haspopup="true" onclick="fpop(this)">Auto tasks</button>
@@ -285,7 +284,7 @@ td,th{white-space:nowrap}
           <div><h3 class="font-medium pb-2 border-b mb-3">Personal information</h3>
             <div class="grid sm:grid-cols-2 gap-4"><label>First name<input id="fn" class="mt-1 w-full border rounded px-3 py-2" value="Silvija"></label><label>Last name<input id="ln" class="mt-1 w-full border rounded px-3 py-2" value="Švaikevičiūtė"></label></div></div>
           <div><h3 class="font-medium pb-2 border-b mb-3">Employee information</h3>
-            <div class="grid sm:grid-cols-2 gap-4"><label>Shop<select id="sp" class="mt-1 w-full border rounded px-3 py-2"><option>X016 Liepkalnis</option><option>X864 HYPER</option><option>X500 Akropolis</option><option>X532 Olinda</option></select></label><div class="hidden sm:block"></div>
+            <div class="grid sm:grid-cols-2 gap-4"><label>Shop<select id="sp" class="mt-1 w-full border rounded px-3 py-2"><option>X016 Liepkalnis</option><option selected>X864 HYPER</option><option>X500 Akropolis</option><option>X532 Olinda</option></select></label><div class="hidden sm:block"></div>
             <label>Time card<input id="tc" class="mt-1 w-full border rounded px-3 py-2" value="3360"></label><label>Shift name<input id="sh" class="mt-1 w-full border rounded px-3 py-2" value="Evening"></label>
             <label>Role<select id="ro" class="mt-1 w-full border rounded px-3 py-2"><option>Picker</option><option>Inspector</option></select></label>
             <div class="sm:pt-[33px]"><label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="act.disabled=this.checked;if(this.checked)act.checked=false;actx.textContent=this.checked?'Naujokui auto tasks įjungti negalima. Nuimk naujoko žymą.':'Surinkėjas gauna užduotis automatiškai.'"><span>Naujokas<br><span class="text-gray-500">Kol pažymėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.</span></span></label></div></div></div>
@@ -355,7 +354,7 @@ td,th{white-space:nowrap}
 <div id="fpop" hidden class="fixed z-20 min-w-[160px] bg-white border rounded shadow-lg text-sm py-1"></div>
 <div id="rmenu" hidden class="fixed z-20 w-32 bg-white border rounded shadow-lg text-sm py-1"><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="go('view')">Rodyti</button><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="go('edit')">Redaguoti</button></div>
 <script>
-const N=[["Silvija","Švaikevičiūtė",3360,"Evening","Picker",0,"Renka",1],["Nerijus","Petrauskas",4200,"Evening","Picker",1,"Laukia užduoties",0],["Aldonas","Kazlauskas",4327,"Evening","Picker",1,"Renka",0],["Karolis","Jankauskas",7854,"Evening","Picker",1,"Nesinchronizavo",0],["Remigijus","Stankevičius",1756,"Evening","Picker",0,"Renka",1],["Tomas","Vasiliauskas",7142,"Evening","Picker",1,"Renka",0],["Silvestr","Žukauskas",3975,"Evening","Inspector",1,"Laukia užduoties",0],["Darius","Butkus",1758,"Morning","Picker",1,"Laukia užduoties",0],["Aleksandr","Paulauskas",1270,"Morning","Inspector",1,"Laukia užduoties",0],["Tautvydas","Urbonas",1432,"Morning","Picker",0,"Nesinchronizavo",0],["Alma","Kavaliauskienė",8574,"Morning","Inspector",1,"Renka",0],["Vilma","Navickienė",1546,"Morning","Picker",0,"Renka",1]];
+const N=[["Silvija","Švaikevičiūtė",3360,"Evening","Picker",0,"Renka",1],["Nerijus","Petrauskas",4200,"Evening","Picker",1,"Laukia užduoties",0],["Aldonas","Kazlauskas",4327,"Evening","Picker",1,"Renka",0],["Karolis","Jankauskas",7854,"Evening","Picker",1,"Nesinchronizavo",0],["Remigijus","Stankevičius",1756,"Evening","Picker",0,"Renka",1],["Tomas","Vasiliauskas",7142,"Evening","Picker",1,"Renka",0],["Silvestr","Žukauskas",3975,"Evening","Inspector",1,"Laukia užduoties",0],["Darius","Butkus",1758,"Morning","Picker",1,"Laukia užduoties",0],["Aleksandr","Paulauskas",1270,"Morning","Inspector",1,"Laukia užduoties",0],["Tautvydas","Urbonas",1432,"Morning","Picker",0,"Nesinchronizavo",0],["Alma","Kavaliauskienė",8574,"Morning","Inspector",1,"Renka",0],["Vilma","Navickienė",1546,"Morning","Picker",0,"Renka",1],["Gediminas","Kairys",2214,"Morning","Picker",0,"Nerenka",0],["Rūta","Mockutė",2389,"Morning","Picker",0,"Nerenka",0],["Edvinas","Petraitis",5120,"Evening","Picker",0,"Nerenka",0],["Laura","Žilinskienė",6031,"Night","Picker",0,"Nerenka",0],["Mantas","Grigas",6045,"Night","Picker",0,"Nerenka",0],["Jolanta","Balčiūnienė",4418,"Evening","Picker",0,"Nerenka",0],["Paulius","Lukoševičius",3307,"Morning","Picker",0,"Nerenka",1],["Ieva","Sakalauskaitė",2876,"Night","Picker",0,"Nerenka",0],["Andrius","Ramanauskas",7710,"Evening","Picker",0,"Nerenka",0],["Kristina","Juškienė",5582,"Morning","Picker",0,"Nerenka",0]];
 const ST={"Renka":"bg-green-100 text-green-800","Laukia užduoties":"bg-blue-100 text-blue-800","Nesinchronizavo":"bg-amber-100 text-amber-800"};
 const Z=["Pampers / Toilet Paper","Cosmetics","Cofee, tea, candy","Chemicals","Chips","Conservation","Kiaušiniai","Easter","Stationery Goods","Tortai","Flowers","Morning Morning.Garden","Fruits, vegetables - RYTAS","Christmas","Fruits, vegetables","Not available","OOS zone","Frozen goods","Confectionery Cakes","Bread products - RYTAS","Gifts_Bak","Gifts_Šal","Gifts_Pie","Gifts_Pra","Gifts_Duo","Gifts_Kup","Own product range","Ramp","UP-Šaldytuvas","Maltese","Food bank","Hot line","Non-alcoholic beverages","UAT Milk","Soft drinks","Manufactured goods","Confectionery MXM","Gastronomy","Fresh fish","Fresh meat","Candies","Fresh poultry","Alcoholic beverages","Weighed, smoked meat products","Press","Weighed cheese","Confectionery Mantinga","Chemistry stuff","Mėnesio akcijos","Bread products","Milk, fish, poultry","Groceries"];
 const EFF={"NONE":[],"Fruits, vegetables":[38,95,42,20,50,25,4],"Fresh meat":[30,60,35,15,30,20,3],"Groceries":[55,140,48,30,70,25,5],"Milk, fish, poultry":[45,110,40,25,55,22,4]};
@@ -398,13 +397,13 @@ let cv='dash';const hist=[];
 function back(){go(hist.pop()||'dash',false)}
 function menu(b,i){mi=i;const m=document.getElementById('rmenu'),r=b.getBoundingClientRect();m.style.top=r.bottom+4+'px';m.style.left=Math.max(8,r.right-128)+'px';m.hidden=false}
 document.addEventListener('click',e=>{if(!e.target.closest('#rmenu,[data-menu]'))document.getElementById('rmenu').hidden=true});
-function go(v,push=true){document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
+function go(v,push=true){try{parent.postMessage({proto:v},'*')}catch(e){}document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
 function allZ(on){if(on)Z.forEach(n=>EFF[n]??=[]);else Object.keys(EFF).forEach(k=>delete EFF[k]);zones()}
 function zones(){const q=document.getElementById('zq').value.toLowerCase();document.getElementById('zc').textContent=Z.filter(n=>EFF[n]).length+' iš 52 įjungta';
   const inp=(i,u,v)=>`<label class="flex flex-col gap-1 text-xs text-gray-500">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white" value="${v??''}"></label>`;
   const box=(t,us,e,o)=>`<fieldset class="border rounded bg-white px-3 pb-3"><legend class="px-1 text-xs font-semibold uppercase tracking-wide text-gray-600">${t}</legend><div class="grid gap-2" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>inp(e.i,u,e.v[k+o])).join('')}</div></fieldset>`;
   document.getElementById('zl').innerHTML=['NONE',...Z].map((n,i)=>[n,i]).filter(([n])=>n.toLowerCase().includes(q)).map(([n,i])=>{const e=EFF[n],no=n=='NONE';return `<div class="px-3 py-2 ${e?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input id="z${i}" type="checkbox" ${e?'checked':''} onchange="if(this.checked)EFF['${n}']=[];else delete EFF['${n}'];zones()">${no?'<b>NONE</b>':n}</label>${e&&!no?`<div class="mt-2 pl-6 grid md:grid-cols-2 gap-3">${box('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],{i,v:e},0)}${box('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],{i,v:e},3)}</div>`:''}</div>`}).join('')}
-document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X016 Liepkalnis"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
+document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
 function rv(){const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos)`;
   const vb=(t,us,e,o)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><dl class="grid gap-2 mt-1" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${e[k+o]??'–'}</dd></div>`).join('')}</dl></div>`;
   document.getElementById('effView').innerHTML=zs.map(n=>{const e=EFF[n];return `<div class="border rounded p-3"><div class="font-medium">${n}</div>${n=='NONE'?'':`<div class="mt-2 grid md:grid-cols-2 gap-3">${vb('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],e,0)}${vb('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],e,3)}</div>`}</div>`}).join('')}
@@ -609,4 +608,11 @@ function layout(){const g=document.getElementById('dgrid'),dash=!document.getEle
 const _sbClose=sbClose;sbClose=function(){if(docked)return;_sbClose()};
 const _go=go;go=function(v,p){_go(v,p);layout()};
 addEventListener('resize',layout);layout();
+</script>
+<script>
+// Pradinis ekranas pagal adresą (#dashboard arba #picker-accounts); apvalkalas keičia adresą perjungdamas skirtukus
+function fromHash(){const h=location.hash.slice(1);if(h=='picker-accounts'&&cv=='dash')go('list',false);else if(h=='dashboard'&&cv!='dash')go('dash',false)}
+// Kairiojo meniu žymėjimas pagal atidarytą ekraną
+const _goNav=go;go=function(v,p){_goNav(v,p);nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash')};
+fromHash();addEventListener('hashchange',fromHash);
 </script>
