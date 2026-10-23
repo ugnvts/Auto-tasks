@@ -1,0 +1,54 @@
+{
+  "updated": "2026-10-23",
+  "versions": [
+    {
+      "project": "auto-tasks-review",
+      "title": "Auto tasks · Review",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    },
+    {
+      "project": "auto-tasks-picker-accounts",
+      "title": "Auto tasks · Picker accounts be sidebar",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    },
+    {
+      "project": "auto-tasks-picker-accounts-sidebar",
+      "title": "Auto tasks · Picker accounts + Dirba dabar sidebar",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    },
+    {
+      "project": "auto-tasks-dashboard-a",
+      "title": "Auto tasks · Dashboard A – Dirba dabar suskleidžiamas",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    },
+    {
+      "project": "auto-tasks-dashboard-b",
+      "title": "Auto tasks · Dashboard B – Dirba dabar prisegtas",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    },
+    {
+      "project": "auto-tasks-dizaino-sprendimai",
+      "title": "Auto tasks · Dizaino sprendimai",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    },
+    {
+      "project": "auto-tasks-variklio-logika",
+      "title": "Auto tasks · Variklio logika",
+      "version": "2026-10-22",
+      "note": "Pradinė versija iš Claude artefakto",
+      "created": "2026-10-23T12:26"
+    }
+  ]
+}

@@ -1,0 +1,116 @@
+<title>Auto tasks prototipai</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: one quiet control bar (project · screen · variant), the chosen prototype fills the rest of the window */
+:root {
+  --bg: #eef0f3;
+  --bar: #ffffff;
+  --fg: #17202a;
+  --muted: #5f6b78;
+  --line: #d8dde3;
+  --chip: #f3f5f7;
+  --accent: #4f46e5;
+  --accent-bg: #eceafd;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161c; --bar: #181f27; --fg: #e3e8ee; --muted: #97a3b0; --line: #2b3540; --chip: #212a34;
+  --accent: #9d97ff; --accent-bg: #2a2850; color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #11161c; --bar: #181f27; --fg: #e3e8ee; --muted: #97a3b0; --line: #2b3540; --chip: #212a34;
+  --accent: #9d97ff; --accent-bg: #2a2850; color-scheme: dark; }
+
+html, body { height: 100%; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); display: flex; flex-direction: column; }
+.bar { background: var(--bar); border-bottom: 1px solid var(--line); display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px;
+  padding-block: 8px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+.name { display: flex; align-items: baseline; gap: 8px; white-space: nowrap; }
+.name b { font-weight: 600; font-size: 15px; }
+.name span { font-family: var(--f-mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.grp { display: flex; align-items: center; gap: 4px; flex-wrap: wrap; }
+.grp + .grp { padding-left: 20px; border-left: 1px solid var(--line); }
+.lbl { font-size: 12px; color: var(--muted); margin-right: 4px; }
+button.t { font: inherit; font-size: 14px; font-weight: 500; color: var(--fg); background: none; border: 1px solid transparent; border-radius: 6px; padding: 5px 10px; cursor: pointer; white-space: nowrap; }
+button.t:hover { background: var(--chip); }
+button.t[aria-selected="true"] { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+button.t .k { font-family: var(--f-mono); font-size: 11px; color: var(--muted); margin-left: 6px; }
+button.t[aria-selected="true"] .k { color: var(--accent); }
+button.t:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.note { font-size: 13px; color: var(--muted); min-width: 0; flex: 1 1 220px; }
+.frame { flex: 1; min-height: 0; position: relative; }
+iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--bg); }
+@media (max-width: 640px) { .grp + .grp { padding-left: 0; border-left: 0; } .note { flex-basis: 100%; } }
+</style>
+
+<header class="bar">
+  <div class="name"><b>Auto tasks</b><span>Prototipai</span></div>
+  <div class="grp" role="tablist" aria-label="Ekranas" id="pages"></div>
+  <div class="grp" role="tablist" aria-label="Variantas" id="variants"></div>
+  <div class="note" id="note"></div>
+</header>
+<main class="frame"><iframe id="view" title="Prototipas"></iframe></main>
+
+<script>
+// Ekranai ir jų variantai. Naujas variantas: pridėk eilutę ir failą puslapiai/<ekranas>/.
+var PAGES = [
+  { id: "picker", name: "Picker accounts", variants: [
+    { id: "picker-be-sidebar", name: "Be sidebar", file: "puslapiai/picker-accounts/be-sidebar.html",
+      note: "Auto tasks suvestinė juostoje virš lentelės." },
+    { id: "picker-su-sidebar", name: "Su „Dirba dabar“", file: "puslapiai/picker-accounts/su-sidebar.html",
+      note: "Suvestinė perkelta į dešinį sidebar'ą „Dirba dabar“." }
+  ]},
+  { id: "dashboard", name: "Dashboard", variants: [
+    { id: "dashboard-a", name: "A · suskleidžiamas", file: "puslapiai/dashboard/a-suskleidziamas.html",
+      note: "Esamas Dashboard, „Dirba dabar“ išskleidžiamas dešinėje." },
+    { id: "dashboard-b", name: "B · prisegtas", file: "puslapiai/dashboard/b-prisegtas.html",
+      note: "Bangos kairėje, „Dirba dabar“ visada matomas dešinėje." }
+  ]}
+];
+
+var ALL = [];
+PAGES.forEach(function (p) { p.variants.forEach(function (v) { v.page = p; ALL.push(v); }); });
+var view = document.getElementById("view"), cur = null;
+
+function btn(label, key, sel, onClick) {
+  var b = document.createElement("button");
+  b.className = "t"; b.setAttribute("role", "tab"); b.setAttribute("aria-selected", sel ? "true" : "false");
+  b.textContent = label;
+  if (key) { var k = document.createElement("span"); k.className = "k"; k.textContent = key; b.appendChild(k); }
+  b.addEventListener("click", onClick);
+  return b;
+}
+
+function show(v) {
+  cur = v;
+  var pages = document.getElementById("pages"), vars = document.getElementById("variants");
+  pages.replaceChildren(); vars.replaceChildren();
+  PAGES.forEach(function (p) {
+    pages.appendChild(btn(p.name, "", p === v.page, function () { if (p !== cur.page) show(p.variants[0]); }));
+  });
+  var l = document.createElement("span"); l.className = "lbl"; l.textContent = "Variantas"; vars.appendChild(l);
+  v.page.variants.forEach(function (x) {
+    vars.appendChild(btn(x.name, String(ALL.indexOf(x) + 1), x === v, function () { if (x !== cur) show(x); }));
+  });
+  document.getElementById("note").textContent = v.note;
+  view.title = v.page.name + " · " + v.name;
+  if (view.getAttribute("src") !== v.file) view.setAttribute("src", v.file);
+  try { history.replaceState(null, "", "#" + v.id); } catch (e) {}
+}
+
+function fromHash() {
+  var h = (location.hash || "").slice(1);
+  for (var i = 0; i < ALL.length; i++) if (ALL[i].id === h) return ALL[i];
+  return ALL[0];
+}
+
+// Skaičių klavišai 1–4 perjungia variantus (kai fokusas ne prototipe)
+document.addEventListener("keydown", function (e) {
+  if (e.altKey || e.ctrlKey || e.metaKey) return;
+  var n = parseInt(e.key, 10);
+  if (n >= 1 && n <= ALL.length && ALL[n - 1] !== cur) { e.preventDefault(); show(ALL[n - 1]); }
+});
+window.addEventListener("hashchange", function () { var v = fromHash(); if (v !== cur) show(v); });
+show(fromHash());
+</script>
