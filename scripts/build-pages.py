@@ -18,7 +18,7 @@ SKELETON = ('<!doctype html>\n<html lang="lt"><head><meta charset="utf-8">'
             '[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>\n')
 
 FILES = ["index.html", "dokumentai/index.html"]
-FILES += [os.path.join(d, f) for d in ("puslapiai/picker-accounts", "puslapiai/dashboard", "dokumentai")
+FILES += [os.path.join(d, f) for d in ("puslapiai", "dokumentai")
           for f in sorted(os.listdir(os.path.join(ROOT, d))) if f.endswith(".html") and f != "index.html"]
 
 

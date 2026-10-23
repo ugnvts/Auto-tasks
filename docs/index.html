@@ -57,21 +57,20 @@ iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; bac
 <main class="frame"><iframe id="view" title="Prototipas"></iframe></main>
 
 <script>
-// Ekranai ir jų variantai. Naujas variantas: pridėk eilutę ir failą puslapiai/<ekranas>/.
+// Ekranai ir jų variantai. Naujas variantas: pridėk eilutę ir failą puslapiai/.
+// Kai ekranas turi vieną variantą, variantų eilutė nerodoma.
 var PAGES = [
   { id: "picker", name: "Picker accounts", variants: [
-    { id: "picker-be-sidebar", name: "Be sidebar", file: "puslapiai/picker-accounts/be-sidebar.html",
-      note: "Auto tasks suvestinė juostoje virš lentelės." },
-    { id: "picker-su-sidebar", name: "Su „Dirba dabar“", file: "puslapiai/picker-accounts/su-sidebar.html",
-      note: "Suvestinė perkelta į dešinį sidebar'ą „Dirba dabar“." }
+    { id: "picker-accounts", name: "Su „Dirba dabar“", file: "puslapiai/picker-accounts.html",
+      note: "Surinkėjų lentelė ir „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas." }
   ]},
   { id: "dashboard", name: "Dashboard", variants: [
-    { id: "dashboard-a", name: "A · suskleidžiamas", file: "puslapiai/dashboard/a-suskleidziamas.html",
-      note: "Esamas Dashboard, „Dirba dabar“ išskleidžiamas dešinėje." },
-    { id: "dashboard-b", name: "B · prisegtas", file: "puslapiai/dashboard/b-prisegtas.html",
+    { id: "dashboard", name: "„Dirba dabar“ prisegtas", file: "puslapiai/dashboard.html",
       note: "Bangos kairėje, „Dirba dabar“ visada matomas dešinėje." }
   ]}
 ];
+// Senos nuorodos iš ankstesnių versijų
+var ALIAS = { "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
 
 var ALL = [];
 PAGES.forEach(function (p) { p.variants.forEach(function (v) { v.page = p; ALL.push(v); }); });
@@ -93,6 +92,7 @@ function show(v) {
   PAGES.forEach(function (p) {
     pages.appendChild(btn(p.name, "", p === v.page, function () { if (p !== cur.page) show(p.variants[0]); }));
   });
+  vars.hidden = v.page.variants.length < 2;
   var l = document.createElement("span"); l.className = "lbl"; l.textContent = "Variantas"; vars.appendChild(l);
   v.page.variants.forEach(function (x) {
     vars.appendChild(btn(x.name, String(ALL.indexOf(x) + 1), x === v, function () { if (x !== cur) show(x); }));
@@ -105,11 +105,12 @@ function show(v) {
 
 function fromHash() {
   var h = (location.hash || "").slice(1);
+  h = ALIAS[h] || h;
   for (var i = 0; i < ALL.length; i++) if (ALL[i].id === h) return ALL[i];
   return ALL[0];
 }
 
-// Skaičių klavišai 1–4 perjungia variantus (kai fokusas ne prototipe)
+// Skaičių klavišai perjungia variantus (kai fokusas ne prototipe)
 document.addEventListener("keydown", function (e) {
   if (e.altKey || e.ctrlKey || e.metaKey) return;
   var n = parseInt(e.key, 10);
