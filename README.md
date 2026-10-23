@@ -17,3 +17,8 @@ Naujas variantas: failas `puslapiai/<ekranas>/` + eilutė `PAGES` sąraše `inde
 
 `archyvas/` – 2026-10-22 review failas ir GitHub Pages bandymas (nebenaudojama).
 Versijų istorija – vietinis git.
+
+## GitHub Pages
+
+`docs/` – svetainės kopija GitHub Pages'ui (sugeneruota, ranka netaisyti).
+Atnaujinti: `python3 scripts/build-pages.py`, tada GitHub Desktop → Commit → Push.
