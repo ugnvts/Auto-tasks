@@ -186,225 +186,542 @@ a { color: var(--accent); }
 </head><body>
 <div class="wrap">
   <header class="top">
-    <div class="eyebrow">Auto tasks Stage II · dizaino darbų dokumentas · pavyzdys</div>
+    <div class="eyebrow">Auto tasks Stage II · dizaino sprendimai · atnaujinta 2026-10-23</div>
     <h1>Auto tasks dizainas</h1>
   </header>
   <nav class="dtabs" role="tablist"><button role="tab" id="b-doc" aria-selected="true" onclick="showTab('doc')">Dokumentas</button><button role="tab" id="b-arch" aria-selected="false" onclick="showTab('arch')">Archyvas</button></nav>
   <div id="t-doc" class="tabp">
+<style>
+.item > summary { grid-template-columns: 52px minmax(0, 1fr) auto 16px; align-items: center; }
+.item > summary .status { align-self: center; }
+.item .body { padding-left: 80px; }
+.item .body ul { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; font-size: 14px; max-width: 70ch; }
+.was { font-family: var(--f-mono); font-size: 11px; color: var(--muted); }
+.scr { display: flex; flex-direction: column; gap: 14px; }
+.scr-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; }
+.scr-head .code { font-family: var(--f-mono); font-weight: 500; color: var(--accent); }
+.decision { border: 1px solid var(--line); border-left: 3px solid var(--accent); border-radius: 8px; background: var(--surface); padding: 10px 14px; display: flex; flex-direction: column; gap: 4px; font-size: 14px; max-width: 80ch; }
+.decision b { font-weight: 600; }
+.rejected { font-size: 13px; color: var(--muted); }
+.stlegend { display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center; font-size: 13px; color: var(--muted); }
+.gloss { display: grid; grid-template-columns: minmax(140px, 200px) minmax(0, 1fr); gap: 0; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; font-size: 14px; }
+.gloss dt, .gloss dd { margin: 0; padding: 8px 14px; border-top: 1px solid var(--line); }
+.gloss dt { font-weight: 600; }
+.gloss dt:first-of-type, .gloss dt:first-of-type + dd { border-top: 0; }
+.tbl { overflow-x: auto; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); }
+.tbl table.log td:first-child { white-space: nowrap; }
+.tbl table.log tr:first-child td { border-top: 0; }
+.tbl th { text-align: left; font-size: 12px; color: var(--muted); padding: 8px 10px; font-weight: 600; }
+.toc { display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; }
+.toc a { padding: 3px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); text-decoration: none; color: var(--fg); }
+.toc a:hover { border-color: var(--accent); }
+@media (max-width: 560px) {
+  .item > summary { grid-template-columns: 48px minmax(0, 1fr) 16px; }
+  .item > summary .status { grid-column: 2; grid-row: 2; justify-self: start; }
+  .item > summary::after { grid-column: 3; grid-row: 1; }
+  .item .body { padding-left: 16px; }
+  .gloss { grid-template-columns: 1fr; }
+  .gloss dd { border-top: 0; padding-top: 0; }
+}
+</style>
 
-  <section class="sec" aria-labelledby="h-journey">
-    <div class="sec-head">
-      <h2 id="h-journey">Pamainos vadybininko diena</h2>
-      <span class="eyebrow">overview</span>
-    </div>
-    <div class="journey-box">
-      <div class="journey-scroll">
-        <div class="journey" id="journey"></div>
-      </div>
-    </div>
-  </section>
+<section class="goal">
+  <p class="lead">Pamainos vadybininko įrankis surinkimo centre: pagal grafiką ir faktą įjungti ir išjungti surinkėjus, kad jiems būtų automatiškai skiriamos užduotys, ir matyti, kas vyksta dabar.</p>
+  <div class="scope">
+    <span><b>Picker accounts:</b> su „Dirba dabar“ sidebar'u</span>
+    <span><b>Dashboard:</b> „Dirba dabar“ prisegtas, tobulinama</span>
+    <span><b>SC nustatymai:</b> pradėta 10-23</span>
+    <span><b>Paleidimas:</b> palaipsnis, iš pradžių keliems surinkėjams</span>
+  </div>
+  <p class="note">Šaltiniai: <a href="https://barbora.atlassian.net/wiki/x/AwBtt" target="_blank" rel="noopener">PM puslapis „Auto tasks - STAGE II“</a> (prioritetinis), <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3302096907" target="_blank" rel="noopener">Algoritmo logika</a> (S, Q), <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3303604225" target="_blank" rel="noopener">susitikimų užrašai</a>. Už sistemos ribų: grafikai (Workofo, NUMO, Virosoft), ne surinkimo darbai, koordinatorių užduotys, lipdukai.</p>
+  <nav class="toc" aria-label="Turinys">
+    <a href="#h-gloss">Terminai</a><a href="#h-journey">Diena</a><a href="#h-pa">PA · Picker accounts</a><a href="#h-dd">DD · Dirba dabar</a><a href="#h-db">DB · Dashboard</a><a href="#h-sc">SC · Nustatymai</a><a href="#h-t">Bendros taisyklės</a><a href="#h-k">Atviri klausimai</a><a href="#h-p">Ateities idėjos</a>
+  </nav>
+  <div class="stlegend"><span class="status st-ready">Sutarta</span> sprendimas priimtas <span class="status st-wip">Derinama</span> kryptis aiški, detalės atviros <span class="status st-idea">Idėja</span> nepatvirtinta <span class="status st-later">Vėliau</span> ne šiam etapui</div>
+</section>
 
-  <section class="goal">
-    <p class="lead">Pamainos vadybininko įrankis surinkimo centre: pagal darbo grafiką ir faktą įjungti ir išjungti surinkėjus, kad jiems būtų automatiškai skiriamos užduotys, ir patogiau organizuoti darbo laiką.</p>
-    <div class="scope">
-      <span><b>Dabar:</b> Picker account</span>
-      <span><b>Lygiagrečiai:</b> Dashboard juodraštis</span>
-      <span><b>Papildymas:</b> darbų organizavimas (mano idėja)</span>
-      <span><b>Vėliau:</b> SC nustatymai</span>
-      <span><b>Kontekstas:</b> <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3302096907" target="_blank" rel="noopener">Algoritmo logika</a> (Confluence)</span>
-      <span><b>Pagalbinis šaltinis:</b> <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3302195209" target="_blank" rel="noopener">Dizaino sprendimai</a> (Confluence)</span>
-    </div>
-  </section>
+<section class="sec" aria-labelledby="h-gloss">
+  <div class="sec-head"><h2 id="h-gloss">Terminai</h2></div>
+  <dl class="gloss">
+    <dt>Auto tasks jungiklis</dt><dd>Ar surinkėjui automatiškai skiriamos užduotys. Pakeitė buvusį Active lauką.</dd>
+    <dt>Efektyvumas</dt><dd>SKU, units ir kg per valandą kiekvienai zonai. Suvedamas paskyroje ir laikomas tiesos šaltiniu.</dd>
+    <dt>Maksimalus efektyvumas</dt><dd>Kiek priskiriama vienam išėjimui į salę. Santykis su efektyvumu rodo, kiek laiko surinkėjas bus salėje.</dd>
+    <dt>Efektyvumo kėlimas</dt><dd>Laikinas procentinis efektyvumo didinimas, kai trūksta žmonių (boost).</dd>
+    <dt>Išėjimas</dt><dd>Užduotys, paimtos vienu sinchronizavimu. Nesinchronizuotos laikomos „eilėje“.</dd>
+    <dt>Aktyvus zonoje</dt><dd>Turi sinchronizuotą tos zonos užduotį. Skaičiuojama pagal užduotį, ne pagal paskyros zonas.</dd>
+    <dt>Naujokas</dt><dd>Žyma paskyroje; kol uždėta, auto tasks įjungti negalima.</dd>
+    <dt>Būsenos</dt><dd>Laukia užduoties, Nesinchronizavo, Renka, Nerenka. Reikšmės: <a href="#f-T2">T2</a>.</dd>
+  </dl>
+</section>
 
+<section class="sec" aria-labelledby="h-journey">
+  <div class="sec-head"><h2 id="h-journey">Pamainos vadybininko diena</h2><span class="eyebrow">overview</span></div>
+  <div class="journey-box"><div class="journey-scroll"><div class="journey" id="journey"></div></div></div>
+</section>
 
-  <section class="sec proto" aria-labelledby="h-proto">
-    <div class="sec-head">
-      <h2 id="h-proto">Prototipas: auto tasks valdymas</h2>
-      <span class="eyebrow">2026-10-19</span>
-    </div>
-    <p>Klikinamas juodraštis su statiniais duomenimis: <a href="https://claude.ai/artifact/6HTV7cZedqtTfQYMfG6m9E" target="_blank" rel="noopener">Auto tasks prototipas</a>.</p>
-    <div class="pds">
-    <details class="pd"><summary>Lentelės stulpeliai</summary>
-      <ul>
-        <li>Checkbox</li>
-        <li>Name</li>
-        <li>Last name</li>
-        <li>Time card</li>
-        <li>Shift name</li>
-        <li>Role (su violetine naujoko žyma greta rolės)</li>
-        <li>Auto tasks (toggle; buvęs Active, keičiama paskirtis)<ul><li>Naujokui neaktyvus</li><li>Kai keliamas efektyvumas, prie įjungtų „+X %“</li></ul></li>
-        <li>Būsena</li>
-        <li>⋮ Veiksmai: Rodyti, Redaguoti</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Filtrai</summary>
-      <ul>
-        <li>Visi filtrai be chevron'ų, tik su pavadinimu (be „Būsena: visos“); paspaudus atsiveria pasirinkimai</li>
-        <li>Vienodi aukščiai ir paddingai; aktyvus filtras turi violetinį rėmelį</li>
-        <li>Name, Last name, Time card, Shift name, Role</li>
-        <li>Būsena<ul><li>Renka</li><li>Laukia užduoties</li><li>Nesinchronizavo</li><li>Nerenka</li></ul></li>
-        <li>Auto tasks: dropdown Įjungta / Išjungta; nepasirinkus rodomi visi</li>
-        <li>Naujokai: toggle filtras (be dropdown, su varnele: pilka išjungtas, paryškinta įjungtas)</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Statistikos juosta</summary>
-      <ul>
-        <li>Viena juosta per visą plotį, dvi skiltys, kurių grupės nesidengia</li>
-        <li>„Auto tasks“ (tik pickeriai su įjungtu auto): Įjungta (tik skaičius), Renka, Laukia užduoties, Nesinchronizavo, boost chip, ⋮<ul><li>Renka + Laukia + Nesinchronizavo = Įjungta</li><li>„Renka“ apima ir su įjungtu auto renkančius rankinę užduotį (pvz. po cut-off)</li><li>Kai įjungta 0: rodoma „Įjungta 0“, būsenos paslėptos, ⋮ neaktyvus</li></ul></li>
-        <li>„Rankinis skyrimas“ (tik pickeriai be auto): Renka, Nesinchronizavo, Naujokai<ul><li>„Nerenka“ nerodomas: be aktyvumo jį išpūstų nesantys darbe</li><li>Naujokai visada šioje grupėje (auto jiems neįjungiamas)</li></ul></li>
-        <li>Paspaudus skaičių įsijungia būsenos filtras ir Auto tasks Įjungta / Išjungta pagal skiltį; „Naujokai“ išvalo filtrus ir įjungia Naujokai filtrą</li>
-        <li>⋮ meniu<ul><li>Kelti efektyvumą (kai įjungtas: „Keisti efektyvumo kėlimą“)</li><li>Išjungti auto tasks visiems (raudonas, su patvirtinimu ir skaičiumi)</li></ul></li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Efektyvumo kėlimas (boost)</summary>
-      <ul>
-        <li>Paprastas rankinis įjungimas; taikomas tik pickeriams su įjungtu auto tasks, naujokams netaikomas</li>
-        <li>Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta: bangos pabaiga), kiek pickerių paveiks (žingsniai ir laikai – prielaida)</li>
-        <li>Įjungus matomas visada: „Efektyvumas +X % iki …“ su ✕</li>
-        <li>Atitinka Confluence „Assign X % over efficiency“; SC lygis, ne zonos; variklio logika devams</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Būsenos</summary>
-      <div class="mx"><table class="log">
-        <thead><tr><th>Toggle</th><th>Būsena</th><th>Reikšmė</th></tr></thead>
-        <tbody>
-          <tr><td>Įjungtas</td><td>Laukia užduoties</td><td>Užduočių dar nepriskirta. Po cut-off tai signalas skirti rankinę užduotį</td></tr>
-          <tr><td>Įjungtas</td><td>Nesinchronizavo</td><td>Užduotis priskirta, bet pickeris dar nepaspaudė sinchronizuoti</td></tr>
-          <tr><td>Bet koks</td><td>Renka</td><td>Sinchronizavo užduotis (auto ar rankinę)</td></tr>
-          <tr><td>Išjungtas</td><td>Nerenka</td><td>Auto užduočių negauna ir nerenka</td></tr>
-        </tbody>
-      </table></div>
-    </details>
-    <details class="pd"><summary>Paskyros peržiūra</summary>
-      <ul>
-        <li>Employee information: Time card, Login name, Shift name, Role su naujoko žyma (kaip lentelėje), Shop</li>
-        <li>Auto tasks: Enabled / Disabled (naujokui: Disabled su paaiškinimu)</li>
-        <li>Kelios zonos (atskira antraštė): Can work in multiple zones, įrėmintos Allowed zone combinations</li>
-        <li>Zonos ir efektyvumas: NONE pirma, be prierašo; kiekvienai zonai:<ul><li>Efficiency per hour: SKU/1h, Units/1h, KG/1h</li><li>Maks. priskyrimas vienam kartui: SKU, Units, KG, Unique orders</li></ul></li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Paskyros redagavimas</summary>
-      <ul>
-        <li>Personal information</li>
-        <li>Employee information: Time card, Shift name, Role su Naujokas varnele po ja, Shop (keičiamas, niekada ne disabled)</li>
-        <li>Auto tasks varnelė; kol uždėta naujoko žyma, neaktyvi</li>
-        <li>Kelios zonos: Can work in multiple zones; pažymėjus nustatymai įrėminti<ul><li>Allowed zone combinations (multiselect; kombinacijos iš SC nustatymų; kiekviena zona gali būti tik vienoje kombinacijoje)</li></ul></li>
-        <li>Zonos ir efektyvumas: zonos viename lange, Įjungti visas / Išjungti visas, NONE viršuje be prierašo, pažymėtoms input'ai</li>
-        <li>Mygtukai: Atšaukti, Išsaugoti ir kitas, Išsaugoti</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Auto tasks valdymo logika</summary>
-      <ul>
-        <li>Valdymas rankinis: vadovas pats įjungia ir išjungia</li>
-        <li>Atskiro aktyvumo nėra: esamo Active lauko paskirtis keičiama į auto tasks jungiklį (ir jį naudojantiems SC)</li>
-        <li>Auto tasks įjungti negalima naujokui</li>
-        <li>Įjungimas pavieniui (toggle) ir grupei (multiselect), išjungimas visiems per ⋮</li>
-        <li>Išjungimas einamos užduoties nenutraukia; naujų auto užduočių nebeateina</li>
-        <li>Cut-off: auto generavimas pristabdomas iki kitos bangos, toggle lieka įjungtas; 1 fazėje po cut-off auto nieko negeneruoja (workshopai vėlesnėje iteracijoje). Atskiros cut-off būsenos nėra</li>
-        <li>Su filtru „Auto tasks“ pakeitus jungiklį eilutė papilkėja, rodoma „Atšaukti“, dingsta pakeitus filtrą</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Atviri klausimai</summary>
-      <ul>
-        <li>Sąrašas faile <code>prototipas/Prototipo sprendimai 2026-10-19.md</code></li>
-        <li>R01 faile <code>dizainas/Klausimai review.md</code></li>
-      </ul>
-    </details>
-    </div>
-  </section>
+<!-- PICKER ACCOUNTS -->
+<section class="sec scr" aria-labelledby="h-pa">
+  <div class="scr-head"><span class="code">PA</span><h2 id="h-pa">Picker accounts</h2><span class="eyebrow">„kas yra“</span></div>
+  <div class="decision">
+    <span><b>Sprendimas (2026-10-22):</b> surinkėjų lentelė ir „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas. Suvestinė iš juostos virš lentelės perkelta į sidebar'ą.</span>
+    <span>Prototipas: <a href="https://claude.ai/artifact/U6JvYPom14xE6unYd6fjZ6#picker-su-sidebar" target="_blank" rel="noopener">Picker accounts · Su „Dirba dabar“</a></span>
+    <span class="rejected">Atmesta: suvestinės juosta virš lentelės (variantas be sidebar'o), žr. Archyvą.</span>
+  </div>
+  <div class="list">
+    <details class="item" id="f-PA1"><summary><span class="id">PA1</span><span class="name">Surinkėjų lentelė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>Stulpeliai: checkbox, Name, Last name, Time card, Shift name, Role (su violetine naujoko žyma), Auto tasks (jungiklis), Būsena, ⋮ (Rodyti, Redaguoti).</li><li>Zonų ir efektyvumo lentelėje nėra, jie matomi paskyroje. Express žyma pašalinta.</li></ul>
+    </div></details>
+    <details class="item" id="f-PA2"><summary><span class="id">PA2</span><span class="name">Auto tasks jungiklis eilutėje</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Kasdienis veiksmas: vadybininkas įjungia atėjusį surinkėją ir išjungia išeinantį ar einantį į pertrauką. Naujokui ir inspektoriui jungiklis neaktyvus (<a href="#f-T3">T3</a>, <a href="#f-T4">T4</a>). Kai įjungtas efektyvumo kėlimas, prie įjungtų rodoma „+X %“.</p>
+      <p class="desc">Su filtru „Auto tasks“ pakeitus jungiklį eilutė papilkėja, rodoma „Atšaukti“, ir eilutė dingsta pakeitus filtrą.</p>
+      <div class="meta"><span class="ctx">S14</span><span class="ctx">Q05</span><span class="ctx">Q21</span><span class="was">buvęs A1</span></div>
+    </div></details>
+    <details class="item" id="f-PA3"><summary><span class="id">PA3</span><span class="name">Grupinis įjungimas ir išjungimas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Pažymėjus kelias eilutes atsiranda juosta „N pažymėta · Įjungti auto tasks · Išjungti“. Išjungti visiems galima per sidebar'o ⋮ (<a href="#f-DD3">DD3</a>).</p>
+      <div class="meta"><span class="was">buvęs D01</span></div>
+    </div></details>
+    <details class="item" id="f-PA4"><summary><span class="id">PA4</span><span class="name">Filtrai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>Name, Last name, Time card, Shift name, Role, Būsena (Renka, Laukia užduoties, Nesinchronizavo, Nerenka).</li><li>Auto tasks: Įjungta / Išjungta; nepasirinkus rodomi visi.</li><li>Naujokai: toggle filtras su varnele.</li><li>Filtrai be chevron'ų, aktyvus filtras su violetiniu rėmeliu.</li></ul>
+    </div></details>
+    <details class="item" id="f-PA5"><summary><span class="id">PA5</span><span class="name">Naujoko žyma</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Varnelė „Naujokas“ prie rolės. SC kasdien sprendžia, ar žymą nuimti; žyma gali būti grąžinta. Taisyklė: <a href="#f-T3">T3</a>.</p>
+      <div class="meta"><span class="ctx">S13</span><span class="ctx">Q06</span><span class="ctx">Q28</span><span class="was">buvęs A2</span></div>
+    </div></details>
+    <details class="item" id="f-PA6"><summary><span class="id">PA6</span><span class="name">Paskyros peržiūra</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>Employee information: Time card, Login name, Shift name, Role su naujoko žyma, Shop.</li><li>Auto tasks: Enabled / Disabled (naujokui Disabled su paaiškinimu).</li><li>Kelios zonos: Can work in multiple zones ir priskirtos kombinacijos.</li><li>Zonos ir efektyvumas: NONE pirma; kiekvienai zonai Efficiency per hour ir Maks. priskyrimas vienam kartui.</li></ul>
+    </div></details>
+    <details class="item" id="f-PA7"><summary><span class="id">PA7</span><span class="name">Paskyros redagavimas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>Personal information; Employee information (Shop keičiamas, niekada ne disabled; Naujokas po Role).</li><li>Auto tasks varnelė, neaktyvi kol uždėta naujoko žyma.</li><li>Zonos viename sąraše su paieška, „Įjungti visas“ / „Išjungti visas“, NONE viršuje; pažymėtoms zonoms efektyvumo laukai.</li><li>Mygtukai: Atšaukti, Išsaugoti ir kitas, Išsaugoti.</li></ul>
+    </div></details>
+    <details class="item" id="f-PA8"><summary><span class="id">PA8</span><span class="name">Aptarnaujamos zonos ir efektyvumas per zoną</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Checkbox kiekvienai zonai. Pažymėtai zonai vedama SKU, units ir kg per valandą (unique orders dingo). NONE zonai efektyvumas nevedamas. Dauguma surinkėjų turės visas zonas; LT aktualiausia, LV eina link to.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K05">K05</a> ar efektyvumas privalomas kiekvienai zonai ir ar liks KG/val.</p>
+      <details class="zones"><summary>Picking zonų sąrašas (52)</summary><ol id="zlist"></ol><p class="zsrc">Šaltinis: ekrano nuotraukos, 2026-10-19. Rašyba kaip nuotraukose.</p></details>
+      <div class="meta"><span class="ctx">S15</span><span class="ctx">Q08</span><span class="ctx">Q33</span><span class="was">buvę A3, A4</span></div>
+    </div></details>
+    <details class="item" id="f-PA9"><summary><span class="id">PA9</span><span class="name">Maksimalus efektyvumas</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Kiekvienai zonai: SKU, Units, KG, Unique orders vienam išėjimui. Pvz., efektyvumas 100/val. ir max 50 reiškia apie pusvalandį salėje. PM puslapyje Optional.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K06">K06</a> keitimo dažnis ir unique orders.</p>
+      <div class="meta"><span class="ctx">Q31</span><span class="ctx">Q32</span><span class="ctx">Q34</span><span class="was">buvęs A5</span></div>
+    </div></details>
+    <details class="item" id="f-PA10"><summary><span class="id">PA10</span><span class="name">Individualios zonų kombinacijos</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Kombinacijos sukuriamos SC nustatymuose (<a href="#f-SC11">SC11</a>). Pažymėjus „Can work in multiple zones“, surinkėjui priskiriama dalis jų, pvz., 3 iš 5 (PM pritarė 2026-10-22). Anksčiau buvo galvota priskirti visas.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K03">K03</a> kas, jei vienai kombinacijos zonai nesuvestas efektyvumas; <a href="#k-K04">K04</a> kur rodyti, kad kombinacijos įjungtos.</p>
+      <div class="meta"><span class="ctx">S09</span><span class="ctx">Q15</span></div>
+    </div></details>
+    <details class="item" id="f-PA11"><summary><span class="id">PA11</span><span class="name">Laikinas surinkėjo efektyvumo koregavimas</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Paskyroje suvesti skaičiai lieka tiesos šaltiniu, o konkrečiam surinkėjui laikinai keliamas arba mažinamas efektyvumas. Pvz., surinkėjas pasijuto blogai; kiek laiko mažinimas galios, nežinoma. Valdoma paskyroje ir sidebar'e (2026-10-22).</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K01">K01</a> kaip tai dera su efektyvumo kėlimu ir bangų prioritetais; <a href="#k-K04">K04</a> kaip parodyti, kad efektyvumas pakoreguotas.</p>
+    </div></details>
+    <details class="item" id="f-PA12"><summary><span class="id">PA12</span><span class="name">Šablonai ir greitas vedimas</span><span class="status st-later">Vėliau</span></summary><div class="body">
+      <p class="desc">Greitas parametrų vedimas daugeliui surinkėjų: lentelinis redagavimas ar importas.</p>
+      <div class="meta"><span class="ctx">Q23</span><span class="was">buvęs P4</span></div>
+    </div></details>
+  </div>
+</section>
 
-  <section class="sec proto" aria-labelledby="h-side">
-    <div class="sec-head">
-      <h2 id="h-side">Sidebar „Dirba dabar“ (eksperimentas)</h2>
-      <span class="eyebrow">2026-10-21</span>
-    </div>
-    <p>Eksperimentinis prototipas: <a href="https://claude.ai/artifact/9icmSizjYB5arUJHVZdjAW" target="_blank" rel="noopener">Auto tasks sidebar</a>. Pagrindinis prototipas nekeistas.</p>
-    <div class="pds">
-    <details class="pd"><summary>Kontekstai</summary>
-      <ul>
-        <li>Lentelė = „kas yra“: visi surinkėjai, paskyrų valdymas, auto įjungimas</li>
-        <li>Sidebar = „kas vyksta dabar“: dirbantys (auto ir rankiniai), zonų lygis (nuasmenintas) ir surinkėjų lygis (suasmenintas)</li>
-        <li>Rodomas dashboard'e ir Picker accounts lange; viršutinė suvestinės juosta keliasi į sidebar'ą</li>
-        <li>Dashboard'o prekių statistika ir sidebar'as papildo vienas kitą</li>
-        <li>Ne planavimo įrankis: skyrimas vyksta Unfinished picking tasks</li>
-        <li>Tik desktop / laptop (hover galimas)</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Struktūra</summary>
-      <ul>
-        <li>Suskleistas: dvi mažos kortelės („Auto“, „Rank.“) su vertikaliais skaičiais; auto 0 → rodomi nuliai</li>
-        <li>Išskleistas: suvestinė dviem kortelėmis („Auto tasks“ su ⋮, „Rankinis skyrimas“), tab'ai „Zonos“ ir „Surinkėjai“ per visą plotį kaip pagrindinė navigacija</li>
-        <li>Vizualus principas: baltos kortelės ant pilko fono (suvestinė ir surinkėjai); antraštė be skiriamosios linijos; visas turinys slenka kartu, tab'ai ir filtrai prilimpa viršuje (sticky)</li>
-        <li>Suvestinė tik informacinė: skaičiai nefiltruoja (nei sidebar'o sąrašo, nei Picker accounts lentelės); filtravimas tik tab'ų viduje</li>
-        <li>Trys valdymo lygiai, vizualiai mažėjantys: tab'ai Zonos / Surinkėjai → segmentas Visi / Auto / Rankinis → būsenų filtrai (maži pilki chip'ai po segmentu, visi matomi iškart; Naujokai atskirti brūkšneliu). Zonos filtro nėra (zonos žiūrimos Zonų tab'e)</li>
-        <li>Zonos: aktyvūs zonoje (Renka + Nesinchronizavo); auto / rankinio skaidymo nėra. Zonos eilutė išsiskleidžia: kompaktiškas sąrašas (vardas, rolė, būsena su tos zonos eilutėmis), tik informacija, paspaudimų nėra; išskleista zona pilkame fone, sąrašas baltoje kortelėje. Antraštės chevron mygtukas išskleidžia arba suskleidžia visas zonas. Visų išskleidžiamų elementų ikona – chevron, ne trikampis</li>
-        <li>Surinkėjai: auto ON ir rankiniai, kol Renka / Nesinchronizavo</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Surinkėjo kortelė</summary>
-      <ul>
-        <li>Teksto hierarchija trimis lygiais: vardas (su naujoko žyma), rolė po vardu, reikšmės</li>
-        <li>Dešinėje jungiklis su pastoviu užrašu „Auto“ (rodomas visiems, ir rankiniams)</li>
-        <li>Zonų žymos virš būsenos: pirmos 2 pagal eilučių skaičių, likusios po „+N“; Laukia atveju žymų nėra</li>
-        <li>Būsena sujungta su progresu per visą plotį: Renka (žalia, „4/9 eil.“), Nesinchronizavo (geltona, „N eil.“), Laukia (mėlyna, be laiko: tarpinė būsena, SM nuo jos nepriklauso)</li>
-        <li>Du mygtukai po 50 %: „Surinkimo trukmė“ (Laukia ir Nesinchronizavo atveju „–“) ir „Užduotys“, atsidaro kaip stalčius</li>
-        <li>Surinkimo trukmė: pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos(-ų), maks. vienam išėjimui, planuojamas išėjimas; boost eilutė. Vėlavimas nepabrėžiamas</li>
-        <li>Užduotys: sąrašas be antraščių (dabartinės, po to eilėje). Kiekviena užduotis kaip Unfinished picking tasks lange: Task ID (nuoroda į užduoties puslapį), zonos tag'as, būsena; po jais Banga, Eilutės (picked/total), Vnt., Kg, Užsak.</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Sprendimai</summary>
-      <ul>
-        <li>Išėjimas = vienu „sync“ paimtos užduotys; progresas, zonos ir trukmė rodo tik jas, nesinchronizuotos = „eilėje“</li>
-        <li>Aktyvus zonoje = turi sinchronizuotą tos zonos užduotį (pagal užduotį, ne paskyros zonas); kelių zonų pickeris skaičiuojamas kiekvienoje</li>
-        <li>Atliktos užduotys nerodomos, atlikimų skaičių nėra (darbų organizavimo tema)</li>
-        <li>Rankinis pickeris baigęs išnyksta</li>
-        <li>Inspektoriams auto tasks visada įjungti ir išjungti negalima (Vytautas 2026-10-21, kol neišsiaiškinta kitaip, R05): jungiklis įjungtas ir neaktyvus; „Išjungti visiems“ jų nepaveikia</li>
-        <li>Naujokui jungiklis neaktyvus</li>
-        <li>Apsauga nuo atsitiktinio įjungimo: pavienis jungiklis veikia iškart, toast su vardu ir „Atšaukti“; patvirtinimas (su vardų sąrašu) tik grupiniam veiksmui. Klaidos pastebimos sidebar'e (ką tik įjungtas = Laukia; nesantis = ilgai Nesinchronizavo, žr. R06)</li>
-        <li>Paleidimas palaipsnis: iš pradžių auto tasks vienam ar keliems surinkėjams, todėl sąrašai ir grupinis patvirtinimas – vėliau</li>
-      </ul>
-    </details>
-    <details class="pd"><summary>Atviri klausimai</summary>
-      <ul>
-        <li>Filtravimas: išspręsta 2026-10-21 (suvestinė nefiltruoja; filtrai tik tab'ų viduje, žr. Struktūra)</li>
-        <li>R03 tiltas į Unfinished picking tasks, R04 rikiavimas, R05 inspektoriaus auto išjungimas, R06 realus laikas; faile <code>dizainas/Klausimai review.md</code></li>
-      </ul>
-    </details>
-    </div>
-  </section>
+<!-- DIRBA DABAR -->
+<section class="sec scr" aria-labelledby="h-dd">
+  <div class="scr-head"><span class="code">DD</span><h2 id="h-dd">„Dirba dabar“ sidebar</h2><span class="eyebrow">„kas vyksta dabar“ · bendras komponentas</span></div>
+  <div class="decision">
+    <span><b>Kur:</b> Picker accounts (suskleidžiamas dešinėje) ir Dashboard (prisegtas, <a href="#f-DB3">DB3</a>). Tik desktop ir laptop. Ne planavimo įrankis: užduotys skiriamos Unfinished picking tasks lange.</span>
+    <span>Prototipas: tas pats komponentas abiejuose variantuose.</span>
+  </div>
+  <div class="list">
+    <details class="item" id="f-DD1"><summary><span class="id">DD1</span><span class="name">Suskleistas vaizdas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Siaura juosta dešinėje su dviem kortelėmis „Auto“ (Įjungta, Renka, Laukia, Nesinchr.) ir „Rank.“ (Renka, Nesinchr., Naujokai). Paspaudus išsiskleidžia; Esc suskleidžia. Kai auto įjungta 0, rodomi nuliai.</p>
+    </div></details>
+    <details class="item" id="f-DD2"><summary><span class="id">DD2</span><span class="name">Suvestinė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>„Auto tasks“ kortelė (tik su įjungtu auto): Įjungta, Renka, Laukia, Nesinchronizavo. Renka + Laukia + Nesinchronizavo = Įjungta; Renka apima ir rankinę užduotį po cut-off.</li><li>„Rankinis skyrimas“ (be auto): Renka, Nesinchronizavo, Naujokai. Nerenka nerodomas, nes jį išpūstų nesantys darbe.</li><li>Tik informacija: skaičiai nefiltruoja nei sidebar'o, nei lentelės.</li></ul>
+      <div class="meta"><span class="was">buvusi „Statistikos juosta“</span></div>
+    </div></details>
+    <details class="item" id="f-DD3"><summary><span class="id">DD3</span><span class="name">Auto tasks ⋮ veiksmai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>Kelti efektyvumą (kai įjungtas: „Keisti efektyvumo kėlimą“), <a href="#f-DD4">DD4</a>.</li><li>Išjungti auto tasks visiems: raudonas, su patvirtinimu ir skaičiumi; einamos užduotys nenutraukiamos; inspektorių nepaveikia.</li><li>Kai auto įjungta 0, ⋮ neaktyvus.</li></ul>
+    </div></details>
+    <details class="item" id="f-DD4"><summary><span class="id">DD4</span><span class="name">Efektyvumo kėlimas (boost)</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta bangos pabaiga), kiek surinkėjų paveiks. Įjungus matoma žyma „Efektyvumas +X % iki …“ su ✕. Dabar taikoma tik surinkėjams su įjungtu auto, ne naujokams. Atitinka PM „Assign X % over efficiency“.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K02">K02</a> PM siūlo taikyti visiems dirbantiems; <a href="#k-K01">K01</a> ryšys su kitos bangos procentu ir laikinu koregavimu. Žingsniai ir laikai yra prielaida.</p>
+      <div class="meta"><span class="ctx">Q04</span><span class="was">buvęs A6, D04</span></div>
+    </div></details>
+    <details class="item" id="f-DD5"><summary><span class="id">DD5</span><span class="name">Tab'as „Zonos“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Kiekvienai zonai aktyvių skaičius (Renka + Nesinchronizavo), be auto / rankinio skaidymo. Zona išsiskleidžia į kompaktišką sąrašą (vardas, rolė, būsena su tos zonos eilutėmis), tik informacija. Antraštės chevron išskleidžia visas zonas.</p>
+    </div></details>
+    <details class="item" id="f-DD6"><summary><span class="id">DD6</span><span class="name">Tab'as „Surinkėjai“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Rodomi auto ON ir rankiniai, kol Renka ar Nesinchronizavo; rankinis baigęs išnyksta. Valdymas trimis lygiais: tab'ai → segmentas Visi / Auto / Rankinis → būsenų chip'ai (Naujokai atskirti). Zonos filtro nėra. Tab'ai ir filtrai prilimpa slenkant.</p>
+    </div></details>
+    <details class="item" id="f-DD7"><summary><span class="id">DD7</span><span class="name">Surinkėjo kortelė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <ul><li>Vardas su naujoko žyma, rolė po vardu; dešinėje jungiklis su pastoviu užrašu „Auto“ (visiems).</li><li>Zonų žymos: 2 pagal eilučių skaičių ir „+N“; Laukia atveju žymų nėra.</li><li>Būsena sujungta su progresu: Renka „4/9 eil.“, Nesinchronizavo „N eil.“, Laukia be laiko.</li><li>Du mygtukai: „Surinkimo trukmė“ ir „Užduotys“, atsidaro kaip stalčius (<a href="#f-DD8">DD8</a>, <a href="#f-DD9">DD9</a>).</li></ul>
+    </div></details>
+    <details class="item" id="f-DD8"><summary><span class="id">DD8</span><span class="name">Surinkimo trukmės stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos, maks. vienam išėjimui, planuojamas išėjimas, efektyvumo kėlimo eilutė. Vėlavimas nepabrėžiamas. Laukia ir Nesinchronizavo atveju „–“.</p>
+    </div></details>
+    <details class="item" id="f-DD9"><summary><span class="id">DD9</span><span class="name">Užduočių stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Sąrašas be antraščių: dabartinės, po to eilėje. Kiekviena kaip Unfinished picking tasks lange: Task ID (nuoroda), zonos žyma, būsena; Banga, Eilutės, Vnt., Kg, Užsak. Atliktos nerodomos.</p>
+    </div></details>
+    <details class="item" id="f-DD10"><summary><span class="id">DD10</span><span class="name">Apsauga nuo atsitiktinio įjungimo</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Pavienis jungiklis veikia iškart, rodomas toast su vardu ir „Atšaukti“. Patvirtinimas su vardų sąrašu tik grupiniam veiksmui. Klaidas padeda pastebėti sidebar'as: ką tik įjungtas = Laukia, nesantis = ilgai Nesinchronizavo.</p>
+      <div class="meta"><span class="chk">Patikrink</span></div>
+    </div></details>
+    <details class="item" id="f-DD11"><summary><span class="id">DD11</span><span class="name">Pakeitimų žymos</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Parodyti, kad surinkėjui įjungtos zonų kombinacijos ir kad jo efektyvumas pakoreguotas (2026-10-22). Vieta ir forma neapibrėžta, <a href="#k-K04">K04</a>.</p>
+    </div></details>
+  </div>
+</section>
 
-  <section class="sec" aria-labelledby="h-func">
-    <div class="sec-head">
-      <h2 id="h-func">Funkcionalumai</h2>
-    </div>
-    <p class="note">Paspausk funkcionalumą, kad matytum aprašą. Pilki ID (S, Q) yra iš Algoritmo logikos puslapio Confluence; užvedus pelę matosi, apie ką jie.</p>
-    <div id="groups" class="sec"></div>
-  </section>
+<!-- DASHBOARD -->
+<section class="sec scr" aria-labelledby="h-db">
+  <div class="scr-head"><span class="code">DB</span><h2 id="h-db">Dashboard</h2><span class="eyebrow">bangų eiga + dirbantys</span></div>
+  <div class="decision">
+    <span><b>Sprendimas (2026-10-22):</b> bangos kairėje, „Dirba dabar“ visada matomas dešinėje. Šis variantas dar bus tobulinamas.</span>
+    <span>Prototipas: <a href="https://claude.ai/artifact/U6JvYPom14xE6unYd6fjZ6#dashboard-b" target="_blank" rel="noopener">Dashboard · B prisegtas</a></span>
+    <span class="rejected">Atmesta: „Dirba dabar“ kaip suskleidžiamas sidebar'as (variantas A), žr. Archyvą.</span>
+  </div>
+  <div class="list">
+    <details class="item" id="f-DB1"><summary><span class="id">DB1</span><span class="name">Dienos antraštė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Esamas Dashboard be pakeitimų: SC, dienos suvestinė (užsakymai / talpa, eilutės, vnt., kg) ir dienos pasirinkimas Today / Tomorrow.</p>
+    </div></details>
+    <details class="item" id="f-DB2"><summary><span class="id">DB2</span><span class="name">Bangų kortelės</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Esamas Dashboard be pakeitimų: bangos laikas ir rodikliai, būsenų juosta (Submitted, New addition, Being picked, Picking done, Ready for delivery, Open capacity), Not compared / Compared incorrectly, pranešimai (užsakymai be užduočių, neatspausdinti lipdukai), Home delivery / Drive in, „Hide finished waves“.</p>
+    </div></details>
+    <details class="item" id="f-DB3"><summary><span class="id">DB3</span><span class="name">Prisegtas „Dirba dabar“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Sidebar'as (<a href="#h-dd">DD</a>) prisegtas dešinėje (440 px), kai bangų stulpeliui lieka bent 600 px. Siauresniame ekrane veikia kaip Picker accounts lange: suskleistas ir išskleidžiamas.</p>
+    </div></details>
+    <details class="item" id="f-DB4"><summary><span class="id">DB4</span><span class="name">Stebėsena: zonų apkrova, efektyvumas</span><span class="status st-later">Vėliau</span></summary><div class="body">
+      <p class="desc">Aktyvūs surinkėjai kiekvienoje zonoje, apkrova, efektyvumas, numatoma pabaiga (PM: current load, efficiency, availability).</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K17">K17</a> kokiomis kryptimis tobulinti Dashboard B.</p>
+      <div class="meta"><span class="ctx">S22</span><span class="was">buvę B1, B2</span></div>
+    </div></details>
+  </div>
+</section>
 
-  <section class="sec extra" aria-labelledby="h-extra">
-    <div class="sec-head">
-      <h2 id="h-extra">Papildymas: mano idėja</h2>
-    </div>
-    <p class="note">Papildomas funkcionalumas, kurį siūlau kaip papildymą. Ne PM prioritetas, greičiausiai būtų paleistas vėliau. Atskaitos taškas yra SC vadovo Excel paruoštukas.</p>
-    <div id="extra" class="sec"></div>
-  </section>
+<!-- SC NUSTATYMAI -->
+<section class="sec scr" aria-labelledby="h-sc">
+  <div class="scr-head"><span class="code">SC</span><h2 id="h-sc">Surinkimo centro nustatymai</h2><span class="eyebrow">keičiami retai</span></div>
+  <div class="decision">
+    <span><b>Būsena:</b> sąrašas sudarytas 2026-10-23 susitikime, prototipo dar nėra. Logika: Algoritmo logikos 5 skyrius.</span>
+    <span>Užduotis iš susitikimo: pasiūlyti, kaip valdyti momentinį surinkėjų efektyvumą (<a href="#k-K01">K01</a>).</span>
+  </div>
+  <div class="list">
+    <details class="item" id="f-SC1"><summary><span class="id">SC1</span><span class="name">Bangos rinkimo pradžia ir pabaiga</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Kiekvienai bangai laukai, nuo kada iki kada skiriamos jos užduotys. Šalia rodomas bangos cut-off (neredaguojamas); bangos pabaiga yra po cut-off. Reikia suvesti ir šiandienos, ir rytojaus bangų laikus: nuo kada galima rinkti kitos dienos bangas.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K13">K13</a>.</p>
+      <div class="meta"><span class="ctx">S01</span><span class="ctx">S17</span><span class="ctx">Q03</span><span class="was">buvęs C1</span></div>
+    </div></details>
+    <details class="item" id="f-SC2"><summary><span class="id">SC2</span><span class="name">Cut-off</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Neįvedamas: imamas iš senos admin sistemos. UI rodo laiką ir taisyklę „po cut-off užduotys skiriamos rankiniu būdu“ (<a href="#f-T6">T6</a>).</p>
+      <div class="meta"><span class="ctx">S12</span><span class="ctx">Q29</span><span class="was">buvęs C3</span></div>
+    </div></details>
+    <details class="item" id="f-SC3"><summary><span class="id">SC3</span><span class="name">Workshop'ų rinkimo laikas</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <ul><li>Pradžia ir pabaiga kiekvienai bangai, tik einamajai dienai (rytojaus workshop'ai nerenkami). Rodomos visos picking zonos.</li><li>Išimtys: bandelės LT/LV renkamos 30 min anksčiau už kitas workshop zonas; EE bandeles renka nuo bangos pradžios.</li><li>LT visas workshop zonas surenka vienas surinkėjas.</li><li>Minimali užduočių riba: jos nepasiekus workshop užduotys skiriamos kombinacijoje su kita zona.</li></ul>
+      <div class="meta"><span class="ctx">S18</span><span class="ctx">Q13</span><span class="was">buvęs C5</span></div>
+    </div></details>
+    <details class="item" id="f-SC4"><summary><span class="id">SC4</span><span class="name">Bangų prioritetai</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Einamoji banga renkama 100 % surinkėjo efektyvumo. Kitai bangai nustatomas mažesnis procentas (pvz., 50 %), kad surinkėjas trumpiau būtų salėje ir greičiau grįžtų, jei atsiras einamosios bangos užsakymų.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K01">K01</a> kaip tai dera su efektyvumo kėlimu ir mažinimu.</p>
+      <div class="meta"><span class="ctx">S07</span><span class="ctx">Q01</span><span class="was">buvęs C2</span></div>
+    </div></details>
+    <details class="item" id="f-SC5"><summary><span class="id">SC5</span><span class="name">Zonų prioritetai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Zonų rikiavimas: nuo kurios pradedamas rinkimas. LT pirmiausia bakalėja, vaisiai ir daržovės visada paskutiniai. Kiekvienas SC susideda pats.</p>
+      <div class="meta"><span class="ctx">S05</span><span class="ctx">S25</span><span class="was">buvęs C4</span></div>
+    </div></details>
+    <details class="item" id="f-SC6"><summary><span class="id">SC6</span><span class="name">Zonų išimtys rytojaus bangoms</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Renkant rytojaus bangas tam tikros zonos nerenkamos; žinoma taisyklė: vaisiai ir daržovės renkami tą pačią dieną. Valdymas galėtų būti prie picking zonų nustatymų.</p>
+      <div class="meta"><span class="ctx">S17</span><span class="was">buvęs C4</span></div>
+    </div></details>
+    <details class="item" id="f-SC7"><summary><span class="id">SC7</span><span class="name">Laikas tarp užduočių</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Kiek minučių po grįžimo surinkėjui neskiriamos naujos užduotys. Aktualiausia LV/EE.</p>
+      <div class="meta"><span class="ctx">S06</span><span class="ctx">Q20</span><span class="was">buvęs C6</span></div>
+    </div></details>
+    <details class="item" id="f-SC8"><summary><span class="id">SC8</span><span class="name">Regionų skaičius vienam surinkėjui</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Iš kiek regionų vienu metu skiriamos užduotys vienam surinkėjui (skaičius; „Assign only 1 region at once“).</p>
+    </div></details>
+    <details class="item" id="f-SC9"><summary><span class="id">SC9</span><span class="name">Max pickers per zone</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Kiek surinkėjų vienu metu gali dirbti vienoje zonoje. Aktualu dėl skirtingo SC dydžio; poreikio operacijos dar nepatvirtino (<a href="#k-K14">K14</a>).</p>
+    </div></details>
+    <details class="item" id="f-SC10"><summary><span class="id">SC10</span><span class="name">Tolygus skirstymas tarp zonų</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Jei surinkėjas ką tik rinko bakalėją, kitą kartą ji jam skiriama rečiau. LV/EE taip daro jau dabar; operacijose logika neišspręsta (<a href="#k-K16">K16</a>).</p>
+    </div></details>
+    <details class="item" id="f-SC11"><summary><span class="id">SC11</span><span class="name">Zonų kombinacijos ir minimali riba</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">SC sukuria leistinas zonų grupes (pvz., Frozen + Milk taip, Frozen + Grocery ne). Minimalus užduočių skaičius zonoje: jo nepasiekus užduotys kombinuojamos su kita zona (pvz., bakalėjoje 20, riba 50). Surinkėjui priskiriama dalis kombinacijų: <a href="#f-PA10">PA10</a>.</p>
+      <div class="meta"><span class="ctx">S09</span><span class="ctx">Q15</span><span class="was">buvęs C4</span></div>
+    </div></details>
+    <details class="item" id="f-SC12"><summary><span class="id">SC12</span><span class="name">Frozen zonos išimtis</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Frozen gali turėti kitokią priskyrimo logiką ir rinkimo laikus. Sprendžia operacijos (<a href="#k-K15">K15</a>).</p>
+    </div></details>
+  </div>
+</section>
 
+<!-- BENDROS TAISYKLĖS -->
+<section class="sec scr" aria-labelledby="h-t">
+  <div class="scr-head"><span class="code">T</span><h2 id="h-t">Bendros taisyklės</h2><span class="eyebrow">galioja visuose languose</span></div>
+  <div class="list">
+    <details class="item" id="f-T1"><summary><span class="id">T1</span><span class="name">Valdymas rankinis, Active nebelieka</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Vadybininkas pats įjungia ir išjungia surinkėjus pagal faktą; planuotos pabaigos pagal grafiką nėra. Esamo Active lauko paskirtis pakeista į auto tasks jungiklį, ir jį naudojantiems SC (2026-10-20).</p>
+      <div class="meta"><span class="ctx">Q05</span><span class="ctx">Q21</span></div>
+    </div></details>
+    <details class="item" id="f-T2"><summary><span class="id">T2</span><span class="name">Surinkėjo būsenos</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <div class="mx"><table class="log"><thead><tr><th>Jungiklis</th><th>Būsena</th><th>Reikšmė</th></tr></thead><tbody>
+        <tr><td>Įjungtas</td><td>Laukia užduoties</td><td>Užduočių dar nepriskirta. Po cut-off tai signalas skirti rankinę užduotį.</td></tr>
+        <tr><td>Įjungtas</td><td>Nesinchronizavo</td><td>Užduotis priskirta, bet surinkėjas dar nepaspaudė sinchronizuoti Picker app.</td></tr>
+        <tr><td>Bet koks</td><td>Renka</td><td>Sinchronizavo užduotis (auto ar rankinę).</td></tr>
+        <tr><td>Išjungtas</td><td>Nerenka</td><td>Auto užduočių negauna ir nerenka.</td></tr>
+      </tbody></table></div>
+      <div class="meta"><span class="ctx">S06</span><span class="ctx">S23</span><span class="was">buvę A7, D06</span></div>
+    </div></details>
+    <details class="item" id="f-T3"><summary><span class="id">T3</span><span class="name">Naujokas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Kol naujoko žyma uždėta, auto tasks įjungti negalima; užduotys skiriamos rankiniu būdu. Efektyvumo kėlimas naujokams netaikomas.</p>
+      <div class="meta"><span class="ctx">S13</span><span class="ctx">Q28</span></div>
+    </div></details>
+    <details class="item" id="f-T4"><summary><span class="id">T4</span><span class="name">Inspektorius</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Inspektoriams auto tasks visada įjungti ir išjungti negalima: jungiklis įjungtas ir neaktyvus, „Išjungti visiems“ jų nepaveikia. Galioja, kol neišsiaiškinta kitaip (<a href="#k-K10">K10</a>).</p>
+    </div></details>
+    <details class="item" id="f-T5"><summary><span class="id">T5</span><span class="name">Išjungimas nenutraukia užduoties</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Išjungus auto tasks einama užduotis baigiama, naujų auto užduočių nebeateina.</p>
+      <div class="meta"><span class="ctx">Q38</span></div>
+    </div></details>
+    <details class="item" id="f-T6"><summary><span class="id">T6</span><span class="name">Cut-off</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Po cut-off auto generavimas pristabdomas iki kitos bangos, jungiklis lieka įjungtas; skiriama rankiniu būdu. Pirmoje fazėje po cut-off auto nieko negeneruoja (workshop'ai vėliau). Atskiros cut-off būsenos nėra.</p>
+      <div class="meta"><span class="ctx">S12</span><span class="ctx">Q29</span></div>
+    </div></details>
+    <details class="item" id="f-T7"><summary><span class="id">T7</span><span class="name">Komplektavimas (gathering)</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Atskiros gathering užduoties nėra: su šalimis sutarta, kad surinkimo efektyvumas dengia ir komplektavimą. Vesdamas skaičius SC į tai atsižvelgia. LT paskutinė prekė skenuojama aikštelėje, LV/EE dar reikia laiko grįžti ir sudėti maišus.</p>
+      <div class="meta"><span class="ctx">S19</span><span class="ctx">Q12</span></div>
+    </div></details>
+  </div>
+  <div class="tbl"><table class="log"><thead><tr><th>Šalių skirtumai</th><th>LT</th><th>LV</th><th>EE</th></tr></thead><tbody>
+    <tr><td>Zonos paskyroje</td><td>Aktualiausia</td><td>Eina link to</td><td>Vargu ar turės</td></tr>
+    <tr><td>Skyrimas iš zonų</td><td>Viena zona</td><td>Viena zona</td><td>Kombinacijos</td></tr>
+    <tr><td>Po rinkimo</td><td>Iškart laisvas</td><td>Reikia laiko sudėti maišus</td><td>Kaip LV</td></tr>
+    <tr><td>Bandelės</td><td>30 min anksčiau</td><td>30 min anksčiau</td><td>Nuo bangos pradžios</td></tr>
+  </tbody></table></div>
+</section>
 
-  <details class="llm">
-    <summary>Kaip skaityti (instrukcija LLM)</summary>
-    <ul>
-      <li>Tai dizaino funkcionalumų darbų sąrašas. Variklio logika čia nekartojama, tik nurodomi ID iš Confluence puslapio „Algoritmo logika“ (S scenarijai, Q klausimai). Sprendimų šaltiniai, datos ir dizaino klausimai D01… yra Confluence puslapyje „Dizaino sprendimai“.</li>
-      <li>Terminai: „efektyvumas“ ir „maksimalus efektyvumas“. Atskiro „max quantity“ nustatymo nėra.</li>
-      <li>Žyma „Patikrink“ reiškia Claude išvadą, ne šaltinio teiginį. Prototipuose jos nepateikti kaip galutinės.</li>
-      <li>Kurdamas prototipą neišgalvok funkcionalumų, kurių sąraše nėra; trūkstamus pažymėk kaip prielaidą.</li>
-    </ul>
-  </details>
+<!-- KLAUSIMAI -->
+<section class="sec" aria-labelledby="h-k">
+  <div class="sec-head"><h2 id="h-k">Atviri klausimai</h2><span class="eyebrow">vienas sąrašas</span></div>
+  <p class="note">Atsakius klausimas perkeliamas į funkcionalumą, o čia išbraukiamas ir įrašomas pakeitimų žurnale.</p>
+  <div class="tbl"><table class="log"><thead><tr><th>ID</th><th>Klausimas</th><th>Kur</th><th>Kas atsako</th></tr></thead><tbody>
+    <tr id="k-K01"><td>K01</td><td>Kaip valdyti momentinį efektyvumą vienoje vietoje: efektyvumo kėlimas, laikinas surinkėjo koregavimas ir kitos bangos procentas; kėlimas ir mažinimas einamajai ir kitai bangai.</td><td>DD4, PA11, SC4</td><td>Vytautas siūlo, PM tvirtina</td></tr>
+    <tr id="k-K02"><td>K02</td><td>Ar efektyvumo kėlimas taikomas tik auto surinkėjams, ar visiems dirbantiems (PM 10-22)? Kaip pranešti apie pakeitimą?</td><td>DD4</td><td>PM</td></tr>
+    <tr id="k-K03"><td>K03</td><td>Kas daroma, kai priskirtos kombinacijos vienai zonai nesuvestas efektyvumas?</td><td>PA10</td><td>PM, devai</td></tr>
+    <tr id="k-K04"><td>K04</td><td>Kur ir kaip rodyti, kad surinkėjui įjungtos kombinacijos ir pakoreguotas efektyvumas?</td><td>PA, DD11</td><td>Vytautas</td></tr>
+    <tr id="k-K05"><td>K05</td><td>Ar efektyvumas privalomas kiekvienai zonai? Ar liks KG/val.?</td><td>PA8</td><td>PM</td></tr>
+    <tr id="k-K06"><td>K06</td><td>Kaip dažnai keičiamas maksimalus efektyvumas ir ar jame lieka unique orders?</td><td>PA9</td><td>PM, SC</td></tr>
+    <tr id="k-K07"><td>K07</td><td>Ar rodyti užduoties šaltinį (Auto / Rankinė)? Po cut-off ir ką tik išjungus jungiklis su būsena nepakanka.</td><td>PA1, DD7</td><td>Vytautas</td></tr>
+    <tr id="k-K08"><td>K08</td><td>Kaip iš sidebar'o pereiti į Unfinished picking tasks skirti užduoties?</td><td>DD</td><td>Vytautas</td></tr>
+    <tr id="k-K09"><td>K09</td><td>Kaip rikiuoti sidebar'o zonas ir surinkėjus?</td><td>DD5, DD6</td><td>Vytautas</td></tr>
+    <tr id="k-K10"><td>K10</td><td>Ar inspektoriams galima išjungti auto tasks?</td><td>T4</td><td>PM</td></tr>
+    <tr id="k-K11"><td>K11</td><td>Kaip greitai sidebar'e atsinaujina būsenos?</td><td>DD</td><td>Devai</td></tr>
+    <tr id="k-K12"><td>K12</td><td>Kaip veikia Unfinished picking tasks, kai surinkėjas grąžinamas į naujokus?</td><td>PA5</td><td>PM</td></tr>
+    <tr id="k-K13"><td>K13</td><td>Ar kiekvienai bangai atskiras rytojaus rinkimo laikas, ar vienas bendras? Ar sujungti rytojaus užduočių generavimo ir priskyrimo laiką?</td><td>SC1</td><td>Justinė</td></tr>
+    <tr id="k-K14"><td>K14</td><td>Ar reikia riboti surinkėjų skaičių zonoje?</td><td>SC9</td><td>Operacijos</td></tr>
+    <tr id="k-K15"><td>K15</td><td>Kokia Frozen zonos priskyrimo logika?</td><td>SC12</td><td>Operacijos</td></tr>
+    <tr id="k-K16"><td>K16</td><td>Ar skirstyti užduotis tolygiai tarp zonų?</td><td>SC10</td><td>Operacijos</td></tr>
+    <tr id="k-K17"><td>K17</td><td>Kuriomis kryptimis tobulinti Dashboard B?</td><td>DB</td><td>Vytautas</td></tr>
+    <tr id="k-K18"><td>K18</td><td>R02 turinys liko faile review.md ir neperkeltas.</td><td>–</td><td>Vytautas</td></tr>
+  </tbody></table></div>
+</section>
+
+<!-- IDĖJOS -->
+<section class="sec extra" aria-labelledby="h-p">
+  <div class="sec-head"><h2 id="h-p">Ateities idėjos: darbų organizavimas</h2></div>
+  <p class="note">Mano pasiūlymai, ne PM prioritetas. Atskaitos taškas: SC vadovo Excel paruoštukas. Dabar neaktualu dėl palaipsnio paleidimo.</p>
+  <div class="list">
+    <details class="item" id="f-P1"><summary><span class="id">P1</span><span class="name">Grupinis įjungimas pagal valandą</span><span class="status st-idea">Idėja</span></summary><div class="body"><p class="desc">Kaip Excel'yje „visi nuo 7“: ryte vienu metu įjungiama 10–15 žmonių.</p><div class="meta"><span class="chk">Patikrink</span><span class="ctx">Q21</span></div></div></details>
+    <details class="item" id="f-P2"><summary><span class="id">P2</span><span class="name">Paruoštukas rytojui</span><span class="status st-idea">Idėja</span></summary><div class="body"><p class="desc">Stulpeliai pagal pradžios valandą, langelyje vardas ir pabaigos valanda. Kuo mažiau techninio darbo, nes planuojama integracija su grafikų sistemomis.</p></div></details>
+    <details class="item" id="f-P3"><summary><span class="id">P3</span><span class="name">Planas ir faktas</span><span class="status st-idea">Idėja</span></summary><div class="body"><p class="desc">Ryte planas parodo, ką įjungti; neatėjusieji lieka išjungti, nukrypimai matomi vienoje vietoje.</p><div class="meta"><span class="chk">Patikrink</span></div></div></details>
+    <details class="item" id="f-P5"><summary><span class="id">P5</span><span class="name">Įjungimo sąrašai</span><span class="status st-idea">Idėja</span></summary><div class="body"><p class="desc">Vakare SM pažymi žmones ir išsaugo sąrašą (pvz., „6:00“); atėjus valandai peržiūri ir įjungia grupei. Peržiūra = patvirtinimas. Galima tik front end'u (localStorage); ribos: vienas kompiuteris ir naršyklė, dalinės klaidos.</p></div></details>
+  </div>
+</section>
+
+<details class="llm">
+  <summary>Kaip skaityti (instrukcija LLM)</summary>
+  <ul>
+    <li>Šis HTML dokumentas yra pagrindinis dizaino sprendimų šaltinis (nuo 2026-10-23). Confluence „Dizaino sprendimai“ puslapis nebeatnaujinamas.</li>
+    <li>Struktūra pagal langus: PA, DD, DB, SC, bendros taisyklės T, klausimai K, idėjos P. Kiekvienas funkcionalumas turi būseną; atgyvenę sprendimai keliami į Archyvą su data ir priežastimi.</li>
+    <li>Variklio logika čia nekartojama, tik nurodomi ID iš „Algoritmo logikos“ (S scenarijai, Q klausimai). Seni ID (A, B, C, D, R) pažymėti „buvęs …“, atitikmenys Archyve.</li>
+    <li>Žyma „Patikrink“ reiškia Claude išvadą, ne šaltinio teiginį. Kurdamas prototipą neišgalvok funkcionalumų, kurių čia nėra; trūkstamus pažymėk kaip prielaidą.</li>
+  </ul>
+</details>
+
   </div>
   <div id="t-arch" class="tabp sec proto arch" hidden>
     <section class="sec">
       <h2>Idėjų laiko juosta</h2>
       <p class="note">Atgyvenę sprendimai. Kai sprendimas pakeičiamas, senas blokas perkeliamas čia su data, priežastimi ir nuoroda į naują.</p>
       <div class="tl">
+        <details class="ti"><summary><span class="eyebrow">2026-10-23</span> Dokumentas pagal artefaktus: „Prototipas“ ir „Sidebar (eksperimentas)“ skyriai</summary>
+          <div class="dec tib">
+            <p class="note">Pakeista 2026-10-23: dokumentas sudėliotas pagal langus (PA, DD, DB, SC), funkcionalumų sąrašai A, B, C sujungti į langų skyrius. Žemiau abu seni skyriai be pakeitimų.</p>
+            <section class="sec proto" aria-labelledby="h-proto">
+                <div class="sec-head">
+                  <h2 id="h-proto-old">Prototipas: auto tasks valdymas</h2>
+                  <span class="eyebrow">2026-10-19</span>
+                </div>
+                <p>Klikinamas juodraštis su statiniais duomenimis: <a href="https://claude.ai/artifact/6HTV7cZedqtTfQYMfG6m9E" target="_blank" rel="noopener">Auto tasks prototipas</a>.</p>
+                <div class="pds">
+                <details class="pd"><summary>Lentelės stulpeliai</summary>
+                  <ul>
+                    <li>Checkbox</li>
+                    <li>Name</li>
+                    <li>Last name</li>
+                    <li>Time card</li>
+                    <li>Shift name</li>
+                    <li>Role (su violetine naujoko žyma greta rolės)</li>
+                    <li>Auto tasks (toggle; buvęs Active, keičiama paskirtis)<ul><li>Naujokui neaktyvus</li><li>Kai keliamas efektyvumas, prie įjungtų „+X %“</li></ul></li>
+                    <li>Būsena</li>
+                    <li>⋮ Veiksmai: Rodyti, Redaguoti</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Filtrai</summary>
+                  <ul>
+                    <li>Visi filtrai be chevron'ų, tik su pavadinimu (be „Būsena: visos“); paspaudus atsiveria pasirinkimai</li>
+                    <li>Vienodi aukščiai ir paddingai; aktyvus filtras turi violetinį rėmelį</li>
+                    <li>Name, Last name, Time card, Shift name, Role</li>
+                    <li>Būsena<ul><li>Renka</li><li>Laukia užduoties</li><li>Nesinchronizavo</li><li>Nerenka</li></ul></li>
+                    <li>Auto tasks: dropdown Įjungta / Išjungta; nepasirinkus rodomi visi</li>
+                    <li>Naujokai: toggle filtras (be dropdown, su varnele: pilka išjungtas, paryškinta įjungtas)</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Statistikos juosta</summary>
+                  <ul>
+                    <li>Viena juosta per visą plotį, dvi skiltys, kurių grupės nesidengia</li>
+                    <li>„Auto tasks“ (tik pickeriai su įjungtu auto): Įjungta (tik skaičius), Renka, Laukia užduoties, Nesinchronizavo, boost chip, ⋮<ul><li>Renka + Laukia + Nesinchronizavo = Įjungta</li><li>„Renka“ apima ir su įjungtu auto renkančius rankinę užduotį (pvz. po cut-off)</li><li>Kai įjungta 0: rodoma „Įjungta 0“, būsenos paslėptos, ⋮ neaktyvus</li></ul></li>
+                    <li>„Rankinis skyrimas“ (tik pickeriai be auto): Renka, Nesinchronizavo, Naujokai<ul><li>„Nerenka“ nerodomas: be aktyvumo jį išpūstų nesantys darbe</li><li>Naujokai visada šioje grupėje (auto jiems neįjungiamas)</li></ul></li>
+                    <li>Paspaudus skaičių įsijungia būsenos filtras ir Auto tasks Įjungta / Išjungta pagal skiltį; „Naujokai“ išvalo filtrus ir įjungia Naujokai filtrą</li>
+                    <li>⋮ meniu<ul><li>Kelti efektyvumą (kai įjungtas: „Keisti efektyvumo kėlimą“)</li><li>Išjungti auto tasks visiems (raudonas, su patvirtinimu ir skaičiumi)</li></ul></li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Efektyvumo kėlimas (boost)</summary>
+                  <ul>
+                    <li>Paprastas rankinis įjungimas; taikomas tik pickeriams su įjungtu auto tasks, naujokams netaikomas</li>
+                    <li>Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta: bangos pabaiga), kiek pickerių paveiks (žingsniai ir laikai – prielaida)</li>
+                    <li>Įjungus matomas visada: „Efektyvumas +X % iki …“ su ✕</li>
+                    <li>Atitinka Confluence „Assign X % over efficiency“; SC lygis, ne zonos; variklio logika devams</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Būsenos</summary>
+                  <div class="mx"><table class="log">
+                    <thead><tr><th>Toggle</th><th>Būsena</th><th>Reikšmė</th></tr></thead>
+                    <tbody>
+                      <tr><td>Įjungtas</td><td>Laukia užduoties</td><td>Užduočių dar nepriskirta. Po cut-off tai signalas skirti rankinę užduotį</td></tr>
+                      <tr><td>Įjungtas</td><td>Nesinchronizavo</td><td>Užduotis priskirta, bet pickeris dar nepaspaudė sinchronizuoti</td></tr>
+                      <tr><td>Bet koks</td><td>Renka</td><td>Sinchronizavo užduotis (auto ar rankinę)</td></tr>
+                      <tr><td>Išjungtas</td><td>Nerenka</td><td>Auto užduočių negauna ir nerenka</td></tr>
+                    </tbody>
+                  </table></div>
+                </details>
+                <details class="pd"><summary>Paskyros peržiūra</summary>
+                  <ul>
+                    <li>Employee information: Time card, Login name, Shift name, Role su naujoko žyma (kaip lentelėje), Shop</li>
+                    <li>Auto tasks: Enabled / Disabled (naujokui: Disabled su paaiškinimu)</li>
+                    <li>Kelios zonos (atskira antraštė): Can work in multiple zones, įrėmintos Allowed zone combinations</li>
+                    <li>Zonos ir efektyvumas: NONE pirma, be prierašo; kiekvienai zonai:<ul><li>Efficiency per hour: SKU/1h, Units/1h, KG/1h</li><li>Maks. priskyrimas vienam kartui: SKU, Units, KG, Unique orders</li></ul></li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Paskyros redagavimas</summary>
+                  <ul>
+                    <li>Personal information</li>
+                    <li>Employee information: Time card, Shift name, Role su Naujokas varnele po ja, Shop (keičiamas, niekada ne disabled)</li>
+                    <li>Auto tasks varnelė; kol uždėta naujoko žyma, neaktyvi</li>
+                    <li>Kelios zonos: Can work in multiple zones; pažymėjus nustatymai įrėminti<ul><li>Allowed zone combinations (multiselect; kombinacijos iš SC nustatymų; kiekviena zona gali būti tik vienoje kombinacijoje)</li></ul></li>
+                    <li>Zonos ir efektyvumas: zonos viename lange, Įjungti visas / Išjungti visas, NONE viršuje be prierašo, pažymėtoms input'ai</li>
+                    <li>Mygtukai: Atšaukti, Išsaugoti ir kitas, Išsaugoti</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Auto tasks valdymo logika</summary>
+                  <ul>
+                    <li>Valdymas rankinis: vadovas pats įjungia ir išjungia</li>
+                    <li>Atskiro aktyvumo nėra: esamo Active lauko paskirtis keičiama į auto tasks jungiklį (ir jį naudojantiems SC)</li>
+                    <li>Auto tasks įjungti negalima naujokui</li>
+                    <li>Įjungimas pavieniui (toggle) ir grupei (multiselect), išjungimas visiems per ⋮</li>
+                    <li>Išjungimas einamos užduoties nenutraukia; naujų auto užduočių nebeateina</li>
+                    <li>Cut-off: auto generavimas pristabdomas iki kitos bangos, toggle lieka įjungtas; 1 fazėje po cut-off auto nieko negeneruoja (workshopai vėlesnėje iteracijoje). Atskiros cut-off būsenos nėra</li>
+                    <li>Su filtru „Auto tasks“ pakeitus jungiklį eilutė papilkėja, rodoma „Atšaukti“, dingsta pakeitus filtrą</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Atviri klausimai</summary>
+                  <ul>
+                    <li>Sąrašas faile <code>prototipas/Prototipo sprendimai 2026-10-19.md</code></li>
+                    <li>R01 faile <code>dizainas/Klausimai review.md</code></li>
+                  </ul>
+                </details>
+                </div>
+              </section>
+            
+              <section class="sec proto" aria-labelledby="h-side">
+                <div class="sec-head">
+                  <h2 id="h-side-old">Sidebar „Dirba dabar“ (eksperimentas)</h2>
+                  <span class="eyebrow">2026-10-21</span>
+                </div>
+                <p>Eksperimentinis prototipas: <a href="https://claude.ai/artifact/9icmSizjYB5arUJHVZdjAW" target="_blank" rel="noopener">Auto tasks sidebar</a>. Pagrindinis prototipas nekeistas.</p>
+                <div class="pds">
+                <details class="pd"><summary>Kontekstai</summary>
+                  <ul>
+                    <li>Lentelė = „kas yra“: visi surinkėjai, paskyrų valdymas, auto įjungimas</li>
+                    <li>Sidebar = „kas vyksta dabar“: dirbantys (auto ir rankiniai), zonų lygis (nuasmenintas) ir surinkėjų lygis (suasmenintas)</li>
+                    <li>Rodomas dashboard'e ir Picker accounts lange; viršutinė suvestinės juosta keliasi į sidebar'ą</li>
+                    <li>Dashboard'o prekių statistika ir sidebar'as papildo vienas kitą</li>
+                    <li>Ne planavimo įrankis: skyrimas vyksta Unfinished picking tasks</li>
+                    <li>Tik desktop / laptop (hover galimas)</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Struktūra</summary>
+                  <ul>
+                    <li>Suskleistas: dvi mažos kortelės („Auto“, „Rank.“) su vertikaliais skaičiais; auto 0 → rodomi nuliai</li>
+                    <li>Išskleistas: suvestinė dviem kortelėmis („Auto tasks“ su ⋮, „Rankinis skyrimas“), tab'ai „Zonos“ ir „Surinkėjai“ per visą plotį kaip pagrindinė navigacija</li>
+                    <li>Vizualus principas: baltos kortelės ant pilko fono (suvestinė ir surinkėjai); antraštė be skiriamosios linijos; visas turinys slenka kartu, tab'ai ir filtrai prilimpa viršuje (sticky)</li>
+                    <li>Suvestinė tik informacinė: skaičiai nefiltruoja (nei sidebar'o sąrašo, nei Picker accounts lentelės); filtravimas tik tab'ų viduje</li>
+                    <li>Trys valdymo lygiai, vizualiai mažėjantys: tab'ai Zonos / Surinkėjai → segmentas Visi / Auto / Rankinis → būsenų filtrai (maži pilki chip'ai po segmentu, visi matomi iškart; Naujokai atskirti brūkšneliu). Zonos filtro nėra (zonos žiūrimos Zonų tab'e)</li>
+                    <li>Zonos: aktyvūs zonoje (Renka + Nesinchronizavo); auto / rankinio skaidymo nėra. Zonos eilutė išsiskleidžia: kompaktiškas sąrašas (vardas, rolė, būsena su tos zonos eilutėmis), tik informacija, paspaudimų nėra; išskleista zona pilkame fone, sąrašas baltoje kortelėje. Antraštės chevron mygtukas išskleidžia arba suskleidžia visas zonas. Visų išskleidžiamų elementų ikona – chevron, ne trikampis</li>
+                    <li>Surinkėjai: auto ON ir rankiniai, kol Renka / Nesinchronizavo</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Surinkėjo kortelė</summary>
+                  <ul>
+                    <li>Teksto hierarchija trimis lygiais: vardas (su naujoko žyma), rolė po vardu, reikšmės</li>
+                    <li>Dešinėje jungiklis su pastoviu užrašu „Auto“ (rodomas visiems, ir rankiniams)</li>
+                    <li>Zonų žymos virš būsenos: pirmos 2 pagal eilučių skaičių, likusios po „+N“; Laukia atveju žymų nėra</li>
+                    <li>Būsena sujungta su progresu per visą plotį: Renka (žalia, „4/9 eil.“), Nesinchronizavo (geltona, „N eil.“), Laukia (mėlyna, be laiko: tarpinė būsena, SM nuo jos nepriklauso)</li>
+                    <li>Du mygtukai po 50 %: „Surinkimo trukmė“ (Laukia ir Nesinchronizavo atveju „–“) ir „Užduotys“, atsidaro kaip stalčius</li>
+                    <li>Surinkimo trukmė: pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos(-ų), maks. vienam išėjimui, planuojamas išėjimas; boost eilutė. Vėlavimas nepabrėžiamas</li>
+                    <li>Užduotys: sąrašas be antraščių (dabartinės, po to eilėje). Kiekviena užduotis kaip Unfinished picking tasks lange: Task ID (nuoroda į užduoties puslapį), zonos tag'as, būsena; po jais Banga, Eilutės (picked/total), Vnt., Kg, Užsak.</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Sprendimai</summary>
+                  <ul>
+                    <li>Išėjimas = vienu „sync“ paimtos užduotys; progresas, zonos ir trukmė rodo tik jas, nesinchronizuotos = „eilėje“</li>
+                    <li>Aktyvus zonoje = turi sinchronizuotą tos zonos užduotį (pagal užduotį, ne paskyros zonas); kelių zonų pickeris skaičiuojamas kiekvienoje</li>
+                    <li>Atliktos užduotys nerodomos, atlikimų skaičių nėra (darbų organizavimo tema)</li>
+                    <li>Rankinis pickeris baigęs išnyksta</li>
+                    <li>Inspektoriams auto tasks visada įjungti ir išjungti negalima (Vytautas 2026-10-21, kol neišsiaiškinta kitaip, R05): jungiklis įjungtas ir neaktyvus; „Išjungti visiems“ jų nepaveikia</li>
+                    <li>Naujokui jungiklis neaktyvus</li>
+                    <li>Apsauga nuo atsitiktinio įjungimo: pavienis jungiklis veikia iškart, toast su vardu ir „Atšaukti“; patvirtinimas (su vardų sąrašu) tik grupiniam veiksmui. Klaidos pastebimos sidebar'e (ką tik įjungtas = Laukia; nesantis = ilgai Nesinchronizavo, žr. R06)</li>
+                    <li>Paleidimas palaipsnis: iš pradžių auto tasks vienam ar keliems surinkėjams, todėl sąrašai ir grupinis patvirtinimas – vėliau</li>
+                  </ul>
+                </details>
+                <details class="pd"><summary>Atviri klausimai</summary>
+                  <ul>
+                    <li>Filtravimas: išspręsta 2026-10-21 (suvestinė nefiltruoja; filtrai tik tab'ų viduje, žr. Struktūra)</li>
+                    <li>R03 tiltas į Unfinished picking tasks, R04 rikiavimas, R05 inspektoriaus auto išjungimas, R06 realus laikas; faile <code>dizainas/Klausimai review.md</code></li>
+                  </ul>
+                </details>
+                </div>
+              </section>
+            
+              
+          </div>
+        </details>
+        <details class="ti"><summary><span class="eyebrow">2026-10-22</span> Picker accounts: suvestinės juosta virš lentelės</summary>
+          <div class="dec tib">
+            <p class="note">Atmesta 2026-10-22: pasirinktas variantas su „Dirba dabar“ sidebar'u, suvestinė perkelta į jį (DD2). Juostos aprašas aukščiau esančiame sename skyriuje „Statistikos juosta“. Variantas lieka prototipuose: <a href="https://claude.ai/artifact/U6JvYPom14xE6unYd6fjZ6#picker-be-sidebar" target="_blank" rel="noopener">Picker accounts · Be sidebar</a>.</p>
+          </div>
+        </details>
+        <details class="ti"><summary><span class="eyebrow">2026-10-22</span> Dashboard A: „Dirba dabar“ suskleidžiamas</summary>
+          <div class="dec tib">
+            <p class="note">Atmesta 2026-10-22: dashboard'e sidebar'as visada išskleistas ir prisegtas (DB3). Variantas lieka prototipuose: <a href="https://claude.ai/artifact/U6JvYPom14xE6unYd6fjZ6#dashboard-a" target="_blank" rel="noopener">Dashboard · A suskleidžiamas</a>.</p>
+          </div>
+        </details>
         <details class="ti"><summary><span class="eyebrow">2026-10-21</span> Sidebar kaip patvirtinimo layeris kiekvienam įjungimui</summary>
           <div class="dec tib">
             <p class="note">Atmesta 2026-10-21: kasdienis veiksmas taptų dviejų žingsnių; atsiranda tarpinė būsena (toggle įjungtas, auto neveikia), pamiršus patvirtinti pickeris lieka be užduočių; vienam žmogui nepatogu. Idėja perkelta į P5 „Įjungimo sąrašai“ (peržiūra = patvirtinimas grupei). Žr. „Sidebar“ → Sprendimai.</p>
@@ -499,8 +816,22 @@ a { color: var(--accent); }
       </div>
     </section>
     <section class="sec">
+      <h2>Senų ID atitikmenys</h2>
+      <p class="note">Nuo 2026-10-23 funkcionalumai numeruojami pagal langą. Seni ID iš ankstesnių versijų ir Confluence.</p>
+      <div class="mx"><table class="log"><tbody>
+      <tr><td>A1 → PA2</td><td>A2 → PA5</td><td>A3, A4 → PA8</td><td>A5 → PA9</td></tr>
+      <tr><td>A6 → DD4</td><td>A7 → T2</td><td>B1 → DD</td><td>B2 → DB4</td></tr>
+      <tr><td>C1 → SC1</td><td>C2 → SC4</td><td>C3 → SC2</td><td>C4 → SC5, SC6, SC11</td></tr>
+      <tr><td>C5 → SC3</td><td>C6 → SC7</td><td>P4 → PA12</td><td>D01 → PA3</td></tr>
+      <tr><td>D02 → P2</td><td>D03 → K12</td><td>D04 → K01, K02</td><td>D05 → K05</td></tr>
+      <tr><td>D06 → T2</td><td>D07, R01 → K07</td><td>R02 → K18</td><td>R03 → K08</td></tr>
+      <tr><td>R04 → K09</td><td>R05 → K10</td><td>R06 → K11</td><td></td></tr>
+      </tbody></table></div>
+    </section>
+    <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-23</td><td>Dokumentas pertvarkytas pagal langus: PA Picker accounts (su sidebar), DD „Dirba dabar“, DB Dashboard (B prisegtas), SC nustatymai (iš 10-23 susitikimo), bendros taisyklės T, vienas klausimų sąrašas K. Įrašyti 10-22 review sprendimai: individualios kombinacijos (PA10), laikinas efektyvumo koregavimas (PA11), boost visiems (K02), pakeitimų žymos (DD11). Seni skyriai ir atmesti variantai perkelti į Archyvą. HTML tapo pagrindiniu šaltiniu.</td></tr>
       <tr><td>2026-10-21</td><td>Sidebar: filtravimo klausimas uždarytas; apsaugos nuo atsitiktinio įjungimo sprendimas ir palaipsnis paleidimas; nauja ateities idėja P5 „Įjungimo sąrašai“; patvirtinimo layeris perkeltas į Archyvą.</td></tr>
       <tr><td>2026-10-21</td><td>Sidebar skaitomumas: kortelės baltos ant pilko fono, vardas 15 px, progreso juosta žemesnė, bendras slinkimas su sticky tab'ais ir filtrais, segmentas per visą plotį.</td></tr>
       <tr><td>2026-10-21</td><td>Sidebar filtrai: būsenų chip'ai grąžinti po segmentu kaip žemiausias valdymo lygis; „Būsena“ dropdown perkeltas į Archyvą.</td></tr>
@@ -542,101 +873,33 @@ function showTab(t){['doc','arch'].forEach(function(k){document.getElementById('
     Q23: "Šablonai ir greitas vedimas", Q28: "Naujokui kitos bangos užduotys", Q29: "Cut-off: nustatymas ar taisyklė",
     Q01: "Kitos bangos procentas", Q31: "Maksimalaus efektyvumo keitimo dažnis", Q32: "Max quantity ir unique orders"
   };
-  var GROUPS = [
-    { k: "A", n: "Picker account", d: "Surinkėjų paskyrų langas. Darbo pradžia.", items: [
-      { id: "A1", n: "Įjungimas ir išjungimas pamainai", st: "idea", d: "Vadybininkas rankiniu būdu įjungia auto tasks surinkėjui, kai jis atėjo, ir išjungia, kai baigia ar išeina. Tas pats jungiklis naudojamas pertraukoms. Vietoje Active junginėjamas auto tasks (keičiama esamo lauko paskirtis). Įjungti galima tik ne naujokui.", o: "", c: ["S14", "Q05", "Q21"] },
-      { id: "A2", n: "Naujoko žyma", st: "idea", d: "Kol naujoko žyma uždėta, auto tasks įjungti negalima, užduotys kuriamos rankiniu būdu. Kasdien SC sprendžia, ar žymą nuimti; nuėmus auto tasks galima įjungti kaip įprastam pickeriui. Žyma gali būti vėl grąžinta, efektyvumas koreguojamas, kol aiškėja pajėgumas.", o: "kaip veikia „unfinished picking tasks“ langas, kai pickeris grąžinamas į naujokus.", c: ["S13", "Q06", "Q28"] },
-      { id: "A3", n: "Aptarnaujamos zonos", st: "idea", d: "Checkbox kiekvienai zonai ir vienas pasirinkimas „visos zonos“. Aktualiausia LT, LV eina link to. NONE zonai efektyvumai nevedami.", o: "", c: ["S15", "Q23"], z: ["Pampers / Toilet Paper\n", "Cosmetics\n", "Cofee, tea, candy\n", "Chemicals\n", "Chips\n", "Conservation\n", "Kiaušiniai\n", "Easter\n", "Stationery Goods\n", "Tortai\n", "Flowers\n", "Morning Morning.Garden\n", "Fruits, vegetables - RYTAS\n", "Christmas\n", "Fruits, vegetables\n", "Not available\n", "OOS zone\n", "Frozen goods\n", "Confectionery Cakes\n", "Bread products - RYTAS\n", "Gifts_Bak\n", "Gifts_Šal\n", "Gifts_Pie\n", "Gifts_Pra\n", "Gifts_Duo\n", "Gifts_Kup\n", "Own product range\n", "Ramp\n", "UP-Šaldytuvas\n", "Maltese\n", "Food bank\n", "Hot line\n", "Non-alcoholic beverages\n", "UAT Milk\n", "Soft drinks\n", "Manufactured goods\n", "Confectionery MXM\n", "Gastronomy\n", "Fresh fish\n", "Fresh meat\n", "Candies\n", "Fresh poultry\n", "Alcoholic beverages\n", "Weighed, smoked meat products\n", "Press\n", "Weighed cheese\n", "Confectionery Mantinga\n", "Chemistry stuff\n", "Mėnesio akcijos\n", "Bread products\n", "Milk, fish, poultry\n", "Groceries\n"] },
-      { id: "A4", n: "Efektyvumas per zoną", st: "idea", d: "SKU, units ir kg per valandą kiekvienai zonai. Suvedama vieną kartą, keičiama tik išimtiniais atvejais.", o: "ar privaloma suvesti kiekvienai aptarnaujamai zonai.", c: ["Q08"] },
-      { id: "A5", n: "Maksimalus efektyvumas", st: "idea", d: "Riba, kiek priskiriama vienam išėjimui į salę. Tai laiko išraiška: santykis su efektyvumu nusako, kiek laiko pickeris bus salėje (100 per valandą ir max 50 reiškia apie pusvalandį).", o: "kaip dažnai keičiamas ir ar čia lieka unique orders.", c: ["Q31", "Q32"] },
-      { id: "A6", n: "Efektyvumo kėlimas, kai trūksta žmonių", st: "idea", d: "Kai pamainoje mažiau žmonių nei planuota (pvz. atėjo 9 iš 10) arba užsakymai didesni, laikinai keliamas efektyvumas tik pickeriams su įjungtu auto tasks. Paprastas rankinis įjungimas per ⋮ prie „Auto tasks įjungta“, matomas kaip chip su ✕. Atitinka Confluence „Assign X % over efficiency“.", o: "% žingsniai ir „galioja iki“ reikšmės (prielaida); variklio logika devams.", c: ["Q04"] },
-      { id: "A7", n: "Surinkėjo būsenos", st: "wip", d: "Laukia užduoties (auto ON, nepriskirta); Nesinchronizavo (priskirta, nesinchronizuota); Renka (sinchronizavo, auto ar rankinę); Nerenka.", o: "", c: ["S06", "S23"] }
-    ] },
-    { k: "B", n: "Dashboard", d: "Juodraštis idėjoms dėl tolesnių darbų.", items: [
-      { id: "B1", n: "Darbuotojų valdymo skiltis", st: "idea", d: "Aktyvių ir neaktyvių surinkėjų sąrašas su greitu įjungimu ir išjungimu dienos eigoje.", o: "kuo skiriasi nuo Picker account įjungimo, ar tai tas pats veiksmas kitoje vietoje.", c: ["S14"] },
-      { id: "B2", n: "Rodikliai", st: "idea", d: "Kiek auto tasks įjungtų, kiek renkančių, kiek sinchronizavo užduotis ir renka, kiek naujokų. Idėjos: current load, numatoma pabaiga, laukimo trukmė, zonų vaizdas (PM: current load, efficiency, availability).", o: "", c: ["S22"] }
-    ] },
-    { k: "P", extra: true, n: "Darbų organizavimas", d: "Ateities funkcionalumas, kuo paprastesnis.", items: [
-      { id: "P1", n: "Grupinis įjungimas", st: "idea", chk: true, d: "Pažymėti kelis atėjusius ir įjungti vienu veiksmu, kaip Excel'yje „visi nuo 7“. Ryte vienu metu įjungiama 10–15 žmonių.", o: "pagal ką grupuoti, kai sistemoje nėra grafiko duomenų.", c: ["Q21"] },
-      { id: "P2", n: "Paruoštukas rytojui", st: "idea", d: "Dabar Excel: stulpeliai pagal pradžios valandą (6, 7, 8, 10, po pietų), langelyje vardas ir pabaigos valanda. Tikslas: suplanuoti iš anksto, po to koreguoti pagal faktą. Turi reikalauti kuo mažiau techninio darbo, nes vėliau planuojama integracija su grafikų sistemomis.", o: "koks minimalus variantas be integracijos.", c: [] },
-      { id: "P3", n: "Planas ir faktas", st: "idea", chk: true, d: "Ryte planas parodo, ką įjungti; neatėjusieji lieka išjungti, o nukrypimai matomi vienoje vietoje.", o: "", c: [] },
-      { id: "P5", n: "Įjungimo sąrašai", st: "idea", d: "Sąrašas „kam įjungti vienu paspaudimu“, be valandų ir be automatinio išjungimo. Vakare SM pažymi žmones lentelėje ir išsaugo kaip sąrašą (pvz. „6:00“, kaip Excel stulpelis); atėjus valandai peržiūri (nuima neatėjusius, prideda) ir įjungia grupei. Peržiūra = patvirtinimas. Galima tik front end'u: saugoma naršyklėje (localStorage), įjungimas per esamą jungiklio endpoint'ą. Dabar neaktualu: paleidimas palaipsnis (Vytautas 2026-10-21).", o: "front-end ribos: sąrašas tik viename kompiuteryje ir naršyklėje (galimas dalijimasis nuoroda su ID); dalinės įjungimo klaidos; ar sąrašą rengia ir naudoja tas pats SM.", c: [] },
-      { id: "P4", n: "Šablonai", st: "idea", d: "Greitas parametrų vedimas daugeliui surinkėjų iš karto.", o: "", c: ["Q23"] }
-    ] },
-    { k: "C", n: "SC nustatymai", d: "Vėliau. Apytikslis sąrašas, keičiami retai.", dim: true, items: [
-      { id: "C1", n: "Bangų pradžios laikai", st: "later", d: "Įskaitant, nuo kelintos valandos šiandien galima skirti rytojaus bangų užduotis.", o: "", c: ["S01", "S17", "Q03"] },
-      { id: "C2", n: "Kitos bangos pajėgumo procentas", st: "later", d: "Kiek pickerio maksimalaus efektyvumo skiriama kitai bangai.", o: "", c: ["S07", "Q01"] },
-      { id: "C3", n: "Cut-off", st: "later", d: "Perimamas iš admin. Gali būti taisyklė, o ne nustatymas.", o: "", c: ["S12", "Q29"] },
-      { id: "C4", n: "Zonų prioritetai, kombinacijos, išimtys", st: "later", d: "Kiekvienas SC susideda pats.", o: "", c: ["S05", "S09", "S17"] },
-      { id: "C5", n: "Workshopų pradžios laikai", st: "later", d: "Cechas ir laikas, atskiras trigeris.", o: "", c: ["S18", "Q13"] },
-      { id: "C6", n: "Laikas tarp užduočių", st: "later", d: "Kiek laiko nuo paskutinio surinkto item'o iki naujos užduoties.", o: "", c: ["S06", "Q20"] }
-    ] }
-  ];
+  CTX.Q12 = "Gathering dengiamas efektyvumu (uždaryta)"; CTX.Q15 = "Zonų kombinacijų prioritetas"; CTX.Q33 = "Nesuvestas efektyvumas"; CTX.Q34 = "Nesuvestas maksimalus efektyvumas"; CTX.Q38 = "Išjungimas ir einama užduotis"; CTX.S25 = "Liko tik daržovės ir vaisiai"; CTX.S19 = "Gathering";
+  document.querySelectorAll(".ctx").forEach(function (s) { var d = CTX[s.textContent] || ""; s.title = d; s.tabIndex = 0; s.setAttribute("aria-label", s.textContent + (d ? ": " + d : "")); });
+  var Z = ["Pampers / Toilet Paper\n", "Cosmetics\n", "Cofee, tea, candy\n", "Chemicals\n", "Chips\n", "Conservation\n", "Kiaušiniai\n", "Easter\n", "Stationery Goods\n", "Tortai\n", "Flowers\n", "Morning Morning.Garden\n", "Fruits, vegetables - RYTAS\n", "Christmas\n", "Fruits, vegetables\n", "Not available\n", "OOS zone\n", "Frozen goods\n", "Confectionery Cakes\n", "Bread products - RYTAS\n", "Gifts_Bak\n", "Gifts_Šal\n", "Gifts_Pie\n", "Gifts_Pra\n", "Gifts_Duo\n", "Gifts_Kup\n", "Own product range\n", "Ramp\n", "UP-Šaldytuvas\n", "Maltese\n", "Food bank\n", "Hot line\n", "Non-alcoholic beverages\n", "UAT Milk\n", "Soft drinks\n", "Manufactured goods\n", "Confectionery MXM\n", "Gastronomy\n", "Fresh fish\n", "Fresh meat\n", "Candies\n", "Fresh poultry\n", "Alcoholic beverages\n", "Weighed, smoked meat products\n", "Press\n", "Weighed cheese\n", "Confectionery Mantinga\n", "Chemistry stuff\n", "Mėnesio akcijos\n", "Bread products\n", "Milk, fish, poultry\n", "Groceries\n"];
+  var zl = document.getElementById("zlist");
+  Z.forEach(function (z) { var li = document.createElement("li"); li.textContent = z.trim(); zl.appendChild(li); });
+
   var STAGES = [
     { n: "1", t: "Planas", d: "Sudeda, kas dirbs rytoj, pagal valandas.", w: [["Excel", 1], ["P2", 0]], p: "Dubliuojamas darbas su grafikų sistemomis." },
-    { n: "2", t: "Pamainos pradžia", d: "Įjungia atėjusius, neatėjusių neįjungia.", w: [["A1", 0], ["P1", 0]], p: "Ryte daug žmonių vienu metu." },
-    { n: "3", t: "Bangos eiga", d: "Tik įjungia ir išjungia: pertraukos, pamainų pabaigos.", w: [["A1", 0], ["B1", 0]], p: "Pajėgumai bangos metu nekeičiami." },
-    { n: "4", t: "Nuokrypiai", d: "Neatėjo žmogus, nepanaudoti slotai, kažkas nutiko su pickeriu.", w: [["A6", 0], ["A4", 0], ["A5", 0]], p: "Efektyvumo kėlimas per ⋮, matomas kaip chip." },
-    { n: "5", t: "Cut-off", d: "Auto skyrimas sustoja, toliau rankinis skyrimas ir junginėjimas.", w: [["Rankinis skyrimas", 1]], p: "„Laukia užduoties“ yra signalas skirti rankinę užduotį." },
-    { n: "6", t: "Pamainos pabaiga", d: "Išjungia išeinančius.", w: [["A1", 0], ["B1", 0]], p: "Pamiršus išjungti, užduotys skiriamos išėjusiam." }
+    { n: "2", t: "Pamainos pradžia", d: "Įjungia atėjusius, neatėjusių neįjungia.", w: [["PA2", 0], ["PA3", 0]], p: "Ryte daug žmonių vienu metu." },
+    { n: "3", t: "Bangos eiga", d: "Tik įjungia ir išjungia: pertraukos, pamainų pabaigos.", w: [["PA2", 0], ["DD7", 0]], p: "Pajėgumai bangos metu nekeičiami." },
+    { n: "4", t: "Nuokrypiai", d: "Neatėjo žmogus, nepanaudoti slotai, kažkas nutiko su surinkėju.", w: [["DD4", 0], ["PA11", 0]], p: "Efektyvumo valdymas dar derinamas (K01)." },
+    { n: "5", t: "Cut-off", d: "Auto skyrimas sustoja, toliau rankinis skyrimas ir junginėjimas.", w: [["T6", 0], ["Rankinis skyrimas", 1]], p: "„Laukia užduoties“ yra signalas skirti rankinę užduotį." },
+    { n: "6", t: "Pamainos pabaiga", d: "Išjungia išeinančius.", w: [["PA2", 0], ["DD7", 0]], p: "Pamiršus išjungti, užduotys skiriamos išėjusiam." }
   ];
-
-  function el(t, c, h) { var e = document.createElement(t); if (c) e.className = c; if (h != null) e.innerHTML = h; return e; }
-  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
-
-
-  function render() {
-    var main = document.getElementById("groups"), extra = document.getElementById("extra");
-    main.innerHTML = ""; extra.innerHTML = "";
-    GROUPS.forEach(function (g) {
-      var root = g.extra ? extra : main;
-      var box = el("div", "group" + (g.dim ? " dim" : ""));
-      box.appendChild(el("div", "group-head", '<span class="gl">' + g.k + '</span><span class="gn">' + esc(g.n) + '</span><span class="gd">' + esc(g.d) + '</span>'));
-      var list = el("div", "list");
-      g.items.forEach(function (it) {
-        var row = el("details", "item");
-        row.id = "f-" + it.id;
-        row.appendChild(el("summary", null, '<span class="id">' + it.id + '</span><span class="name">' + esc(it.n) + '</span>'));
-        var body = el("div", "body");
-        body.appendChild(el("p", "desc", esc(it.d)));
-        if (it.z) {
-          var zd = el("details", "zones");
-          zd.appendChild(el("summary", null, "Picking zonų sąrašas (" + it.z.length + ")"));
-          zd.appendChild(el("ol", null, it.z.map(function (z) { return "<li>" + esc(z) + "</li>"; }).join("")));
-          zd.appendChild(el("p", "zsrc", "Šaltinis: tavo ekrano nuotraukos, 2026-10-19. Rašyba kaip nuotraukose."));
-          body.appendChild(zd);
-        }
-        if (it.o) body.appendChild(el("p", "open", "<b>Atvira:</b> " + esc(it.o)));
-        var meta = el("div", "meta");
-        if (it.chk) meta.appendChild(el("span", "chk", "Patikrink"));
-        it.c.forEach(function (c) {
-          var s = el("span", "ctx", c); s.title = CTX[c] || ""; s.tabIndex = 0; s.setAttribute("aria-label", c + ": " + (CTX[c] || ""));
-          meta.appendChild(s);
-        });
-        if (meta.children.length) body.appendChild(meta);
-        row.appendChild(body);
-        list.appendChild(row);
-      });
-      box.appendChild(list);
-      root.appendChild(box);
-    });
-  }
-  render();
-
+  function el(t, c, txt) { var e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; }
   var j = document.getElementById("journey");
   STAGES.forEach(function (s) {
     var st = el("div", "stage");
-    st.appendChild(el("div", "n", s.n));
-    st.appendChild(el("div", "t", esc(s.t)));
-    st.appendChild(el("p", "d", esc(s.d)));
+    st.appendChild(el("div", "n", s.n)); st.appendChild(el("div", "t", s.t)); st.appendChild(el("p", "d", s.d));
     var w = el("div", "where");
-    s.w.forEach(function (x) { w.appendChild(el("span", x[1] ? "out" : null, esc(x[0]))); });
-    st.appendChild(w);
-    st.appendChild(el("p", "pain", esc(s.p)));
+    s.w.forEach(function (x) { w.appendChild(el("span", x[1] ? "out" : null, x[0])); });
+    st.appendChild(w); st.appendChild(el("p", "pain", s.p));
     j.appendChild(st);
   });
-  j.appendChild(el("div", "branch",
-    "<b>Naujoko šaka</b><ol><li>Pirmos dvi dienos: mokymai, apeina visus procesus.</li><li>Kasdien SC sprendžia, ar nuimti naujoko žymą. Kol ji uždėta, auto tasks įjungti negalima, skiriama rankiniu būdu (A2).</li><li>Efektyvumas koreguojamas, žyma gali būti nuimta ir grąžinta.</li></ol>"));
+  var b = el("div", "branch");
+  b.innerHTML = "<b>Naujoko šaka</b><ol><li>Pirmos dvi dienos: mokymai, apeina visus procesus.</li><li>Kasdien SC sprendžia, ar nuimti naujoko žymą. Kol ji uždėta, auto tasks įjungti negalima (T3).</li><li>Efektyvumas koreguojamas, žyma gali būti nuimta ir grąžinta.</li></ol>";
+  j.appendChild(b);
 })();
 </script>
 </body></html>
