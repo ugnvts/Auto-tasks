@@ -15,7 +15,7 @@ Du bendri artefaktai (taisomi failai šiame aplanke, nuorodos nesikeičia):
 
 Naujas variantas: failas `puslapiai/<ekranas>/` + eilutė `PAGES` sąraše `index.html`.
 
-`archyvas/` – 2026-10-22 review failas ir GitHub Pages bandymas (nebenaudojama).
+`archyvas/` – 2026-10-22 review failas ir GitHub Pages bandymas (tik šiame kompiuteryje, ne git).
 Versijų istorija – vietinis git.
 
 ## GitHub Pages
