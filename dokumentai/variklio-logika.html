@@ -92,7 +92,7 @@ td.k { font-weight: 600; }
 .freq.daily { color: var(--warn); font-weight: 500; }
 
 /* overview: swimlane + detail */
-.day-main { min-width: 0; display: grid; gap: 12px; }
+.day-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
 .lanes-box { position: relative; }
 .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; color: var(--muted); }
 .legend span { display: inline-flex; align-items: center; gap: 6px; }
@@ -205,6 +205,15 @@ details.srcbox ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
 .q-head p { margin: 0; color: var(--muted); font-size: 0.9rem; max-width: 70ch; }
 td ul { margin: 4px 0 0; padding-left: 18px; }
 
+.flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 0; }
+.block > *, section.panel > * { min-width: 0; }
+.day { display: grid; grid-template-columns: minmax(0, 1fr); }
+.flow span { font-size: 0.85rem; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.flow span + span::before { content: "→"; margin-right: 8px; color: var(--muted); font-weight: 400; }
+details.closedq { border: 1px dashed var(--line); border-radius: 6px; padding: 10px 14px; }
+details.closedq > summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+details.closedq[open] > summary { margin-bottom: 10px; }
+.q.closed { opacity: 0.85; }
 @media (max-width: 1000px) {
 }
 @media (max-width: 640px) {
@@ -221,44 +230,35 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
 </style>
 
 <header class="top">
-  <div class="meta">Barbora · surinkimo centrai · 2026-10-19</div>
+  <div class="meta">Barbora · surinkimo centrai · atnaujinta 2026-10-23</div>
   <h1>Auto tasks, Stage II</h1>
   <details class="srcbox" id="srcbox">
-    <summary>Šaltiniai ir pasikeitimai</summary>
+    <summary>Šaltiniai, pakeitimai ir kaip skaityti</summary>
     <div class="in">
       <div>
         <h4>Šaltiniai</h4>
         <ul>
-          <li><b>Confluence</b> „Auto tasks - STAGE II“, v46, 2026-10-15 (palyginta su v42 2026-10-19). Prioritetinis šaltinis, PM aprašas.</li>
-          <li><b>Workshop 09-28</b>: tavo užrašai (buvęs Intro), ticketų aptarimas su Justine.</li>
-          <li><b>Workshop 10-06</b>: tavo užrašai iš susitikimo su devais.</li>
-          <li><b>Workshop 10-08</b>: tavo užrašai, workshop tęsinys su PM mintimis apie nustatymus ir prioritetus.</li>
-          <li><b>Susitikimas 10-06</b>: išgirsta žodžiu, neužrašyta.</li>
-          <li><b>Note 10-15 Justinė</b>: tavo užrašai, picker account nustatymų atnaujinimas.</li>
-          <li><b>Note 10-15 SC vadovas</b>: tavo užrašai, SC perspektyva. Daugiausia dizainui, žr. Confluence „Dizaino sprendimai“.</li>
+          <li><b><a href="https://barbora.atlassian.net/wiki/x/AwBtt" target="_blank" rel="noopener">PM puslapis „Auto tasks - STAGE II“</a></b>, peržiūrėta 2026-10-23. Prioritetinis šaltinis, niekada neredaguojamas.</li>
+          <li>Workshop 09-28, 10-06, 10-08; Susitikimas 10-06 (žodžiu).</li>
+          <li>Note 10-15 Justinė, Note 10-15 SC vadovas.</li>
+          <li>Review 10-22 (artefaktų peržiūra su PM), SC nustatymai 10-23 (picking center nustatymų intro).</li>
+          <li>Vytauto sprendimai pokalbiuose (10-19, 10-20, 10-21).</li>
+          <li>Visi užrašai: <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3303604225" target="_blank" rel="noopener">Confluence „Auto tasks“</a>.</li>
         </ul>
       </div>
       <div>
-        <h4>Kas pasikeitė · 2026-10-19 (Confluence v46)</h4>
+        <h4>Kas pasikeitė · 2026-10-23</h4>
         <ul>
-          <li>Q14 ir Q17 uždaryti: nustatymai galioja ir rankiniu būdu sukurtoms užduotims; X % virš efektyvumo tik kraštutiniais atvejais.</li>
-          <li>Kitai bangai 50 % pakeista į X % nustatymą (Q01), Q02 eilutė Confluence perbraukta. Atsirado bangos pabaigos laikas ir Workshops „visa užduotis virš efektyvumo“.</li>
-          <li>Efektyvumas Required, maksimalus efektyvumas („MAX quantity“) Optional. Nauji Q33–Q37, tarp jų Q33 ir Q34 apie nesuvestą ar dalinį efektyvumą.</li>
+          <li>PM puslapyje nauja pagrindinė logika „darbas pirmiau, pickeris po to“ (S05), nustatymų grupės, workshop taisyklės (S18), efektyvumas pagal šalį (LT units, LV ir EE SKU, kg išbrauktas), pickerio % koregavimas (S04).</li>
+          <li>Įrašyti 10-22 ir 10-23 susitikimai. Nauji scenarijai S26–S31, nauji klausimai Q40–Q53; uždaryti Q09, Q11, Q18, Q29, Q35, Q36 ir kt.</li>
+          <li>Scenarijai perrašyti kaip galiojanti taisyklė; iš kur kas atėjo – skirtuke „Žurnalas“. Active pakeistas auto tasks jungikliu.</li>
+          <li>Šis HTML yra pagrindinis šaltinis; Confluence „Algoritmo logika“ nebeatnaujinama.</li>
         </ul>
-        <h4>Kas pasikeitė · 2026-10-19</h4>
+        <h4>Kaip skaityti (LLM)</h4>
         <ul>
-          <li>Užrašai perskirstyti: šis puslapis rodo variklio logiką, dizaino funkcionalumai ir user journey yra Confluence „Auto tasks Stage II – Dizaino sprendimai“.</li>
-          <li>Pridėti Note 10-15 užrašai. Q08 ir Q12 uždaryti, Q04, Q21, Q27 iš dalies atsakyti. Nauji konfliktai Q31 (maksimalaus efektyvumo keitimo dažnis) ir Q32 (max quantity ir unique orders).</li>
-          <li>Efektyvumas: trys skaičiai (SKU, units, kg), unique orders dingo. Atnaujinti S04, S09, S12, S15, S19, S20.</li>
-        </ul>
-        <h4>Kas pasikeitė · 2026-10-13</h4>
-        <ul>
-          <li>Pridėti Workshop 10-08 užrašai. Atnaujinti S01, S05, S06, S07, S12, S14, S17, S18, S19 ir nustatymų žemėlapis.</li>
-          <li>S07: kita banga renkama ribotu pajėgumu, procentu nuo pickerio maksimalaus efektyvumo.</li>
-          <li>Zonų prioritetai: tik LT pirmiau renka sunkesnius užsakymus, daržovės ir vaisiai žemiausio prioriteto.</li>
-          <li>Naujas Q29 (įtartina): ar cut-off yra nustatymas, ar taisyklė. Q03 iš dalies atsakytas.</li>
-          <li>Šaltinių santrumpos pagal datą: Workshop 09-28 (buvęs Intro), 10-06, 10-08.</li>
-          <li>Nauji scenarijai S24 (grįžimas į einamąją bangą) ir S25 (liko tik daržovės ir vaisiai), naujas Q30. Prie konfliktų pridėti aprašai „Kur prieštara“.</li>
+          <li>Čia variklio logika: ką daro sistema. Kaip tai rodoma ir valdoma – „Dizaino sprendimai“ (ID PA, PK, DD, DB, SC, T, K).</li>
+          <li>Kiekvienam faktui viena vieta; kitur nurodomas ID (S, Q). Prieštaraujant laikomasi PM puslapio, prieštara žymima konfliktu.</li>
+          <li>Žyma „Patikrink“ – Claude išvada, ne šaltinio teiginys. Uždarytas klausimas neištrinamas, tik pažymimas su atsakymu ir data.</li>
         </ul>
       </div>
     </div>
@@ -271,6 +271,7 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
     <button role="tab" id="tab-scenarijai" data-tab="scenarijai" aria-selected="false" aria-controls="p-scenarijai">Scenarijai <span class="count" id="cnt-sc"></span></button>
     <button role="tab" id="tab-nustatymai" data-tab="nustatymai" aria-selected="false" aria-controls="p-nustatymai">Nustatymų žemėlapis</button>
     <button role="tab" id="tab-klausimai" data-tab="klausimai" aria-selected="false" aria-controls="p-klausimai">Ką reikia išsiaiškinti <span class="count" id="cnt-q"></span></button>
+    <button role="tab" id="tab-zurnalas" data-tab="zurnalas" aria-selected="false" aria-controls="p-zurnalas">Žurnalas</button>
   </div>
 </nav>
 
@@ -280,6 +281,12 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
     <div>
       <h2>Kas ką daro per dieną</h2>
       <p class="lead">Paspausk kortelę, kad pamatytum scenarijaus aprašą.</p>
+    </div>
+    <div class="block">
+      <h3>Pagrindinė logika (PM puslapis)</h3>
+      <p class="lead" style="margin:0">Sistema neieško užduoties konkrečiam pickeriui. Ji nuolat klausia: <b>koks kritiškiausias nebaigtas darbas ir kuris laisvas pickeris jį atliks efektyviausiai?</b></p>
+      <div class="flow"><span>Einamoji banga · 100 %</span><span>Bangos rizika</span><span>Kitos bangos X %</span><span>Prioritetinė zona</span><span>Didžiausias likęs darbas</span><span>Laisvas pickeris</span><span>Efektyvumas zonoje</span><span>Leidžiamas dydis</span><span>Priskyrimas</span></div>
+      <p class="lead" style="margin:0">Nustatymų grupės: bangos, cut-off, pajėgumai, zonos, pickerio paskyra, efektyvumas, workshop'ai, gathering, priskyrimas, išimtys. Išimtys: po cut-off ir NONE zonai naujos užduotys neskiriamos. Scenarijus: <button type="button" class="chip-id" data-goto="S05">S05</button></p>
     </div>
     <div class="day">
       <div class="day-main">
@@ -314,56 +321,15 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
   <section class="panel narrowpanel" id="p-nustatymai" role="tabpanel" aria-labelledby="tab-nustatymai" hidden>
     <div>
       <h2>Nustatymų žemėlapis</h2>
-      <p class="lead">Kas nustatoma kuriame lygyje ir kaip dažnai keičiasi. Kasdien keičiami nustatymai pažymėti oranžine, nes jų keitimo greitis svarbiausias.</p>
+      <p class="lead">Ką kiekvienas nustatymas reiškia varikliui. Kaip jis rodomas ir valdomas – „Dizaino sprendimuose“ (SC, PK, PA, DD).</p>
     </div>
-
+    <div class="block"><h3>1 lygis. Surinkimo centras</h3><div class="scroll"><table><thead><tr><th>Nustatymas</th><th>Variklio taisyklė</th><th>Keitimo dažnis</th><th>Scenarijus · dizainas</th></tr></thead><tbody><tr><td class="k">Bangos rinkimo pradžia ir pabaiga</td><td>Šiandien ir rytoj. Užduotys skiriamos tik tarp pradžios ir pabaigos; pabaiga po cut-off. Rytojaus bangoms – nuo kada šiandien galima skirti.</td><td class="freq">retai</td><td>S01, S17 · SC1</td></tr><tr><td class="k">Cut-off</td><td>Iš admin (delivery windows), neredaguojamas, rodomas. Taisyklė: po cut-off naujų auto užduočių nėra.</td><td class="freq">–</td><td>S12 · SC2</td></tr><tr><td class="k">Bangų prioritetai</td><td>Einamoji iki 100 % efektyvumo, kita iki X %. Vėlesnė banga neaišku.</td><td class="freq">retai</td><td>S07 · SC4</td></tr><tr><td class="k">Assign X % over efficiency</td><td>Kraštutiniams atvejams, kai trūksta pickerių ar užsakymai didesni.</td><td class="freq">išimtiniais atvejais</td><td>S28 · DD4</td></tr><tr><td class="k">Zonų prioritetai</td><td>Rikiavimas, nuo kurios zonos pradedama. Vaisiai ir daržovės paskutiniai. Zonoje pirmenybė pickeriui su didžiausiu efektyvumu (LT units, LV ir EE SKU).</td><td class="freq">retai</td><td>S05, S25 · SC5</td></tr><tr><td class="k">Zonų išimtys rytojaus bangoms</td><td>Bananai, daržovės, vaisiai, ryto zona neskiriamos rytojaus bangoms. Nustatymas prie picking zonos.</td><td class="freq">retai</td><td>S17 · SC6</td></tr><tr><td class="k">Zonų kombinacijos</td><td>Zona tik vienoje kombinacijoje; workshop zonos – viena kombinacija.</td><td class="freq">retai</td><td>S09 · SC11</td></tr><tr><td class="k">Zonos minimalūs kiekiai</td><td>Juodraštis SKU 10, units 50. Žemiau ribos – kombinacija.</td><td class="freq">retai</td><td>S08 · SC11</td></tr><tr><td class="k">Workshop nustatymai</td><td>Pradžia ir pabaiga kiekvienai einamosios dienos bangai; BUNS žyma zonai; minimalus kiekis kombinacijai.</td><td class="freq">retai</td><td>S18 · SC3</td></tr><tr><td class="k">Laikas tarp užduočių</td><td>Laukimas po grįžimo, LV ir EE. LT nereikia.</td><td class="freq">retai</td><td>S06 · SC7</td></tr><tr><td class="k">Regionai</td><td>Iš kiek regionų vienu metu skiriama vienam pickeriui. Sąvoka neapibrėžta.</td><td class="freq">neaišku</td><td>S29 · SC8</td></tr><tr><td class="k">Tolygus skirstymas tarp zonų</td><td>Idėja, PM abejoja.</td><td class="freq">neaišku</td><td>S30 · SC10</td></tr><tr><td class="k">Max pickers per zone</td><td>PM išbraukė, 10-23 liko atvira.</td><td class="freq">neaišku</td><td>S31 · SC9</td></tr><tr><td class="k">Gathering settings</td><td>PM sąraše, turinys neaiškus.</td><td class="freq">neaišku</td><td>Q53</td></tr></tbody></table></div></div>
+    <div class="block"><h3>2 lygis. Pickeris</h3><p class="lead" style="margin:0">Visi pickerio nustatymai vedami vienoje vietoje, surinkėjo paskyroje.</p><div class="scroll"><table><thead><tr><th>Nustatymas</th><th>Variklio taisyklė</th><th>Keitimo dažnis</th><th>Scenarijus · dizainas</th></tr></thead><tbody><tr><td class="k">Auto tasks jungiklis</td><td>Ar skiriamos auto užduotys. Pakeitė Active lauką. Inspektoriams visada įjungtas.</td><td class="freq">kasdien</td><td>S14, S26 · PA2</td></tr><tr><td class="k">Naujoko žyma</td><td>Kol uždėta, auto taisyklės netaikomos.</td><td class="freq">kasdien</td><td>S13 · PK3</td></tr><tr><td class="k">Aptarnaujamos zonos</td><td>Taip arba ne kiekvienai zonai; NONE ir workshop zonos be efektyvumo.</td><td class="freq">retai</td><td>S02 · PK4</td></tr><tr><td class="k">Kelios zonos ir kombinacijos</td><td>„Can work in multiple zones“ ir priskirtos kombinacijos (dalis iš SC).</td><td class="freq">retai</td><td>S09 · PK6</td></tr><tr><td class="k">Efektyvumas per zoną</td><td>Required. LT units / 1 h, LV ir EE SKU / 1 h; kg išbrauktas.</td><td class="freq">retai</td><td>S02 · PK4</td></tr><tr><td class="k">Efektyvumo % koregavimas</td><td>Procentas, kuriuo efektyvumas mažinamas ar didinamas visose zonose.</td><td class="freq">pagal situaciją</td><td>S04 · PK7</td></tr><tr><td class="k">Maksimalus kiekis vienam kartui</td><td>Optional. SKU, units, kg, unique orders.</td><td class="freq">retai</td><td>S02 · PK5</td></tr></tbody></table></div></div>
     <div class="block">
-      <h3>1 lygis. Surinkimo centras</h3>
-      <div class="scroll">
-        <table>
-          <thead><tr><th>Nustatymas</th><th>Reikšmė</th><th>Keitimo dažnis</th></tr></thead>
-          <tbody>
-            <tr><td class="k">Bangos pradžios ir pabaigos laikas</td><td>Nuo kada kiekvienai bangai pradedami priskirti tasks. Pabaigos laiką pridėjo Confluence v46, paskirtis neaiški (Q35). Šiandien ir rytoj: rytojaus bangoms nurodoma, nuo kelintos valandos šiandien galima pradėti skirti jų užduotis.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Cut-off laikas</td><td>Imamas iš senos admin sistemos (delivery windows). Lygus laikui, iki kada į bangą gali įkristi papildymai ir nauji užsakymai.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Cut-off taisyklė</td><td>Po cut-off auto priskyrimo nėra. Išimtys: workshopai, apmokėti papildymai (neaišku). Neaišku, ar tai nustatymas, ar sistemos taisyklė (Q29).</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Bangų prioritetai</td><td>Einamoji banga 100 %. Kitai bangai procentas nuo pickerio maksimalaus efektyvumo, kad pickeriai greičiau grįžtų į salę (Confluence v46: X %, turi būti nustatymas; v42 buvo 50 %). Valdoma tik einamoji ir kita banga.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Zonų prioritetai</td><td>Kas renkama pirmiausia, sudeda kiekvienas SC. Pavyzdys: gėrimai pirmiausia (LT). Daržovės ir vaisiai žemiausio prioriteto: renkami bangos pabaigoje arba kai lieka tik jie. Tik LT pirmiau renka sunkesnius užsakymus, LV ir EE zonų neprioritetizuoja (S25).</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Zonų kombinacijos</td><td>Leistinos poros, pvz. Frozen + Milk taip, Grocery + Fruits taip, Frozen + Grocery ne. Skirtingi SC gali turėti skirtingas.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Zonų išimtys</td><td>Konkrečios zonos, kurių rytojaus bangoms negalima skirti automatiškai: bananai, daržovės, vaisiai, ryto picking zona.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Workshopų pradžios laikai</td><td>Cechas ir laikas, kada pradedamas priskyrimas (atskiras trigeris). Reikia sąrašo. Bandeles galima rinkti anksčiau, kiek anksčiau neišspręsta. Confluence v46: workshopams skiriama visa tos pačios zonos užduotis virš efektyvumo (Q36).</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Laikas tarp užduočių</td><td>Kiek laiko turi praeiti nuo paskutinio surinkto item'o iki naujos užduoties, ir 90 % taisyklė. Dar nėra aišku, ar tai SC ar pickerio lygio nustatymas.</td><td class="freq">retai</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="block">
-      <h3>2 lygis. Pickeris</h3>
-      <p class="lead" style="margin:0">Visi pickerio nustatymai, įskaitant zonų, vedami vienoje vietoje, pickerių puslapyje. Didžiausias vedimo krūvis: pickeris × zona × trys parametrai × du efektyvumo tipai, todėl reikia šablonų ar greito vedimo.</p>
-      <div class="scroll">
-        <table>
-          <thead><tr><th>Nustatymas</th><th>Reikšmė</th><th>Keitimo dažnis</th></tr></thead>
-          <tbody>
-            <tr><td class="k">Aktyvus</td><td>Ar pickeriui galima priskirti auto tasks. Perpanaudojamas esamas Active flag'as, laikomas auto tasks safety switch. Workshop 10-06 kalbama ir apie dienos planą, kuris gali būti atskiras dalykas.</td><td class="freq daily">kasdien</td></tr>
-            <tr><td class="k">Naujas</td><td>Naujam pickeriui auto tasks nepriskiriami. Siūloma, kad vadybininkas skirtų kitos bangos užduotis.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Gali aptarnauti zonų kombinacijas</td><td>Taip arba ne. Tik stipresni pickeriai gali kelias zonas vienu metu.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Gali dirbti keliose zonose</td><td>Taip arba ne. Pagrindinė taisyklė: vienu metu viena zona.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Aptarnauja zoną</td><td>Taip arba ne, kiekvienai zonai. Kasdienis darbas, keitimo greitis labai svarbus.</td><td class="freq daily">kasdien</td></tr>
-            <tr><td class="k">Efektyvumas</td><td>Kiekvienai zonai vedami trys skaičiai per valandą:<ul><li>SKU / val.</li><li>units / val.</li><li>kg / val.</li></ul>Unique orders dingo (Q08). Mažiau kintantis. Pradžioje paprastas vidurkis. Confluence v46: Required. Nesuvestas ar dalinis: Q33.</td><td class="freq">retai</td></tr>
-            <tr><td class="k">Maksimalus efektyvumas</td><td>Riba, kiek priskiriama vienam išėjimui į salę (vežimo talpa). Santykis su efektyvumu nusako, kiek laiko pickeris salėje. Su unique orders (Confluence v46, Q32). Confluence v46: Optional, vadinamas „MAX quantity assign per once“. Nesuvestas ar dalinis: Q34. Galimai valdomas dashboard'e.</td><td class="freq daily">nuolat ar retai (Q31)</td></tr>
-            <tr><td class="k">Min item'ų užduotyje</td><td>Likučiai (užduotys su mažai item'ų) neskiriami labai efektyviems pickeriams. Pvz. vienam ne mažiau 20, kitam galima ir 4. Confluence juodraštis: SKU 10, units 50.</td><td class="freq">neaišku</td></tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="block">
-      <h3>Lieka už sistemos ribų</h3>
+      <h3>Antra fazė ir už sistemos ribų</h3>
       <ul>
-        <li>Ne surinkimo darbai (valymas, dėžių ir aikštelės paruošimas, apmokymai) sprendžiami rankiniu būdu, mažinant užduočių kiekį.</li>
-        <li>Zonų skirstymas pagal lytį sistemoje nebus. Sprendžia vadybininkas.</li>
-        <li>Pickerių grafikai ir efektyvumo apskaita lieka atskirose sistemose (LT Workofo, LV NUMO, EE Virosoft).</li>
-        <li>Lipdukų spausdinimas lieka kaip dabar.</li>
+        <li>Antra fazė: pamainų grafikai (LT Workofo, LV NUMO, EE Virosoft), skyrimas po cut-off, NONE zonos skyrimas, pickerio statistika vietoj suvesto efektyvumo, kitų tipų užduotys (valymas, barcode compare, inspekcija).</li>
+        <li>Už ribų: zonų skirstymas pagal lytį, lipdukų spausdinimas (PV atsakomybė), koordinatorių užduotys.</li>
       </ul>
     </div>
   </section>
@@ -382,6 +348,14 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
     </div>
     <div id="q-groups" style="display:grid;gap:24px"></div>
   </section>
+  <!-- ŽURNALAS -->
+  <section class="panel narrowpanel" id="p-zurnalas" role="tabpanel" aria-labelledby="tab-zurnalas" hidden>
+    <div>
+      <h2>Sprendimų žurnalas</h2>
+      <p class="lead">Iš kur kas atėjo. Scenarijuose rašoma tik galiojanti taisyklė.</p>
+    </div>
+    <div class="block"><div class="scroll"><table><thead><tr><th>Data</th><th>Šaltinis</th><th>Užfiksuota</th><th>ID</th></tr></thead><tbody><tr><td class="k">2026-10-23</td><td>Vytautas</td><td>Dokumentas pertvarkytas: HTML pagrindinis šaltinis, scenarijai kaip galiojanti taisyklė, klausimai atviri / uždaryti, žurnalas atskirai.</td><td class="freq">Visi</td></tr><tr><td class="k">2026-10-23</td><td>SC nustatymai 10-23</td><td>SC nustatymų sąrašas. Bangos pabaiga po cut-off, cut-off – taisyklė, rodoma UI. Kombinacijos žemiau zonos minimalios ribos. Regionų skaičius, tolygus skirstymas, frozen išimtis. LT pradeda nuo bakalėjos.</td><td class="freq">S08, S09, S12, S17, S29–S31, Q29, Q35, Q46, Q49</td></tr><tr><td class="k">2026-10-23</td><td>PM puslapis (peržiūrėta 10-23)</td><td>Nauja pagrindinė logika ir seka, nustatymų grupės. Efektyvumas: LT units, LV ir EE SKU, kg išbrauktas; pickerio % visoms zonoms. Workshop'ai: visa zona vienam pickeriui, BUNS žyma, min kiekis kombinacijai. Max pickers per zone išbrauktas. Kartojimas: gathering dengiamas efektyvumu, patvirtinta visose šalyse. Antra fazė papildyta.</td><td class="freq">S02, S04, S05, S18, S19, S21, S31, Q36, Q40–Q53</td></tr><tr><td class="k">2026-10-22</td><td>Review 10-22</td><td>Individualios kombinacijos pickeriui. Laikinas efektyvumo didinimas ir mažinimas. PM: kėlimas visiems dirbantiems. Diskusija dėl KG/val.</td><td class="freq">S04, S09, S28, Q33, Q40, Q41</td></tr><tr><td class="k">2026-10-21</td><td>Vytautas</td><td>Išėjimas = vienu sync paimtos užduotys. Inspektoriai priklauso auto tasks grupei.</td><td class="freq">S26, S27</td></tr><tr><td class="k">2026-10-20</td><td>Vytautas</td><td>Active nebelieka: jo paskirtis pakeista į auto tasks jungiklį.</td><td class="freq">S14, Q05</td></tr><tr><td class="k">2026-10-19</td><td>PM v46, Vytautas</td><td>Nustatymai galioja rankinėms užduotims, X % over efficiency kraštutiniams atvejams, kita banga X %, efektyvumas Required, MAX quantity Optional. Valdymas visiškai rankinis; po cut-off tik rankinė net su įjungtu jungikliu.</td><td class="freq">S01, S02, S07, S12, S16, S18, Q14, Q17</td></tr><tr><td class="k">2026-10-15</td><td>Note Justinė, Note SC vadovas</td><td>Task'e viena zona, NONE neskiriama, po cut-off tik rankinis, unique orders iš efektyvumo dingo, vidurkis dengia gathering, pickeris sinchronizuoja, maksimalus efektyvumas – riba išėjimui.</td><td class="freq">S04, S09, S12, S15, S19, Q08, Q12</td></tr><tr><td class="k">2026-10-08</td><td>Workshop 10-08</td><td>Rytojaus bangų rinkimo pradžia, workshop trigeris, kitai bangai ribotas %, toggle kaip safety switch, LT sunkesni pirmiau, daržovės ir vaisiai paskutiniai, laikas nuo paskutinio item'o.</td><td class="freq">S01, S05–S07, S12, S14, S17–S19, S24, S25</td></tr><tr><td class="k">2026-10-06</td><td>Workshop 10-06, Susitikimas</td><td>Pirmas išleidimas be efektyvumo apskaitos (vidurkis). Min item'ai. Ne surinkimo darbai vadybininkui. Koordinatorių užduotys nesikeičia.</td><td class="freq">S03, S08, S09, S12, S20–S22</td></tr><tr><td class="k">2026-10-05</td><td>PM v42</td><td>Stage I ir II, picker account lentelė, atvejai, NONE ir OOS zonos, frozen išimtys, pertraukos.</td><td class="freq">S05, S10, S12, S14, S15, S18–S20</td></tr><tr><td class="k">2026-09-28</td><td>Workshop 09-28</td><td>Active flag'as auto skyrimui, naujoko žyma, zonos paskyroje, kombinacijos su flag'u, viena zona vienu metu, cut-off iš admin, einamoji banga aukščiausia.</td><td class="freq">S01, S02, S05, S09, S12–S14</td></tr></tbody></table></div></div>
+  </section>
 </main>
 
 <script>
@@ -397,269 +371,283 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
   var SC = [
     { id: "S01", ph: "A", s: "Centro nustatymai", t: "SC vadybininkas nustato centro nustatymus", actor: "SC vadybininkas",
       trig: "Prieš paleidžiant auto tasks arba keičiantis centro taisyklėms.",
-      beh: "Nustatomi bangų pradžios ir pabaigos laikai (pabaigą pridėjo Confluence v46) (taip pat nuo kelintos valandos šiandien galima skirti rytojaus bangų užduotis), cut-off (iš senos admin sistemos), bangų prioritetai, zonų prioritetai, zonų kombinacijos ir zonų išimtys.",
-      note: "Zonų prioritetus kiekvienas SC susideda pats." },
+      beh: "Nustatoma pagal PM grupes: bangos (rinkimo pradžia ir pabaiga šiandien ir rytoj), pajėgumai (kitos bangos %), zonos (prioritetai, kombinacijos, minimalūs kiekiai, išimtys rytojaus bangoms), workshop'ai, laikas tarp užduočių. Cut-off neįvedamas, imamas iš admin. Visas sąrašas: Nustatymų žemėlapis.",
+      note: "Zonų prioritetus kiekvienas SC susideda pats. Dizainas: SC1–SC12." },
     { id: "S02", ph: "A", s: "Pickerio paskyros užvedimas", t: "Vadybininkas užveda pickerio paskyrą", actor: "SC vadybininkas",
-      trig: "Naujas pickeris arba pasikeitę pickerio duomenys.",
-      beh: "Nurodoma, ar pickeris aktyvus, ar naujas, kurias zonas aptarnauja, ar gali kombinacijas, efektyvumas ir maksimalus efektyvumas per zoną (SKU, units, kg per val.; unique orders dingo) ir min item'ų. Confluence v46: efektyvumas Required, maksimalus efektyvumas Optional.",
-      note: "Kas daroma, kai nesuvesta ar suvesta dalis: Q33, Q34. Parametrų daug, reikia šablonų ar greito vedimo. Pradžioje vienas vidurkis per parametrą." },
+      trig: "Naujas pickeris arba pasikeitę jo duomenys.",
+      beh: "Nurodoma: auto tasks jungiklis, naujoko žyma, aptarnaujamos zonos, ar gali dirbti keliose zonose ir kurios kombinacijos, efektyvumas per zoną (Required), maksimalus kiekis vienam kartui (Optional: SKU, units, kg, unique orders). NONE ir workshop zonoms efektyvumas nevedamas.",
+      note: "Efektyvumo parametras pagal šalį: LT units / 1 h, LV ir EE SKU / 1 h, kg išbrauktas (Q40). Nesuvesti skaičiai: Q33, Q34. Dizainas: PK1–PK6." },
     { id: "S03", ph: "A", s: "Planavimas į priekį", t: "Vadybininkas planuoja dieną ar dvi į priekį", actor: "SC vadybininkas",
       trig: "Prieš pamainą arba dieną iš anksto.",
-      beh: "Rankiniu būdu pažymima, kuriam pickeriui šią dieną skirti užduotis automatiškai ir kokiu pajėgumu.",
-      note: "Neaišku, ar tai tas pats Active flag'as, ar atskiras dienos planas (žr. atvirus klausimus)." },
-    { id: "S04", ph: "A", s: "Maksimalaus efektyvumo keitimas", t: "Vadybininkas dienos eigoje keičia pickerio maksimalų efektyvumą", actor: "SC vadybininkas",
-      trig: "Pickerio efektyvumas pasikeičia (gera ar bloga diena, sunkių prekių ryte vs vakare).",
-      beh: "Pakeičiamas maksimalus efektyvumas arba pickeris išjungiamas. Tikėtina, kad tai bus kasdienis įrankis dashboard'e.",
-      note: "Dashboard laikomas vėlesne tema, tad pirmame išleidime nėra aišku, kur tai daroma. Note 10-15 SC vadovas: bangos metu pajėgumai nekeičiami, tik junginėjami pickeriai on/off; parametrai keičiami išimtiniais atvejais. Konfliktas Q31." },
+      beh: "Pirmame išleidime atskiro dienos plano nėra: įjungiama pagal faktą auto tasks jungikliu (Q05 uždarytas). Grafikai lieka Workofo, NUMO, Virosoft, integracija antroje fazėje.",
+      note: "Planavimo idėjos dizaino dokumente: P2, P5." },
+    { id: "S04", ph: "A", s: "Laikinas pickerio efektyvumo koregavimas", t: "Vadybininkas laikinai keičia pickerio efektyvumą", actor: "SC vadybininkas",
+      trig: "Pickerio diena kitokia: pasijuto blogai, sunkios prekės, naujokas.",
+      beh: "Suvesti efektyvumo skaičiai lieka tiesos šaltiniu. Paskyroje nustatomas procentas, kuriuo efektyvumas sumažinamas ar padidinamas visose zonose (PM 10-23). Trukmė neapibrėžta.",
+      note: "Kaip tai dera su efektyvumo kėlimu (S28) ir kitos bangos % (S07): Q41. SC vadovas: bangos metu pajėgumai įprastai nekeičiami. Dizainas: PK7." },
 
-    { id: "S05", ph: "B", s: "Einamosios bangos skyrimas pagal efektyvumą", t: "Sistema skiria einamosios bangos užduotis pagal Most Efficient First", actor: "Sistema",
-      trig: "Prasideda banga ir yra aktyvių pickerių.",
-      beh: "1) aukščiausio prioriteto zonos, 2) didžiausios užduotys, 3) efektyviausi pickeriai. Jei pickeris jau gavo didelę užduotį, kita didelė skiriama kitam efektyviam pickeriui.",
-      note: "Kai kuriuose centruose užduotys bangos pradžioje dalijamos po lygiai. Neaišku, kaip tai dera su efektyvumu pagrįsta logika. Priskyrimas virš pickerio efektyvumo bus, edge cases nežinomi.",
-      cty: {
-        LT: "X481: bangos pradžioje užduotys dalijamos po lygiai, dienos eigoje pagal užsakymų kiekį. Sunkesni užsakymai renkami pirmiau.",
-        LV: "Zonų neprioritetizuoja.",
-        EE: "Zonų neprioritetizuoja."
-      } },
+    { id: "S05", ph: "B", s: "Pagrindinė priskyrimo logika", t: "Sistema skiria svarbiausią darbą tinkamiausiam laisvam pickeriui", actor: "Sistema",
+      trig: "Nuolat, kol yra nebaigto darbo ir laisvų pickerių.",
+      beh: "Sistema neieško užduoties konkrečiam pickeriui. Ji nuolat klausia: koks kritiškiausias nebaigtas darbas ir kuris laisvas pickeris jį atliks efektyviausiai. Seka: einamoji banga → aukščiausio prioriteto zona → didžiausias likęs darbas → efektyviausias laisvas pickeris → priskyrimas. Zonoje pirmenybė pickeriui su didžiausiu efektyvumu (LT pagal units, LV ir EE pagal SKU). Jei pickeris jau gavo didelę užduotį, kita didelė kitam efektyviam.",
+      note: "„Evaluate current wave risk“ neapibrėžta (Q42). Po lygiai bangos pradžioje X481: Q16.",
+      cty: { LT: "X481: bangos pradžioje užduotys po lygiai, dienos eigoje pagal užsakymų kiekį. Prioritetas pagal units.", LV: "Prioritetas pagal SKU.", EE: "Prioritetas pagal SKU." } },
     { id: "S06", ph: "B", s: "Kitos užduoties priskyrimas", t: "Pickeris baigia užduotį, sistema skiria kitą", actor: "Sistema",
       trig: "Pickeris surinko apie 90 % eilučių.",
-      beh: "Sistema paskiria kitą užduotį. Pickeris norėtų matyti, kiek, iš kur ir per kiek laiko reikės surinkti toliau.",
-      note: "Workshop 10-08: laikas iki naujos užduoties skaičiuojamas nuo paskutinio surinkto item'o. Nėra aišku, ar tai SC ar pickerio nustatymas ir ar tai dera su 90 % taisykle. LV ir EE gathering reikia papildomo laiko tarp užduočių." },
-    { id: "S07", ph: "B", s: "Užduotys iš kitos bangos", t: "Einamojoje bangoje liko laisvų pajėgumų, skiriama iš kitos bangos", actor: "Sistema",
-      trig: "Pickeriai turi laisvo laiko, o einamosios bangos užduočių nebėra.",
-      beh: "Einamoji banga beveik visada aukščiausias prioritetas. Pickeriai skiriami kitai bangai ribotu pajėgumu: procentas nuo pickerio maksimalaus efektyvumo (pvz. 30 %), kad greičiau grįžtų į salę, jei į einamąją bangą įkris naujų užsakymų. Valdoma tik einamoji ir kita banga.",
-      note: "Ribojimas gali priklausyti nuo laisvų užsakymų slotų einamojoje bangoje (pvz. laisva 30 % ar 50 %). Parametrai dar nežinomi. Confluence v46: X % (nustatymas), pagal efektyvumą ir maksimalų efektyvumą; v42 buvo 50 %. Grįžimas į einamąją bangą: S24." },
-    { id: "S08", ph: "B", s: "Likučiai ne stipriems pickeriams", t: "Mažos užduotys (likučiai) neskiriamos labai efektyviems pickeriams", actor: "Sistema",
-      trig: "Užduotis turi mažai item'ų.",
-      beh: "Pagal pickerio min item'ų taisyklę. Pavyzdys: vienam ne mažiau 20, kitam galima ir 4." },
-    { id: "S09", ph: "B", s: "Zonų kombinacijos", t: "Pickeris aptarnauja zonų kombinaciją", actor: "Sistema",
-      trig: "Pickeris turi kombinacijų flag'ą ir centras leidžia tą porą.",
-      beh: "Vienas pickeris vienu metu gauna užduotis iš dviejų gretimų zonų, pvz. Frozen + Milk. Pavyzdžiai: Frozen + Milk taip, Grocery + Fruits taip, Frozen + Grocery ne. Aukštas prioritetas.",
-      note: "Kombinacijos pasirenkamos SC lygyje, o pickeris tik turi flag'ą. Note 10-15 Justinė: auto skyrimui task'e tik viena zona, kombinacijos skirstomos per kelis task'us; algoritme prioritetas vienai zonai; LV ir LT skiria iš vienos zonos, EE iš kombinacijų (prieštarauja LV eilutei, Q15).",
-      cty: {
-        LT: "Frozen + Milk rečiau. Pavyzdys: ne daugiau nei 10 frozen, kai pieno reikia 150.",
-        LV: "Zonas galima maišyti, tai kasdienė situacija.",
-        EE: "Frozen + Milk maišoma visada."
-      } },
-    { id: "S10", ph: "B", s: "Didelis kiekis vienam pickeriui", t: "Likus mažai laiko iki atsikrovimo, didelis kiekis skiriamas vienam pickeriui", actor: "Sistema",
-      trig: "Mažai laiko iki bangos pabaigos ir yra didelis užsakymas ar papildymas.",
-      beh: "Pirmenybė: duoti vienam pickeriui didelį kiekį per kelias zonas, o ne trims pickeriams po mažą dalį." },
-    { id: "S11", ph: "B", s: "Svorinio užsakymo dalijimas", t: "Užsakymo su dideliu svoriu dalijimas į kelis tasks", actor: "Sistema",
-      trig: "Užsakyme yra daugiau nei vienas svorinis item'as su daugiau nei X kg.",
-      beh: "Užsakymas dalijamas į kelias užduotis, kad ilgiausiai renkamos nebūtų pas vieną pickerį.",
-      note: "Siūlomas papildomas nustatymas, kurį naudotų tik LT.",
+      beh: "Kita užduotis skiriama, kai surinkta apie 90 % eilučių. LV ir EE po grįžimo palaukiama SC nustatytą laiką; LT tarpo nereikia.",
+      note: "Ar 90 % taisyklė ir laukimo laikas yra viena taisyklė: Q20.",
+      cty: { LT: "Tarpo nereikia: SM skiria anksčiau, nei baigiamas rinkimas.", LV: "Reikia laiko grįžti ir sudėti maišus.", EE: "Kaip LV." } },
+    { id: "S07", ph: "B", s: "Kita banga ribotu pajėgumu", t: "Einamosios bangos darbo nebėra, skiriama iš kitos bangos", actor: "Sistema",
+      trig: "Einamojoje bangoje nebėra darbo, o pickeriai laisvi.",
+      beh: "Einamoji banga skiriama iki 100 % pickerio efektyvumo. Kita banga iki X % (SC nustatymas, pvz. 50 %), kad pickeris trumpiau būtų salėje ir greičiau grįžtų, jei atsirastų einamosios bangos užsakymų.",
+      note: "X reikšmė: Q01. Ar skiriama ir dar vėlesnė banga: Q43. Ar SC galima rinkti kelias bangas vienu metu: Q44. Grįžimas: S24." },
+    { id: "S08", ph: "B", s: "Zonos minimalus kiekis", t: "Zonoje mažai darbo", actor: "Sistema",
+      trig: "Zonoje liko mažiau užduočių nei SC nustatyta riba.",
+      beh: "SC lygio zonos minimalūs kiekiai (PM juodraštis: SKU 10, units 50). Nepasiekus ribos, zonos užduotys kombinuojamos su kita zona (S09), kad pickeris turėtų pakankamai darbo vienam išėjimui.",
+      note: "Ankstesnė mintis „likučiai neskiriami labai efektyviems“ (pickerio lygio riba): ar dar galioja, Q07." },
+    { id: "S09", ph: "B", s: "Zonų kombinacijos", t: "Pickeris renka iš kelių zonų", actor: "Sistema",
+      trig: "Pickeriui leista dirbti keliose zonose ir zonoje mažai darbo.",
+      beh: "SC sukuria kombinacijas; viena zona gali būti tik vienoje kombinacijoje, visos workshop zonos sudaro vieną kombinaciją. Pickeriui priskiriamos konkrečios kombinacijos (dalis iš SC sukurtų). Pirmenybė vienai zonai, o kombinacija naudojama, kai zonoje darbo mažiau nei minimali riba (S08). Pavyzdžiai: Frozen + Milk taip, Grocery + Fruits taip, Frozen + Grocery ne.",
+      note: "Prioriteto formuluotė: Q15. Kombinacijos zona be suvesto efektyvumo: Q33. Dizainas: PK6, SC11.",
+      cty: { LT: "Iš vienos zonos. Frozen + Milk retai (pvz. ne daugiau 10 frozen prie 150 pieno).", LV: "Iš vienos zonos (Justinė), nors anksčiau minėta, kad maišo kasdien.", EE: "Kombinacijos; Frozen + Milk visada." } },
+    { id: "S10", ph: "B", s: "Didelis kiekis vienam pickeriui", t: "Likus mažai laiko, didelis kiekis vienam pickeriui", actor: "Sistema",
+      trig: "Mažai laiko iki atsikrovimo ir yra didelis užsakymas ar papildymas.",
+      beh: "Pirmenybė vienam pickeriui per kelias zonas, ne trims pickeriams po mažą dalį." },
+    { id: "S11", ph: "B", s: "Svorinio užsakymo dalijimas", t: "Užsakymas su keliais sunkiais svoriniais item'ais", actor: "Sistema",
+      trig: "Užsakyme daugiau nei vienas svorinis item'as, sveriantis daugiau nei X kg.",
+      beh: "Užsakymas dalijamas į kelias užduotis, kad ilgiausiai renkamos nebūtų pas vieną pickerį. Papildomas nustatymas, kurį naudotų tik LT.",
+      note: "Q19.",
       cty: { LT: "Ilgiausiai renkamos užduotys: saldainiai svoriu, mažas skirtumas tarp SKU ir units." } },
     { id: "S24", ph: "B", s: "Grįžimas į einamąją bangą", t: "Pickeriai grįžta į einamąją bangą", actor: "Sistema, pickeriai",
-      trig: "Pickeriai renka kitą bangą ribotu pajėgumu (S07), o į einamąją bangą prieš cut-off įkrenta naujų užsakymų.",
-      beh: "Ribotas pajėgumas leidžia pickeriams greičiau grįžti į salę ir rinkti naujas einamosios bangos užduotis.",
-      note: "Kaip pickeris grąžinamas, neaprašyta. Patikrink: atskirą scenarijų išskyriau pats iš S07." },
+      trig: "Pickeriai renka kitą bangą ribotu pajėgumu (S07), o į einamąją bangą prieš cut-off įkrenta užsakymų.",
+      beh: "Ribotas pajėgumas leidžia pickeriui greičiau grįžti ir gauti einamosios bangos darbą.",
+      note: "Ar sistema perskirsto jau priskirtas užduotis: Q30. Patikrink: scenarijų išskyriau pats iš S07." },
     { id: "S25", ph: "B", s: "Liko tik daržovės ir vaisiai", t: "Liko tik daržovių ir vaisių užduotys", actor: "Sistema",
-      trig: "Einamojoje bangoje lieka tik daržovių ir vaisių užduotys.",
-      beh: "Daržovės ir vaisiai žemiausio prioriteto, renkami bangos pabaigoje. Kai lieka tik jie, užduotys skiriamos laisviems pickeriams. Rytojaus bangos daržovių ir vaisių užduotys šiandien neskiriamos (S17).",
-      note: "Patikrink: atskirą scenarijų išskyriau pats iš zonų prioritetų.",
-      cty: {
-        LT: "Bananų, vaisių ir daržovių nerenka iškart bangos pradžioje (Confluence).",
-        LV: "Zonų neprioritetizuoja, neaišku, ar taisyklė taikoma.",
-        EE: "Zonų neprioritetizuoja, neaišku, ar taisyklė taikoma."
-      } },
+      trig: "Laisviems pickeriams nėra kito darbo, tik daržovės, vaisiai ar bananai.",
+      beh: "Daržovės ir vaisiai yra žemiausio prioriteto zona. Jei bangos pradžioje nėra kito darbo, juos skirti galima (PM: „It’s ok? Taip“). Rytojaus bangų daržovės ir vaisiai šiandien neskiriami (S17).",
+      note: "Kuri zona LT pirmoji: Q49.",
+      cty: { LT: "Bananų, vaisių ir daržovių nerenka iškart bangos pradžioje." } },
+    { id: "S27", ph: "B", s: "Išėjimas ir sinchronizavimas", t: "Pickeris paima užduotis sinchronizuodamas", actor: "Pickeris, sistema",
+      trig: "Pickeriui priskirtos užduotys.",
+      beh: "Pickeris užduotis paima „sync“ mygtuku Picker app. Išėjimas į salę = vienu sync paimtos užduotys; priskirtos, bet nesinchronizuotos laikomos eilėje ir nepriklauso dabartiniam išėjimui.",
+      note: "Vytauto apibrėžimas 10-21; PM puslapis to nemini. Būsena „Nesinchronizavo“: dizainas T2." },
+    { id: "S29", ph: "B", s: "Regionų taisyklė", t: "Užduotys iš vieno ar kelių regionų", actor: "Sistema",
+      trig: "Skiriamos užduotys iš skirtingų salės vietų.",
+      beh: "PM: „Assign only 1 region per once?“ – LT tik Frozen zonai, kitur ir kitoms zonoms. 10-23: SC nustato, iš kiek regionų vienu metu skiriamos užduotys vienam pickeriui.",
+      note: "Kas yra „regionas“: Q50." },
+    { id: "S30", ph: "B", s: "Tolygus skirstymas tarp zonų", t: "Pickeriui skiriamos vis kitos zonos", actor: "Sistema",
+      trig: "Pickeris ką tik rinko tam tikroje zonoje.",
+      beh: "Idėja: kitą kartą ta pati zona skiriama rečiau, kad pickeriai rinktų įvairiose zonose. LV ir EE taip skirsto jau dabar.",
+      note: "PM klausia, kam tada efektyvumas: Q51." },
+    { id: "S31", ph: "B", s: "Max pickers per zone", t: "Ribojamas pickerių skaičius zonoje", actor: "Sistema",
+      trig: "Zonoje vienu metu dirba daug pickerių.",
+      beh: "Idėja riboti, kiek pickerių vienu metu dirba vienoje zonoje.",
+      note: "PM eilutę išbraukė („LT neturi“), o 10-23 susitikime ji liko atvira: Q52." },
 
     { id: "S12", ph: "C", s: "Cut-off", t: "Pasiekiamas cut-off", actor: "Sistema",
       trig: "Bangos cut-off laikas praėjo.",
-      beh: "Naujų auto tasks nebeskiriama. Naujos užduotys kuriamos tik rankiniu būdu.",
-      note: "Išimtys: workshopai, apmokėti papildymai (neaišku), šaldyti papildymai (dar neapibrėžta). Workshop užduotys renkamos tik einamosios dienos, likus pusvalandžiui iki atsikrovimo, todėl joms reikia specifinio laiko. Neaišku, ar cut-off yra nustatymas, ar taisyklė. Note 10-15: po cut-off tik rankinis skyrimas ir junginėjimas. Confluence v46: skyrimas po cut-off perkeltas į antrą fazę." },
+      beh: "Cut-off imamas iš admin (delivery windows) ir neredaguojamas; tai taisyklė, ne nustatymas. Po cut-off naujų auto užduočių pickeriams nėra, net jei jungiklis įjungtas; skiriama rankiniu būdu. Apmokėti papildymai po cut-off taip pat neskiriami. Koordinatorių logika nesikeičia.",
+      note: "Išimtys: workshop'ai turi savo laikus (S18), šaldyti papildymai neaptarti (Q10). Skyrimas po cut-off – antra fazė." },
     { id: "S13", ph: "C", s: "Naujas pickeris", t: "Naujas pickeris", actor: "Sistema, vadybininkas",
-      trig: "Pickeris pažymėtas kaip naujas.",
-      beh: "Auto tasks nepriskiriami.",
-      note: "Confluence siūlo, kad vadybininkas rankiniu būdu skirtų kitos bangos užduotis, o ne einamosios. Tai aptarimo punktas, ne galutinė taisyklė. Kaip ir kada flag'as nuimamas, neaišku." },
-    { id: "S14", ph: "C", s: "Neaktyvus pickeris", t: "Neaktyvus pickeris", actor: "Sistema",
-      trig: "Pickeris pažymėtas neaktyviu.",
-      beh: "Užduotys nepriskiriamos. Trumpoms pertraukoms atskiros funkcijos nebus, naudojamas Active/Inactive toggle. Toggle laikomas auto tasks generavimo safety switch.",
-      cty: {
-        LT: "Dvi 30 min pertraukos per dieną.",
-        LV: "Pertraukos po bangos, aktyvioje pamainoje 15–20 pickerių.",
-        EE: "15 min pertraukos."
-      } },
-    { id: "S15", ph: "C", s: "Užduotis be zonos", t: "Užduotis be pagrindinės zonos (NONE picking zone)", actor: "Sistema",
-      trig: "Užduotis neturi zonos arba po sukūrimo item perkeliamas į kitą zoną.",
-      beh: "Automatiškai nepriskiriama. Būtų gerai turėti pranešimą (alarm), bet tai nebūtina.",
-      note: "Variantai, kai taske atsiranda daugiau nei viena zona: palikti pradinę arba nepriskirti. Note 10-15 Justinė: patvirtinta, NONE zonai task'ai neskiriami ir efektyvumai nevedami." },
+      trig: "Pickeriui uždėta naujoko žyma.",
+      beh: "Kol žyma uždėta, auto taisyklės netaikomos; užduotys skiriamos rankiniu būdu. SC kasdien sprendžia, ar žymą nuimti; ją galima grąžinti.",
+      note: "PM siūlymas rankiniu būdu skirti kitos bangos užsakymus: Q28. Dizainas: PK3, T3." },
+    { id: "S14", ph: "C", s: "Auto tasks išjungtas", t: "Pickeriui išjungtas auto tasks", actor: "Sistema",
+      trig: "Vadybininkas išjungė auto tasks (pertrauka, pamainos pabaiga).",
+      beh: "Naujų auto užduočių neskiriama; einama užduotis baigiama. Pertraukoms atskiros funkcijos nėra, naudojamas tas pats jungiklis. Buvęs Active laukas pakeistas auto tasks jungikliu.",
+      note: "PM klausia, ar reikia aktyvios pamainos ir kad Unfinished picking tasks filtre matysis visos paskyros: Q45.",
+      cty: { LT: "Dvi pertraukos po 30 min per dieną.", LV: "Pertraukos po bangos, aktyvioje pamainoje 15–20 pickerių.", EE: "15 min pertraukos." } },
+    { id: "S15", ph: "C", s: "Užduotis be zonos", t: "Užduotis be pagrindinės zonos (NONE)", actor: "Sistema",
+      trig: "Užduotis neturi zonos arba item perkeltas į kitą zoną.",
+      beh: "NONE zonos užduotys automatiškai neskiriamos, efektyvumas joms nevedamas. Skyrimas – antra fazė." },
     { id: "S16", ph: "C", s: "Rankiniu būdu sukurta užduotis", t: "Rankiniu būdu sukurta užduotis", actor: "SC vadybininkas, sistema",
       trig: "Vadybininkas sukuria užduotį, pvz. vienam užsakymui.",
-      beh: "Confluence v46: nustatymai galioja automatiškai ir rankiniu būdu sukurtoms užduotims, todėl sistema jas skiria pagal tas pačias taisykles. Patikrink: tai mano skaitymas.",
-      note: "Ar tai apima LT gathering užduotis: Q37." },
-    { id: "S17", ph: "C", s: "Rytojaus bangos užduotys", t: "Rytojaus bangos užduotys", actor: "Sistema",
-      trig: "Rytojaus užsakymai suskaidyti į užduotis rankiniu būdu.",
-      beh: "SC nustato bangos rinkimo pradžios laiką, t. y. nuo kelintos valandos šiandien galima skirti rytojaus bangos užduotis. Svarbu parduotų slotų procentas. Kai pickerių trūksta, vadybininkas didina efektyvumą paskyroje.",
-      note: "Konkrečių zonų rytojaus bangoms auto neskiriama: bananai, daržovės, vaisiai, ryto picking zona. Daržovių ir vaisių rytojaus užduotys šiandien neskiriamos, kad būtų surinktos kuo arčiau pristatymo. Confluence rinkimo pradžios laiko rytojaus bangoms nepatvirtina." },
+      beh: "Nustatymai galioja užsakymams ir papildymams, automatiškai ir rankiniu būdu sukurtoms užduotims, todėl sistema jas skiria pagal tas pačias taisykles.",
+      note: "Patikrink: tai mano skaitymas." },
+    { id: "S17", ph: "C", s: "Rytojaus bangos", t: "Rytojaus bangos užduotys šiandien", actor: "Sistema",
+      trig: "Rytojaus užsakymai suskaidyti į užduotis.",
+      beh: "SC suveda šiandienos ir rytojaus bangų rinkimo laikus: nuo kada šiandien skiriamos rytojaus bangų užduotys. Rytojaus bangoms neskiriamos išimčių zonos (bananai, daržovės, vaisiai, ryto zona), kad būtų renkamos arčiau pristatymo. Workshop zonos renkamos tik einamąją dieną.",
+      note: "Generavimo ir priskyrimo laikas, laikas kiekvienai bangai ar bendras: Q46. Frozen zonos laikai: Q47." },
+    { id: "S28", ph: "C", s: "Efektyvumo kėlimas", t: "Trūksta pickerių arba užsakymai didesni", actor: "SC vadybininkas, sistema",
+      trig: "Atėjo mažiau pickerių nei planuota arba užsakymai didesni.",
+      beh: "„Assign X % over efficiency“: kraštutiniais atvejais, ne kasdien, laikinai skiriama daugiau nei pickerio efektyvumas, kad nebūtų vėlavimų.",
+      note: "Dizaine taikoma tik auto pickeriams, PM 10-22 siūlo visiems dirbantiems: Q41. Dizainas: DD4." },
 
-    { id: "S18", ph: "D", s: "Workshopų užduotys", t: "Workshopų užduotys", actor: "Sistema, pickeriai",
-      trig: "Artėja workshopo komplektavimo laikas prieš atsikrovimą.",
-      beh: "Priskiriami laisvi pickeriai, kurie aptarnauja cecho zoną ir turi laiko. Komplektuoti gali keli pickeriai per vieną paskyrą. Cechai startuoja skirtingu laiku (pvz., bandelės ~11:30, šviežiaka ~12:00).",
-      note: "Reikia cechų sąrašo su startų laikais. Workshopai turės atskirą trigerį, išskyrus bandeles: jų užduotis galima rinkti anksčiau, kiek anksčiau neišspręsta. Jei per 30 min yra daugiau nei 45 SKU skenuoti, skiriamas papildomas pickeris (iš Confluence v46 išimta). Confluence v46: workshopams skiriama visa tos pačios zonos užduotis virš efektyvumo (Q36).",
-      cty: {
-        LT: "Apie 30 min prieš pristatymą, 4 pickeriai komplektuoja.",
-        LV: "Kartais anksčiau, 3–5 pickeriai.",
-        EE: "45–30 min prieš bangos pradžią, vienas pickeris."
-      } },
-    { id: "S19", ph: "D", s: "Gathering", t: "Gathering (komplektavimas)", actor: "Sistema, vadybininkas, pickeris",
-      trig: "Po kiekvieno rinkimo ciklo arba pagal barkodų palyginimą.",
-      beh: "Papildomas darbas po rinkimo, kuris užima pickerio laiką.",
-      note: "Neaišku, kaip pickeris užbaigia gathering Picker app. Vidutinis efektyvumas turėtų padengti gathering, bet LV ir EE dar reikia įtikinti. Variantas: mygtukas gathering užduočiai. Workshop 10-08: su gathering bandys vengti sprendimų sistemoje. Note 10-15 Justinė: vidurkis per valandą dengia ir komplektavimą (Q12 uždaryta); LT paskutinė prekė skenuojama aikštelėje ir pickeris iškart laisvas, LV ir EE reikia laiko grįžti ir sudėti maišus.",
-      cty: {
-        LT: "Užduotį kuria rankiniu būdu mygtuku ir priskiria konkretiems pickeriams. Pavyzdžiai: pienas, barcode compare.",
-        LV: "Automatiškai generuojama ir priskiriama kiekvienam pickeriui. Trunka 20–30 min.",
-        EE: "Automatiškai generuojama ir priskiriama kiekvienam pickeriui. Trunka 20–30 min."
-      } },
-    { id: "S20", ph: "D", s: "OOS zonos užduotys", t: "OOS zonos užduotys", actor: "Sistema",
+    { id: "S18", ph: "D", s: "Workshop'ų užduotys", t: "Workshop'ų užduotys", actor: "Sistema, pickeriai",
+      trig: "Prasideda workshop zonos rinkimo laikas.",
+      beh: "Kiekvienai einamosios dienos bangai SC nustato workshop rinkimo pradžią ir pabaigą. Visos vienos workshop zonos užduotys skiriamos vienam pickeriui, nesvarbu dydis: efektyvumas ir maksimalus kiekis netaikomi, 1 kg = 1 unit. Bandelių zona pažymima BUNS žyma. Jei workshop užduočių mažiau nei minimali riba, skiriama workshop zonų kombinacija.",
+      note: "Reikia workshop zonų sąrašo su laikais (Q13). Minimalus kiekis SKU ar units: Q48.",
+      cty: { LT: "Visas workshop zonas surenka vienas pickeris, viena kombinacija. BUNS 30 min anksčiau. Min kiekis pagal SKU.", LV: "BUNS vienas pickeris, 30 min anksčiau už kitas workshop zonas.", EE: "Bandeles renka patys nuo bangos pradžios ir kombinuoja su ne workshop zonomis." } },
+    { id: "S19", ph: "D", s: "Gathering", t: "Gathering (komplektavimas)", actor: "Sistema, pickeris",
+      trig: "Po rinkimo pickeris komplektuoja užsakymus.",
+      beh: "Atskiros gathering logikos nėra: vidutinis efektyvumas dengia ir komplektavimą, patvirtinta LT, LV ir EE. Vesdami skaičius SC į tai atsižvelgia.",
+      note: "PM nustatymų sąraše vis dar yra „Gathering settings“: Q53.",
+      cty: { LT: "Paskutinė prekė skenuojama aikštelėje, pickeris iškart laisvas.", LV: "Reikia laiko grįžti ir sudėti maišus, 20–30 min.", EE: "Kaip LV." } },
+    { id: "S20", ph: "D", s: "OOS zonos užduotys", t: "OOS zonos užduotys", actor: "Koordinatoriai, pickeriai",
       trig: "Atsiranda OOS zonos užduotis.",
-      beh: "Priskiriama pickeriams, o ne koordinatoriams.",
-      note: "Senas tekstas, kol procesas išsiaiškinamas. Note 10-15 Justinė: su koordinatoriais niekas nesikeičia, nes užduotys jau skiriamos automatiškai. Algoritmo logikos S20 yra koordinatorių versija (Q27).",
-      cty: {
-        LT: "Jau dabar skiriama pickeriams.",
-        LV: "Anksčiau koordinatoriams. Atsiliepimas: veikia kaip LT.",
-        EE: "Anksčiau koordinatoriams. Atsiliepimas: veikia kaip LT."
-      } },
-    { id: "S21", ph: "D", s: "Ne surinkimo darbai", t: "Ne surinkimo darbai (valymas, aikštelės paruošimas, apmokymai)", actor: "SC vadybininkas",
+      beh: "Koordinatoriams pakeitimų nėra. LT OOS užduotys skiriamos pickeriams; LV ir EE bandė skirti pickeriams ir atsiliepimas „veikia kaip LT“.",
+      note: "Ar OOS patenka į Stage II auto skyrimą: Q27." },
+    { id: "S21", ph: "D", s: "Ne surinkimo darbai", t: "Ne surinkimo darbai (valymas, aikštelė, mokymai)", actor: "SC vadybininkas",
       trig: "Pickeris turi atlikti kitą darbą.",
-      beh: "Užduočių skyrimą mažina vadybininkas rankiniu būdu. Sistemoje šių užduočių nebus.",
-      note: "Lipdukai: LV ir EE tai atskiras procesas, LT įeina į rinkimą. Atsakomybė lieka PV.",
-      cty: {
-        LT: "Dovanų lipdukų klijavimas yra rinkimo dalis.",
-        LV: "Atskiras procesas.",
-        EE: "Atskiras procesas."
-      } },
+      beh: "Sistemoje šių užduočių nėra; vadybininkas išjungia auto tasks. Kitų tipų užduotys (valymas, barcode compare, užsakymų inspekcija) – antra fazė.",
+      cty: { LT: "Dovanų lipdukai yra rinkimo dalis.", LV: "Atskiras procesas.", EE: "Atskiras procesas." } },
+    { id: "S26", ph: "D", s: "Inspektorių užduotys", t: "Inspektoriai auto tasks grupėje", actor: "Sistema",
+      trig: "Atsiranda inspektoriaus užduotis (iš „not found“).",
+      beh: "Inspektorių užduotys jau skiriamos automatiškai, todėl jie priklauso auto tasks grupei; jų auto tasks visada įjungtas.",
+      note: "Vytautas 10-21; PM nemini. Ar galima išjungti: dizaino K10." },
 
-    { id: "S22", ph: "E", s: "Pickerių stebėjimas dashboard'e", t: "Vadybininkas stebi pickerių pasiskirstymą per zonas", actor: "SC vadybininkas",
-      trig: "Eigoje arba prieš keičiant nustatymus.",
-      beh: "Dashboard rodo aktyvius pickerius kiekvienoje zonoje, jų apkrovą, efektyvumą, priskirtas užduotis, kiek pickerių renka ir kiek baigia." },
+    { id: "S22", ph: "E", s: "Zonų ir pickerių stebėsena", t: "Vadybininkas stebi pickerius per zonas", actor: "SC vadybininkas",
+      trig: "Bangos eigoje.",
+      beh: "PM „Active picker pool“: kiekvienai zonai aktyvūs pickeriai, renkantys, baigiantys, turintys kitas užduotis; kiekvienam pickeriui apkrova, efektyvumas, prieinamumas, priskirtos užduotys.",
+      note: "Dizainas: DD5, DD7, DB4." },
     { id: "S23", ph: "E", s: "Pickerio vaizdas apie kitą užduotį", t: "Pickeris mato, kiek dar reikės surinkti", actor: "Pickeris",
       trig: "Pickeris dirba su užduotimi.",
-      beh: "Matyti kita priskirta, bet dar nesinchronizuota užduotis (iš kurios bangos, kiek SKU, units, kg) ir kiek laiko liko iki rinkimo pabaigos. Laikrodukas naudingas naujokams.",
-      note: "Neaišku, ar pickeriui apskritai ką nors reikia." }
+      beh: "Idėja: matyti priskirtą, bet nesinchronizuotą užduotį (banga, SKU, units, kg) ir laiką iki rinkimo pabaigos; laikrodukas naudingas naujokams.",
+      note: "PM tebeklausia, ar Picker app reikia ko nors: Q22." }
   ];
 
-  var SRC = { C: "Confluence", I: "Workshop 09-28", W: "Workshop 10-06", T: "Workshop 10-08", M: "Susitikimas 10-06" };
-  var EV = { conf: "Patvirtinta Confluence", notes: "Tik užrašuose", conflict: "Konfliktas", unclear: "Neaišku" };
+  var SRC = { C: "PM puslapis", I: "Workshop 09-28", W: "Workshop 10-06", T: "Workshop 10-08", M: "Susitikimas 10-06", J: "Note 10-15 Justinė", V: "Note 10-15 SC vadovas", R: "Review 10-22", P: "SC nustatymai 10-23", D: "Vytauto sprendimai" };
+  var EV = { conf: "Patvirtinta PM", notes: "Tik užrašuose", conflict: "Konfliktas", unclear: "Neaišku" };
   var META = {
-    S01: ["CIWT", "conf"], S02: ["CIW", "conf"], S03: ["WI", "notes"], S04: ["WI", "notes"], S05: ["CIT", "conflict"],
-    S06: ["CT", "unclear"], S07: ["CIWT", "unclear"], S08: ["CW", "conf"], S09: ["CIW", "conflict"], S10: ["C", "conf"],
-    S11: ["C", "unclear"], S12: ["CIWT", "conflict"], S13: ["CIW", "unclear"], S14: ["CWT", "conf"], S15: ["C", "conf"],
-    S16: ["CW", "conf"], S17: ["CIT", "unclear"], S18: ["CWT", "unclear"], S19: ["CWT", "unclear"], S20: ["CM", "conflict"],
-    S21: ["CW", "conf"], S22: ["CIW", "conf"], S23: ["C", "unclear"],
-    S24: ["T", "notes"], S25: ["CT", "unclear"]
+    S01: ["CTP", "conf"], S02: ["CIJD", "conf"], S03: ["WD", "notes"], S04: ["CVR", "unclear"], S05: ["CIT", "conflict"],
+    S06: ["CTP", "unclear"], S07: ["CITP", "conf"], S08: ["CWP", "unclear"], S09: ["CWJRP", "conf"], S10: ["C", "conf"],
+    S11: ["C", "unclear"], S12: ["CTJP", "conf"], S13: ["CID", "conf"], S14: ["CWTD", "conf"], S15: ["CJ", "conf"],
+    S16: ["C", "conf"], S17: ["CTP", "conf"], S18: ["CWTP", "conf"], S19: ["CJP", "conf"], S20: ["CMJ", "conflict"],
+    S21: ["CW", "conf"], S22: ["CI", "conf"], S23: ["C", "unclear"], S24: ["T", "notes"], S25: ["CTP", "conf"],
+    S26: ["D", "notes"], S27: ["D", "notes"], S28: ["CVR", "conflict"], S29: ["CP", "unclear"], S30: ["CP", "unclear"], S31: ["CP", "conflict"]
   };
   SC.forEach(function (s) { var m = META[s.id]; s.src = m[0].split(""); s.ev = m[1]; });
   var BYID = {}; SC.forEach(function (s) { BYID[s.id] = s; });
 
   var LANES = [
-    { lane: "Vadybininkas", cells: [["S01", "S02", "S03"], ["S13"], ["S04", "S22"], [], ["S19", "S21"]] },
-    { lane: "Sistema", cells: [[], ["S05"], ["S06", "S07", "S24", "S08", "S09", "S10", "S11", "S25"], ["S12", "S14", "S15", "S16", "S17"], ["S18", "S19", "S20"]] },
-    { lane: "Pickeris", cells: [[], [], ["S23"], [], ["S19"]] }
+    { lane: "Vadybininkas", cells: [["S01", "S02", "S03"], ["S13"], ["S04", "S22", "S28"], [], ["S21"]] },
+    { lane: "Sistema", cells: [[], ["S05"], ["S06", "S07", "S24", "S08", "S09", "S10", "S11", "S25", "S29", "S30", "S31"], ["S12", "S14", "S15", "S16", "S17"], ["S18", "S19", "S20", "S26"]] },
+    { lane: "Pickeris", cells: [[], ["S27"], ["S23"], [], ["S19"]] }
   ];
   var LANE_COLS = ["Prieš dieną", "Bangos pradžia", "Bangos eiga", "Cut-off ir išimtys", "Specifinės užduotys"];
 
   var QT = {
     konfliktas: { l: "Konfliktas", d: "Šaltiniai arba vienas šaltinis sau prieštarauja." },
     spraga: { l: "Spraga", d: "Niekas nepasakė arba šaltinyje lieka klaustukas." },
-    itartina: { l: "Įtartina", d: "Tavo ar PM pastaba, dar netikrinta." },
+    itartina: { l: "Įtartina", d: "Vytauto ar PM pastaba, dar netikrinta." },
     prielaida: { l: "Prielaida", d: "Mano sugretinimas ar išvada, kurią reikia patvirtinti." }
   };
   var QL = [
-    { id: "Q05", k: "konfliktas", cf: "Confluence ir Workshop 09-28 „aktyvų“ aprašo kaip paskyros flag'ą (taip arba ne). Workshop 10-06 aprašo dienos planą 1–2 dienas į priekį, kuriame dar nurodomas pajėgumas. Neaišku, ar tai vienas nustatymas, ar du.", g: "Pickerio nustatymai", q: "Ar „aktyvus“ yra paskyros flag'as, kasdienis planavimo žymėjimas, ar abu?", r: ["S02", "S03", "S14"],
-      chk: "Sugretinau pats. Gali būti, kad šaltiniai kalba apie tą patį dalyką.",
-      c: [["Confluence", "Active for auto tasks assignation: True / False."], ["Workshop 09-28", "Perpanaudojamas esamas Active flag'as."], ["Workshop 10-06", "Rankinis dienos žymėjimas: kam tą dieną skirti užduotis ir kokiu pajėgumu, planuojama 1–2 dienas į priekį."], ["Workshop 10-08", "Pickeriams bus galima junginėti aktyvumo toggle, aktyviam skiriami auto tasks. Tai laikoma auto tasks safety switch."]] },
-    { id: "Q08", k: "konfliktas", cf: "Confluence „unique orders / val.“ perbraukė, tai gali reikšti, kad parametro atsisakyta. Workshop 09-28 jį įtraukia kaip ketvirtą efektyvumo skaičių.", g: "Pickerio nustatymai", q: "Ar „unique orders per valandą“ iš tikrųjų reikalingas efektyvumo parametras?", r: ["S02"],
-      a: "Uždaryta. Note 10-15 Justinė (2026-10-15): unique orders iš efektyvumo dingo, lieka SKU, units, kg. Sutampa su Confluence. Galimai lieka maksimaliame efektyvume (Q32).",
-      c: [["Confluence", "Efektyvumo stulpelyje „unique orders / 1 h?“ perbraukta."], ["Workshop 09-28", "Kiekvienoje zonoje nurodoma SKU, units, kg ir unique orders per valandą."]] },
-    { id: "Q09", k: "konfliktas", cf: "Confluence, Workshop 09-28 ir 10-08: po cut-off tik sustoja auto priskyrimas, rankiniu būdu skirti galima. Workshop 10-06: cut-off yra surinkimo pabaigos laikas, tai reikštų, kad po jo nebėra ką rinkti.", g: "Cut-off ir išimtys", q: "Ar cut-off yra „surinkimo pabaigos laikas“, ar tik auto priskyrimo sustabdymas?", r: ["S12"],
-      chk: "Sugretinau pats. Gali būti, kad tai tas pats dalykas kitais žodžiais.",
-      c: [["Confluence", "Po cut-off nauji tasks nebeskiriami (išimtys: workshopai, apmokėti papildymai (?))."], ["Workshop 09-28", "Po cut-off auto skyrimo nėra."], ["Workshop 10-06", "Cut-off kaip surinkimo pabaigos laikas."], ["Workshop 10-08", "Suėjus cut-off laikui, nuo to momento automatiškai nebeskiriama."]] },
-    { id: "Q15", k: "konfliktas", cf: "Confluence zonų kombinacijoms suteikia aukštą prioritetą. Workshop 10-06 sako, kad kombinacijos yra antras prioritetas, t. y. pirmiausia skiriama viena zona.", g: "Zonos ir kombinacijos", q: "Zonų kombinacijų prioritetas: „antras prioritetas“ ar „high priority“?", r: ["S09"],
-      chk: "Sugretinau pats. Patikrink, ar abu šaltiniai kalba apie tą pačią taisyklę.",
-      c: [["Confluence", "Zonų kombinacijos: high priority."], ["Workshop 10-06", "Zonų kombinacijos yra antras prioritetas."], ["Note 10-15 Justinė", "Algoritme prioritetas vienai zonai. LV ir LT skiria iš vienos zonos, Estai iš kombinacijų."]] },
-    { id: "Q16", k: "konfliktas", cf: "Confluence prieštarauja pats sau. X481 centre bangos pradžioje užduotys dalijamos po lygiai, o bendra taisyklė Most Efficient First didžiausias užduotis skiria efektyviausiems.", g: "Zonos ir kombinacijos", q: "Confluence viduje: užduotys dalijamos po lygiai ar pagal efektyvumą? Kokia yra taisyklė?", r: ["S05"],
-      c: [["Confluence (X481)", "Bangos pradžioje užduotys dalijamos po lygiai, dienos eigoje pagal užsakymų kiekį."], ["Confluence (priskyrimo taisyklė)", "Most Efficient First: efektyviausi pickeriai gauna didžiausias užduotis."]] },
-    { id: "Q27", k: "konfliktas", cf: "Confluence: LV ir EE OOS užduotys skiriamos koordinatoriams, bet LV ir EE bandys jas skirti pickeriams (atsiliepimas „veikia kaip LT“). Susitikimas 10-06: koordinatorių užduočių automatizavimas nesikeičia. Neaišku, ar OOS užduotys patenka į Stage II.", g: "Gathering ir specifinės užduotys", q: "Kam skiriamos OOS zonos užduotys: koordinatoriams ar pickeriams, ir ar tai keičiasi Stage II?", r: ["S20"],
-      a: "Iš dalies: Note 10-15 Justinė (2026-10-15), su koordinatoriais niekas nesikeičia, dabar raštu. OOS priskyrimas pickeriams neišspręstas.",
-      c: [["Confluence", "OOS užduotys koordinatoriams LV ir EE. LT: nebėra planų skirti OOS koordinatoriams. EE ir LV bandys skirti pickeriams, atsiliepimas „veikia kaip LT“."], ["Susitikimas 10-06", "Koordinatorių užduočių automatizavimas nesikeičia."]] },
+    /* atviri */
+    { id: "Q15", k: "konfliktas", g: "Zonos ir kombinacijos", q: "Zonų kombinacijų prioritetas: PM rašo „high priority“, o užrašai – pirmenybė vienai zonai.", r: ["S09"],
+      a: "Iš dalies: SC nustatymai 10-23 – kombinacijos naudojamos, kai zonoje darbo mažiau nei minimali riba. Tada abu teiginiai dera: kombinacijos svarbios, bet įsijungia tik žemiau ribos.",
+      chk: "Suderinimą padariau pats.",
+      c: [["PM puslapis", "Picking zones combinations – high priority."], ["Note 10-15 Justinė", "Algoritme prioritetas vienai zonai."], ["SC nustatymai 10-23", "Nepasiekus minimalaus kiekio zonoje, užduotys kombinuojamos su kita zona."]] },
+    { id: "Q16", k: "konfliktas", g: "Priskyrimo logika", q: "X481 bangos pradžioje užduotis dalija po lygiai, o pagrindinė logika – efektyviausiam pickeriui. Ar X481 tai išimtis, kurią reikia palaikyti?", r: ["S05"],
+      c: [["PM puslapis (X481)", "Po lygiai surinkėjams bangos pradžioje, dienos eigoje pagal užsakymų kiekį."], ["PM puslapis (Solution)", "Most efficient available picker."]] },
+    { id: "Q27", k: "konfliktas", g: "Specifinės užduotys", q: "Ar OOS zonos užduotys patenka į Stage II auto skyrimą pickeriams?", r: ["S20"],
+      c: [["PM puslapis", "Coordinator – no changes required. EE ir LV bandė OOS skirti pickeriams: „works as same as in LT“."], ["Susitikimas 10-06", "Koordinatorių užduočių automatizavimas nesikeičia."]] },
+    { id: "Q41", k: "konfliktas", g: "Efektyvumo valdymas", q: "Kaip vienoje vietoje valdyti momentinį efektyvumą: pickerio % visoms zonoms, „X % over efficiency“ ir kitos bangos X %? Ar kėlimas taikomas tik auto pickeriams, ar visiems dirbantiems?", r: ["S04", "S07", "S28"],
+      c: [["PM puslapis", "Pickerio paskyroje „specific % to minimize or maximize efficiency in all PZ“; SC lygyje „Assign X % over efficiency“ kraštutiniams atvejams; kitai bangai X %."], ["Review 10-22", "PM: kėlimas Picker accounts lange turėtų veikti visiems dirbantiems, ir be auto tasks. Reikia laikino didinimo ir mažinimo pickerio puslapyje ir sidebar'e."], ["SC nustatymai 10-23", "Neaišku, kaip sujungti efektyvumo kėlimą su kitos bangos nustatymu; tikslas valdyti einamosios ir kitos bangos boost / decrease."]] },
+    { id: "Q49", k: "konfliktas", g: "Zonos ir kombinacijos", q: "Kuri zona LT renkama pirmiausia: gėrimai ar bakalėja?", r: ["S25", "S01"],
+      c: [["PM puslapis", "LT pirmiausia renka ir sukomplektuoja sunkius gėrimus; sutarta tai dengti efektyvumo nustatymais."], ["SC nustatymai 10-23", "Lietuvoje pradedama nuo bakalėjos."]] },
+    { id: "Q51", k: "konfliktas", g: "Priskyrimo logika", q: "Ar reikia tolygaus skirstymo tarp zonų, jei skiriama pagal efektyvumą?", r: ["S30"],
+      c: [["PM puslapis", "Assign tasks equally of picking zones – „What for we need an efficiency then?“"], ["SC nustatymai 10-23", "LV ir EE taip skirsto dabar; operacijose neišspręsta."]] },
+    { id: "Q52", k: "konfliktas", g: "Zonos ir kombinacijos", q: "Ar reikia riboti pickerių skaičių zonoje?", r: ["S31"],
+      c: [["PM puslapis", "Max picker per picking zone išbraukta: „Don’t need, in LT we don’t have“."], ["SC nustatymai 10-23", "Gali reikėti dėl SC dydžio; poreikis operacijose nepatvirtintas."]] },
 
-    { id: "Q01", k: "spraga", g: "Kitos bangos ir kitos dienos", q: "Koks procentas skiriamas kitai bangai?", r: ["S07"],
-      chk: "Neaišku, ar Confluence X % reiškia tą patį, ką Workshop 10-08 procentas.",
-      c: [["Confluence v42", "50 %, pažymėta, kad tai turi būti nustatymas."], ["Confluence v46", "X % (need to have a setting), by efficiency and max quantities per once."], ["Workshop 09-28", "Einamoji banga 100 %, kitai bangai procentas ar panašus setup."], ["Workshop 10-08", "Procentas skaičiuojamas nuo pickerio maksimalaus efektyvumo: 30 % reiškia, kad iki cut-off pickeris renka mažiau ir greičiau grįžta į salę."]] },
-    { id: "Q02", k: "spraga", g: "Kitos bangos ir kitos dienos", q: "Ką daryti, kai einamojoje bangoje lieka 50 %, 30 % ar 10 % pajėgumų: kuriai bangai teikti prioritetą?", r: ["S07"],
-      c: [["Workshop 10-08", "Efektyvumo ribojimas kitai bangai gali priklausyti nuo laisvų užsakymų slotų einamojoje bangoje (pvz. laisva 30 % ar 50 %). Situacija dar aktyvioje stadijoje, parametrai nežinomi."], ["Confluence v46", "Eilutė „Open capacities left of current wave“ (50/30/10 %) perbraukta."]],
-      a: "Iš dalies: Confluence v46 (2026-10-15) šio klausimo nebekelia. Workshop 10-08 idėja apie laisvus slotus lieka tik užrašuose." },
-    { id: "Q03", k: "spraga", g: "Kitos bangos ir kitos dienos", q: "Kada rytojaus bangos užduotys gali būti priskiriamos automatiškai, kai jas vadybininkas suskaido rankiniu būdu?", r: ["S17"],
-      a: "Iš dalies: Workshop 10-08 (2026-10-08), nuo SC nustatyto bangos rinkimo pradžios laiko. Confluence nepatvirtinta.",
-      c: [["Workshop 10-08", "SC nustato bangos rinkimo pradžios laiką rytojaus bangoms, nuo kurio šiandien galima skirti jų užduotis."]] },
-    { id: "Q04", k: "spraga", g: "Kitos bangos ir kitos dienos", q: "Ką daryti, kai pickerių trūksta, o prekes vis tiek reikia surinkti? Dabar vadybininkas didina efektyvumą paskyroje.", r: ["S17", "S04"],
-      c: [["Note 10-15 SC vadovas", "Atėjus mažiau žmonių, uždedama žyma, kad visiems darbuotojams turi būti didinamas efektyvumas."]] },
-    { id: "Q06", k: "spraga", g: "Pickerio nustatymai", q: "Kaip ir kada nuimamas „naujas“ flag'as: rankiniu būdu ar pagal laiką?", r: ["S13"],
-      c: [["Workshop 09-28", "Naujo darbuotojo toggle, konkreti logika dar neaiški."], ["Confluence", "Papildomas tag'as, kad pickeris naujas."]] },
-    { id: "Q28", k: "spraga", g: "Pickerio nustatymai", q: "Ar naujam pickeriui kitos bangos užduočių skyrimas rankiniu būdu yra sprendimas, ar tik aptarimo siūlymas?", r: ["S13"],
-      c: [["Confluence", "Aptarimo punktas po klausimo „kaip jiems skirti užduotis“: papildomas tag'as, auto neskirti, rankiniu būdu skirti kitos bangos užsakymus, ne einamosios."]] },
-    { id: "Q23", k: "spraga", g: "Pickerio nustatymai", q: "Kaip pickeris gauna zonos nustatymus pirmą kartą ir kaip greitai vesti daug parametrų (šablonai)?", r: ["S02"] },
-    { id: "Q10", k: "spraga", g: "Cut-off ir išimtys", q: "Kokios išimtys po cut-off: apmokėti papildymai, šaldyti papildymai, kas dar?", r: ["S12"] },
-    { id: "Q14", k: "spraga", g: "Cut-off ir išimtys", q: "Ar sistema turi automatiškai skirti rankiniu būdu sukurtas užduotis, pvz. vieno užsakymo?", r: ["S16"],
-      a: "Uždaryta. Confluence v46 (2026-10-15): nustatymai galioja automatiškai ir rankiniu būdu sukurtoms užduotims. Patikrink: mano skaitymas.",
-      c: [["Confluence v42", "What we will do with manually created tasks for example for 1 order → should system assign picker or not?"], ["Confluence v46", "For order and order addition, automatically and manually generated tasks these settings are valid with several exceptions."]] },
-    { id: "Q18", k: "spraga", g: "Cut-off ir išimtys", q: "Ar reikia pranešimo (alarm) apie užduotį be zonos?", r: ["S15"] },
-    { id: "Q19", k: "spraga", g: "Zonos ir kombinacijos", q: "Kada priskirti sunkių prekių užduotis kitam pickeriui (LT saldainiai svoriu)? Ar tai tik LT nustatymas?", r: ["S11"] },
-    { id: "Q17", k: "spraga", g: "Zonos ir kombinacijos", q: "Kada „assign X % over efficiency“ naudojamas? Confluence klausia, bet atsakymo nėra.", r: ["S05", "S04"],
-      a: "Uždaryta. Confluence v46 (2026-10-15): naudojamas kraštutiniais atvejais, ne kasdien, kai pickerių mažiau nei planuota arba užsakymai didesni nei planuota. Susiję su Q04.",
-      c: [["Workshop 10-08", "Priskyrimas virš pickerio efektyvumo bus, edge cases dar nežinomi."], ["Confluence v46", "It will be used in edge cases, not every day, to avoid delays when we have not enough pickers as planned or bigger orders than planned."]] },
-    { id: "Q11", k: "spraga", g: "Gathering ir workshopai", q: "Kaip pickeris užbaigia gathering užduotį Picker app? Ar užtenka mygtuko?", r: ["S19"] },
-    { id: "Q12", k: "spraga", g: "Gathering ir workshopai", q: "Ar vidutinis efektyvumas gali padengti gathering? LV ir EE tai reikės pagrįsti ir įtikinti.", r: ["S19"],
-      a: "Uždaryta. Note 10-15 Justinė (2026-10-15): vedamas vidurkis per valandą, juo dengiamas ir komplektavimas, nes LV ir EE grįžimo trukmės niekas tiksliai nežino." },
-    { id: "Q13", k: "spraga", g: "Gathering ir workshopai", q: "Reikia workshopų sąrašo su startų laikais ir taisyklės, kaip priskirti keletą pickerių vienam cechui.", r: ["S18"],
-      c: [["Workshop 10-08", "Workshopai turės atskirą trigerį, išskyrus bandeles. Bandelių užduotis galima rinkti anksčiau, kiek anksčiau neišspręsta."]] },
-    { id: "Q20", k: "spraga", g: "Laikas tarp užduočių", q: "Kiek laiko tarp užduočių priskyrimo ir kur tai nustatoma: SC ar pickerio paskyroje?", r: ["S06"],
-      chk: "Sugretinau pats. Neaišku, ar 90 % taisyklė ir laikas nuo paskutinio item'o yra ta pati taisyklė.",
-      c: [["Confluence", "Kita užduotis, kai surinkta apie 90 % eilučių."], ["Workshop 10-08", "Kiek laiko turi praeiti nuo paskutinio surinkto item'o, kad pickeriui būtų galima skirti naują užduotį."]] },
-    { id: "Q21", k: "spraga", g: "Laikas tarp užduočių", q: "Kas aktyvuoja pickerį Picker app: pats pickeris ar vadybininkas admin'e? Ar pickeris nurodo pamainos pradžią ir pabaigą?", r: ["S03", "S14"],
-      a: "Iš dalies: Note 10-15 SC vadovas ir tavo sprendimas 10-19, junginėja pamainos vadybininkas rankiniu būdu pagal grafiką ir faktą.",
-      chk: "Kad pickeris pamainos pradžios ir pabaigos nenurodo, išvedžiau pats.",
-      c: [["Workshop 10-08", "„Pickeriams bus galima junginėti aktyvumo toggle“, kas junginės, nepasakyta."]] },
-    { id: "Q22", k: "spraga", g: "Laikas tarp užduočių", q: "Ar pickeriui reikia matyti kitą užduotį ir likusį laiką? Confluence klausia, ar apskritai kas nors reikia Picker app.", r: ["S23"] },
-    { id: "Q25", k: "spraga", g: "Dar nepildyta", q: "EE atvejų lentelė (veiksniai, kuriuos dabar vertina vadybininkas) Confluence yra tuščia. Reikia užpildyti, kuris nustatymas kurį atvejį padengia.", r: [],
-      chk: "Gali būti, kad lentelė tuščia tik dėl konvertavimo, originale ne." },
-    { id: "Q26", k: "spraga", g: "Dar nepildyta", q: "Pasidomėti capacity management sistemų praktika (pastaba Workshop 10-06).", r: [] },
-
-    { id: "Q31", k: "konfliktas", cf: "Workshop 10-06: maksimalus efektyvumas keičiamas nuolat, galimai dashboard'e. Note 10-15 SC vadovas: parametrai suvedami vieną kartą, bangos metu pajėgumai nekeičiami, tik on/off.", g: "Pickerio nustatymai", q: "Kaip dažnai keičiamas maksimalus efektyvumas: nuolat dienos eigoje ar tik išimtiniais atvejais?", r: ["S04"],
-      c: [["Workshop 10-06", "Maksimalus efektyvumas keičiamas nuolat, galimai dashboard'e."], ["Note 10-15 SC vadovas", "Pajėgumai pikeriams einant bangai nebus keičiami, bus jungiami pikeriai on/off."]] },
-    { id: "Q32", k: "konfliktas", cf: "Justinė vartoja „max quantity“ ir sieja jį su unique orders, o projekto terminuose atskiro „max quantity“ nustatymo nėra.", g: "Pickerio nustatymai", q: "Ar unique orders lieka maksimaliame efektyvume ir ar Justinės „max quantity“ yra maksimalus efektyvumas?", r: ["S02"],
-      chk: "Tikėtina, kad kalbama apie maksimalų efektyvumą. Pavadinimo skirtumas lieka.",
-      a: "Iš dalies: Confluence v46 (2026-10-15), unique orders lieka tik stulpelyje „MAX quantity assign per once“ (Optional).",
-      c: [["Note 10-15 Justinė", "Max quantity nustatymuose bus reikalingi unique orders efektyvumo parametrai, nes LT task'e iki 9 skirtingų užsakymų. Ar visi privalomi, neaišku."], ["Confluence v46", "Stulpelis „MAX quantity assign per once for picker“ (Optional): SKU, units, kg, unique orders."]] },
-
-    { id: "Q33", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai pickeris aptarnauja zoną, bet efektyvumas jai nesuvestas arba suvesta tik dalis (pvz. SKU ir units be kg)?", r: ["S02", "S05"],
-      chk: "Required greičiausiai reiškia, kad be visų trijų išsaugoti negalima, bet neaišku, ar privaloma kiekvienai aptarnaujamai zonai.",
-      c: [["Confluence v46", "Efektyvumas pažymėtas Required, elgesys neaprašytas."], ["Note 10-15 Justinė", "Ar kiekvienai zonai vesti parametrus, ar jie gali būti nesuvesti, bet pagal tai taikyti algoritmą."]] },
-    { id: "Q34", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai maksimalus efektyvumas nesuvestas arba suvesta tik dalis parametrų: riba netaikoma ar imama numatytoji?", r: ["S02", "S07"],
+    { id: "Q01", k: "spraga", g: "Bangos", q: "Koks kitos bangos procentas (X)?", r: ["S07"],
+      c: [["PM puslapis", "Next wave – X %, need to have a setting (by efficiencies and max quantities per once)."], ["SC nustatymai 10-23", "Pavyzdys 50 %."]] },
+    { id: "Q03", k: "spraga", g: "Bangos", q: "Nuo kada rytojaus bangų užduotys skiriamos automatiškai?", r: ["S17"],
+      a: "Iš dalies: nuo SC suvesto rytojaus bangos rinkimo pradžios laiko (PM ir SC nustatymai 10-23). Detalės: Q46." },
+    { id: "Q46", k: "spraga", g: "Bangos", q: "Ar rytojaus rinkimo laikas nurodomas kiekvienai bangai, ar vienas bendras? Ar sujungti rytojaus užduočių generavimo ir priskyrimo laiką (pvz. generuojama 13 val., skiriama vėliau)?", r: ["S17"],
+      c: [["SC nustatymai 10-23", "Klausimas Justinei; vieta ne iki galo suprasta."]] },
+    { id: "Q43", k: "spraga", g: "Bangos", q: "Ar skiriama ir dar vėlesnė banga („next next wave“), ir kokiu procentu?", r: ["S07"],
+      c: [["PM puslapis", "Next next wave – ?"]] },
+    { id: "Q44", k: "spraga", g: "Bangos", q: "Ar reikia SC požymio, ar galima vienu metu rinkti kelias bangas (HYPER gali, kiti ne dėl vietos)?", r: ["S07"],
+      c: [["PM puslapis (X864)", "Keletą bangų renkama vienu metu HYPER, kitur ne – reikia požymio, ar galima sekančią priskirinėti."]] },
+    { id: "Q42", k: "spraga", g: "Priskyrimo logika", q: "Ką reiškia „Evaluate current wave risk“ ir kaip tai keičia priskyrimą?", r: ["S05"],
+      c: [["PM puslapis", "Antras pagrindinės sekos žingsnis, be aprašo."]] },
+    { id: "Q20", k: "spraga", g: "Priskyrimo logika", q: "Ar 90 % eilučių taisyklė ir laukimo laikas po grįžimo yra viena taisyklė?", r: ["S06"],
+      a: "Iš dalies: laukimo laikas yra SC nustatymas, reikalingas LV ir EE; LT nereikia (PM, SC nustatymai 10-23).",
+      c: [["PM puslapis", "Apie 90 % surinktų eilučių, kad būtų galima priskirti sekančias. Delay for next tasks: LT don’t need, LV, EE."]] },
+    { id: "Q45", k: "spraga", g: "Pickerio nustatymai", q: "Ar auto tasks jungikliui reikia aktyvios pamainos? Ką rodys Unfinished picking tasks filtras?", r: ["S14"],
+      c: [["PM puslapis", "YES / NO – don’t need to have active shift pickers as well? In Unfinished picking tasks filter options we will see ALL picker acc."]] },
+    { id: "Q40", k: "spraga", g: "Pickerio nustatymai", q: "Efektyvumas pagal šalį: LT units / 1 h, LV ir EE SKU / 1 h, kg išbrauktas. Ar paskyroje vedamas tik šalies parametras, ar abu?", r: ["S02"],
+      c: [["PM puslapis", "Efficiency Required: SKU / 1 h – LV, EE; units / 1 h – LT; kg / 1 h išbraukta."], ["Review 10-22", "Vyksta diskusijos dėl KG per valandą atsisakymo."]] },
+    { id: "Q33", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai zonai (taip pat kombinacijos zonai) efektyvumas nesuvestas arba suvestas dalinai?", r: ["S02", "S09"],
+      c: [["PM puslapis", "Efektyvumas Required, elgesys neaprašytas."], ["Review 10-22", "Kaip elgtis, kai pickeriui priskirta kombinacija, bet vienai jos zonai nesuvestas efektyvumas."]] },
+    { id: "Q34", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai maksimalus kiekis vienam kartui nesuvestas: riba netaikoma ar imama numatytoji?", r: ["S02"],
       chk: "Tikėtina, kad riba netaikoma.",
-      c: [["Confluence v46", "MAX quantity pažymėtas Optional, elgesys neaprašytas."], ["Note 10-15 Justinė", "Ar visi jie privalomi, pagal tai bus derinamas algoritmas."]] },
-    { id: "Q35", k: "spraga", g: "Kitos bangos ir kitos dienos", q: "Kam reikalingas bangos pabaigos laikas ir kuo jis skiriasi nuo cut-off?", r: ["S01", "S12"],
-      c: [["Confluence v46", "Wave picking start and end time, paaiškinimo nėra."]] },
-    { id: "Q36", k: "spraga", g: "Gathering ir workshopai", q: "Workshops „visa tos pačios zonos užduotis virš efektyvumo“: pickerio ar SC nustatymas?", r: ["S18"],
-      c: [["Confluence v46", "Yra ir stulpelis „Workshops (in picker account?)“, ir SC nustatymų eilutė."], ["Note 10-15 Justinė", "Nenuspręsta, ar workshopai bus pickerių paskyrose."]] },
+      c: [["PM puslapis", "MAX quantity assign per once – Optional."]] },
+    { id: "Q06", k: "spraga", g: "Pickerio nustatymai", q: "Kaip ir kada nuimama naujoko žyma?", r: ["S13"],
+      a: "Iš dalies: rankiniu būdu, SC sprendžia kasdien; žymą galima grąžinti (Vytautas 10-20). Ar yra automatinis kriterijus, neaptarta." },
+    { id: "Q28", k: "spraga", g: "Pickerio nustatymai", q: "Ar naujokui rankiniu būdu skiriami kitos bangos užsakymai yra taisyklė, ar siūlymas?", r: ["S13"],
+      c: [["PM puslapis", "Extra tag, not assign automatically; assign next wave’s orders manually, not current one."]] },
+    { id: "Q39", k: "spraga", g: "Pickerio nustatymai", q: "Ar lieka „Maximum active zones“ parametras?", r: ["S09"],
+      a: "Iš dalies: vienas „Can work in multiple zones“ ir pickeriui priskiriamos konkrečios kombinacijos (Review 10-22). „Maximum active zones“ neaptartas." },
+    { id: "Q23", k: "spraga", g: "Pickerio nustatymai", q: "Kaip greitai suvesti daug parametrų (šablonai, importas)?", r: ["S02"] },
+    { id: "Q10", k: "spraga", g: "Cut-off ir išimtys", q: "Ar šaldyti papildymai yra išimtis po cut-off?", r: ["S12"],
+      c: [["PM puslapis", "Paid successfully – after cut-off no assignation. Frozen items from order additions – discuss during next meeting."]] },
+    { id: "Q47", k: "spraga", g: "Cut-off ir išimtys", q: "Ar Frozen zonai reikia atskirų rinkimo laikų ir logikos?", r: ["S17", "S12"],
+      c: [["PM puslapis", "Do we need to have exception and settings for FROZEN picking zone start and end picking time?"], ["SC nustatymai 10-23", "Sprendžia operacijos, diskusijos vyksta."]] },
+    { id: "Q13", k: "spraga", g: "Workshop'ai ir gathering", q: "Reikia workshop zonų sąrašo su rinkimo pradžios ir pabaigos laikais.", r: ["S18"],
+      a: "Iš dalies: taisyklės aiškios (PM, SC nustatymai 10-23), sąrašo dar nėra." },
+    { id: "Q48", k: "spraga", g: "Workshop'ai ir gathering", q: "Workshop minimalus kiekis kombinacijai: SKU ar units? LV ir EE?", r: ["S18"],
+      c: [["PM puslapis", "MIN quantity – of SKU or UNITS? LT – galim imt tik SKU, LV, EE – ?"]] },
+    { id: "Q53", k: "spraga", g: "Workshop'ai ir gathering", q: "Kas yra PM „Gathering settings“ ir LT „gathering time“, jei gathering dengiamas efektyvumu?", r: ["S19"],
+      c: [["PM puslapis", "Nustatymų sąraše „Gathering settings“; LT atvejai: „by gathering time, when assign for active pickers and when we need to wait for workshops“, „Duration of milk gathering in every wave – GATHERING“."]] },
+    { id: "Q50", k: "spraga", g: "Zonos ir kombinacijos", q: "Kas yra „regionas“ ir kaip skaičiuojamas regionų skaičius?", r: ["S29"],
+      c: [["PM puslapis", "Assign only 1 region per once? – only FROZEN PZ in LT."], ["SC nustatymai 10-23", "Iš kiek skirtingų regionų skiriamos užduotys vienam surinkėjui – skaičiaus input'as."]] },
+    { id: "Q19", k: "spraga", g: "Zonos ir kombinacijos", q: "Kada svorinio užsakymo užduotis dalyti kitam pickeriui ir koks X kg? Tik LT?", r: ["S11"] },
+    { id: "Q22", k: "spraga", g: "Pickeris", q: "Ar pickeriui Picker app reikia matyti kitą užduotį ir likusį laiką?", r: ["S23"],
+      c: [["PM puslapis", "Picker app – Do we need anything for pickers?"]] },
+    { id: "Q30", k: "spraga", g: "Bangos", q: "Kaip pickeris grąžinamas į einamąją bangą: sistema tik nustoja skirti kitą bangą ar perskirsto priskirtas?", r: ["S24"] },
+    { id: "Q25", k: "spraga", g: "Kita", q: "EE atvejų lentelė PM puslapyje neužpildyta: kuris nustatymas kurį atvejį padengia?", r: [],
+      chk: "Lentelė tuščia ir originale, ne tik konvertuojant." },
+    { id: "Q26", k: "spraga", g: "Kita", q: "Pasidomėti capacity management sistemų praktika.", r: [] },
+    { id: "Q07", k: "prielaida", g: "Zonos ir kombinacijos", q: "Ar „likučiai neskiriami labai efektyviems“ dar galioja kaip pickerio lygio riba, ar ją pakeitė zonos minimalūs kiekiai?", r: ["S08"],
+      chk: "Tai mano klausimas: PM minimalūs kiekiai dabar SC lygyje.",
+      c: [["Workshop 10-06", "Vienam ne mažiau 20, kitam galima ir 4."], ["PM puslapis", "Picking zone MIN quantities – medium priority: SKU 10, units 50."]] },
+    { id: "Q37", k: "prielaida", g: "Workshop'ai ir gathering", q: "Ar „rankiniu būdu sukurtos užduotys“ apima ir LT gathering užduotis, kuriamas mygtuku?", r: ["S16", "S19"],
+      chk: "Tai mano klausimas; gali būti nebeaktualu, jei atskiro gathering nėra." },
 
-    { id: "Q30", k: "spraga", g: "Kitos bangos ir kitos dienos", q: "Kaip pickeris grąžinamas į einamąją bangą: sistema tik nustoja skirti kitos bangos užduotis, ar perskirsto jau priskirtas?", r: ["S24"] },
-
-    { id: "Q29", k: "itartina", g: "Cut-off ir išimtys", q: "Ar cut-off taisyklė yra SC nustatymas (reikia dizaino įvesties), ar sistemos taisyklė be nustatymo?", r: ["S12"],
-      c: [["Workshop 10-08, tavo pastaba", "Nesu tikras, ar čia reikia dizaino inputo. Tai gali būti taisyklė, ne settingas."]] },
-
-    { id: "Q07", k: "prielaida", g: "Pickerio nustatymai", q: "Ar min item'ų taisyklė reikalauja visų keturių parametrų (SKU, units, kg, unique orders), ar užtenka kelių? Ar ji keičiama dažnai?", r: ["S02", "S08"],
-      chk: "Tai mano klausimas, ne šaltinio. Confluence juodraštis rodo kelis parametrus, bet nesako, kad reikia visų.",
-      c: [["Confluence", "Min item'ų juodraštis: SKU 10, units 50."], ["Workshop 10-06", "Likučiai neskiriami labai efektyviems pickeriams: vienam ne mažiau 20, kitam galima ir 4."]] },
-    { id: "Q37", k: "prielaida", g: "Gathering ir workshopai", q: "Ar „rankiniu būdu sukurtos užduotys“ apima ir LT gathering užduotis, kuriamas mygtuku?", r: ["S16", "S19"],
-      chk: "Tai mano klausimas, ne šaltinio." }
+    /* uždaryti */
+    { id: "Q02", closed: true, k: "spraga", g: "Bangos", q: "Ką daryti, kai einamojoje bangoje lieka 50 %, 30 % ar 10 % pajėgumų?", r: ["S07"],
+      a: "Uždaryta: PM eilutę „Open capacities left“ išbraukė (v46)." },
+    { id: "Q04", closed: true, k: "spraga", g: "Efektyvumo valdymas", q: "Ką daryti, kai pickerių trūksta?", r: ["S28"],
+      a: "Perkelta: sprendimas S28 („X % over efficiency“), atviri klausimai Q41." },
+    { id: "Q05", closed: true, k: "konfliktas", g: "Pickerio nustatymai", q: "Ar „aktyvus“ yra paskyros flag'as, dienos planas, ar abu?", r: ["S14"],
+      a: "Uždaryta 2026-10-20 (Vytautas): atskiro aktyvumo nėra, Active lauko paskirtis pakeista į auto tasks jungiklį." },
+    { id: "Q08", closed: true, k: "konfliktas", g: "Pickerio nustatymai", q: "Ar unique orders per valandą yra efektyvumo parametras?", r: ["S02"],
+      a: "Uždaryta 2026-10-15 (Justinė, PM): ne; unique orders lieka tik maksimaliame kiekyje vienam kartui." },
+    { id: "Q09", closed: true, k: "konfliktas", g: "Cut-off ir išimtys", q: "Ar cut-off yra surinkimo pabaiga, ar auto skyrimo sustabdymas?", r: ["S12"],
+      a: "Uždaryta (PM, SC nustatymai 10-23): po cut-off naujos užduotys pickeriams automatiškai neskiriamos; bangos rinkimo pabaiga yra atskiras laikas po cut-off. Patikrink." },
+    { id: "Q11", closed: true, k: "spraga", g: "Workshop'ai ir gathering", q: "Kaip pickeris užbaigia gathering užduotį Picker app?", r: ["S19"],
+      a: "Nebeaktualu: atskiros gathering užduoties nėra, ją dengia efektyvumas (PM)." },
+    { id: "Q12", closed: true, k: "spraga", g: "Workshop'ai ir gathering", q: "Ar vidutinis efektyvumas gali padengti gathering?", r: ["S19"],
+      a: "Uždaryta: taip, patvirtinta LT, LV ir EE (PM; Justinė 10-15)." },
+    { id: "Q14", closed: true, k: "spraga", g: "Cut-off ir išimtys", q: "Ar sistema skiria rankiniu būdu sukurtas užduotis?", r: ["S16"],
+      a: "Uždaryta 2026-10-15 (PM v46): nustatymai galioja ir rankinėms užduotims. Patikrink: mano skaitymas." },
+    { id: "Q17", closed: true, k: "spraga", g: "Efektyvumo valdymas", q: "Kada naudojamas „Assign X % over efficiency“?", r: ["S28"],
+      a: "Uždaryta (PM v46): kraštutiniais atvejais, ne kasdien." },
+    { id: "Q18", closed: true, k: "spraga", g: "Cut-off ir išimtys", q: "Ar reikia pranešimo apie užduotį be zonos?", r: ["S15"],
+      a: "Uždaryta (PM): „alarm would be nice to have, not must“." },
+    { id: "Q21", closed: true, k: "spraga", g: "Pickerio nustatymai", q: "Kas įjungia pickerį: pats pickeris ar vadybininkas?", r: ["S14"],
+      a: "Uždaryta (SC vadovas 10-15, Vytautas 10-19): vadybininkas rankiniu būdu; pickeris pamainos laiko nenurodo." },
+    { id: "Q29", closed: true, k: "itartina", g: "Cut-off ir išimtys", q: "Ar cut-off yra SC nustatymas, ar sistemos taisyklė?", r: ["S12"],
+      a: "Uždaryta 2026-10-23 (SC nustatymai): taisyklė; cut-off imamas iš admin ir tik rodomas UI." },
+    { id: "Q31", closed: true, k: "konfliktas", g: "Efektyvumo valdymas", q: "Kaip dažnai keičiamas maksimalus efektyvumas?", r: ["S04"],
+      a: "Perkelta į Q41: laikinas koregavimas dabar daromas procentu (PM), o ne keičiant parametrus." },
+    { id: "Q32", closed: true, k: "konfliktas", g: "Pickerio nustatymai", q: "Ar Justinės „max quantity“ yra maksimalus efektyvumas ir ar jame unique orders?", r: ["S02"],
+      a: "Uždaryta (PM): „MAX quantity assign per once“ su SKU, units, kg, unique orders, Optional." },
+    { id: "Q35", closed: true, k: "spraga", g: "Bangos", q: "Kam reikalingas bangos pabaigos laikas?", r: ["S01", "S12"],
+      a: "Uždaryta 2026-10-23 (SC nustatymai): iki kada skiriamos tos bangos užduotys; pabaiga yra po cut-off." },
+    { id: "Q36", closed: true, k: "spraga", g: "Workshop'ai ir gathering", q: "Workshop'ų taisyklė: pickerio ar SC nustatymas?", r: ["S18"],
+      a: "Uždaryta (PM 10-23): SC workshop nustatymai; visa zona vienam pickeriui, efektyvumas netaikomas." },
+    { id: "Q38", closed: true, k: "prielaida", g: "Pickerio nustatymai", q: "Ar išjungus auto tasks einama užduotis nenutraukiama?", r: ["S14"],
+      a: "Uždaryta 2026-10-19 (Vytautas): nenutraukiama, nebeskiriamos tik naujos." }
   ];
 
   function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
 
   /* tabs */
-  var TABS = ["apzvalga", "scenarijai", "nustatymai", "klausimai"];
+  var TABS = ["apzvalga", "scenarijai", "nustatymai", "klausimai", "zurnalas"];
   function showTab(name, noHash) {
     if (typeof closePop === "function") closePop();
     if (TABS.indexOf(name) < 0) name = "apzvalga";
@@ -811,7 +799,7 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
         var dl = '<dl class="f"><dt>Trigeris</dt><dd>' + esc(s.trig) + "</dd><dt>Elgesys</dt><dd>" + esc(s.beh) + "</dd>";
         if (s.note) dl += "<dt>Pastaba</dt><dd>" + esc(s.note) + "</dd>";
         dl += "<dt>Šaltiniai</dt><dd>" + esc(srcText(s).replace("Šaltiniai: ", "")) + "</dd>";
-        var qs = QL.filter(function (x) { return x.r.indexOf(s.id) >= 0; });
+        var qs = QL.filter(function (x) { return !x.closed && x.r.indexOf(s.id) >= 0; });
         if (qs.length) dl += "<dt>Klausimai</dt><dd>" + qs.map(function (x) { return '<button type="button" class="chip-id" data-goq="' + x.id + '">' + x.id + "</button>"; }).join("") + "</dd>";
         body.innerHTML = dl + "</dl>" + ctyHtml(s);
         d.appendChild(body);
@@ -836,14 +824,14 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
     if (!QL.some(function (x) { return x.k === k; })) return;
     var o = document.createElement("option"); o.value = k; o.textContent = QT[k].l; qtSel.appendChild(o);
   });
-  document.getElementById("cnt-q").textContent = QL.length;
+  document.getElementById("cnt-q").textContent = QL.filter(function (x) { return !x.closed; }).length;
 
   function renderQ() {
     var f = qtSel.value, shown = 0;
     qroot.innerHTML = "";
     Object.keys(QT).forEach(function (k) {
       if (f && f !== k) return;
-      var items = QL.filter(function (x) { return x.k === k; });
+      var items = QL.filter(function (x) { return x.k === k && !x.closed; });
       if (!items.length) return;
       var wrap = el("div", ""); wrap.style.display = "grid"; wrap.style.gap = "10px";
       wrap.appendChild(el("div", "q-head", "<h3>" + esc(QT[k].l) + " · " + items.length + "</h3><p>" + esc(QT[k].d) + "</p>"));
@@ -871,7 +859,20 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
       });
       qroot.appendChild(wrap);
     });
-    document.getElementById("res-q").textContent = shown + " iš " + QL.length;
+    var closed = QL.filter(function (x) { return x.closed && (!f || x.k === f); });
+    if (closed.length) {
+      var cw = el("details", "closedq"); cw.appendChild(el("summary", "", "Uždaryti · " + closed.length));
+      var cg = el("div", ""); cg.style.display = "grid"; cg.style.gap = "10px";
+      closed.forEach(function (it) {
+        var q = el("div", "q closed"); q.id = "q-" + it.id;
+        q.appendChild(el("div", "qtop", '<span class="qid">' + it.id + '</span><span class="topic">' + esc(it.g) + "</span>"));
+        q.appendChild(el("p", "", esc(it.q)));
+        q.appendChild(el("p", "ans", "<b>Atsakymas.</b> " + esc(it.a)));
+        cg.appendChild(q);
+      });
+      cw.appendChild(cg); qroot.appendChild(cw);
+    }
+    document.getElementById("res-q").textContent = shown + " atviri";
   }
   qtSel.addEventListener("change", renderQ);
   renderQ();
@@ -883,9 +884,14 @@ td ul { margin: 4px 0 0; padding-left: 18px; }
     showTab("klausimai");
     qtSel.value = ""; renderQ();
     var d = document.getElementById("q-" + id);
+    if (d && d.closest("details.closedq")) d.closest("details.closedq").open = true;
     if (d) { d.scrollIntoView({ block: "center" }); d.classList.add("flash"); setTimeout(function () { d.classList.remove("flash"); }, 1600); }
   }
 
+
+  document.getElementById("p-apzvalga").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-goto]"); if (b) gotoScenario(b.getAttribute("data-goto"));
+  });
 
   /* initial tab from bare hash */
   var h = (location.hash || "").replace("#", "");
