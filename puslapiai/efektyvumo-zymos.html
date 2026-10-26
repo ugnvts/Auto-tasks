@@ -7,6 +7,8 @@
 :root{--bg:#f6f7f9;color-scheme:light}
 body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-serif}
 [hidden]{display:none!important}
+.cb{display:flex;align-items:center;justify-content:space-between;gap:6px;text-align:left;padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;background:#fff;font-size:13px;color:#111827}
+.cb:disabled{background:#f9fafb;color:#6b7280}
 .tg{display:inline-flex;align-items:center;gap:4px;font-size:12px;border-radius:999px;border:1px solid;padding:0 6px;white-space:nowrap;max-width:220px}
 .tg span.t{overflow:hidden;text-overflow:ellipsis}
 .dn{border-color:#fca5a5;background:#fef2f2;color:#b91c1c}
@@ -71,9 +73,19 @@ function pop(b,k){const p=document.getElementById('ep'),c=CASES[k];if(!p.hidden&
   p._k=k;p.style.top=r.bottom+6+'px';p.style.left=Math.max(8,Math.min(r.right-288,innerWidth-296))+'px';p.hidden=false}
 document.addEventListener('click',e=>{const p=document.getElementById('ep');if(!p.hidden&&!e.target.closest('#ep'))p.hidden=true});
 addEventListener('scroll',()=>{document.getElementById('ep').hidden=true},true);
-const card=c=>`<div class="p-3 bg-white border border-gray-200 rounded-lg"><div class="text-[11px] text-gray-400 mb-1">${c.g}</div><div class="flex items-center gap-2"><div class="min-w-0"><div class="text-[15px] font-semibold text-gray-900 truncate">${c.n}</div><div class="text-[11px] text-gray-500">Picker</div></div>
-  <div class="ml-auto flex items-center gap-2">${CI(c)}<span class="text-xs text-gray-500">Auto</span><span class="inline-block w-9 h-5 rounded-full bg-green-600 relative" aria-hidden="true"><span class="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white"></span></span></div></div>
-  ${c.s=='Nerenka'?'':`<div class="mt-2 h-6 rounded border flex items-center px-2.5 text-[13px] ${c.s=='Renka'?'bg-green-50 border-green-100 text-green-900':c.s=='Nesinchronizavo'?'bg-amber-50 border-amber-100 text-amber-900':'bg-blue-50 border-blue-100 text-blue-900'}"><span class="font-medium">${c.s}</span></div>`}</div>`;
+// Kortelė kaip „Dirba dabar“ sidebar'e: zonų žymos, būsena su progresu, trukmė ir užduotys
+const CV='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg>';
+const PRG={'Renka':{z:['Groceries','Candies'],pk:4,tt:9,m:'12 min',u:2},'Nesinchronizavo':{z:['Fresh meat'],pk:0,tt:14,m:'–',u:1},'Laukia užduoties':{z:[],m:'–',u:0},'Nerenka':{z:[],m:'–',u:0}};
+const card=c=>{const g=PRG[c.s],pc=g.tt?Math.round(g.pk/g.tt*100):0,
+    col={'Renka':['bg-green-50 border-green-100 text-green-900','bg-green-200'],'Nesinchronizavo':['bg-amber-50 border-amber-100 text-amber-900',''],'Laukia užduoties':['bg-blue-50 border-blue-100 text-blue-900','']}[c.s]||['bg-gray-50 border-gray-200 text-gray-700',''],
+    lab=c.s=='Renka'?`<span class="font-medium">Renka</span> · ${g.pk}/${g.tt} eil.`:c.s=='Nesinchronizavo'?`<span class="font-medium">Nesinchronizavo</span> · ${g.tt} eil.`:`<span class="font-medium">${c.s}</span>`,
+    cb=(l,v,d)=>`<span class="cb" ${d?'style="background:#f9fafb;color:#6b7280"':''}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="block font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV}</span>`}</span>`;
+  return `<div class="p-3 bg-white border border-gray-200 rounded-lg"><div class="text-[11px] text-gray-400 mb-1">${c.g}</div>
+  <div class="flex items-center gap-2"><div class="min-w-0"><div class="text-[15px] font-semibold text-gray-900 truncate">${c.n}</div><div class="text-[11px] text-gray-500 leading-tight">Picker</div></div>
+    <div class="ml-auto flex items-center gap-2">${CI(c)}<span class="text-xs text-gray-500">Auto</span><span class="inline-block w-9 h-5 rounded-full bg-green-600 relative" aria-hidden="true"><span class="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white"></span></span></div></div>
+  ${g.z.length?`<div class="mt-2 flex flex-wrap items-center gap-1.5">${g.z.map(q=>`<span class="rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5">${q}</span>`).join('')}</div>`:''}
+  <div class="mt-2 relative h-6 rounded border overflow-hidden ${col[0]}">${col[1]?`<span class="absolute inset-y-0 left-0 ${col[1]}" style="width:${pc}%"></span>`:''}<span class="relative h-full flex items-center px-2.5 text-[13px] tabular-nums"><span>${lab}</span></span></div>
+  <div class="mt-2 grid grid-cols-2 gap-2">${cb('Surinkimo trukmė',g.m,!g.u)}${cb('Užduotys',g.u,!g.u)}</div></div>`};
 out.innerHTML=`<section class="bg-white border rounded-lg">
   <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
     <p class="text-gray-600 mt-1">Stulpelyje be antraštės dešinėje nuo „Būsena“. Kiekvienam tipui atskira žyma su dydžiu ir apimtimi; žyma be zonos reiškia „visos zonos“. Kai yra asmeninė korekcija, centro korekcijos žyma nerodoma. Užvedus pelę – detalės.</p></div>

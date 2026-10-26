@@ -449,11 +449,11 @@ function vNkAsk(){const on=!vNkOn();document.getElementById('kordlgB').innerHTML
   document.getElementById('kordlg').hidden=false}
 function vNkSet(on){document.getElementById('nk').checked=on;N[0][7]=on?1:0;if(on){VA=false;N[0][5]=0}document.getElementById('kordlg').hidden=true;rv();render()}
 
-// Surinkimo centro korekcija (EK2): valdoma sidebar'e. Taikoma visoms užduotims (auto ir rankiniu būdu), naujokams netaikoma.
+// Surinkimo centro korekcija (EK2): valdoma sidebar'e. Taikoma visoms užduotims (auto ir rankiniu būdu) ir visiems surinkėjams, taip pat naujokams.
 // Asmeninė korekcija (PK7) svarbesnė: kol ji yra, centro korekcija surinkėjui negalioja.
 let C=null,CD=null;const PC={2:{d:'down',p:10,all:true,z:[],t:''},3:{d:'down',p:20,all:false,z:['Alcoholic beverages'],t:'14:00'},5:{d:'up',p:10,all:true,z:[],t:''}};// asmeninės korekcijos; 0 = Silvija, jos korekcija paskyroje (KOR)
 const SZ={4:[['Alcoholic beverages','']],5:[['Frozen goods','16:00']]};// sustabdytos zonos [zona, iki kada]; Silvijos – PAU
-const pers=i=>i==0?KOR:PC[i],cIn=i=>!!C&&!N[i][7]&&(C.all||C.ids.includes(i));
+const pers=i=>i==0?KOR:PC[i],cIn=i=>!!C&&(C.all||C.ids.includes(i));
 const ICEN='<svg class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3 17V7l7-4 7 4v10h-4v-5H7v5H3z"/></svg>',
   IPER='<svg class="w-3 h-3" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="6" r="3.5"/><path d="M3 17c0-3.9 3.1-6 7-6s7 2.1 7 6z"/></svg>';
 // Lentelėje išsamios žymos (dydis ir apimtis), sidebar'e tik ikonos su iššokančiu langeliu
@@ -481,11 +481,11 @@ function cBarR(){const b=document.getElementById('cBar');if(!b)return;document.g
     <button class="ml-auto text-xs border bg-white rounded px-2 py-1 hover:bg-gray-50" onclick="cOpen()">Keisti</button><button class="w-7 h-7 rounded hover:bg-white" aria-label="Išjungti surinkimo centro korekciją" onclick="cOff()">✕</button></div>
     ${cExO&&ex.length?`<ul class="mt-2 text-xs text-gray-700 space-y-0.5">${ex.map(i=>{const P=pers(i);return `<li>${N[i][0]} ${N[i][1]}: asmeninė ${sg(P.d)}${P.p} %, centro korekcija negalioja</li>`}).join('')}</ul>`:''}</div>`}
 let cExO=false;
-const cNow=()=>N.map((r,i)=>i).filter(i=>works(N[i])&&!N[i][7]);
+const cNow=()=>N.map((r,i)=>i).filter(i=>works(N[i]));
 function cOpen(){CD=C?{...C,ids:[...C.ids],ov:false}:{d:'up',p:10,all:true,ids:[],t:'',ov:false,sl:false};cR();document.getElementById('kordlg').hidden=false}
-function cR(){const D=CD,now=cNow(),tgt=D.all?N.map((r,i)=>i).filter(i=>!N[i][7]):now,ex=tgt.filter(i=>pers(i)),
+function cR(){const D=CD,now=cNow(),tgt=D.all?N.map((r,i)=>i):now,ex=tgt.filter(i=>pers(i)),
     seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="CD.d='${v}';if(!KP.${v}.includes(CD.p))CD.p=KP.${v}[1];cR()">${l}</button>`;
-  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Surinkimo centro efektyvumo korekcija</div><p class="text-gray-500 mt-1">Taikoma visoms užduotims: auto ir rankiniu būdu. Naujokams netaikoma. Bazinis efektyvumas paskyrose nekeičiamas.</p>
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Surinkimo centro efektyvumo korekcija</div><p class="text-gray-500 mt-1">Taikoma visoms užduotims: auto ir rankiniu būdu. Bazinis efektyvumas paskyrose nekeičiamas.</p>
     <div class="mt-4 font-medium">Kryptis</div><div class="mt-1 flex gap-1 bg-gray-100 rounded p-1">${seg('down','Mažinti')}${seg('up','Didinti')}</div>
     <div class="mt-4 font-medium">Dydis</div><div class="mt-1 flex flex-wrap gap-2">${KP[D.d].map(v=>`<button class="px-3 py-1 rounded border tabular-nums ${D.p==v?DS(D.d):'hover:bg-gray-50'}" aria-pressed="${D.p==v}" onclick="CD.p=${v};cR()">${sg(D.d)}${v} %</button>`).join('')}</div>
     <div class="mt-4 font-medium">Kam taikyti</div><div class="mt-1 space-y-1.5">

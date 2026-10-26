@@ -479,7 +479,7 @@ a { color: var(--accent); }
       <p class="desc">Pavyzdys: šiandien +20 % visiems, Jonui −10 %. Jonui galioja −10 %; rinkdamas kitos bangos užsakymus jis dar gauna kitos bangos %.</p>
     </div></details>
     <details class="item" id="f-EK2"><summary><span class="id">EK2</span><span class="name">Surinkimo centro korekcija</span><span class="status st-wip">Derinama</span></summary><div class="body">
-      <ul><li>Valdoma „Dirba dabar“ sidebar'e (pasiekiamas Picker accounts ir Dashboard languose): antraštėje mygtukas „Efektyvumas“. Kitos vietos jai nėra, nes ji nepriklauso nė vienam surinkėjui; kelias per lentelę (filtrai, varnelės, bulk actions) per sudėtingas.</li><li>Langelis: kryptis (Mažinti / Didinti), dydis, kam taikyti: „Visiems, įskaitant pradėsiančius dirbti vėliau“ (numatyta) arba „Tik dabar dirbantiems (N)“ su vardų sąrašu; galioja kol išjungsiu arba iki laiko. „Dabar dirbantys“ yra sidebar'o apibrėžimas; rankinio skyrimo surinkėjai be užduoties į jį nepatenka, todėl numatytas „Visiems“.</li><li>Taikoma visoms užduotims (auto ir rankiniu būdu); naujokams netaikoma (T3). Langelyje rodomos išimtys su asmenine korekcija ir pasirinkimas „Taikyti ir jiems (nuimti asmenines korekcijas)“.</li><li>Aktyvi korekcija: juosta po sidebar'o antrašte „Centras +10 % · Visiems · kol išjungsi · 1 išimtis“ su „Keisti“ ir ✕, išimtis galima išskleisti; suskleistame sidebar'e indikatorius „+10 %“.</li><li>Lentelė tik rodo žymas; bulk actions kelių žmonių asmeninėms korekcijoms – vėliau.</li></ul>
+      <ul><li>Valdoma „Dirba dabar“ sidebar'e (pasiekiamas Picker accounts ir Dashboard languose): antraštėje mygtukas „Efektyvumas“. Kitos vietos jai nėra, nes ji nepriklauso nė vienam surinkėjui; kelias per lentelę (filtrai, varnelės, bulk actions) per sudėtingas.</li><li>Langelis: kryptis (Mažinti / Didinti), dydis, kam taikyti: „Visiems, įskaitant pradėsiančius dirbti vėliau“ (numatyta) arba „Tik dabar dirbantiems (N)“ su vardų sąrašu; galioja kol išjungsiu arba iki laiko. „Dabar dirbantys“ yra sidebar'o apibrėžimas; rankinio skyrimo surinkėjai be užduoties į jį nepatenka, todėl numatytas „Visiems“.</li><li>Taikoma visoms užduotims (auto ir rankiniu būdu); taikoma ir naujokams (2026-10-26). Langelyje rodomos išimtys su asmenine korekcija ir pasirinkimas „Taikyti ir jiems (nuimti asmenines korekcijas)“.</li><li>Aktyvi korekcija: juosta po sidebar'o antrašte „Centras +10 % · Visiems · kol išjungsi · 1 išimtis“ su „Keisti“ ir ✕, išimtis galima išskleisti; suskleistame sidebar'e indikatorius „+10 %“.</li><li>Lentelė tik rodo žymas; bulk actions kelių žmonių asmeninėms korekcijoms – vėliau.</li></ul>
       <div class="meta"><span class="was">pakeičia DD4</span></div>
     </div></details>
     <details class="item" id="f-EK3"><summary><span class="id">EK3</span><span class="name">Asmeninės korekcijos vyksta paskyroje</span><span class="status st-wip">Derinama</span></summary><div class="body">
@@ -510,7 +510,7 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">S06</span><span class="ctx">S23</span><span class="was">buvę A7, D06</span></div>
     </div></details>
     <details class="item" id="f-T3"><summary><span class="id">T3</span><span class="name">Naujokas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Kol naujoko žyma uždėta, auto tasks įjungti negalima; užduotys skiriamos rankiniu būdu. Efektyvumo kėlimas naujokams netaikomas.</p>
+      <p class="desc">Kol naujoko žyma uždėta, auto tasks įjungti negalima; užduotys skiriamos rankiniu būdu. Efektyvumo korekcijos (centro ir asmeninė) naujokams taikomos kaip visiems (2026-10-26).</p>
       <div class="meta"><span class="ctx">S13</span><span class="ctx">Q28</span></div>
     </div></details>
     <details class="item" id="f-T4"><summary><span class="id">T4</span><span class="name">Inspektorius</span><span class="status st-wip">Derinama</span></summary><div class="body">
@@ -884,6 +884,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-26</td><td>Naujokų išimtis efektyvumo korekcijoms panaikinta (T3, EK2): ji buvo paveldėta iš pradinio auto-only efektyvumo kėlimo, šaltiniuose reikalavimo nėra. Surinkimo centro korekcija taikoma visiems, taip pat naujokams.</td></tr>
       <tr><td>2026-10-26</td><td>EK5: efektyvumo korekcijų spalva pagal kryptį – mažinimas raudonas, didinimas žalias; taikoma žymoms, ikonoms, kortelėms, juostai ir korekcijos langelių mygtukams paskyroje ir sidebar'e.</td></tr>
       <tr><td>2026-10-26</td><td>EK5: kai surinkėjas turi asmeninę korekciją, perbraukta centro korekcijos žyma neberodoma nei lentelėje, nei sidebar'e.</td></tr>
       <tr><td>2026-10-26</td><td>Efektyvumo žymos (EK5): lentelėje išsamios žymos su apimtimi ir sustabdytų zonų žyma, sidebar'e tik ikonos su iššokančiu langeliu. Pasirinkta iš būsenų katalogo (puslapis „Efektyvumo žymos“, variantai A ir C).</td></tr>
