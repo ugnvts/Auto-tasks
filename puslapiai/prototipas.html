@@ -263,9 +263,7 @@ td,th{white-space:nowrap}
           <h3 class="font-medium mt-6 pb-2 border-b">Employee information</h3>
           <dl class="text-sm divide-y" id="dl"></dl>
           <h3 class="font-medium mt-6 pb-2 border-b">Auto tasks</h3>
-          <dl class="text-sm divide-y">
-            <div class="grid grid-cols-3 py-3 items-center"><dt class="text-gray-500">Auto tasks</dt><dd class="col-span-2"><span class="inline-flex items-center gap-1.5 text-xs font-medium bg-gray-100 text-gray-600 px-2 py-0.5 rounded"><span class="w-1.5 h-1.5 rounded-full bg-gray-400"></span>Disabled</span> <span class="text-xs text-gray-500 ml-2">Naujokui auto tasks įjungti negalima</span></dd></div>
-            </dl>
+          <dl id="vAuto" class="text-sm divide-y"></dl>
           <h3 class="font-medium mt-6 pb-2 border-b">Kelios zonos</h3>
           <dl class="text-sm">
             <div class="py-3"><div class="grid grid-cols-3 items-center"><dt class="text-gray-500">Can work in multiple zones</dt><dd class="col-span-2"><span class="inline-flex items-center gap-1.5 text-xs font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Enabled</span></dd></div>
@@ -290,9 +288,7 @@ td,th{white-space:nowrap}
             <div class="grid sm:grid-cols-2 gap-4"><label>Shop<select id="sp" class="mt-1 w-full border rounded px-3 py-2"><option>X016 Liepkalnis</option><option selected>X864 HYPER</option><option>X500 Akropolis</option><option>X532 Olinda</option></select></label><div class="hidden sm:block"></div>
             <label>Time card<input id="tc" class="mt-1 w-full border rounded px-3 py-2" value="3360"></label><label>Shift name<input id="sh" class="mt-1 w-full border rounded px-3 py-2" value="Evening"></label>
             <label>Role<select id="ro" class="mt-1 w-full border rounded px-3 py-2"><option>Picker</option><option>Inspector</option></select></label>
-            <div class="sm:pt-[33px]"><label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="act.disabled=this.checked;if(this.checked)act.checked=false;actx.textContent=this.checked?'Naujokui auto tasks įjungti negalima. Nuimk naujoko žymą.':'Surinkėjas gauna užduotis automatiškai.'"><span>Naujokas<br><span class="text-gray-500">Kol pažymėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.</span></span></label></div></div></div>
-          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Auto tasks</h3>
-            <label class="flex gap-3 items-start"><input id="act" type="checkbox" disabled class="mt-1"><span>Auto tasks<br><span id="actx" class="text-gray-500">Naujokui auto tasks įjungti negalima. Nuimk naujoko žymą.</span></span></label></div>
+            <div class="sm:pt-[33px]"><label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="VA=VA&&!this.checked"><span>Naujokas<br><span class="text-gray-500">Kol pažymėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.</span></span></label></div></div></div>
           <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Zonos ir efektyvumas</h3>
             <p class="text-gray-500 mb-2">Pažymėk zonas; pažymėtoms suvesk efektyvumą rankomis.</p>
             <div class="flex flex-wrap items-center gap-2 mb-2"><button class="border border-indigo-600 text-indigo-700 px-3 py-1 rounded" onclick="allZ(1)">Įjungti visas zonas</button><button class="border px-3 py-1 rounded" onclick="allZ(0)">Išjungti visas</button><span id="zc" class="text-gray-500 ml-auto"></span></div>
@@ -431,14 +427,28 @@ function zTags(){['NONE',...Z].forEach((n,i)=>{const t=document.getElementById('
 function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs()}
 {const _z=zones;zones=function(){_z();cbs()}}
 {const _c=cbs;cbs=function(){_c();zTags()}}
-document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
+document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span id="vNk" class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
 // Laikinos korekcijos (EK3, EK4): viena % korekcija (kryptis, procentas, zonos) ir užduočių skyrimo zonai stabdymas. Veikia iškart, ne per Edit; bazinis efektyvumas nekeičiamas.
 let KOR=null,KD=null;const PAU=new Map(),KP={down:[5,10,20,30],up:[5,10,15,20]};
 const azs=()=>Z.filter(n=>EFF[n]),korZ=n=>!!KOR&&!PAU.has(n)&&(KOR.all||KOR.z.includes(n)),sg=d=>d=='up'?'+':'−';
 const korTxt=k=>`${sg(k.d)}${k.p} % · ${k.all?'visos zonos':k.z.length==1?k.z[0]:k.z.length+' zonos'}`;
 const IPA='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>',
   IPL='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 6 4.5z"/></svg>';
-function rv(){const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos${PAU.size?`, ${PAU.size} sustabdyta`:''})`;
+// Auto tasks ir naujoko žyma peržiūroje: operatyvūs jungikliai, veikia iškart (naujoko žyma su patvirtinimu). Redagavime lieka tik naujoko varnelė.
+let VA=false;const vNkOn=()=>document.getElementById('nk').checked;
+function vAuto(){const nk=vNkOn(),row=(l,c,h)=>`<div class="grid grid-cols-3 py-3 items-center"><dt class="text-gray-500">${l}</dt><dd class="col-span-2 flex items-center gap-3">${c}<span class="text-xs text-gray-500">${h}</span></dd></div>`;
+  document.getElementById('vNk').hidden=!nk;
+  document.getElementById('vAuto').innerHTML=
+    row('Auto tasks',nk?`<button class="tog" style="opacity:.4;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Naujokui auto tasks įjungti negalima"></button>`:`<button class="tog ${VA?'on':''}" role="switch" aria-checked="${VA}" aria-label="Auto tasks" onclick="vAutoTg()"></button>`,
+      nk?'Naujokui auto tasks įjungti negalima. Užduotys skiriamos rankiniu būdu.':VA?'Įjungta: užduotys skiriamos automatiškai.':'Išjungta: užduotys skiriamos rankiniu būdu.')
+   +row('Naujokas',`<button class="tog ${nk?'on':''}" role="switch" aria-checked="${nk}" aria-label="Naujokas" onclick="vNkAsk()"></button>`,nk?'Kol pažymėta, auto tasks įjungti negalima.':'')}
+function vAutoTg(){VA=!VA;vAuto();toast(`Auto tasks ${VA?'įjungti':'išjungti'}: Silvija Švaikevičiūtė`,()=>{VA=!VA;vAuto()})}
+function vNkAsk(){const on=!vNkOn();document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${on?'Pažymėti naujoku?':'Nuimti naujoko žymą?'}</div>
+    <p class="text-gray-600 mt-2">${on?`Kol žyma uždėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.${VA?' <b>Auto tasks bus išjungti.</b>':''}`:'Auto tasks automatiškai neįsijungs: galėsi juos įjungti jungikliu.'}</p>
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600" onclick="vNkSet(${on})">${on?'Pažymėti naujoku':'Nuimti žymą'}</button></div>`;
+  document.getElementById('kordlg').hidden=false}
+function vNkSet(on){document.getElementById('nk').checked=on;if(on)VA=false;document.getElementById('kordlg').hidden=true;vAuto()}
+function rv(){vAuto();const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos${PAU.size?`, ${PAU.size} sustabdyta`:''})`;
   const vb=(t,us,e,o)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><dl class="grid gap-2 mt-1" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${e[k+o]??'–'}</dd></div>`).join('')}</dl></div>`;
   const mz=document.getElementById('mz').checked;
   document.getElementById('cbView').innerHTML=mz?CB.filter(c=>c.on).map(c=>{const pz=c.z.filter(n=>PAU.has(n));return pz.length?`<span class="border rounded px-2 py-0.5 bg-gray-100 text-gray-500" title="Kombinacija neveikia, kol ${pz.join(', ')} užduočių skyrimas sustabdytas"><s>${c.z.join(' + ')}</s> · neveikia: sustabdyta ${pz.join(', ')}</span>`:`<span class="border rounded px-2 py-0.5 bg-gray-50">${c.z.join(' + ')}</span>`}).join('')||'<span class="text-gray-500">Nepasirinkta</span>':'';

@@ -304,13 +304,13 @@ a { color: var(--accent); }
   </div>
   <div class="list">
     <details class="item" id="f-PK1"><summary><span class="id">PK1</span><span class="name">Paskyros peržiūra</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Employee information: Time card, Login name, Shift name, Role su naujoko žyma, Shop.</li><li>Auto tasks: Enabled / Disabled (naujokui Disabled su paaiškinimu).</li><li>Kelios zonos: Can work in multiple zones ir priskirtos kombinacijos.</li><li>Zonos ir efektyvumas: NONE pirma; kiekvienai zonai Efficiency per hour ir Maks. priskyrimas vienam kartui.</li></ul>
+      <ul><li>Employee information: Time card, Login name, Shift name, Role su naujoko žyma, Shop.</li><li>Auto tasks: jungiklis kaip lentelėje, veikia iškart su „Atšaukti“; naujokui neaktyvus su paaiškinimu. Iš redagavimo išimtas (2026-10-26).</li><li>Naujokas: jungiklis su patvirtinimu. Uždedant, jei auto įjungti, perspėjama, kad jie bus išjungti; nuimant auto automatiškai neįsijungia.</li><li>Kelios zonos: Can work in multiple zones ir priskirtos kombinacijos.</li><li>Zonos ir efektyvumas: NONE pirma; kiekvienai zonai Efficiency per hour ir Maks. priskyrimas vienam kartui.</li></ul>
     </div></details>
     <details class="item" id="f-PK2"><summary><span class="id">PK2</span><span class="name">Paskyros redagavimas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Personal information; Employee information (Shop keičiamas, niekada ne disabled; Naujokas po Role).</li><li>Auto tasks varnelė, neaktyvi kol uždėta naujoko žyma.</li><li>Zonos viename sąraše su paieška, „Įjungti visas“ / „Išjungti visas“, NONE viršuje; pažymėtoms zonoms efektyvumo laukai.</li><li>Mygtukai: Atšaukti, Išsaugoti ir kitas, Išsaugoti.</li></ul>
+      <ul><li>Personal information; Employee information (Shop keičiamas, niekada ne disabled; Naujokas po Role).</li><li>Auto tasks redagavime nebėra (valdomas peržiūroje); naujoko varnelė lieka kūrimo ir redagavimo formoje.</li><li>Zonos viename sąraše su paieška, „Įjungti visas“ / „Išjungti visas“, NONE viršuje; pažymėtoms zonoms efektyvumo laukai.</li><li>Mygtukai: Atšaukti, Išsaugoti ir kitas, Išsaugoti.</li></ul>
     </div></details>
     <details class="item" id="f-PK3"><summary><span class="id">PK3</span><span class="name">Naujoko žyma</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Varnelė „Naujokas“ prie rolės. SC kasdien sprendžia, ar žymą nuimti; žyma gali būti grąžinta. Taisyklė: <a href="#f-T3">T3</a>.</p>
+      <p class="desc">Kūrimo ir redagavimo formoje varnelė „Naujokas“ prie rolės; peržiūroje jungiklis su patvirtinimu. SC kasdien sprendžia, ar žymą nuimti; žyma gali būti grąžinta. Taisyklė: <a href="#f-T3">T3</a>.</p>
       <div class="meta"><span class="ctx">S13</span><span class="ctx">Q06</span><span class="ctx">Q28</span><span class="was">buvęs A2</span></div>
     </div></details>
     <details class="item" id="f-PK4"><summary><span class="id">PK4</span><span class="name">Aptarnaujamos zonos ir efektyvumas per zoną</span><span class="status st-wip">Derinama</span></summary><div class="body">
@@ -882,6 +882,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-26</td><td>Paskyra: auto tasks jungiklis perkeltas į peržiūrą (iš redagavimo išimtas), naujoko žyma peržiūroje kaip jungiklis su patvirtinimu, formoje lieka varnelė (PK1–PK3).</td></tr>
       <tr><td>2026-10-26</td><td>Prototipe paskyros peržiūroje: laikinos efektyvumo korekcijos langelis ir kortelė (EK3: viena korekcija, viena kryptis, vienas procentas pasirinktoms zonoms) ir zonos pristabdymas (EK4, buvusi idėja „atjungimas“ tapo „Derinama“). Tab'ų paskyroje nereikia.</td></tr>
       <tr><td>2026-10-26</td><td>Nauja skiltis EK „Efektyvumo korekcijos“: trys lygiai (pamatas, surinkimo centro korekcija, asmeninė korekcija), sąveika, valdymo vietos ir žymėjimas. DD4 tampa EK2, PK7 išplėstas į EK3 ir EK4 (idėja). K02 atsakytas: centro korekcija taikoma visoms užduotims, ir rankiniu būdu. K01 pasiūlymas paruoštas, laukia PM.</td></tr>
       <tr><td>2026-10-26</td><td>Zonų kombinacijų valdymas paskyroje sutartas (PK6): du sąrašai, kombinacijų žymos zonų sąraše, įspėjimo ikona nepriskirtai zonai. Variantas „Zonų kombinacijos“ perkeltas į pagrindinį prototipą, atskiras skirtukas pašalintas. Išsaugojimo blokavimas lieka atviras (DV04).</td></tr>
