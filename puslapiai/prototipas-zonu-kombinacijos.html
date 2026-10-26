@@ -421,7 +421,7 @@ function zGo(n){const q=document.getElementById('zq');if(q.value){q.value='';zon
 const zOk=n=>!!EFF[n]&&[0,1,2].every(k=>EFF[n][k]!=null&&String(EFF[n][k]).trim()!=='');
 // Žyma tik pasirinktos kombinacijos zonoms: pilka, kai zona priskirta; raudona, kai ne
 function zTag(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c)return '';const o=c.z.filter(x=>x!=n),ok=zOk(n);
-  return `<span class="text-xs font-normal rounded-full border px-2 py-0.5 whitespace-nowrap ${ok?'bg-gray-100 border-gray-200 text-gray-700':'bg-red-50 border-red-300 text-red-700'}" title="${c.z.join(' + ')}${ok?'':': zona nepriskirta arba nesuvestas efektyvumas'}">Kombinacija su ${o.length>1?o.length+' zonomis':o[0]}</span>`}
+  return `<span class="flex flex-wrap items-center justify-end gap-1 text-xs font-normal text-gray-500" title="${c.z.join(' + ')}${ok?'':': zona nepriskirta arba nesuvestas efektyvumas'}">Kombinacija su ${o.map(x=>`<span class="rounded-full border px-2 py-0.5 whitespace-nowrap ${ok?'bg-gray-100 border-gray-200 text-gray-700':'bg-red-50 border-red-300 text-red-700'}">${x}</span>`).join('')}</span>`}
 function zTags(){['NONE',...Z].forEach((n,i)=>{const t=document.getElementById('zt'+i);if(t)t.innerHTML=zTag(n)})}
 function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs()}
 {const _z=zones;zones=function(){_z();cbs()}}
