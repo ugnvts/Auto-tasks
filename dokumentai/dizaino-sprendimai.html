@@ -272,7 +272,7 @@ a { color: var(--accent); }
       <ul><li>Stulpeliai: checkbox, Name, Last name, Time card, Shift name, Role (su violetine naujoko žyma), Auto tasks (jungiklis), Būsena, ⋮ (Rodyti, Redaguoti).</li><li>Zonų ir efektyvumo lentelėje nėra, jie matomi paskyroje. Express žyma pašalinta.</li></ul>
     </div></details>
     <details class="item" id="f-PA2"><summary><span class="id">PA2</span><span class="name">Auto tasks jungiklis eilutėje</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Kasdienis veiksmas: vadybininkas įjungia atėjusį surinkėją ir išjungia išeinantį ar einantį į pertrauką. Naujokui ir inspektoriui jungiklis neaktyvus (<a href="#f-T3">T3</a>, <a href="#f-T4">T4</a>). Kai įjungtas efektyvumo kėlimas, prie įjungtų rodoma „+X %“.</p>
+      <p class="desc">Kasdienis veiksmas: vadybininkas įjungia atėjusį surinkėją ir išjungia išeinantį ar einantį į pertrauką. Naujokui ir inspektoriui jungiklis neaktyvus (<a href="#f-T3">T3</a>, <a href="#f-T4">T4</a>). Prie surinkėjo rodomos efektyvumo korekcijų žymos: centro ir asmeninė (<a href="#f-EK5">EK5</a>).</p>
       <p class="desc">Su filtru „Auto tasks“ pakeitus jungiklį eilutė papilkėja, rodoma „Atšaukti“, ir eilutė dingsta pakeitus filtrą.</p>
       <div class="meta"><span class="ctx">S14</span><span class="ctx">Q05</span><span class="ctx">Q21</span><span class="was">buvęs A1</span></div>
     </div></details>
@@ -357,11 +357,11 @@ a { color: var(--accent); }
       <div class="meta"><span class="was">buvusi „Statistikos juosta“</span></div>
     </div></details>
     <details class="item" id="f-DD3"><summary><span class="id">DD3</span><span class="name">Auto tasks ⋮ veiksmai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Kelti efektyvumą (kai įjungtas: „Keisti efektyvumo kėlimą“), <a href="#f-DD4">DD4</a>.</li><li>Išjungti auto tasks visiems: raudonas, su patvirtinimu ir skaičiumi; einamos užduotys nenutraukiamos; inspektorių nepaveikia.</li><li>Kai auto įjungta 0, ⋮ neaktyvus.</li></ul>
+      <ul><li>Efektyvumo kėlimas iš šio meniu iškeltas į sidebar'o antraštę (<a href="#f-EK2">EK2</a>), nes taikomas ir rankiniam skyrimui.</li><li>Išjungti auto tasks visiems: raudonas, su patvirtinimu ir skaičiumi; einamos užduotys nenutraukiamos; inspektorių nepaveikia.</li><li>Kai auto įjungta 0, ⋮ neaktyvus.</li></ul>
     </div></details>
     <details class="item" id="f-DD4"><summary><span class="id">DD4</span><span class="name">Efektyvumo kėlimas (boost)</span><span class="status st-wip">Derinama</span></summary><div class="body">
       <p class="desc">Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta bangos pabaiga), kiek surinkėjų paveiks. Įjungus matoma žyma „Efektyvumas +X % iki …“ su ✕. Dabar taikoma tik surinkėjams su įjungtu auto, ne naujokams. Atitinka PM „Assign X % over efficiency“.</p>
-      <p class="desc">2026-10-26 tampa surinkimo centro korekcija (<a href="#f-EK2">EK2</a>): taikoma visoms užduotims (auto ir rankiniu būdu), didinti ir mažinti, galioja iki išjungimo, laikas pasirinktinai. Prototipas dar rodo seną variantą.</p>
+      <p class="desc">2026-10-26 pakeista surinkimo centro korekcija (<a href="#f-EK2">EK2</a>), prototipe įgyvendinta.</p>
       <div class="meta"><span class="ctx">Q04</span><span class="was">buvęs A6, D04</span></div>
     </div></details>
     <details class="item" id="f-DD5"><summary><span class="id">DD5</span><span class="name">Tab'as „Zonos“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -479,8 +479,7 @@ a { color: var(--accent); }
       <p class="desc">Pavyzdys: šiandien +20 % visiems, Jonui −10 %. Jonui galioja −10 %; rinkdamas kitos bangos užsakymus jis dar gauna kitos bangos %.</p>
     </div></details>
     <details class="item" id="f-EK2"><summary><span class="id">EK2</span><span class="name">Surinkimo centro korekcija</span><span class="status st-wip">Derinama</span></summary><div class="body">
-      <ul><li>±% dėl žinomos ar netikėtos apkrovos, didinti ir mažinti.</li><li>Įjungiant pasirenkama apimtis: tik dabar dirbantiems arba ir vėliau šiandien dirbsiantiems.</li><li>Galioja, kol vadovas išjungia; papildomai galima nustatyti pabaigos laiką.</li><li>Valdoma Picker accounts lange ir sidebar'e (tai „kas vyksta dabar“ koregavimas). Dashboard galimas vėliau, kai paaiškės jo vaidmuo su auto tasks (<a href="#k-K17">K17</a>).</li></ul>
-      <p class="open"><b>Atvira:</b> valdymo forma, sprendžiama kuriant prototipą: „dabar dirbantiems“ ir „visiems šiandien“ viename langelyje, ar „dabar dirbantiems“ per lentelės bulk actions.</p>
+      <ul><li>Valdoma „Dirba dabar“ sidebar'e (pasiekiamas Picker accounts ir Dashboard languose): antraštėje mygtukas „Efektyvumas“. Kitos vietos jai nėra, nes ji nepriklauso nė vienam surinkėjui; kelias per lentelę (filtrai, varnelės, bulk actions) per sudėtingas.</li><li>Langelis: kryptis (Mažinti / Didinti), dydis, kam taikyti: „Visiems šiandien, įskaitant ateinančius vėliau“ (numatyta) arba „Tik dabar dirbantiems (N)“ su vardų sąrašu; galioja kol išjungsiu arba iki laiko. „Dabar dirbantys“ yra sidebar'o apibrėžimas; rankinio skyrimo surinkėjai be užduoties į jį nepatenka, todėl numatytas „Visiems šiandien“.</li><li>Taikoma visoms užduotims (auto ir rankiniu būdu); naujokams netaikoma (T3). Langelyje rodomos išimtys su asmenine korekcija ir pasirinkimas „Taikyti ir jiems (nuimti asmenines korekcijas)“.</li><li>Aktyvi korekcija: juosta po sidebar'o antrašte „Centras +10 % · Visiems šiandien · kol išjungsi · 1 išimtis“ su „Keisti“ ir ✕, išimtis galima išskleisti; suskleistame sidebar'e indikatorius „+10 %“.</li><li>Lentelė tik rodo žymas; bulk actions kelių žmonių asmeninėms korekcijoms – vėliau.</li></ul>
       <div class="meta"><span class="was">pakeičia DD4</span></div>
     </div></details>
     <details class="item" id="f-EK3"><summary><span class="id">EK3</span><span class="name">Asmeninės korekcijos vyksta paskyroje</span><span class="status st-wip">Derinama</span></summary><div class="body">
@@ -885,6 +884,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-26</td><td>Prototipe surinkimo centro korekcija sidebar'e (EK2): mygtukas „Efektyvumas“ antraštėje, langelis su „Visiems šiandien“ / „Tik dabar dirbantiems“, išimtys, juosta ir indikatorius; dvi žymos (centro, asmeninė) lentelėje, sidebar'e ir paskyroje (EK5). Senas efektyvumo kėlimas iš „Auto tasks“ ⋮ pašalintas (DD3, DD4).</td></tr>
       <tr><td>2026-10-26</td><td>Asmeninės korekcijos aprašytos paskyros skiltyje: EK3 → PK7 (laikina efektyvumo korekcija, pakeitė seną PK7), EK4 → PK8 (užduočių skyrimo zonai stabdymas); EK3 tapo nuoroda į paskyrą. PK1 ir PK2 papildyti nuorodomis, nauja taisyklė T8.</td></tr>
       <tr><td>2026-10-26</td><td>Paskyra: auto tasks jungiklis perkeltas į peržiūrą (iš redagavimo išimtas), naujoko žyma peržiūroje kaip jungiklis su patvirtinimu, formoje lieka varnelė (PK1–PK3).</td></tr>
       <tr><td>2026-10-26</td><td>Prototipe paskyros peržiūroje: laikinos efektyvumo korekcijos langelis ir kortelė (EK3: viena korekcija, viena kryptis, vienas procentas pasirinktoms zonoms) ir zonos pristabdymas (EK4, buvusi idėja „atjungimas“ tapo „Derinama“). Tab'ų paskyroje nereikia.</td></tr>
