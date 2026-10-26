@@ -17,7 +17,7 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 </head><body>
 <main class="max-w-6xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold">Efektyvumo korekcijų žymos</h1>
-  <p class="text-gray-600 mt-1 max-w-3xl">Visos galimos būsenos surinkėjų lentelės stulpelyje dešinėje nuo „Būsena“. Trys atvaizdavimo variantai su tais pačiais atvejais. Užvesk pelę ant žymų, kad pamatytum detales; B variante žymą galima paspausti.</p>
+  <p class="text-gray-600 mt-1 max-w-3xl">Visos galimos efektyvumo korekcijų būsenos, kaip jos įgyvendintos prototipe. Picker accounts lentelėje rodomos išsamios žymos (užvedus pelę – detalės), „Dirba dabar“ sidebar'o kortelėse – tik ikonos (paspaudus – langelis su detalėmis).</p>
   <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
     <span class="flex items-center gap-1.5"><span class="tg tp" id="lgP"></span> asmeninė korekcija</span>
     <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdytas užduočių skyrimas zonai</span>
@@ -26,6 +26,7 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
   </div>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
+<div id="ep" hidden class="fixed z-30 w-72 bg-white border rounded-lg shadow-lg text-sm p-3" role="dialog" aria-label="Efektyvumo korekcijos"></div>
 <script>
 // Ikonos tokios pat kaip prototipe
 const IPER='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="6" r="3.5"/><path d="M3 17c0-3.9 3.1-6 7-6s7 2.1 7 6z"/></svg>',
@@ -61,25 +62,29 @@ const pct=v=>`${sg(v)}${Math.abs(v)} %`;
 const A=c=>(c.P?`<span class="tg tp" title="${tipP(c)}">${IPER}<span class="t">${pct(c.P.v)}${c.P.z.length?' · '+zTxt(c.P.z):''}</span></span>`:'')
   +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'')
   +(c.C?`<span class="tg ${c.P?'tx':'tc'}" title="${tipC(c)}">${ICEN}<span class="t">${pct(c.C.v)}</span></span>`:'');
-// B: viena suvestinė žyma su iššokančiu sąrašu
-let bId=0;
-const B=c=>{const L=[c.P&&tipP(c),c.S&&tipS(c),c.C&&tipC(c)].filter(Boolean);if(!L.length)return '';const id='b'+(bId++),act=L.length-(c.P&&c.C?1:0);
-  return `<span class="relative"><button class="tg tp" style="cursor:pointer" aria-expanded="false" onclick="bT('${id}',this)">${act==1?'1 korekcija':act+' korekcijos'} ▾</button><span id="${id}" hidden class="absolute right-0 top-6 z-10 w-72 bg-white border rounded-lg shadow-lg p-3 text-xs text-gray-700 text-left whitespace-normal block"><span class="block space-y-1.5">${L.map(l=>`<span class="block">${l}</span>`).join('')}</span><a class="block mt-2 text-indigo-700 font-medium">Atidaryti paskyrą →</a></span></span>`};
-function bT(id,b){document.querySelectorAll('[id^="b"]').forEach(e=>{if(e.id!=id&&e.tagName=='SPAN')e.hidden=true});const e=document.getElementById(id);e.hidden=!e.hidden;b.setAttribute('aria-expanded',!e.hidden)}
-document.addEventListener('click',e=>{if(!e.target.closest('.relative'))document.querySelectorAll('span[id^="b"]').forEach(x=>x.hidden=true)});
 // C: tik ikonos
 const ic=(cls,i,t)=>`<span class="inline-flex items-center justify-center w-6 h-6 rounded-full border ${cls}" title="${t}" role="img" aria-label="${t}">${i.replace('w-3 h-3','w-3.5 h-3.5')}</span>`;
 const Cv=c=>(c.P?ic('tp',IPER,tipP(c)):'')+(c.S?ic('ts',IPA,tipS(c)):'')+(c.C?ic(c.P?'tx':'tc',ICEN,tipC(c)):'');
-const V=[
-  ['A','Išsamios žymos','Kiekvienam tipui atskira žyma; tekstas nusako dydį ir apimtį. Žyma be zonos reiškia „visos zonos“. Užvedus pelę – detalės, paspaudus – paskyra.','Iš karto matyti, kas ir kur pakeista.','Plačiausias stulpelis; ilgi pavadinimai trumpinami „…“.',A],
-  ['B','Viena suvestinė žyma','Stulpelyje tik korekcijų skaičius; paspaudus atsiveria sąrašas su detalėmis ir nuoroda į paskyrą.','Siauras ir tvarkingas stulpelis.','Nematyti, kas pakeista, kol nepaspaudi; negaliojanti centro korekcija neįskaičiuojama.',B],
-  ['C','Tik ikonos','Ikona kiekvienam tipui, detalės tik užvedus pelę.','Užima mažiausiai vietos.','Be pelės nežinai nei dydžio, nei zonų.',Cv],
-];
-out.innerHTML=V.map(([k,t,d,pl,mi,f])=>`<section class="bg-white border rounded-lg">
-  <div class="px-5 py-4 border-b"><div class="flex items-baseline gap-2"><span class="text-xs font-semibold text-indigo-700 bg-indigo-50 rounded px-1.5">${k}</span><h2 class="text-lg font-semibold">${t}</h2></div>
-    <p class="text-gray-600 mt-1">${d}</p><p class="text-xs mt-1"><span class="text-green-700">+ ${pl}</span> <span class="text-gray-300 mx-1">|</span> <span class="text-red-700">− ${mi}</span></p></div>
+// Sidebar kortelė: ikonos, paspaudus – langelis (kaip prototipe)
+const CI=c=>(c.P||c.S||c.C)?`<button class="flex items-center -space-x-1 rounded-full hover:ring-2 hover:ring-indigo-200" aria-haspopup="dialog" aria-label="Efektyvumo korekcijos" onclick="event.stopPropagation();pop(this,${CASES.indexOf(c)})">${Cv(c)}</button>`:'';
+function pop(b,k){const p=document.getElementById('ep'),c=CASES[k];if(!p.hidden&&p._k==k){p.hidden=true;return}const r=b.getBoundingClientRect(),row=(cl,x,t)=>`<div class="flex gap-2"><span class="mt-0.5 ${cl}">${x}</span><span>${t}</span></div>`;
+  p.innerHTML=`<div class="font-semibold text-gray-900 mb-2">${c.n}</div><div class="space-y-1.5">${c.P?row('text-amber-800',IPER,tipP(c)):''}${c.S?row('text-gray-600',IPA,tipS(c)):''}${c.C?row(c.P?'text-gray-400':'text-sky-800',ICEN,tipC(c)):''}</div><span class="block mt-3 text-indigo-700 font-medium">Atidaryti paskyrą →</span>`;
+  p._k=k;p.style.top=r.bottom+6+'px';p.style.left=Math.max(8,Math.min(r.right-288,innerWidth-296))+'px';p.hidden=false}
+document.addEventListener('click',e=>{const p=document.getElementById('ep');if(!p.hidden&&!e.target.closest('#ep'))p.hidden=true});
+addEventListener('scroll',()=>{document.getElementById('ep').hidden=true},true);
+const card=c=>`<div class="p-3 bg-white border border-gray-200 rounded-lg"><div class="text-[11px] text-gray-400 mb-1">${c.g}</div><div class="flex items-center gap-2"><div class="min-w-0"><div class="text-[15px] font-semibold text-gray-900 truncate">${c.n}</div><div class="text-[11px] text-gray-500">Picker</div></div>
+  <div class="ml-auto flex items-center gap-2">${CI(c)}<span class="text-xs text-gray-500">Auto</span><span class="inline-block w-9 h-5 rounded-full bg-green-600 relative" aria-hidden="true"><span class="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white"></span></span></div></div>
+  ${c.s=='Nerenka'?'':`<div class="mt-2 h-6 rounded border flex items-center px-2.5 text-[13px] ${c.s=='Renka'?'bg-green-50 border-green-100 text-green-900':c.s=='Nesinchronizavo'?'bg-amber-50 border-amber-100 text-amber-900':'bg-blue-50 border-blue-100 text-blue-900'}"><span class="font-medium">${c.s}</span></div>`}</div>`;
+out.innerHTML=`<section class="bg-white border rounded-lg">
+  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
+    <p class="text-gray-600 mt-1">Stulpelyje be antraštės dešinėje nuo „Būsena“. Kiekvienam tipui atskira žyma su dydžiu ir apimtimi; žyma be zonos reiškia „visos zonos“. Užvedus pelę – detalės.</p></div>
   <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Atvejis</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Būsena</th><th class="px-4"></th></tr></thead>
-  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4">${c.s=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded whitespace-nowrap ${ST[c.s]}">${c.s}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${f(c)}</div></td></tr>`).join('')}</tbody></table></div>
-</section>`).join('');
+  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4">${c.s=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded whitespace-nowrap ${ST[c.s]}">${c.s}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
+</section>
+<section class="bg-white border rounded-lg">
+  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">„Dirba dabar“ sidebar'o kortelės: tik ikonos</h2>
+    <p class="text-gray-600 mt-1">Kortelėje šalia „Auto“ jungiklio tik ikonos; paspaudus atsiveria langelis su detalėmis ir nuoroda į paskyrą.</p></div>
+  <div class="p-4 bg-gray-50 rounded-b-lg grid gap-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))">${CASES.map(card).join('')}</div>
+</section>`;
 </script>
 </body></html>
