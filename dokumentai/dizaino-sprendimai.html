@@ -277,11 +277,11 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">S14</span><span class="ctx">Q05</span><span class="ctx">Q21</span><span class="was">buvęs A1</span></div>
     </div></details>
     <details class="item" id="f-PA3"><summary><span class="id">PA3</span><span class="name">Grupinis įjungimas ir išjungimas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Pažymėjus kelias eilutes atsiranda juosta „N pažymėta · Įjungti auto tasks · Išjungti“. Išjungti visiems galima per sidebar'o ⋮ (<a href="#f-DD3">DD3</a>).</p>
+      <p class="desc">Sistemoje jau yra bulk actions meniu. Pažymėjus kelias eilutes, jame prie esamų pasirinkimų atsiranda du nauji: „Įjungti auto tasks“ ir „Išjungti auto tasks“. Išjungti visiems galima per sidebar'o ⋮ (<a href="#f-DD3">DD3</a>).</p>
       <div class="meta"><span class="was">buvęs D01</span></div>
     </div></details>
     <details class="item" id="f-PA4"><summary><span class="id">PA4</span><span class="name">Filtrai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Name, Last name, Time card, Shift name, Role, Būsena (Renka, Laukia užduoties, Nesinchronizavo, Nerenka).</li><li>Auto tasks: Įjungta / Išjungta; nepasirinkus rodomi visi.</li><li>Naujokai: toggle filtras su varnele.</li><li>Filtrai be chevron'ų, aktyvus filtras su violetiniu rėmeliu.</li></ul>
+      <ul><li>Name, Last name, Time card, Shift name, Role, Būsena (Renka, Laukia užduoties, Nesinchronizavo, Nerenka).</li><li>Auto tasks: Įjungta / Išjungta; nepasirinkus rodomi visi.</li><li>Naujokai: toggle filtras su varnele.</li></ul>
     </div></details>
   
     <details class="item" id="f-PA5"><summary><span class="id">PA5</span><span class="name">Šablonai ir greitas vedimas</span><span class="status st-later">Vėliau</span></summary><div class="body">
@@ -360,23 +360,19 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">Q04</span><span class="was">buvęs A6, D04</span></div>
     </div></details>
     <details class="item" id="f-DD5"><summary><span class="id">DD5</span><span class="name">Tab'as „Zonos“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Kiekvienai zonai aktyvių skaičius (Renka + Nesinchronizavo), be auto / rankinio skaidymo. Zona išsiskleidžia į kompaktišką sąrašą (vardas, rolė, būsena su tos zonos eilutėmis), tik informacija. Antraštės chevron išskleidžia visas zonas.</p>
+      <p class="desc">Kiekvienai zonai aktyvių skaičius (Renka + Nesinchronizavo), be auto / rankinio skaidymo. Zona išsiskleidžia į kompaktišką sąrašą (vardas, rolė, būsena su tos zonos eilutėmis), tik informacija. Prie kiekvieno surinkėjo rodomas indikatorius, kaip jam priskirta užduotis: žalias burbuliukas = auto tasks, pilkas = rankiniu būdu. Antraštės mygtukas išskleidžia visas zonas.</p>
     </div></details>
     <details class="item" id="f-DD6"><summary><span class="id">DD6</span><span class="name">Tab'as „Surinkėjai“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Rodomi auto ON ir rankiniai, kol Renka ar Nesinchronizavo; rankinis baigęs išnyksta. Valdymas trimis lygiais: tab'ai → segmentas Visi / Auto / Rankinis → būsenų chip'ai (Naujokai atskirti). Zonos filtro nėra. Tab'ai ir filtrai prilimpa slenkant.</p>
     </div></details>
     <details class="item" id="f-DD7"><summary><span class="id">DD7</span><span class="name">Surinkėjo kortelė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Vardas su naujoko žyma, rolė po vardu; dešinėje jungiklis su pastoviu užrašu „Auto“ (visiems).</li><li>Zonų žymos: 2 pagal eilučių skaičių ir „+N“; Laukia atveju žymų nėra.</li><li>Būsena sujungta su progresu: Renka „4/9 eil.“, Nesinchronizavo „N eil.“, Laukia be laiko.</li><li>Du mygtukai: „Surinkimo trukmė“ ir „Užduotys“, atsidaro kaip stalčius (<a href="#f-DD8">DD8</a>, <a href="#f-DD9">DD9</a>).</li></ul>
+      <ul><li>Vardas su naujoko žyma, rolė po vardu; dešinėje jungiklis su pastoviu užrašu „Auto“ (visiems).</li><li>Zonų žymos: rodomos visos zonos, kuriose surinkėjas turi užduočių (pagal eilučių skaičių); Laukia atveju žymų nėra.</li><li>Būsena sujungta su progresu: Renka „4/9 eil.“, Nesinchronizavo „N eil.“, Laukia be laiko.</li><li>Du mygtukai: „Surinkimo trukmė“ ir „Užduotys“, atsidaro kaip stalčius (<a href="#f-DD8">DD8</a>, <a href="#f-DD9">DD9</a>).</li></ul>
     </div></details>
     <details class="item" id="f-DD8"><summary><span class="id">DD8</span><span class="name">Surinkimo trukmės stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos, maks. vienam išėjimui, planuojamas išėjimas, efektyvumo kėlimo eilutė. Vėlavimas nepabrėžiamas. Laukia ir Nesinchronizavo atveju „–“.</p>
     </div></details>
     <details class="item" id="f-DD9"><summary><span class="id">DD9</span><span class="name">Užduočių stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Sąrašas be antraščių: dabartinės, po to eilėje. Kiekviena kaip Unfinished picking tasks lange: Task ID (nuoroda), zonos žyma, būsena; Banga, Eilutės, Vnt., Kg, Užsak. Atliktos nerodomos.</p>
-    </div></details>
-    <details class="item" id="f-DD10"><summary><span class="id">DD10</span><span class="name">Apsauga nuo atsitiktinio įjungimo</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Pavienis jungiklis veikia iškart, rodomas toast su vardu ir „Atšaukti“. Patvirtinimas su vardų sąrašu tik grupiniam veiksmui. Klaidas padeda pastebėti sidebar'as: ką tik įjungtas = Laukia, nesantis = ilgai Nesinchronizavo.</p>
-      <div class="meta"><span class="chk">Patikrink</span></div>
     </div></details>
     <details class="item" id="f-DD11"><summary><span class="id">DD11</span><span class="name">Pakeitimų žymos</span><span class="status st-idea">Idėja</span></summary><div class="body">
       <p class="desc">Parodyti, kad surinkėjui įjungtos zonų kombinacijos ir kad jo efektyvumas pakoreguotas (2026-10-22). Vieta ir forma neapibrėžta, <a href="#k-K04">K04</a>.</p>
@@ -393,12 +389,6 @@ a { color: var(--accent); }
     <span class="rejected">Atmesta: „Dirba dabar“ kaip suskleidžiamas sidebar'as (variantas A), žr. Archyvą.</span>
   </div>
   <div class="list">
-    <details class="item" id="f-DB1"><summary><span class="id">DB1</span><span class="name">Dienos antraštė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Esamas Dashboard be pakeitimų: SC, dienos suvestinė (užsakymai / talpa, eilutės, vnt., kg) ir dienos pasirinkimas Today / Tomorrow.</p>
-    </div></details>
-    <details class="item" id="f-DB2"><summary><span class="id">DB2</span><span class="name">Bangų kortelės</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Esamas Dashboard be pakeitimų: bangos laikas ir rodikliai, būsenų juosta (Submitted, New addition, Being picked, Picking done, Ready for delivery, Open capacity), Not compared / Compared incorrectly, pranešimai (užsakymai be užduočių, neatspausdinti lipdukai), Home delivery / Drive in, „Hide finished waves“.</p>
-    </div></details>
     <details class="item" id="f-DB3"><summary><span class="id">DB3</span><span class="name">Prisegtas „Dirba dabar“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Sidebar'as (<a href="#h-dd">DD</a>) prisegtas dešinėje (440 px), kai bangų stulpeliui lieka bent 600 px. Siauresniame ekrane veikia kaip Picker accounts lange: suskleistas ir išskleidžiamas.</p>
     </div></details>
@@ -848,6 +838,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-26</td><td>Dokumentas patikslintas: PA3 auto tasks veiksmai papildo esamą bulk actions meniu; PA4 išimti prototipo UI aprašai (filtrai be chevron'ų); DD5 papildytas indikatoriumi (žalias = auto tasks, pilkas = rankinis); DD7 rodomos visos zonų žymos, be „+N“; DD10 (apsauga nuo atsitiktinio įjungimo) ir DB1, DB2 (dienos antraštė, bangų kortelės be pakeitimų) pašalinti. UI detalės kol kas neaprašomos: prototipas skirtas funkcionalumams ir jų logikai patvirtinti.</td></tr>
       <tr><td>2026-10-23</td><td>Picker accounts ir Dashboard sujungti į vieną prototipą su bendrais duomenimis (22 surinkėjai, X864 Hyper) ir vienu „Dirba dabar“ sidebar'u; tarp ekranų pereinama per kairįjį meniu.</td></tr>
       <tr><td>2026-10-23</td><td>Prototipuose palikta po vieną variantą: Picker accounts su „Dirba dabar“ ir Dashboard su prisegtu „Dirba dabar“. Atmesti variantai iš bendro artefakto pašalinti.</td></tr>
       <tr><td>2026-10-23</td><td>Picker accounts išskirtas į du langus: PA surinkėjų lentelė ir PK surinkėjo paskyra (peržiūra, redagavimas). Nauja PA6 ir K19: paskyroje nustatytos zonos lentelėje nerodomos.</td></tr>
