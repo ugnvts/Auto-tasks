@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Efektyvumo žymos</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--bg:#f6f7f9;color-scheme:light}
+body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-serif}
+[hidden]{display:none!important}
+.tg{display:inline-flex;align-items:center;gap:4px;font-size:12px;border-radius:999px;border:1px solid;padding:0 6px;white-space:nowrap;max-width:220px}
+.tg span.t{overflow:hidden;text-overflow:ellipsis}
+.tp{border-color:#fcd34d;background:#fffbeb;color:#92400e}
+.tc{border-color:#7dd3fc;background:#f0f9ff;color:#075985}
+.tx{border-color:#e5e7eb;background:#f9fafb;color:#9ca3af;text-decoration:line-through}
+.ts{border-color:#d1d5db;background:#f3f4f6;color:#374151}
+</style>
+</head><body>
+<main class="max-w-6xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-semibold">Efektyvumo korekcijų žymos</h1>
+  <p class="text-gray-600 mt-1 max-w-3xl">Visos galimos būsenos surinkėjų lentelės stulpelyje dešinėje nuo „Būsena“. Trys atvaizdavimo variantai su tais pačiais atvejais. Užvesk pelę ant žymų, kad pamatytum detales; B variante žymą galima paspausti.</p>
+  <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
+    <span class="flex items-center gap-1.5"><span class="tg tp" id="lgP"></span> asmeninė korekcija</span>
+    <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdytas užduočių skyrimas zonai</span>
+    <span class="flex items-center gap-1.5"><span class="tg tc" id="lgC"></span> surinkimo centro korekcija</span>
+    <span class="flex items-center gap-1.5"><span class="tg tx" id="lgX"></span> centro korekcija negalioja (yra asmeninė)</span>
+  </div>
+  <div id="out" class="mt-6 space-y-8"></div>
+</main>
+<script>
+// Ikonos tokios pat kaip prototipe
+const IPER='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><circle cx="10" cy="6" r="3.5"/><path d="M3 17c0-3.9 3.1-6 7-6s7 2.1 7 6z"/></svg>',
+  ICEN='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M3 17V7l7-4 7 4v10h-4v-5H7v5H3z"/></svg>',
+  IPA='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>';
+lgP.innerHTML=IPER+'−10 %';lgS.innerHTML=IPA+'Gėrimai';lgC.innerHTML=ICEN+'+10 %';lgX.innerHTML=ICEN+'+10 %';
+const ST={"Renka":"bg-green-100 text-green-800","Laukia užduoties":"bg-blue-100 text-blue-800","Nesinchronizavo":"bg-amber-100 text-amber-800"};
+const sg=d=>d<0?'−':'+';
+// Atvejai: P – asmeninė {v, z: [] = visos zonos, t – iki kada}, S – sustabdytos zonos {z, t}, C – centro korekcija, K – kombinacija, kuri neveikia
+const CASES=[
+  {g:'Be korekcijų',n:'Nerijus Petrauskas',s:'Laukia užduoties'},
+  {g:'Asmeninė, visos zonos',n:'Aldonas Kazlauskas',s:'Renka',P:{v:-10,z:[]}},
+  {g:'Asmeninė, viena zona',n:'Karolis Jankauskas',s:'Nesinchronizavo',P:{v:-20,z:['Alcoholic beverages']}},
+  {g:'Asmeninė, kelios zonos',n:'Remigijus Butkus',s:'Renka',P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
+  {g:'Asmeninė, didinimas',n:'Tomas Vaitkus',s:'Renka',P:{v:10,z:[]}},
+  {g:'Sustabdyta viena zona',n:'Ieva Kairytė',s:'Renka',S:{z:['Alcoholic beverages']}},
+  {g:'Sustabdytos kelios zonos',n:'Rūta Mockutė',s:'Laukia užduoties',S:{z:['Alcoholic beverages','Frozen goods'],t:'16:00'}},
+  {g:'Sustabdyta zona kombinacijoje',n:'Justas Navickas',s:'Renka',S:{z:['Bread products']},K:'Frozen goods + Bread products'},
+  {g:'Centro korekcija, didinimas',n:'Lina Žukauskienė',s:'Renka',C:{v:10}},
+  {g:'Centro korekcija, mažinimas',n:'Darius Rimkus',s:'Nerenka',C:{v:-10}},
+  {g:'Asmeninė + centro (centro negalioja)',n:'Aldonas Kazlauskas',s:'Renka',P:{v:-10,z:[]},C:{v:10}},
+  {g:'Sustabdyta zona + asmeninė',n:'Jonas Petraitis',s:'Renka',P:{v:-20,z:[]},S:{z:['Alcoholic beverages']}},
+  {g:'Sustabdyta zona + centro',n:'Eglė Stankutė',s:'Nesinchronizavo',S:{z:['Alcoholic beverages']},C:{v:10}},
+  {g:'Visos trys kartu',n:'Jonas Petraitis',s:'Renka',P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']},C:{v:10}},
+  {g:'Ilgi zonų pavadinimai',n:'Mantas Kazakevičius',s:'Renka',P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
+];
+const zTxt=z=>z.length==1?z[0]:z.length+' zonos',till=t=>t?'iki '+t:'kol išjungs';
+const tipP=c=>`Asmeninė korekcija ${sg(c.P.v)}${Math.abs(c.P.v)} % · ${c.P.z.length?c.P.z.join(', '):'visos zonos'} · ${till(c.P.t)}`,
+  tipS=c=>`Sustabdytas užduočių skyrimas: ${c.S.z.join(', ')} · ${till(c.S.t)}${c.K?` · kombinacija ${c.K} neveikia`:''}`,
+  tipC=c=>c.P?`Surinkimo centro korekcija ${sg(c.C.v)}${Math.abs(c.C.v)} % negalioja: yra asmeninė korekcija`:`Surinkimo centro korekcija ${sg(c.C.v)}${Math.abs(c.C.v)} %`;
+const pct=v=>`${sg(v)}${Math.abs(v)} %`;
+// A: išsamios žymos
+const A=c=>(c.P?`<span class="tg tp" title="${tipP(c)}">${IPER}<span class="t">${pct(c.P.v)}${c.P.z.length?' · '+zTxt(c.P.z):''}</span></span>`:'')
+  +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'')
+  +(c.C?`<span class="tg ${c.P?'tx':'tc'}" title="${tipC(c)}">${ICEN}<span class="t">${pct(c.C.v)}</span></span>`:'');
+// B: viena suvestinė žyma su iššokančiu sąrašu
+let bId=0;
+const B=c=>{const L=[c.P&&tipP(c),c.S&&tipS(c),c.C&&tipC(c)].filter(Boolean);if(!L.length)return '';const id='b'+(bId++),act=L.length-(c.P&&c.C?1:0);
+  return `<span class="relative"><button class="tg tp" style="cursor:pointer" aria-expanded="false" onclick="bT('${id}',this)">${act==1?'1 korekcija':act+' korekcijos'} ▾</button><span id="${id}" hidden class="absolute right-0 top-6 z-10 w-72 bg-white border rounded-lg shadow-lg p-3 text-xs text-gray-700 text-left whitespace-normal block"><span class="block space-y-1.5">${L.map(l=>`<span class="block">${l}</span>`).join('')}</span><a class="block mt-2 text-indigo-700 font-medium">Atidaryti paskyrą →</a></span></span>`};
+function bT(id,b){document.querySelectorAll('[id^="b"]').forEach(e=>{if(e.id!=id&&e.tagName=='SPAN')e.hidden=true});const e=document.getElementById(id);e.hidden=!e.hidden;b.setAttribute('aria-expanded',!e.hidden)}
+document.addEventListener('click',e=>{if(!e.target.closest('.relative'))document.querySelectorAll('span[id^="b"]').forEach(x=>x.hidden=true)});
+// C: tik ikonos
+const ic=(cls,i,t)=>`<span class="inline-flex items-center justify-center w-6 h-6 rounded-full border ${cls}" title="${t}" role="img" aria-label="${t}">${i.replace('w-3 h-3','w-3.5 h-3.5')}</span>`;
+const Cv=c=>(c.P?ic('tp',IPER,tipP(c)):'')+(c.S?ic('ts',IPA,tipS(c)):'')+(c.C?ic(c.P?'tx':'tc',ICEN,tipC(c)):'');
+const V=[
+  ['A','Išsamios žymos','Kiekvienam tipui atskira žyma; tekstas nusako dydį ir apimtį. Žyma be zonos reiškia „visos zonos“. Užvedus pelę – detalės, paspaudus – paskyra.','Iš karto matyti, kas ir kur pakeista.','Plačiausias stulpelis; ilgi pavadinimai trumpinami „…“.',A],
+  ['B','Viena suvestinė žyma','Stulpelyje tik korekcijų skaičius; paspaudus atsiveria sąrašas su detalėmis ir nuoroda į paskyrą.','Siauras ir tvarkingas stulpelis.','Nematyti, kas pakeista, kol nepaspaudi; negaliojanti centro korekcija neįskaičiuojama.',B],
+  ['C','Tik ikonos','Ikona kiekvienam tipui, detalės tik užvedus pelę.','Užima mažiausiai vietos.','Be pelės nežinai nei dydžio, nei zonų.',Cv],
+];
+out.innerHTML=V.map(([k,t,d,pl,mi,f])=>`<section class="bg-white border rounded-lg">
+  <div class="px-5 py-4 border-b"><div class="flex items-baseline gap-2"><span class="text-xs font-semibold text-indigo-700 bg-indigo-50 rounded px-1.5">${k}</span><h2 class="text-lg font-semibold">${t}</h2></div>
+    <p class="text-gray-600 mt-1">${d}</p><p class="text-xs mt-1"><span class="text-green-700">+ ${pl}</span> <span class="text-gray-300 mx-1">|</span> <span class="text-red-700">− ${mi}</span></p></div>
+  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Atvejis</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Būsena</th><th class="px-4"></th></tr></thead>
+  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4">${c.s=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded whitespace-nowrap ${ST[c.s]}">${c.s}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${f(c)}</div></td></tr>`).join('')}</tbody></table></div>
+</section>`).join('');
+</script>
+</body></html>
