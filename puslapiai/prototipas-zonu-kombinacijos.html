@@ -415,7 +415,7 @@ function cbs(){const mz=document.getElementById('mz').checked;document.getElemen
   document.getElementById('cbn').textContent=`(${CB.filter(c=>c.on).length} iš ${CB.length})`;
   document.getElementById('cbl').innerHTML=CB.map((c,k)=>{const ms=c.z.filter(n=>!zOk(n));
     return `<div class="px-3 py-2 ${c.on?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input type="checkbox" ${c.on?'checked':''} onchange="CB[${k}].on=this.checked;cbs()"><span class="font-medium">${c.z.join(' + ')}</span></label>
-      ${ms.map(n=>`<div class="pl-6 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-amber-800"><span><span aria-hidden="true">⚠</span> ${n} nepriskirta surinkėjui</span>${c.on?`<button class="text-indigo-700 font-medium hover:underline" onclick="zGo('${n}')">Rodyti zoną sąraše ↓</button>`:''}</div>`).join('')}</div>`}).join('')}
+      ${ms.map(n=>`<div class="pl-6 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-amber-800"><span><span aria-hidden="true">⚠</span> ${n} nepriskirta surinkėjui</span>${c.on?`<button class="text-indigo-700 font-medium hover:underline" onclick="zGo('${n}')">Rodyti zoną sąraše ↑</button>`:''}</div>`).join('')}</div>`}).join('')}
 function zGo(n){const q=document.getElementById('zq');if(q.value){q.value='';zones()}
   const el=document.getElementById('zr'+['NONE',...Z].indexOf(n));el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('zfl');void el.offsetWidth;el.classList.add('zfl')}
 const zOk=n=>!!EFF[n]&&[0,1,2].every(k=>EFF[n][k]!=null&&String(EFF[n][k]).trim()!=='');
