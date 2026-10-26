@@ -270,10 +270,11 @@ td,th{white-space:nowrap}
           <dl class="text-sm">
             <div class="py-3"><div class="grid grid-cols-3 items-center"><dt class="text-gray-500">Can work in multiple zones</dt><dd class="col-span-2"><span class="inline-flex items-center gap-1.5 text-xs font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Enabled</span></dd></div>
               <div class="mt-3 border rounded-lg bg-gray-50 p-4 space-y-3">
-                <div class="grid grid-cols-3"><dt class="text-gray-500">Allowed zone combinations</dt><dd class="col-span-2 flex flex-wrap gap-2"><span class="border rounded px-2 py-0.5 bg-gray-50">Fresh meat + Fresh poultry</span><span class="border rounded px-2 py-0.5 bg-gray-50">Fruits, vegetables + Groceries</span></dd></div>
+                <div class="grid grid-cols-3"><dt class="text-gray-500">Allowed zone combinations</dt><dd id="cbView" class="col-span-2 flex flex-wrap gap-2"></dd></div>
               </div></div>
           </dl>
-          <h3 class="font-medium mt-6 pb-2 border-b">Zonos ir efektyvumas <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3>
+          <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zonos ir efektyvumas <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3><button id="korBtn" class="ml-auto text-sm border border-indigo-600 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-50" onclick="korOpen()">Laikina korekcija</button></div>
+          <div id="korCard" class="mt-3 empty:hidden"></div>
           <div id="effView" class="mt-3 space-y-3"></div>
         </div>
       </section>
@@ -356,6 +357,7 @@ td,th{white-space:nowrap}
 <div id="toast" hidden class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 bg-gray-900 text-white text-sm rounded px-4 py-2.5 shadow-lg flex items-center gap-4"></div>
 <div id="kmenu" hidden class="fixed z-20 w-60 bg-white border rounded shadow-lg text-sm py-1"><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="kmenu.hidden=true;bpopOpen(kb)">Kelti efektyvumą</button><button class="block w-full text-left px-3 py-2 hover:bg-red-50 text-red-700" onclick="kmenu.hidden=true;offAsk()">Išjungti auto tasks visiems</button></div>
 <div id="offdlg" hidden class="fixed inset-0 z-30 bg-black/30 grid place-items-center p-4" style="background:rgba(0,0,0,.3)"><div class="bg-white rounded-lg shadow-xl p-5 max-w-sm w-full text-sm"><div class="font-semibold text-base mb-2">Išjungti auto tasks visiems?</div><p id="offtx" class="text-gray-600 mb-4"></p><div class="flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="offdlg.hidden=true">Atšaukti</button><button class="bg-red-600 text-white px-4 py-1.5 rounded" onclick="offAll()">Išjungti</button></div></div></div>
+<div id="kordlg" hidden class="fixed inset-0 z-30 grid place-items-center p-4" style="background:rgba(0,0,0,.3)" onclick="if(event.target==this)this.hidden=true"><div id="kordlgB" class="bg-white rounded-lg shadow-xl p-5 max-w-md w-full text-sm max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="korT"></div></div>
 <div id="bpop" hidden class="fixed z-20 w-72 bg-white border rounded-lg shadow-lg text-sm p-4"></div>
 <div id="fpop" hidden class="fixed z-20 min-w-[160px] bg-white border rounded shadow-lg text-sm py-1"></div>
 <div id="rmenu" hidden class="fixed z-20 w-32 bg-white border rounded shadow-lg text-sm py-1"><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="go('view')">Rodyti</button><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="go('edit')">Redaguoti</button></div>
@@ -430,9 +432,38 @@ function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs()}
 {const _z=zones;zones=function(){_z();cbs()}}
 {const _c=cbs;cbs=function(){_c();zTags()}}
 document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
-function rv(){const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos)`;
+// Laikinos korekcijos (EK3, EK4): viena % korekcija (kryptis, procentas, zonos) ir zonų pristabdymas. Veikia iškart, ne per Edit; bazinis efektyvumas nekeičiamas.
+let KOR=null,KD=null;const PAU=new Set(),KP={down:[5,10,20,30],up:[5,10,15,20]};
+const azs=()=>Z.filter(n=>EFF[n]),korZ=n=>!!KOR&&!PAU.has(n)&&(KOR.all||KOR.z.includes(n)),sg=d=>d=='up'?'+':'−';
+const korTxt=k=>`${sg(k.d)}${k.p} % · ${k.all?'visos zonos':k.z.length==1?k.z[0]:k.z.length+' zonos'}`;
+const IPA='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>',
+  IPL='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 6 4.5z"/></svg>';
+function rv(){const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos${PAU.size?`, ${PAU.size} pristabdyta`:''})`;
   const vb=(t,us,e,o)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><dl class="grid gap-2 mt-1" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${e[k+o]??'–'}</dd></div>`).join('')}</dl></div>`;
-  document.getElementById('effView').innerHTML=zs.map(n=>{const e=EFF[n];return `<div class="border rounded p-3"><div class="font-medium">${n}</div>${n=='NONE'?'':`<div class="mt-2 grid md:grid-cols-2 gap-3">${vb('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],e,0)}${vb('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],e,3)}</div>`}</div>`}).join('')}
+  const mz=document.getElementById('mz').checked;
+  document.getElementById('cbView').innerHTML=mz?CB.filter(c=>c.on).map(c=>{const pz=c.z.filter(n=>PAU.has(n));return pz.length?`<span class="border rounded px-2 py-0.5 bg-gray-100 text-gray-500" title="Kombinacija neveikia, kol ${pz.join(', ')} pristabdyta"><s>${c.z.join(' + ')}</s> · neveikia, kol ${pz.join(', ')} pristabdyta</span>`:`<span class="border rounded px-2 py-0.5 bg-gray-50">${c.z.join(' + ')}</span>`}).join('')||'<span class="text-gray-500">Nepasirinkta</span>':'';
+  document.getElementById('korBtn').hidden=!!KOR;
+  document.getElementById('korCard').innerHTML=KOR?`<div class="flex flex-wrap items-center gap-3 border border-amber-300 bg-amber-50 rounded-lg px-4 py-3"><div class="min-w-0"><div class="text-xs font-semibold uppercase tracking-wide text-amber-800">Laikina efektyvumo korekcija</div><div class="font-semibold text-gray-900">${korTxt(KOR)}</div><div class="text-xs text-gray-600">${KOR.all?'':KOR.z.join(', ')+' · '}${KOR.t?'galioja iki '+KOR.t:'galioja, kol išjungsi'}</div></div><div class="ml-auto flex gap-2"><button class="border bg-white px-3 py-1 rounded hover:bg-gray-50" onclick="korOpen()">Keisti</button><button class="border bg-white px-3 py-1 rounded text-red-700 hover:bg-red-50" onclick="korOff()">Nuimti</button></div></div>`:'';
+  document.getElementById('effView').innerHTML=zs.map(n=>{const e=EFF[n],pa=PAU.has(n),no=n=='NONE';
+    return `<div class="border rounded p-3 ${pa?'bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${n}</span>
+      ${pa?'<span class="text-xs rounded-full border border-gray-300 bg-gray-100 text-gray-600 px-2 py-0.5">Pristabdyta</span>':''}
+      ${korZ(n)?`<span class="text-xs rounded-full border border-amber-300 bg-amber-50 text-amber-800 px-2 py-0.5" title="Laikina korekcija; bazinis efektyvumas nekeičiamas">${sg(KOR.d)}${KOR.p} %</span>`:''}
+      ${no?'':`<button class="ml-auto inline-flex items-center gap-1.5 text-xs border rounded px-2 py-1 bg-white hover:bg-gray-50 ${pa?'text-indigo-700 border-indigo-300':'text-gray-700'}" onclick="zPau('${n}')" title="${pa?'Vėl generuoti užduotis šioje zonoje':'Laikinai negeneruoti užduočių šioje zonoje'}">${pa?IPL+'Tęsti':IPA+'Pristabdyti'}</button>`}</div>
+      ${no?'':`<div class="mt-2 grid md:grid-cols-2 gap-3 ${pa?'opacity-50':''}">${vb('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],e,0)}${vb('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],e,3)}</div>`}</div>`}).join('')}
+function zPau(n){const on=!PAU.has(n);on?PAU.add(n):PAU.delete(n);rv();toast(`${n}: užduočių generavimas ${on?'pristabdytas':'vėl įjungtas'}`,()=>{on?PAU.delete(n):PAU.add(n);rv()})}
+function korOpen(){KD=KOR?{...KOR,z:[...KOR.z]}:{d:'down',p:10,all:true,z:[],t:''};korR();document.getElementById('kordlg').hidden=false}
+function korR(){const D=KD,zl=azs().filter(n=>!PAU.has(n)),ok=D.all||D.z.length,
+    seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium text-gray-900':'text-gray-600'}" aria-pressed="${D.d==v}" onclick="KD.d='${v}';if(!KP.${v}.includes(KD.p))KD.p=KP.${v}[1];korR()">${l}</button>`,
+    rad=(c,l,on)=>`<label class="flex items-center gap-2"><input type="radio" name="${c}" ${on?'checked':''} onchange="${l}">`;
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Laikina efektyvumo korekcija</div><p class="text-gray-500 mt-1">Veikia iškart. Bazinis efektyvumas paskyroje nekeičiamas.</p>
+    <div class="mt-4 font-medium">Kryptis</div><div class="mt-1 flex gap-1 bg-gray-100 rounded p-1">${seg('down','Mažinti')}${seg('up','Didinti')}</div>
+    <div class="mt-4 font-medium">Dydis</div><div class="mt-1 flex flex-wrap gap-2">${KP[D.d].map(v=>`<button class="px-3 py-1 rounded border tabular-nums ${D.p==v?'border-indigo-600 bg-indigo-50 text-indigo-700 font-medium':'hover:bg-gray-50'}" aria-pressed="${D.p==v}" onclick="KD.p=${v};korR()">${sg(D.d)}${v} %</button>`).join('')}</div>
+    <div class="mt-4 font-medium">Taikyti</div><div class="mt-1 space-y-1.5">${rad('kz',"KD.all=true;korR()",D.all)}Visoms zonoms <span class="text-gray-500">(${zl.length})</span></label>${rad('kz',"KD.all=false;korR()",!D.all)}Pasirinktoms zonoms</label></div>
+    ${D.all?'':`<div class="mt-2 ml-6 border rounded divide-y max-h-48 overflow-y-auto">${zl.map(n=>`<label class="flex items-center gap-2 px-3 py-1.5"><input type="checkbox" ${D.z.includes(n)?'checked':''} onchange="KD.z=this.checked?[...KD.z,'${n}']:KD.z.filter(x=>x!='${n}');korR()">${n}</label>`).join('')}</div>${PAU.size?'<p class="ml-6 mt-1 text-xs text-gray-500">Pristabdytos zonos nerodomos.</p>':''}`}
+    <div class="mt-4 font-medium">Galioja</div><div class="mt-1 space-y-1.5">${rad('kt',"KD.t='';korR()",!D.t)}Kol išjungsiu</label>${rad('kt',"KD.t='18:00';korR()",!!D.t)}Iki${D.t?` <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="KD.t=this.value">`:''}</label></div>
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white ${ok?'bg-indigo-600':'bg-indigo-300 cursor-not-allowed'}" ${ok?'':'disabled'} onclick="korApply()">${KOR?'Išsaugoti korekciją':'Taikyti'}</button></div>`}
+function korApply(){const prev=KOR;KOR={...KD,z:KD.all?[]:KD.z};document.getElementById('kordlg').hidden=true;rv();toast(`Korekcija ${korTxt(KOR)} taikoma`,()=>{KOR=prev;rv()})}
+function korOff(){const prev=KOR;KOR=null;rv();toast('Korekcija nuimta',()=>{KOR=prev;rv()})}
 // Sidebar „Dirba dabar“: užduotys [id, zona, surinkta eil., viso eil., būsena, efektyvumas zonoje SKU/1h]
 const TK={0:[["X864261021/590R","Groceries",4,9,"Picking",120]],
   2:[["X864261021/300R","Fruits, vegetables",12,30,"Picking",95],["X864261021/197R","Fruits, vegetables",0,8,"Not synced",95],["X864261021/dbcR","Groceries",14,14,"Done",140]],
