@@ -235,7 +235,7 @@ a { color: var(--accent); }
   </div>
   <p class="note">Šaltiniai: <a href="https://barbora.atlassian.net/wiki/x/AwBtt" target="_blank" rel="noopener">PM puslapis „Auto tasks - STAGE II“</a> (prioritetinis), <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3302096907" target="_blank" rel="noopener">Algoritmo logika</a> (S, Q), <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3303604225" target="_blank" rel="noopener">susitikimų užrašai</a>. Už sistemos ribų: grafikai (Workofo, NUMO, Virosoft), ne surinkimo darbai, koordinatorių užduotys, lipdukai.</p>
   <nav class="toc" aria-label="Turinys">
-    <a href="#h-gloss">Terminai</a><a href="#h-journey">Diena</a><a href="#h-pa">PA · Picker accounts</a><a href="#h-pk">PK · Paskyra</a><a href="#h-dd">DD · Dirba dabar</a><a href="#h-db">DB · Dashboard</a><a href="#h-sc">SC · Nustatymai</a><a href="#h-t">Bendros taisyklės</a><a href="#h-k">Atviri klausimai</a><a href="#h-dv">Techniniai klausimai</a><a href="#h-p">Ateities idėjos</a>
+    <a href="#h-gloss">Terminai</a><a href="#h-journey">Diena</a><a href="#h-pa">PA · Picker accounts</a><a href="#h-pk">PK · Paskyra</a><a href="#h-dd">DD · Dirba dabar</a><a href="#h-db">DB · Dashboard</a><a href="#h-sc">SC · Nustatymai</a><a href="#h-ek">EK · Efektyvumo korekcijos</a><a href="#h-t">Bendros taisyklės</a><a href="#h-k">Atviri klausimai</a><a href="#h-dv">Techniniai klausimai</a><a href="#h-p">Ateities idėjos</a>
   </nav>
   <div class="stlegend"><span class="status st-ready">Sutarta</span> sprendimas priimtas <span class="status st-wip">Derinama</span> kryptis aiški, detalės atviros <span class="status st-idea">Idėja</span> nepatvirtinta <span class="status st-later">Vėliau</span> ne šiam etapui</div>
 </section>
@@ -330,9 +330,9 @@ a { color: var(--accent); }
       <p class="open"><b>Atvira:</b> <a href="#dv-DV04">DV04</a> kas, jei vienai kombinacijos zonai nesuvestas efektyvumas; <a href="#k-K04">K04</a> kur rodyti, kad kombinacijos įjungtos.</p>
       <div class="meta"><span class="ctx">S09</span><span class="ctx">Q15</span></div>
     </div></details>
-    <details class="item" id="f-PK7"><summary><span class="id">PK7</span><span class="name">Laikinas surinkėjo efektyvumo koregavimas</span><span class="status st-idea">Idėja</span></summary><div class="body">
+    <details class="item" id="f-PK7"><summary><span class="id">PK7</span><span class="name">Laikinas surinkėjo efektyvumo koregavimas</span><span class="status st-wip">Derinama</span></summary><div class="body">
       <p class="desc">Paskyroje suvesti skaičiai lieka tiesos šaltiniu, o konkrečiam surinkėjui laikinai keliamas arba mažinamas efektyvumas. Pvz., surinkėjas pasijuto blogai; kiek laiko mažinimas galios, nežinoma. Valdoma paskyroje ir sidebar'e (2026-10-22).</p>
-      <p class="open"><b>Atvira:</b> <a href="#k-K01">K01</a> kaip tai dera su efektyvumo kėlimu ir bangų prioritetais; <a href="#k-K04">K04</a> kaip parodyti, kad efektyvumas pakoreguotas.</p>
+      <p class="desc">2026-10-26 išplėsta į asmeninę korekciją: <a href="#f-EK3">EK3</a>, <a href="#f-EK4">EK4</a>, žymėjimas <a href="#f-EK5">EK5</a>.</p>
     </div></details>
   </div>
 </section>
@@ -357,7 +357,7 @@ a { color: var(--accent); }
     </div></details>
     <details class="item" id="f-DD4"><summary><span class="id">DD4</span><span class="name">Efektyvumo kėlimas (boost)</span><span class="status st-wip">Derinama</span></summary><div class="body">
       <p class="desc">Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta bangos pabaiga), kiek surinkėjų paveiks. Įjungus matoma žyma „Efektyvumas +X % iki …“ su ✕. Dabar taikoma tik surinkėjams su įjungtu auto, ne naujokams. Atitinka PM „Assign X % over efficiency“.</p>
-      <p class="open"><b>Atvira:</b> <a href="#k-K02">K02</a> PM siūlo taikyti visiems dirbantiems; <a href="#k-K01">K01</a> ryšys su kitos bangos procentu ir laikinu koregavimu. Žingsniai ir laikai yra prielaida.</p>
+      <p class="desc">2026-10-26 tampa surinkimo centro korekcija (<a href="#f-EK2">EK2</a>): taikoma visoms užduotims (auto ir rankiniu būdu), didinti ir mažinti, galioja iki išjungimo, laikas pasirinktinai. Prototipas dar rodo seną variantą.</p>
       <div class="meta"><span class="ctx">Q04</span><span class="was">buvęs A6, D04</span></div>
     </div></details>
     <details class="item" id="f-DD5"><summary><span class="id">DD5</span><span class="name">Tab'as „Zonos“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -406,7 +406,7 @@ a { color: var(--accent); }
   <div class="scr-head"><span class="code">SC</span><h2 id="h-sc">Surinkimo centro nustatymai</h2><span class="eyebrow">keičiami retai</span></div>
   <div class="decision">
     <span><b>Būsena:</b> sąrašas sudarytas 2026-10-23 susitikime, prototipo dar nėra. Logika: Algoritmo logikos 5 skyrius.</span>
-    <span>Užduotis iš susitikimo: pasiūlyti, kaip valdyti momentinį surinkėjų efektyvumą (<a href="#k-K01">K01</a>).</span>
+    <span>Užduotis iš susitikimo: pasiūlyti, kaip valdyti momentinį surinkėjų efektyvumą (<a href="#k-K01">K01</a>; pasiūlymas <a href="#h-ek">EK</a>).</span>
   </div>
   <div class="list">
     <details class="item" id="f-SC1"><summary><span class="id">SC1</span><span class="name">Bangos rinkimo pradžia ir pabaiga</span><span class="status st-wip">Derinama</span></summary><div class="body">
@@ -424,7 +424,7 @@ a { color: var(--accent); }
     </div></details>
     <details class="item" id="f-SC4"><summary><span class="id">SC4</span><span class="name">Bangų prioritetai</span><span class="status st-wip">Derinama</span></summary><div class="body">
       <p class="desc">Einamoji banga renkama 100 % surinkėjo efektyvumo. Kitai bangai nustatomas mažesnis procentas (pvz., 50 %), kad surinkėjas trumpiau būtų salėje ir greičiau grįžtų, jei atsiras einamosios bangos užsakymų.</p>
-      <p class="open"><b>Atvira:</b> <a href="#k-K01">K01</a> kaip tai dera su efektyvumo kėlimu ir mažinimu.</p>
+      <p class="desc">Sąveika su korekcijomis: kitos bangos taisyklė taikoma visada, galutiniam efektyvumui po korekcijų (<a href="#f-EK1">EK1</a>).</p>
       <div class="meta"><span class="ctx">S07</span><span class="ctx">Q01</span><span class="was">buvęs C2</span></div>
     </div></details>
     <details class="item" id="f-SC5"><summary><span class="id">SC5</span><span class="name">Zonų prioritetai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -454,6 +454,41 @@ a { color: var(--accent); }
     </div></details>
     <details class="item" id="f-SC12"><summary><span class="id">SC12</span><span class="name">Frozen zonos išimtis</span><span class="status st-idea">Idėja</span></summary><div class="body">
       <p class="desc">Frozen gali turėti kitokią priskyrimo logiką ir rinkimo laikus. Sprendžia operacijos (<a href="#k-K15">K15</a>).</p>
+    </div></details>
+  </div>
+</section>
+
+<!-- EFEKTYVUMO KOREKCIJOS -->
+<section class="sec scr" aria-labelledby="h-ek">
+  <div class="scr-head"><span class="code">EK</span><h2 id="h-ek">Efektyvumo korekcijos</h2><span class="eyebrow">PA, PK, DD · surinkimo centrui ir pavieniams</span></div>
+  <div class="decision">
+    <span><b>Pasiūlymas (2026-10-26):</b> trys lygiai: pamatas, surinkimo centro korekcija, asmeninė korekcija. Korekcijas įjungia ir išjungia pamainos vadovas rankiniu sprendimu. Pagrindas visada surinkėjo paskyroje; kiti langai rodo arba suteikia trumpą kelią.</span>
+    <span>Laukia PM patvirtinimo (<a href="#k-K01">K01</a>). Algoritmo detalės (kaip korekcijos keičia užduoties dydį) yra PM, operacijų ir devų sritis, dizaino sprendimų nekeičia.</span>
+  </div>
+  <div class="list">
+    <details class="item" id="f-EK1"><summary><span class="id">EK1</span><span class="name">Lygiai ir jų sąveika</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <div class="tbl"><table class="log"><thead><tr><th>Lygis</th><th>Kas</th><th>Santykis su kitais</th></tr></thead><tbody>
+        <tr><td>Pamatas</td><td>Surinkėjo efektyvumas per zoną (<a href="#f-PK4">PK4</a>) ir SC kitos bangos taisyklė (<a href="#f-SC4">SC4</a>)</td><td>Pagal jį skaičiuojama viskas. Kitos bangos taisyklė taikoma visada, ir galutiniam rezultatui.</td></tr>
+        <tr><td>Surinkimo centro korekcija</td><td>±% dėl apkrovos (<a href="#f-EK2">EK2</a>)</td><td>Pakeičia pamato efektyvumą. Taikoma visoms užduotims: auto ir rankiniu būdu, taip pat po cut-off.</td></tr>
+        <tr><td>Asmeninė korekcija</td><td>±% konkrečiam surinkėjui (<a href="#f-EK3">EK3</a>)</td><td>Svarbesnė už centro korekciją: kol yra asmeninė, centro korekcija tam surinkėjui negalioja.</td></tr>
+      </tbody></table></div>
+      <p class="desc">Pavyzdys: šiandien +20 % visiems, Jonui −10 %. Jonui galioja −10 %; rinkdamas kitos bangos užsakymus jis dar gauna kitos bangos %.</p>
+    </div></details>
+    <details class="item" id="f-EK2"><summary><span class="id">EK2</span><span class="name">Surinkimo centro korekcija</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <ul><li>±% dėl žinomos ar netikėtos apkrovos, didinti ir mažinti.</li><li>Įjungiant pasirenkama apimtis: tik dabar dirbantiems arba ir vėliau šiandien dirbsiantiems.</li><li>Galioja, kol vadovas išjungia; papildomai galima nustatyti pabaigos laiką.</li><li>Valdoma Picker accounts lange ir sidebar'e (tai „kas vyksta dabar“ koregavimas). Dashboard galimas vėliau, kai paaiškės jo vaidmuo su auto tasks (<a href="#k-K17">K17</a>).</li></ul>
+      <p class="open"><b>Atvira:</b> valdymo forma, sprendžiama kuriant prototipą: „dabar dirbantiems“ ir „visiems šiandien“ viename langelyje, ar „dabar dirbantiems“ per lentelės bulk actions.</p>
+      <div class="meta"><span class="was">pakeičia DD4</span></div>
+    </div></details>
+    <details class="item" id="f-EK3"><summary><span class="id">EK3</span><span class="name">Asmeninė korekcija</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <ul><li>Surinkėjo paskyroje du sluoksniai: pamatas (redagavimas, „Išsaugoti“) ir laikinos korekcijos (peržiūroje, blokas „Efektyvumo korekcijos“, veikia iškart).</li><li>±% visoms zonoms arba vienai ar kelioms zonoms; galima derinti (visur −20 % ir kita reikšmė vienai zonai). Zonos nustatymas tai zonai pakeičia „visos zonos“ reikšmę.</li><li>Galioja, kol vadovas išjungia; pasirinktinai iki nurodyto laiko.</li><li>Pagrindinė vieta yra paskyra, todėl galima ir surinkėjui, kuris dar nepradėjo dirbti. Lentelėje žyma ir trumpas kelias; sidebar'as rodo ir leidžia greitai išjungti.</li></ul>
+      <div class="meta"><span class="was">pakeičia PK7</span></div>
+    </div></details>
+    <details class="item" id="f-EK4"><summary><span class="id">EK4</span><span class="name">Laikinas zonos ar kombinacijos atjungimas</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Asmeninės korekcijos dalis: laikinai atjungti zoną (pvz., Gėrimai, kai žmogus negali kilnoti sunkių prekių) arba kombinaciją. Rodoma kaip atskiras veiksmas, ne „−100 %“. Skirtumas nuo zonos varnelės paskyroje: laikina, bazinis efektyvumas lieka, zona grįžta išjungus. Kai atjungta zona yra kombinacijoje, kombinacija tuo metu neveikia, ir tai rodoma.</p>
+    </div></details>
+    <details class="item" id="f-EK5"><summary><span class="id">EK5</span><span class="name">Žymėjimas ir komunikacija</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <ul><li>Dvi skirtingos žymos prie surinkėjo: centro (centro ikona) ir asmeninė (žmogaus ikona).</li><li>Kai yra abi: asmeninė aktyvi, centro žyma pilka ir perbraukta; užvedus „Negalioja: turi asmeninę korekciją“.</li><li>Įjungiant centro korekciją patvirtinimo lange išimtys: „Bus taikoma 11 iš 12, Jonas turi asmeninę korekciją (−10 %)“, su pasirinkimu taikyti ir jiems (nuimti asmenines).</li><li>Lango ar sidebar'o viršuje „Centras +20 % · 1 išimtis“, išimtis galima atskleisti.</li><li>Paskyroje blokas „Efektyvumo korekcijos“: abi eilutės ir kuri galioja.</li><li>Nuėmus asmeninę, toast: „Jonui dabar taikoma centro korekcija +20 %“.</li></ul>
+      <div class="meta"><span class="ctx">DD11</span><span class="ctx">K04</span></div>
     </div></details>
   </div>
 </section>
@@ -508,8 +543,7 @@ a { color: var(--accent); }
   <div class="sec-head"><h2 id="h-k">Atviri klausimai</h2><span class="eyebrow">logika ir dizainas · su PM</span></div>
   <p class="note">Atsakius klausimas perkeliamas į funkcionalumą, o čia išbraukiamas ir įrašomas pakeitimų žurnale.</p>
   <div class="tbl"><table class="log"><thead><tr><th>ID</th><th>Klausimas</th><th>Kur</th><th>Kas atsako</th></tr></thead><tbody>
-    <tr id="k-K01"><td>K01</td><td>Kaip valdyti momentinį efektyvumą vienoje vietoje: efektyvumo kėlimas, laikinas surinkėjo koregavimas ir kitos bangos procentas; kėlimas ir mažinimas einamajai ir kitai bangai.</td><td>DD4, PK7, SC4</td><td>Vytautas siūlo, PM tvirtina</td></tr>
-    <tr id="k-K02"><td>K02</td><td>Ar efektyvumo kėlimas taikomas tik auto surinkėjams, ar visiems dirbantiems (PM 10-22)? Kaip pranešti apie pakeitimą?</td><td>DD4</td><td>PM</td></tr>
+    <tr id="k-K01"><td>K01</td><td>Kaip valdyti momentinį efektyvumą vienoje vietoje: efektyvumo kėlimas, laikinas surinkėjo koregavimas ir kitos bangos procentas; kėlimas ir mažinimas einamajai ir kitai bangai.</td><td>DD4, PK7, SC4, EK</td><td>Vytautas pasiūlė (EK, 2026-10-26), PM tvirtina</td></tr>
     <tr id="k-K04"><td>K04</td><td>Kur ir kaip rodyti, kad surinkėjui įjungtos kombinacijos ir pakoreguotas efektyvumas?</td><td>PA, DD11</td><td>Vytautas</td></tr>
     <tr id="k-K05"><td>K05</td><td>Ar efektyvumas privalomas kiekvienai zonai? Ar liks KG/val.?</td><td>PK4</td><td>PM</td></tr>
     <tr id="k-K06"><td>K06</td><td>Kaip dažnai keičiamas maksimalus efektyvumas ir ar jame lieka unique orders?</td><td>PK5</td><td>PM, SC</td></tr>
@@ -848,6 +882,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-26</td><td>Nauja skiltis EK „Efektyvumo korekcijos“: trys lygiai (pamatas, surinkimo centro korekcija, asmeninė korekcija), sąveika, valdymo vietos ir žymėjimas. DD4 tampa EK2, PK7 išplėstas į EK3 ir EK4 (idėja). K02 atsakytas: centro korekcija taikoma visoms užduotims, ir rankiniu būdu. K01 pasiūlymas paruoštas, laukia PM.</td></tr>
       <tr><td>2026-10-26</td><td>Zonų kombinacijų valdymas paskyroje sutartas (PK6): du sąrašai, kombinacijų žymos zonų sąraše, įspėjimo ikona nepriskirtai zonai. Variantas „Zonų kombinacijos“ perkeltas į pagrindinį prototipą, atskiras skirtukas pašalintas. Išsaugojimo blokavimas lieka atviras (DV04).</td></tr>
       <tr><td>2026-10-26</td><td>„Zonų kombinacijos“: zonų sąraše kombinacijos žymos su dviem būsenomis (pilka priskirta, raudona nepriskirta); būsena atsinaujina suvedant efektyvumą.</td></tr>
       <tr><td>2026-10-26</td><td>Naujas atskiras sąrašas „Techniniai klausimai“ (DV) aptarimui su devais; K lieka logikos ir dizaino klausimams su PM. DV01 paskyros saugojimas viena užklausa, DV02 kombinacijų pakeitimai SC lygyje; K11 perkeltas į DV03, K03 į DV04.</td></tr>
