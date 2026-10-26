@@ -5,6 +5,7 @@ Du bendri artefaktai (taisomi failai šiame aplanke, nuorodos nesikeičia):
 - **Auto tasks prototipai** – https://claude.ai/artifact/U6JvYPom14xE6unYd6fjZ6
   - `index.html` – navigacija (ekranas · variantas)
   - `puslapiai/prototipas.html` – vienas prototipas su bendrais duomenimis: Dashboard (`#dashboard`) ir Picker accounts (`#picker-accounts`), tarp jų pereinama per kairįjį meniu
+  - `puslapiai/efektyvumo-zymos.html` – efektyvumo korekcijų žymų būsenų katalogas (`#efektyvumo-zymos`)
 - **Auto tasks dokumentai** – https://claude.ai/artifact/5PZcnCghqBsyTqL7sei8hb
   - `dokumentai/index.html` – navigacija
   - `dokumentai/dizaino-sprendimai.html` – `#dizaino-sprendimai`

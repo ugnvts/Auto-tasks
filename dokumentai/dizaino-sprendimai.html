@@ -269,7 +269,7 @@ a { color: var(--accent); }
   </div>
   <div class="list">
     <details class="item" id="f-PA1"><summary><span class="id">PA1</span><span class="name">Surinkėjų lentelė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Stulpeliai: checkbox, Name, Last name, Time card, Shift name, Role (su violetine naujoko žyma), Auto tasks (jungiklis), Būsena, ⋮ (Rodyti, Redaguoti).</li><li>Zonų ir efektyvumo lentelėje nėra, jie matomi paskyroje. Express žyma pašalinta.</li></ul>
+      <ul><li>Stulpeliai: checkbox, Name, Last name, Time card, Shift name, Role (su violetine naujoko žyma), Auto tasks (jungiklis), Būsena, stulpelis be antraštės su efektyvumo korekcijų žymomis (<a href="#f-EK5">EK5</a>), ⋮ (Rodyti, Redaguoti).</li><li>Zonų ir efektyvumo lentelėje nėra, jie matomi paskyroje. Express žyma pašalinta.</li></ul>
     </div></details>
     <details class="item" id="f-PA2"><summary><span class="id">PA2</span><span class="name">Auto tasks jungiklis eilutėje</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Kasdienis veiksmas: vadybininkas įjungia atėjusį surinkėją ir išjungia išeinantį ar einantį į pertrauką. Naujokui ir inspektoriui jungiklis neaktyvus (<a href="#f-T3">T3</a>, <a href="#f-T4">T4</a>). Atskirame stulpelyje be antraštės dešinėje nuo būsenos rodomos efektyvumo korekcijų žymos: centro ir asmeninė (<a href="#f-EK5">EK5</a>).</p>
@@ -359,28 +359,23 @@ a { color: var(--accent); }
     <details class="item" id="f-DD3"><summary><span class="id">DD3</span><span class="name">Auto tasks ⋮ veiksmai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <ul><li>Efektyvumo kėlimas iš šio meniu iškeltas į sidebar'o antraštę (<a href="#f-EK2">EK2</a>), nes taikomas ir rankiniam skyrimui.</li><li>Išjungti auto tasks visiems: raudonas, su patvirtinimu ir skaičiumi; einamos užduotys nenutraukiamos; inspektorių nepaveikia.</li><li>Kai auto įjungta 0, ⋮ neaktyvus.</li></ul>
     </div></details>
-    <details class="item" id="f-DD4"><summary><span class="id">DD4</span><span class="name">Efektyvumo kėlimas (boost)</span><span class="status st-wip">Derinama</span></summary><div class="body">
-      <p class="desc">Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta bangos pabaiga), kiek surinkėjų paveiks. Įjungus matoma žyma „Efektyvumas +X % iki …“ su ✕. Dabar taikoma tik surinkėjams su įjungtu auto, ne naujokams. Atitinka PM „Assign X % over efficiency“.</p>
-      <p class="desc">2026-10-26 pakeista surinkimo centro korekcija (<a href="#f-EK2">EK2</a>), prototipe įgyvendinta.</p>
-      <div class="meta"><span class="ctx">Q04</span><span class="was">buvęs A6, D04</span></div>
-    </div></details>
-    <details class="item" id="f-DD5"><summary><span class="id">DD5</span><span class="name">Tab'as „Zonos“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+        <details class="item" id="f-DD5"><summary><span class="id">DD5</span><span class="name">Tab'as „Zonos“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Kiekvienai zonai aktyvių skaičius (Renka + Nesinchronizavo), be auto / rankinio skaidymo. Zona išsiskleidžia į kompaktišką sąrašą (vardas, rolė, būsena su tos zonos eilutėmis), tik informacija. Prie kiekvieno surinkėjo rodomas indikatorius, kaip jam priskirta užduotis: žalias burbuliukas = auto tasks, pilkas = rankiniu būdu. Antraštės mygtukas išskleidžia visas zonas.</p>
     </div></details>
     <details class="item" id="f-DD6"><summary><span class="id">DD6</span><span class="name">Tab'as „Surinkėjai“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Rodomi auto ON ir rankiniai, kol Renka ar Nesinchronizavo; rankinis baigęs išnyksta. Valdymas trimis lygiais: tab'ai → segmentas Visi / Auto / Rankinis → būsenų chip'ai (Naujokai atskirti). Zonos filtro nėra. Tab'ai ir filtrai prilimpa slenkant.</p>
     </div></details>
     <details class="item" id="f-DD7"><summary><span class="id">DD7</span><span class="name">Surinkėjo kortelė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Vardas su naujoko žyma, rolė po vardu; dešinėje jungiklis su pastoviu užrašu „Auto“ (visiems).</li><li>Zonų žymos: rodomos visos zonos, kuriose surinkėjas turi užduočių (pagal eilučių skaičių); Laukia atveju žymų nėra.</li><li>Būsena sujungta su progresu: Renka „4/9 eil.“, Nesinchronizavo „N eil.“, Laukia be laiko.</li><li>Du mygtukai: „Surinkimo trukmė“ ir „Užduotys“, atsidaro kaip stalčius (<a href="#f-DD8">DD8</a>, <a href="#f-DD9">DD9</a>).</li></ul>
+      <ul><li>Vardas su naujoko žyma, rolė po vardu; dešinėje jungiklis su pastoviu užrašu „Auto“ (visiems).</li><li>Zonų žymos: rodomos visos zonos, kuriose surinkėjas turi užduočių (pagal eilučių skaičių); Laukia atveju žymų nėra.</li><li>Būsena sujungta su progresu: Renka „4/9 eil.“, Nesinchronizavo „N eil.“, Laukia be laiko. Toje pačioje eilutėje dešinėje efektyvumo korekcijų ikonos (asmeninė, sustabdyta zona, centro); paspaudus atsiveria langelis su detalėmis ir „Atidaryti paskyrą“ (<a href="#f-EK5">EK5</a>).</li><li>Du mygtukai: „Surinkimo trukmė“ ir „Užduotys“, atsidaro kaip stalčius (<a href="#f-DD8">DD8</a>, <a href="#f-DD9">DD9</a>).</li></ul>
     </div></details>
     <details class="item" id="f-DD8"><summary><span class="id">DD8</span><span class="name">Surinkimo trukmės stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos, maks. vienam išėjimui, planuojamas išėjimas, efektyvumo kėlimo eilutė. Vėlavimas nepabrėžiamas. Laukia ir Nesinchronizavo atveju „–“.</p>
+      <p class="desc">Pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos, maks. vienam išėjimui, planuojamas išėjimas, efektyvumo korekcijos eilutė (kuri galioja: asmeninė ar surinkimo centro). Vėlavimas nepabrėžiamas. Laukia ir Nesinchronizavo atveju „–“.</p>
     </div></details>
     <details class="item" id="f-DD9"><summary><span class="id">DD9</span><span class="name">Užduočių stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Sąrašas be antraščių: dabartinės, po to eilėje. Kiekviena kaip Unfinished picking tasks lange: Task ID (nuoroda), zonos žyma, būsena; Banga, Eilutės, Vnt., Kg, Užsak. Atliktos nerodomos.</p>
     </div></details>
-    <details class="item" id="f-DD11"><summary><span class="id">DD11</span><span class="name">Pakeitimų žymos</span><span class="status st-idea">Idėja</span></summary><div class="body">
-      <p class="desc">Parodyti, kad surinkėjui įjungtos zonų kombinacijos ir kad jo efektyvumas pakoreguotas (2026-10-22). Vieta ir forma neapibrėžta, <a href="#k-K04">K04</a>.</p>
+    <details class="item" id="f-DD11"><summary><span class="id">DD11</span><span class="name">Kombinacijų žymos</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Parodyti, kad surinkėjui įjungtos zonų kombinacijos (2026-10-22). Vieta ir forma neapibrėžta, <a href="#k-K04">K04</a>. Efektyvumo korekcijų žymos išspręstos: <a href="#f-EK5">EK5</a>.</p>
     </div></details>
   </div>
 </section>
@@ -546,7 +541,7 @@ a { color: var(--accent); }
   <p class="note">Atsakius klausimas perkeliamas į funkcionalumą, o čia išbraukiamas ir įrašomas pakeitimų žurnale.</p>
   <div class="tbl"><table class="log"><thead><tr><th>ID</th><th>Klausimas</th><th>Kur</th><th>Kas atsako</th></tr></thead><tbody>
     <tr id="k-K01"><td>K01</td><td>Kaip valdyti momentinį efektyvumą vienoje vietoje: efektyvumo kėlimas, laikinas surinkėjo koregavimas ir kitos bangos procentas; kėlimas ir mažinimas einamajai ir kitai bangai.</td><td>DD4, PK7, SC4, EK</td><td>Vytautas pasiūlė (EK, 2026-10-26), PM tvirtina</td></tr>
-    <tr id="k-K04"><td>K04</td><td>Kur ir kaip rodyti, kad surinkėjui įjungtos kombinacijos ir pakoreguotas efektyvumas?</td><td>PA, DD11</td><td>Vytautas</td></tr>
+    <tr id="k-K04"><td>K04</td><td>Kur ir kaip rodyti, kad surinkėjui įjungtos zonų kombinacijos? (Efektyvumo korekcijų dalis išspręsta EK5.)</td><td>PA, DD11</td><td>Vytautas</td></tr>
     <tr id="k-K05"><td>K05</td><td>Ar efektyvumas privalomas kiekvienai zonai? Ar liks KG/val.?</td><td>PK4</td><td>PM</td></tr>
     <tr id="k-K06"><td>K06</td><td>Kaip dažnai keičiamas maksimalus efektyvumas ir ar jame lieka unique orders?</td><td>PK5</td><td>PM, SC</td></tr>
     <tr id="k-K07"><td>K07</td><td>Ar rodyti užduoties šaltinį (Auto / Rankinė)? Po cut-off ir ką tik išjungus jungiklis su būsena nepakanka.</td><td>PA1, DD7</td><td>Vytautas</td></tr>
@@ -603,6 +598,44 @@ a { color: var(--accent); }
       <h2>Idėjų laiko juosta</h2>
       <p class="note">Atgyvenę sprendimai. Kai sprendimas pakeičiamas, senas blokas perkeliamas čia su data, priežastimi ir nuoroda į naują.</p>
       <div class="tl">
+        <details class="ti"><summary><span class="eyebrow">2026-10-26</span> Efektyvumo kėlimas tik auto surinkėjams (DD4), laikinas koregavimas kaip idėja (PK7)</summary>
+          <div class="dec tib">
+            <p class="note">Atgyveno 2026-10-26: efektyvumo korekcijos sudėliotos į tris lygius (<a href="#h-ek" onclick="showTab('doc')">EK</a>). Kėlimas taikomas visoms užduotims ir visiems, taip pat naujokams, valdomas sidebar'o antraštėje (EK2), ne „Auto tasks“ ⋮; asmeninė korekcija ir zonų stabdymas – paskyros peržiūroje (PK7, PK8). Žemiau seni blokai be pakeitimų.</p>
+            <div class="list"><details class="item" id="old-f-DD4"><summary><span class="id">DD4</span><span class="name">Efektyvumo kėlimas (boost)</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc">Langelis: +5 / 10 / 15 / 20 %, „Galioja iki“ (numatyta bangos pabaiga), kiek surinkėjų paveiks. Įjungus matoma žyma „Efektyvumas +X % iki …“ su ✕. Dabar taikoma tik surinkėjams su įjungtu auto, ne naujokams. Atitinka PM „Assign X % over efficiency“.</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K02">K02</a> PM siūlo taikyti visiems dirbantiems; <a href="#k-K01">K01</a> ryšys su kitos bangos procentu ir laikinu koregavimu. Žingsniai ir laikai yra prielaida.</p>
+      <div class="meta"><span class="ctx">Q04</span><span class="was">buvęs A6, D04</span></div>
+    </div></details><details class="item" id="old-f-PK7"><summary><span class="id">PK7</span><span class="name">Laikinas surinkėjo efektyvumo koregavimas</span><span class="status st-idea">Idėja</span></summary><div class="body">
+      <p class="desc">Paskyroje suvesti skaičiai lieka tiesos šaltiniu, o konkrečiam surinkėjui laikinai keliamas arba mažinamas efektyvumas. Pvz., surinkėjas pasijuto blogai; kiek laiko mažinimas galios, nežinoma. Valdoma paskyroje ir sidebar'e (2026-10-22).</p>
+      <p class="open"><b>Atvira:</b> <a href="#k-K01">K01</a> kaip tai dera su efektyvumo kėlimu ir bangų prioritetais; <a href="#k-K04">K04</a> kaip parodyti, kad efektyvumas pakoreguotas.</p>
+    </div></details></div>
+          </div>
+        </details>
+        <details class="ti"><summary><span class="eyebrow">2026-10-26</span> Apsauga nuo atsitiktinio įjungimo (DD10)</summary>
+          <div class="dec tib">
+            <p class="note">Išimta 2026-10-26: atskiro aprašo nereikia (vartotojo sprendimas). Toast su „Atšaukti“ ir patvirtinimas grupiniam veiksmui lieka prototipe.</p>
+            <div class="list"><details class="item" id="old-f-DD10"><summary><span class="id">DD10</span><span class="name">Apsauga nuo atsitiktinio įjungimo</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Pavienis jungiklis veikia iškart, rodomas toast su vardu ir „Atšaukti“. Patvirtinimas su vardų sąrašu tik grupiniam veiksmui. Klaidas padeda pastebėti sidebar'as: ką tik įjungtas = Laukia, nesantis = ilgai Nesinchronizavo.</p>
+      <div class="meta"><span class="chk">Patikrink</span></div>
+    </div></details></div>
+          </div>
+        </details>
+        <details class="ti"><summary><span class="eyebrow">2026-10-26</span> Dashboard: dienos antraštė ir bangų kortelės (DB1, DB2)</summary>
+          <div class="dec tib">
+            <p class="note">Išimta 2026-10-26: esamas Dashboard be pakeitimų, todėl aprašyti nereikia.</p>
+            <div class="list"><details class="item" id="old-f-DB1"><summary><span class="id">DB1</span><span class="name">Dienos antraštė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Esamas Dashboard be pakeitimų: SC, dienos suvestinė (užsakymai / talpa, eilutės, vnt., kg) ir dienos pasirinkimas Today / Tomorrow.</p>
+    </div></details><details class="item" id="old-f-DB2"><summary><span class="id">DB2</span><span class="name">Bangų kortelės</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Esamas Dashboard be pakeitimų: bangos laikas ir rodikliai, būsenų juosta (Submitted, New addition, Being picked, Picking done, Ready for delivery, Open capacity), Not compared / Compared incorrectly, pranešimai (užsakymai be užduočių, neatspausdinti lipdukai), Home delivery / Drive in, „Hide finished waves“.</p>
+    </div></details></div>
+          </div>
+        </details>
+        <details class="ti"><summary><span class="eyebrow">2026-10-26</span> Zonos paskyroje sugrupuotos pagal kombinacijas</summary>
+          <div class="dec tib">
+            <p class="note">Atmesta 2026-10-26 (išbandyta prototipo variante): dingo atskiras kombinacijų sąrašas, sunku sužinoti, kokios kombinacijos egzistuoja, keitėsi zonų tvarka, „Įjungti visas zonas“ atrodė įjungiantis ir kombinacijas. Pakeista dviem sąrašais su kombinacijų žymomis zonų sąraše (<a href="#f-PK6" onclick="showTab('doc')">PK6</a>).</p>
+            <div class="list"><ol class="d"><li>Atskiro kombinacijų sąrašo nėra; zonų sąraše kombinacijos zonos sugrupuotos įrėmintame bloke, bloko antraštėje kombinacijos varnelė.</li><li>Zonos be kombinacijos – po blokais („Kitos zonos“); suvestinė „Kombinacijos: 2 iš 4“ ir filtras „Tik kombinacijos“.</li><li>Pasirinkus kombinaciją trūkstamos zonos pažymimos automatiškai, tušti laukai paryškinami; išsaugoti neleidžiama, kol trūksta efektyvumo.</li></ol></div>
+          </div>
+        </details>
         <details class="ti"><summary><span class="eyebrow">2026-10-23</span> Dokumentas pagal artefaktus: „Prototipas“ ir „Sidebar (eksperimentas)“ skyriai</summary>
           <div class="dec tib">
             <p class="note">Pakeista 2026-10-23: dokumentas sudėliotas pagal langus (PA, DD, DB, SC), funkcionalumų sąrašai A, B, C sujungti į langų skyrius. Žemiau abu seni skyriai be pakeitimų.</p>
@@ -884,6 +917,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-26</td><td>Dokumentas suvienodintas su prototipu: PA1 (efektyvumo žymų stulpelis), DD7 (ikonos prie būsenos), DD8 (korekcijos eilutė), DD11 ir K04 susiaurinti iki kombinacijų. Į Archyvą perkelti pakeisti ar išimti blokai: DD4, senas PK7, DD10, DB1, DB2, zonų grupavimas pagal kombinacijas.</td></tr>
       <tr><td>2026-10-26</td><td>Naujokų išimtis efektyvumo korekcijoms panaikinta (T3, EK2): ji buvo paveldėta iš pradinio auto-only efektyvumo kėlimo, šaltiniuose reikalavimo nėra. Surinkimo centro korekcija taikoma visiems, taip pat naujokams.</td></tr>
       <tr><td>2026-10-26</td><td>EK5: efektyvumo korekcijų spalva pagal kryptį – mažinimas raudonas, didinimas žalias; taikoma žymoms, ikonoms, kortelėms, juostai ir korekcijos langelių mygtukams paskyroje ir sidebar'e.</td></tr>
       <tr><td>2026-10-26</td><td>EK5: kai surinkėjas turi asmeninę korekciją, perbraukta centro korekcijos žyma neberodoma nei lentelėje, nei sidebar'e.</td></tr>
@@ -954,7 +988,7 @@ function showTab(t){['doc','arch'].forEach(function(k){document.getElementById('
     { n: "1", t: "Planas", d: "Sudeda, kas dirbs rytoj, pagal valandas.", w: [["Excel", 1], ["P2", 0]], p: "Dubliuojamas darbas su grafikų sistemomis." },
     { n: "2", t: "Pamainos pradžia", d: "Įjungia atėjusius, neatėjusių neįjungia.", w: [["PA2", 0], ["PA3", 0]], p: "Ryte daug žmonių vienu metu." },
     { n: "3", t: "Bangos eiga", d: "Tik įjungia ir išjungia: pertraukos, pamainų pabaigos.", w: [["PA2", 0], ["DD7", 0]], p: "Pajėgumai bangos metu nekeičiami." },
-    { n: "4", t: "Nuokrypiai", d: "Neatėjo žmogus, nepanaudoti slotai, kažkas nutiko su surinkėju.", w: [["DD4", 0], ["PK7", 0]], p: "Efektyvumo valdymas dar derinamas (K01)." },
+    { n: "4", t: "Nuokrypiai", d: "Neatėjo žmogus, nepanaudoti slotai, kažkas nutiko su surinkėju.", w: [["EK2", 0], ["PK7", 0]], p: "Efektyvumo valdymas dar derinamas (K01)." },
     { n: "5", t: "Cut-off", d: "Auto skyrimas sustoja, toliau rankinis skyrimas ir junginėjimas.", w: [["T6", 0], ["Rankinis skyrimas", 1]], p: "„Laukia užduoties“ yra signalas skirti rankinę užduotį." },
     { n: "6", t: "Pamainos pabaiga", d: "Išjungia išeinančius.", w: [["PA2", 0], ["DD7", 0]], p: "Pamiršus išjungti, užduotys skiriamos išėjusiam." }
   ];
