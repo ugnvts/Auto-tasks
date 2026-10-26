@@ -9,18 +9,19 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 [hidden]{display:none!important}
 .tg{display:inline-flex;align-items:center;gap:4px;font-size:12px;border-radius:999px;border:1px solid;padding:0 6px;white-space:nowrap;max-width:220px}
 .tg span.t{overflow:hidden;text-overflow:ellipsis}
-.tp{border-color:#fcd34d;background:#fffbeb;color:#92400e}
-.tc{border-color:#7dd3fc;background:#f0f9ff;color:#075985}
+.dn{border-color:#fca5a5;background:#fef2f2;color:#b91c1c}
+.up{border-color:#86efac;background:#f0fdf4;color:#166534}
 .ts{border-color:#d1d5db;background:#f3f4f6;color:#374151}
 </style>
 </head><body>
 <main class="max-w-6xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold">Efektyvumo korekcijų žymos</h1>
   <p class="text-gray-600 mt-1 max-w-3xl">Visos galimos efektyvumo korekcijų būsenos, kaip jos įgyvendintos prototipe. Picker accounts lentelėje rodomos išsamios žymos (užvedus pelę – detalės), „Dirba dabar“ sidebar'o kortelėse – tik ikonos (paspaudus – langelis su detalėmis).</p>
-  <div class="mt-3 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
-    <span class="flex items-center gap-1.5"><span class="tg tp" id="lgP"></span> asmeninė korekcija</span>
+  <p class="mt-3 text-xs text-gray-600">Spalva rodo kryptį: <span class="tg dn">mažinimas</span> <span class="tg up">didinimas</span>. Ikona rodo tipą.</p>
+  <div class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
+    <span class="flex items-center gap-1.5"><span class="tg dn" id="lgP"></span> asmeninė korekcija</span>
     <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdytas užduočių skyrimas zonai</span>
-    <span class="flex items-center gap-1.5"><span class="tg tc" id="lgC"></span> surinkimo centro korekcija</span>
+    <span class="flex items-center gap-1.5"><span class="tg up" id="lgC"></span> surinkimo centro korekcija</span>
   </div>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
@@ -55,18 +56,18 @@ const zTxt=z=>z.length==1?z[0]:z.length+' zonos',till=t=>t?'iki '+t:'kol išjung
 const tipP=c=>`Asmeninė korekcija ${sg(c.P.v)}${Math.abs(c.P.v)} % · ${c.P.z.length?c.P.z.join(', '):'visos zonos'} · ${till(c.P.t)}`,
   tipS=c=>`Sustabdytas užduočių skyrimas: ${c.S.z.join(', ')} · ${till(c.S.t)}${c.K?` · kombinacija ${c.K} neveikia`:''}`,
   tipC=c=>c.P?`Surinkimo centro korekcija ${sg(c.C.v)}${Math.abs(c.C.v)} % negalioja: yra asmeninė korekcija`:`Surinkimo centro korekcija ${sg(c.C.v)}${Math.abs(c.C.v)} %`;
-const pct=v=>`${sg(v)}${Math.abs(v)} %`;
+const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`;
 // A: išsamios žymos
-const A=c=>(c.P?`<span class="tg tp" title="${tipP(c)}">${IPER}<span class="t">${pct(c.P.v)}${c.P.z.length?' · '+zTxt(c.P.z):''}</span></span>`:'')
+const A=c=>(c.P?`<span class="tg ${dc(c.P.v)}" title="${tipP(c)}">${IPER}<span class="t">${pct(c.P.v)}${c.P.z.length?' · '+zTxt(c.P.z):''}</span></span>`:'')
   +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'')
-  +(c.C&&!c.P?`<span class="tg tc" title="${tipC(c)}">${ICEN}<span class="t">${pct(c.C.v)}</span></span>`:'');
+  +(c.C&&!c.P?`<span class="tg ${dc(c.C.v)}" title="${tipC(c)}">${ICEN}<span class="t">${pct(c.C.v)}</span></span>`:'');
 // C: tik ikonos
 const ic=(cls,i,t)=>`<span class="inline-flex items-center justify-center w-6 h-6 rounded-full border ${cls}" title="${t}" role="img" aria-label="${t}">${i.replace('w-3 h-3','w-3.5 h-3.5')}</span>`;
-const Cv=c=>(c.P?ic('tp',IPER,tipP(c)):'')+(c.S?ic('ts',IPA,tipS(c)):'')+(c.C&&!c.P?ic('tc',ICEN,tipC(c)):'');
+const Cv=c=>(c.P?ic(dc(c.P.v),IPER,tipP(c)):'')+(c.S?ic('ts',IPA,tipS(c)):'')+(c.C&&!c.P?ic(dc(c.C.v),ICEN,tipC(c)):'');
 // Sidebar kortelė: ikonos, paspaudus – langelis (kaip prototipe)
 const CI=c=>(c.P||c.S||c.C)?`<button class="flex items-center -space-x-1 rounded-full hover:ring-2 hover:ring-indigo-200" aria-haspopup="dialog" aria-label="Efektyvumo korekcijos" onclick="event.stopPropagation();pop(this,${CASES.indexOf(c)})">${Cv(c)}</button>`:'';
 function pop(b,k){const p=document.getElementById('ep'),c=CASES[k];if(!p.hidden&&p._k==k){p.hidden=true;return}const r=b.getBoundingClientRect(),row=(cl,x,t)=>`<div class="flex gap-2"><span class="mt-0.5 ${cl}">${x}</span><span>${t}</span></div>`;
-  p.innerHTML=`<div class="font-semibold text-gray-900 mb-2">${c.n}</div><div class="space-y-1.5">${c.P?row('text-amber-800',IPER,tipP(c)):''}${c.S?row('text-gray-600',IPA,tipS(c)):''}${c.C&&!c.P?row('text-sky-800',ICEN,tipC(c)):''}</div><span class="block mt-3 text-indigo-700 font-medium">Atidaryti paskyrą →</span>`;
+  p.innerHTML=`<div class="font-semibold text-gray-900 mb-2">${c.n}</div><div class="space-y-1.5">${c.P?row(c.P.v<0?'text-red-700':'text-green-700',IPER,tipP(c)):''}${c.S?row('text-gray-600',IPA,tipS(c)):''}${c.C&&!c.P?row(c.C.v<0?'text-red-700':'text-green-700',ICEN,tipC(c)):''}</div><span class="block mt-3 text-indigo-700 font-medium">Atidaryti paskyrą →</span>`;
   p._k=k;p.style.top=r.bottom+6+'px';p.style.left=Math.max(8,Math.min(r.right-288,innerWidth-296))+'px';p.hidden=false}
 document.addEventListener('click',e=>{const p=document.getElementById('ep');if(!p.hidden&&!e.target.closest('#ep'))p.hidden=true});
 addEventListener('scroll',()=>{document.getElementById('ep').hidden=true},true);
