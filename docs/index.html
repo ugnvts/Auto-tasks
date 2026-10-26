@@ -66,14 +66,16 @@ var PAGES = [
   ]},
   { id: "picker", name: "Picker accounts", variants: [
     { id: "picker-accounts", name: "Su „Dirba dabar“", file: "puslapiai/prototipas.html#picker-accounts",
-      note: "Surinkėjų lentelė ir paskyra; „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas." },
-    { id: "picker-zonu-kombinacijos", name: "Zonų kombinacijos", file: "puslapiai/prototipas-zonu-kombinacijos.html#edit",
-      note: "Paskyros redagavimas: zonos sugrupuotos pagal kombinacijas, be atskiro kombinacijų sąrašo." }
+      note: "Surinkėjų lentelė ir paskyra; „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas." }
+  ]},
+  { id: "zymos", name: "Efektyvumo žymos", variants: [
+    { id: "efektyvumo-zymos", name: "Būsenų katalogas", file: "puslapiai/efektyvumo-zymos.html",
+      note: "Visos efektyvumo korekcijų žymų būsenos: išsamios žymos lentelėje, ikonos sidebar'o kortelėse." }
   ]}
 ];
 // Abu ekranai yra viename prototipe su bendrais duomenimis; perėjus per kairįjį meniu skirtukas persijungia pats.
 // Senos nuorodos iš ankstesnių versijų
-var ALIAS = { "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
+var ALIAS = { "picker-zonu-kombinacijos": "picker-accounts", "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
 
 var ALL = [];
 PAGES.forEach(function (p) { p.variants.forEach(function (v) { v.page = p; ALL.push(v); }); });
