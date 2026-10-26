@@ -1,6 +1,8 @@
 <!doctype html>
 <html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<style>body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<style>
+details#mzo:not([open]) .cv{transform:rotate(-90deg)}
+.zfl{animation:zfl 2s ease-out}@keyframes zfl{0%,40%{box-shadow:inset 0 0 0 2px #f59e0b;background:#fffbeb}}body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Auto tasks · Prototipas</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -281,23 +283,27 @@ td,th{white-space:nowrap}
         <p class="text-sm text-gray-500"><a class="cursor-pointer" onclick="go('list')">Picker accounts</a> › <span class="text-indigo-600">Edit picker account</span></p>
         <h1 class="text-2xl font-semibold mt-2"><a class="cursor-pointer text-gray-400 mr-2" onclick="back()">←</a>Edit picker account</h1>
         <div class="bg-white rounded border mt-5 p-6 max-w-3xl mx-auto space-y-6 text-sm">
-          <div><h3 class="font-medium pb-2 border-b mb-3">Personal information</h3>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Personal information</h3>
             <div class="grid sm:grid-cols-2 gap-4"><label>First name<input id="fn" class="mt-1 w-full border rounded px-3 py-2" value="Silvija"></label><label>Last name<input id="ln" class="mt-1 w-full border rounded px-3 py-2" value="Švaikevičiūtė"></label></div></div>
-          <div><h3 class="font-medium pb-2 border-b mb-3">Employee information</h3>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Employee information</h3>
             <div class="grid sm:grid-cols-2 gap-4"><label>Shop<select id="sp" class="mt-1 w-full border rounded px-3 py-2"><option>X016 Liepkalnis</option><option selected>X864 HYPER</option><option>X500 Akropolis</option><option>X532 Olinda</option></select></label><div class="hidden sm:block"></div>
             <label>Time card<input id="tc" class="mt-1 w-full border rounded px-3 py-2" value="3360"></label><label>Shift name<input id="sh" class="mt-1 w-full border rounded px-3 py-2" value="Evening"></label>
             <label>Role<select id="ro" class="mt-1 w-full border rounded px-3 py-2"><option>Picker</option><option>Inspector</option></select></label>
             <div class="sm:pt-[33px]"><label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="act.disabled=this.checked;if(this.checked)act.checked=false;actx.textContent=this.checked?'Naujokui auto tasks įjungti negalima. Nuimk naujoko žymą.':'Surinkėjas gauna užduotis automatiškai.'"><span>Naujokas<br><span class="text-gray-500">Kol pažymėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.</span></span></label></div></div></div>
-          <div><h3 class="font-medium pb-2 border-b mb-3">Auto tasks</h3>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Auto tasks</h3>
             <label class="flex gap-3 items-start"><input id="act" type="checkbox" disabled class="mt-1"><span>Auto tasks<br><span id="actx" class="text-gray-500">Naujokui auto tasks įjungti negalima. Nuimk naujoko žymą.</span></span></label></div>
-          <div><h3 class="font-medium pb-2 border-b mb-3">Kelios zonos</h3>
-            <label class="flex gap-3 items-start mb-3"><input id="mz" type="checkbox" checked class="mt-1" onchange="document.getElementById('mzo').hidden=!this.checked"><span>Can work in multiple zones</span></label>
-            <div id="mzo" class="grid sm:grid-cols-2 gap-4 border rounded-lg bg-gray-50 p-4"><div class="sm:col-span-2">Allowed zone combinations <span class="text-xs text-gray-400">(galima rinktis kelias; kombinacijos ateina iš SC nustatymų)</span><div class="mt-1 border rounded divide-y bg-white"><label class="flex items-center gap-2 px-3 py-2"><input id="mzc1" type="checkbox" checked>Fresh meat + Fresh poultry</label><label class="flex items-center gap-2 px-3 py-2"><input id="mzc2" type="checkbox" checked>Fruits, vegetables + Groceries</label><label class="flex items-center gap-2 px-3 py-2"><input id="mzc3" type="checkbox">Milk, fish, poultry + Weighed cheese</label><label class="flex items-center gap-2 px-3 py-2"><input id="mzc4" type="checkbox">Frozen goods + Bread products</label></div></div></div></div>
-          <div><h3 class="font-medium pb-2 border-b mb-3">Zonos ir efektyvumas</h3>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Zonos ir efektyvumas</h3>
             <p class="text-gray-500 mb-2">Pažymėk zonas; pažymėtoms suvesk efektyvumą rankomis.</p>
             <div class="flex flex-wrap items-center gap-2 mb-2"><button class="border border-indigo-600 text-indigo-700 px-3 py-1 rounded" onclick="allZ(1)">Įjungti visas zonas</button><button class="border px-3 py-1 rounded" onclick="allZ(0)">Išjungti visas</button><span id="zc" class="text-gray-500 ml-auto"></span></div>
             <input id="zq" placeholder="Ieškoti zonos…" class="w-full border rounded px-3 py-2 mb-2" oninput="zones()">
-            <div id="zl" class="border rounded divide-y"></div></div>
+            <div id="zl" class="border rounded divide-y"></div>
+            <div class="mt-5 pt-4 border-t">
+              <label class="flex gap-3 items-start"><input id="mz" type="checkbox" checked class="mt-1" onchange="cbs()"><span>Can work in multiple zones<br><span class="text-gray-500">Surinkėjas gali gauti kelių zonų užduotis vienu kartu pagal pasirinktas kombinacijas.</span></span></label>
+              <details id="mzo" open class="mt-3 ml-7 border rounded-lg">
+                <summary class="flex items-center gap-2 px-3 py-2 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">Allowed zone combinations <span id="cbn" class="text-gray-500"></span><span class="ml-auto text-xs text-gray-400">iš SC nustatymų</span><svg class="cv w-4 h-4 text-gray-500 transition-transform" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary>
+                <div id="cbl" class="border-t divide-y"></div>
+              </details>
+            </div></div>
           <div class="flex flex-wrap justify-end gap-2 pt-4 border-t">
             <button class="border px-4 py-2 rounded" onclick="back()">Atšaukti</button>
             <button class="border border-indigo-600 text-indigo-700 px-4 py-2 rounded" onclick="go('edit')">Išsaugoti ir kitas</button>
@@ -400,9 +406,29 @@ document.addEventListener('click',e=>{if(!e.target.closest('#rmenu,[data-menu]')
 function go(v,push=true){try{parent.postMessage({proto:v},'*')}catch(e){}document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
 function allZ(on){if(on)Z.forEach(n=>EFF[n]??=[]);else Object.keys(EFF).forEach(k=>delete EFF[k]);zones()}
 function zones(){const q=document.getElementById('zq').value.toLowerCase();document.getElementById('zc').textContent=Z.filter(n=>EFF[n]).length+' iš 52 įjungta';
-  const inp=(i,u,v)=>`<label class="flex flex-col gap-1 text-xs text-gray-500">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white" value="${v??''}"></label>`;
-  const box=(t,us,e,o)=>`<fieldset class="border rounded bg-white px-3 pb-3"><legend class="px-1 text-xs font-semibold uppercase tracking-wide text-gray-600">${t}</legend><div class="grid gap-2" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>inp(e.i,u,e.v[k+o])).join('')}</div></fieldset>`;
-  document.getElementById('zl').innerHTML=['NONE',...Z].map((n,i)=>[n,i]).filter(([n])=>n.toLowerCase().includes(q)).map(([n,i])=>{const e=EFF[n],no=n=='NONE';return `<div class="px-3 py-2 ${e?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input id="z${i}" type="checkbox" ${e?'checked':''} onchange="if(this.checked)EFF['${n}']=[];else delete EFF['${n}'];zones()">${no?'<b>NONE</b>':n}</label>${e&&!no?`<div class="mt-2 pl-6 grid md:grid-cols-2 gap-3">${box('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],{i,v:e},0)}${box('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],{i,v:e},3)}</div>`:''}</div>`}).join('')}
+  const inp=(i,u,v,n,k)=>`<label class="flex flex-col gap-1 text-xs text-gray-500">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white" value="${v??''}" oninput="zEf('${n}',${k},this.value)"></label>`;
+  const box=(t,us,e,o)=>`<fieldset class="border rounded bg-white px-3 pb-3"><legend class="px-1 text-xs font-semibold uppercase tracking-wide text-gray-600">${t}</legend><div class="grid gap-2" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>inp(e.i,u,e.v[k+o],e.n,k+o)).join('')}</div></fieldset>`;
+  document.getElementById('zl').innerHTML=['NONE',...Z].map((n,i)=>[n,i]).filter(([n])=>n.toLowerCase().includes(q)).map(([n,i])=>{const e=EFF[n],no=n=='NONE';return `<div id="zr${i}" class="px-3 py-2 ${e?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input id="z${i}" type="checkbox" ${e?'checked':''} onchange="if(this.checked)EFF['${n}']=[];else delete EFF['${n}'];zones()">${no?'<b>NONE</b>':n}<span id="zt${i}" class="ml-auto">${zTag(n)}</span><span id="zi${i}" class="empty:hidden">${zIco(n)}</span></label>${e&&!no?`<div class="mt-2 pl-6 grid md:grid-cols-2 gap-3">${box('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],{i,n,v:e},0)}${box('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],{i,n,v:e},3)}</div>`:''}</div>`}).join('')}
+// Kombinacijos ateina iš SC nustatymų; viena zona gali būti tik vienoje kombinacijoje (S09). Efektyvumas vedamas tik zonų sąraše.
+const CB=[{z:["Fresh meat","Fresh poultry"],on:1},{z:["Fruits, vegetables","Groceries"],on:1},{z:["Milk, fish, poultry","Weighed cheese"],on:0},{z:["Frozen goods","Bread products"],on:0}];
+function cbs(){const mz=document.getElementById('mz').checked;document.getElementById('mzo').hidden=!mz;
+  document.getElementById('cbn').textContent=`(${CB.filter(c=>c.on).length} iš ${CB.length})`;
+  document.getElementById('cbl').innerHTML=CB.map((c,k)=>{const ms=c.z.filter(n=>!zOk(n));
+    return `<div class="px-3 py-2 ${c.on?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input type="checkbox" ${c.on?'checked':''} onchange="CB[${k}].on=this.checked;cbs()"><span class="font-medium">${c.z.join(' + ')}</span></label>
+      ${ms.map(n=>`<div class="pl-6 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-amber-800"><span><span aria-hidden="true">⚠</span> ${n} nepriskirta surinkėjui</span>${c.on?`<button class="text-indigo-700 font-medium hover:underline" onclick="zGo('${n}')">Rodyti zoną sąraše ↑</button>`:''}</div>`).join('')}</div>`}).join('')}
+function zGo(n){const q=document.getElementById('zq');if(q.value){q.value='';zones()}
+  const el=document.getElementById('zr'+['NONE',...Z].indexOf(n));el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('zfl');void el.offsetWidth;el.classList.add('zfl')}
+const zOk=n=>!!EFF[n]&&[0,1,2].every(k=>EFF[n][k]!=null&&String(EFF[n][k]).trim()!=='');
+// Žyma tik pasirinktos kombinacijos zonoms: pilka, kai zona priskirta; raudona, kai ne
+function zTag(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c)return '';const o=c.z.filter(x=>x!=n),ok=zOk(n);
+  return `<span class="flex flex-wrap items-center justify-end gap-1 text-xs font-normal text-gray-500" title="${c.z.join(' + ')}">Kombinacija su ${o.map(x=>`<span class="rounded-full border px-2 py-0.5 whitespace-nowrap bg-gray-100 border-gray-200 text-gray-700">${x}</span>`).join('')}</span>`}
+// Atskira ikona: pasirinktos kombinacijos zona nepriskirta (nepažymėta arba nesuvestas efektyvumas)
+function zIco(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c||zOk(n))return '';
+  return `<span class="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full bg-red-600 text-white text-xs font-bold leading-none" role="img" aria-label="Zona nepriskirta" title="Zona nepriskirta: pažymėk ir suvesk Efficiency per hour, kad kombinacija ${c.z.join(' + ')} veiktų">!</span>`}
+function zTags(){['NONE',...Z].forEach((n,i)=>{const t=document.getElementById('zt'+i),c=document.getElementById('zi'+i);if(t)t.innerHTML=zTag(n);if(c)c.innerHTML=zIco(n)})}
+function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs()}
+{const _z=zones;zones=function(){_z();cbs()}}
+{const _c=cbs;cbs=function(){_c();zTags()}}
 document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
 function rv(){const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos)`;
   const vb=(t,us,e,o)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><dl class="grid gap-2 mt-1" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${e[k+o]??'–'}</dd></div>`).join('')}</dl></div>`;
@@ -611,7 +637,7 @@ addEventListener('resize',layout);layout();
 </script>
 <script>
 // Pradinis ekranas pagal adresą (#dashboard arba #picker-accounts); apvalkalas keičia adresą perjungdamas skirtukus
-function fromHash(){const h=location.hash.slice(1);if(h=='picker-accounts'&&cv=='dash')go('list',false);else if(h=='dashboard'&&cv!='dash')go('dash',false)}
+function fromHash(){const h=location.hash.slice(1);if(h=='edit'&&cv!='edit')go('edit',false);else if(h=='picker-accounts'&&cv=='dash')go('list',false);else if(h=='dashboard'&&cv!='dash')go('dash',false)}
 // Kairiojo meniu žymėjimas pagal atidarytą ekraną
 const _goNav=go;go=function(v,p){_goNav(v,p);nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash')};
 fromHash();addEventListener('hashchange',fromHash);
