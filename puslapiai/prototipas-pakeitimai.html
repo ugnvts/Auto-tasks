@@ -1,0 +1,835 @@
+<!doctype html>
+<html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<style>
+details#mzo:not([open]) .cv{transform:rotate(-90deg)}
+.zfl{animation:zfl 2s ease-out}@keyframes zfl{0%,40%{box-shadow:inset 0 0 0 2px #f59e0b;background:#fffbeb}}body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Auto tasks · Prototipas</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+:root{--bg:#f6f7f9;color-scheme:light}
+body{background:var(--bg);color:#111827;font-family:Inter,system-ui,sans-serif}
+.tog{width:36px;height:20px;border-radius:999px;background:#d1d5db;position:relative;transition:.15s;flex:none}
+.tog:after{content:"";position:absolute;top:2px;left:2px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.15s}
+.tog.on{background:#16a34a}.tog.on:after{left:18px}
+.fb,.qf{display:inline-flex;align-items:center;height:34px;border:1px solid #d1d5db;border-radius:6px;padding:0 14px;background:#fff;color:#374151;font-weight:500;cursor:pointer;user-select:none;white-space:nowrap}
+.fb:hover,.qf:hover{background:#f9fafb}
+.fb.act{border-color:#4f46e5;color:#111827}
+.fb:focus-visible{outline:2px solid #4f46e5;outline-offset:2px}
+.qf{gap:10px;padding:0 8px 0 14px}
+#fpop button{display:block;width:100%;text-align:left;padding:8px 12px}
+#fpop button:hover{background:#f9fafb}
+#fpop button[aria-checked="true"]{color:#4338ca;font-weight:600}
+.qf .ck{width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;color:#9ca3af}
+.qf[aria-pressed="true"]{border-color:#4f46e5;color:#111827}
+.qf[aria-pressed="true"] .ck{background:#e0e7ff;color:#312e81}
+.qf:focus-visible{outline:2px solid #4f46e5;outline-offset:2px}
+td,th{white-space:nowrap}
+[hidden]{display:none!important}
+.rs{display:flex;flex-direction:column;align-items:center;width:100%;padding:4px 0}
+.rc{width:64px;border:1px solid #e5e7eb;background:#f9fafb;border-radius:8px;padding:6px 0 4px;display:flex;flex-direction:column;align-items:center}.rs span{font-size:11px;color:#6b7280;line-height:1.2}.rs b{font-size:17px;font-variant-numeric:tabular-nums;line-height:1.3}
+.rs:focus-visible,.st:focus-visible,.sg:focus-visible,.ch:focus-visible{outline:2px solid #4f46e5;outline-offset:2px}
+.sc{border:1px solid #e5e7eb;background:#fff;border-radius:8px;padding:10px 12px}
+.st{display:flex;flex-direction:column;justify-content:space-between;min-width:0}
+.st span{display:block;font-size:12px;line-height:1.25;color:#6b7280}.st b{font-size:18px;line-height:1.4;font-variant-numeric:tabular-nums}
+.sg{height:26px;padding:0 10px;border-radius:4px;font-size:12px;font-weight:500;color:#4b5563}.sg:hover:not(.on){background:#f3f4f6}.sg.on{background:#4f46e5;color:#fff}.sg.on span{color:#c7d2fe!important}
+.ch{display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 10px;border:1px solid #d1d5db;border-radius:999px;background:#fff;font-size:12px;color:#374151;white-space:nowrap}
+.ch.on{border-color:#4f46e5;background:#eef2ff;color:#312e81}
+.tip{position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-left:4px;color:#6b7280;font-weight:400;cursor:help;vertical-align:-1px}
+.tip:focus-visible{outline:2px solid #4f46e5;border-radius:50%}
+.tipb{display:none;position:absolute;right:-8px;top:22px;z-index:30;width:230px;background:#111827;color:#fff;font-size:12px;line-height:1.4;padding:8px 10px;border-radius:6px;white-space:normal;text-align:left}
+.tip:hover .tipb,.tip:focus .tipb{display:block}
+.cb{display:flex;align-items:center;justify-content:space-between;gap:6px;text-align:left;padding:6px 10px;border:1px solid #d1d5db;border-radius:6px;background:#fff;font-size:13px;color:#111827}
+.cb:hover:not(:disabled){background:#f9fafb;border-color:#9ca3af}.cb.on,.cb.on:hover{border-color:#4f46e5;background:#eef2ff}.cb:disabled{background:#f9fafb;color:#6b7280;cursor:default}
+.cb:focus-visible{outline:2px solid #4f46e5;outline-offset:2px}
+.dr{border:1px solid #4f46e5}
+.flash{background:#eef2ff}
+.fc{height:24px;padding:0 8px;border-radius:999px;border:1px solid transparent;background:#f3f4f6;font-size:12px;color:#4b5563;white-space:nowrap}.fc:hover:not(.on){background:#e5e7eb}.fc.on{background:#eef2ff;border-color:#a5b4fc;color:#312e81}.fc:focus-visible{outline:2px solid #4f46e5;outline-offset:2px}
+.tab{height:46px;border-bottom:2px solid transparent;margin-bottom:-1px;color:#6b7280;font-size:15px;font-weight:600}.tab:hover:not(.on){color:#374151;background:#f9fafb}.tab.on{border-color:#4f46e5;color:#111827}
+/* Dashboard (bangų kortelės pagal Figma „Card variations“), apribota #v-dash */
+#v-dash{--card:#fff;--fg:#111827;--fg2:#374151;--muted:#6b7280;--line:#e5e7eb;--soft:#f9fafb;--chip:#f3f4f6;--accent:#4f46e5;
+  --s-sub:#f59e0b;--s-new:#ea580c;--s-pick:#3b82f6;--s-done:#22c55e;--s-ready:#059669;--s-fin-bg:#ecfdf5;--s-open-bd:#9ca3af;
+  --warn-bg:#ffedd5;--warn-bd:#fdba74;--warn-fg:#9a3412;--warn-link:#ea580c;--tip:#1f2937;font-size:14px;line-height:20px;color:var(--fg)}
+#v-dash svg{display:block;flex:none}
+#v-dash button:focus-visible,#v-dash input:focus-visible,#v-dash [tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+#v-dash .ph{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+#v-dash h1{margin:0 0 10px;font-size:24px;line-height:32px;font-weight:700}
+#v-dash .daybtn{position:relative}
+#v-dash .btn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 16px;border-radius:6px;background:var(--accent);color:#fff;font-weight:500}
+#v-dash .btn:hover{background:#4338ca}
+#v-dash .menu{position:absolute;right:0;top:44px;z-index:20;background:var(--card);border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05);padding:4px;min-width:200px}
+#v-dash .menu button{display:flex;justify-content:space-between;width:100%;padding:8px 12px;border-radius:6px;text-align:left}
+#v-dash .menu button:hover{background:var(--soft)}
+#v-dash .menu button[aria-checked="true"]{color:var(--accent);font-weight:600}
+#v-dash .meta{display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px;color:var(--muted);font-weight:500}
+#v-dash .mi{position:relative;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+#v-dash .mi b{color:var(--fg);font-weight:500}
+#v-dash .mi[data-tip]:hover::after,#v-dash .mi[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 10px);transform:translateX(-50%);background:var(--tip);color:#fff;font-size:13px;font-weight:400;line-height:18px;padding:8px 12px;border-radius:8px;white-space:nowrap;z-index:30;box-shadow:0 4px 12px rgba(0,0,0,.18)}
+#v-dash .mi[data-tip]:hover::before,#v-dash .mi[data-tip]:focus-visible::before{content:"";position:absolute;left:50%;top:calc(100% + 4px);transform:translateX(-50%);border:6px solid transparent;border-top:0;border-bottom-color:var(--tip);z-index:30}
+#v-dash .sect{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:28px 0 12px;flex-wrap:wrap}
+#v-dash .sect h2{margin:0;font-size:17px;font-weight:500;display:flex;align-items:center;gap:10px}
+#v-dash .sect h2 .sep{color:var(--muted)}
+#v-dash .sect h2 .d{display:inline-flex;align-items:center;gap:6px;font-size:14px;color:var(--muted);font-weight:400}
+#v-dash .chk{display:inline-flex;align-items:center;gap:8px;font-weight:500;color:var(--fg2);cursor:pointer}
+#v-dash .chk input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
+#v-dash .waves{display:flex;flex-direction:column;gap:32px}
+#v-dash .card{background:var(--card);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06)}
+#v-dash .chead{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px}
+#v-dash .ov{display:flex;align-items:center;gap:16px;min-width:0}
+#v-dash .dtg{padding:6px;border-radius:6px;color:var(--fg2)}
+#v-dash .dtg:hover{background:var(--chip)}
+#v-dash .dtg svg{transition:transform .15s}
+#v-dash .card.open .dtg svg{transform:rotate(180deg)}
+#v-dash .cs{display:flex;flex-direction:column;gap:16px;min-width:0}
+#v-dash .wh{display:flex;align-items:center;gap:8px;font-weight:500}
+#v-dash .wh .t{display:inline-flex;align-items:center;gap:6px;color:var(--muted)}
+#v-dash .bc{display:flex;gap:16px;flex:none}
+#v-dash .bcb{position:relative;width:56px;height:56px;border-radius:8px;background:#f3f4f6;display:inline-flex;align-items:center;justify-content:center;gap:4px;font-size:12px;line-height:16px;font-weight:500;color:#111827}
+#v-dash .bcb svg{color:#6b7280}
+#v-dash button.bcb.nc{background:#fee2e2;color:#991b1b}#v-dash button.bcb.nc svg{color:#991b1b}
+#v-dash button.bcb.nc:hover{background:#fecaca}#v-dash button.bcb.nc:active{background:#fca5a5}
+#v-dash button.bcb.ci{background:#dc2626;color:#fff}#v-dash button.bcb.ci svg{color:#fff}
+#v-dash button.bcb.ci:hover{background:#b91c1c}#v-dash button.bcb.ci:active{background:#991b1b}
+#v-dash .bcb[data-tip]:hover::after,#v-dash .bcb[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;right:0;top:calc(100% + 8px);background:#1f2937;color:#fff;font-size:13px;font-weight:400;line-height:18px;padding:8px 12px;border-radius:8px;white-space:nowrap;z-index:30}
+#v-dash .cbody{display:flex;flex-direction:column;gap:8px;padding:0 24px 24px}
+#v-dash .bar{display:flex;height:24px;border-radius:12px;overflow:hidden;font-weight:600;font-size:14px;line-height:20px}
+#v-dash .seg{display:flex;align-items:center;justify-content:center;gap:6px;color:#fff;min-width:28px;white-space:nowrap;overflow:hidden}
+#v-dash .seg.fin{background:var(--s-fin-bg);color:var(--s-ready);border:2px solid var(--s-ready)}
+#v-dash .seg.open{background:var(--chip);color:var(--muted);border:2px solid var(--s-open-bd);border-left:0}
+#v-dash .seg.first{border-radius:12px 0 0 12px}
+#v-dash .seg.last{border-radius:0 12px 12px 0}
+#v-dash .seg.only{border-radius:12px}
+#v-dash .seg.open.only{border-left:2px solid var(--s-open-bd)}
+#v-dash .lg{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 64px;padding:16px 0;color:var(--muted)}
+#v-dash .lg span{display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+#v-dash .lg i{width:12px;height:12px;border-radius:50%;display:inline-block}
+#v-dash .nt{display:flex;align-items:center;gap:12px;min-height:54px;padding:8px 12px;border:1px solid var(--warn-bd);background:var(--warn-bg);border-radius:8px;color:var(--warn-fg);font-weight:500}
+#v-dash .nt .tx{flex:1;min-width:0}
+#v-dash .nt button{color:var(--warn-link);font-weight:500;padding:9px 17px;border-radius:6px;white-space:nowrap}
+#v-dash .nt button:hover{text-decoration:underline}
+#v-dash .ex{background:var(--soft);border-top:1px solid var(--line);border-radius:0 0 8px 8px;height:52px;display:flex;align-items:center;gap:16px;padding:0 24px}
+#v-dash .ex .mi{padding:7px 17px 7px 15px}
+#v-dash .empty{padding:40px;text-align:center;color:var(--muted);background:var(--card);border-radius:8px}
+@media(max-width:899px){#v-dash .bc{display:none}#v-dash .lg{gap:8px 20px}}
+.nv{display:block;padding:9px 8px;border-radius:6px;color:#d1d5db;font-weight:500;cursor:pointer}
+.nv:hover{color:#fff}.nv.on{background:#0f172a;color:#fff}
+.ng{display:flex;align-items:center;gap:10px;padding:10px 12px;color:#e5e7eb;font-weight:500}
+.ng .chev{margin-left:auto;opacity:.7}
+@media(prefers-reduced-motion:reduce){#v-dash *{transition:none!important}}
+
+/* 2 variantas: kairėje bangų sekcija (valdoma dienos pasirinkimo), dešinėje nuolatinis „Dirba dabar“ */
+#outer.docked{margin-right:0}
+#wrap.wide{max-width:none}
+.dgrid{display:grid;grid-template-columns:minmax(0,1fr);gap:24px;align-items:start}
+.wcol{min-width:0}
+#v-dash .wcol .ph{flex-wrap:nowrap}
+#v-dash .wcol .daybtn{flex:none}
+.dgrid.two{grid-template-columns:minmax(0,1fr) 440px}
+#v-dash .wsec{background:#e9ecf1;border:1px solid #dde1e7;border-radius:12px;padding:16px;min-width:0}
+#v-dash .wsh{display:flex;align-items:center;justify-content:space-between;gap:12px 16px;flex-wrap:wrap;padding:4px 4px 0}
+#v-dash .eyebrow{font-size:12px;line-height:16px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:#6b7280}
+#v-dash .wsh h2{margin:2px 0 0;font-size:18px;line-height:26px;font-weight:600;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+#v-dash .wsh h2 .dt{font-size:14px;font-weight:500;color:#4f46e5}
+#v-dash .wctl{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+#v-dash .dsum{margin:12px 4px 16px;padding:10px 12px;background:#fff;border-radius:8px;border:1px solid #e5e7eb}
+#v-dash .dsum .lbl{font-size:12px;color:#6b7280;margin-right:4px}
+#v-dash .wsec .waves{gap:16px}
+#v-dash .site{display:flex;align-items:center;gap:8px;color:#6b7280;font-weight:500}
+#v-dash .site b{color:#111827;font-weight:500}
+#dock{align-self:stretch}
+#dock #sb{position:sticky!important;z-index:1!important;top:80px;right:auto;bottom:auto;width:auto!important;height:calc(100vh - 56px - 48px);min-height:420px;border:1px solid #dde1e7;border-radius:12px;box-shadow:none;overflow:hidden;background:#f9fafb}
+.live{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#dcfce7;color:#166534;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
+.live i{width:7px;height:7px;border-radius:50%;background:#16a34a;animation:pl 1.6s ease-in-out infinite}
+@keyframes pl{0%,100%{opacity:1}50%{opacity:.25}}
+@media(prefers-reduced-motion:reduce){.live i{animation:none}}
+
+</style>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.5" fill="currentColor"/><path d="M12 7v5.2l3.2 2" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+    <symbol id="i-pie" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"/><path d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"/></symbol>
+    <symbol id="i-pie-s" viewBox="0 0 24 24" fill="currentColor"><path d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z"/><path d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z"/></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z"/></symbol>
+    <symbol id="i-puzzle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959 0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58z"/></symbol>
+    <symbol id="i-puzzle-s" viewBox="0 0 24 24" fill="currentColor"><path d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 00.657-.643c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959 0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58z"/></symbol>
+    <symbol id="i-scale" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z"/></symbol>
+    <symbol id="i-cal" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.75l6 6 9-13.5"/></symbol>
+    <symbol id="i-clip" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01"/></symbol>
+    <symbol id="i-ticket" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></symbol>
+    <symbol id="i-chef" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6.5 15a3.75 3.75 0 01-.7-7.43A5.25 5.25 0 0112 4a5.25 5.25 0 016.2 3.57A3.75 3.75 0 0117.5 15v4.5h-11V15zM6.5 17h11"/></symbol>
+    <symbol id="i-bag" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M7.5 6v.75H5.513c-.96 0-1.764.724-1.865 1.679l-1.263 12A1.875 1.875 0 004.25 22.5h15.5a1.875 1.875 0 001.865-2.071l-1.263-12a1.875 1.875 0 00-1.865-1.679H16.5V6a4.5 4.5 0 10-9 0zM12 3a3 3 0 00-3 3v.75h6V6a3 3 0 00-3-3z"/></symbol>
+    <symbol id="i-flag" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3 2.25a.75.75 0 01.75.75v.54l1.838-.46a9.75 9.75 0 016.725.738l.108.054a8.25 8.25 0 005.58.652l3.109-.732a.75.75 0 01.917.81 47.784 47.784 0 00.005 10.337.75.75 0 01-.574.812l-3.114.733a9.75 9.75 0 01-6.594-.77l-.108-.054a8.25 8.25 0 00-5.69-.625l-2.202.55V21a.75.75 0 01-1.5 0V3A.75.75 0 013 2.25z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75"/></symbol>
+    <symbol id="i-car" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 14.5v-1.2c0-.7.4-1.3 1.1-1.5l2.4-.8 2.2-2.6c.4-.5 1-.7 1.6-.7h4.5c.6 0 1.2.3 1.6.8l2 2.5 2.8.7c.7.2 1.1.8 1.1 1.5v1.3c0 .5-.4.9-.9.9h-1.4M6.4 15.4H17M4.5 15.4h-1"/><circle cx="5.5" cy="15.5" r="1.6"/><circle cx="17.5" cy="15.5" r="1.6"/></symbol>
+    <symbol id="i-tasks" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M15 19.13a9.38 9.38 0 002.63.37 9.34 9.34 0 004.12-.95 4.13 4.13 0 00-7.53-2.49M15 19.13v-.01c0-1.11-.29-2.16-.79-3.07M15 19.13v.11A12.32 12.32 0 018.62 21c-2.33 0-4.51-.64-6.37-1.76v-.11a6.38 6.38 0 0111.96-3.08M12 6.38a3.38 3.38 0 11-6.75 0 3.38 3.38 0 016.75 0zm8.25 2.25a2.63 2.63 0 11-5.25 0 2.63 2.63 0 015.25 0z"/></symbol>
+    <symbol id="i-box" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9"/></symbol>
+    <symbol id="i-stat" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></symbol>
+    <symbol id="i-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.325.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.241-.438.613-.43.992a7.723 7.723 0 010 .255c-.008.378.137.75.43.991l1.004.827c.424.35.534.955.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.47 6.47 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.281c-.09.543-.56.94-1.11.94h-2.594c-.55 0-1.019-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.991a6.932 6.932 0 010-.255c.007-.38-.138-.751-.43-.992l-1.004-.827a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.086.22-.128.332-.183.582-.495.644-.869l.214-1.28z"/><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/></symbol>
+  </defs>
+</svg>
+
+<div class="flex min-h-screen">
+  <aside class="hidden md:block w-[246px] bg-slate-800 text-slate-200 text-sm shrink-0 sticky top-0 h-screen self-start overflow-y-auto">
+    <div class="h-14 flex items-center px-5 bg-slate-900 text-red-600 font-bold text-2xl tracking-wide">BARBORA</div>
+    <nav class="p-1 flex flex-col gap-0.5">
+      <div class="ng"><svg width="20" height="20" aria-hidden="true"><use href="#i-tasks"/></svg>Tasks<svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></div>
+      <a id="nDash" class="nv on" onclick="go('dash')">Dashboard</a>
+      <a class="nv">Unfinished picking tasks</a>
+      <a class="nv">Orders to pick</a>
+      <div class="ng"><svg width="20" height="20" aria-hidden="true"><use href="#i-users"/></svg>Pickers<svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></div>
+      <a id="nList" class="nv" onclick="go('list')">Picker accounts</a>
+      <div class="ng"><svg width="20" height="20" aria-hidden="true"><use href="#i-box"/></svg>Service management<svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></div>
+      <a class="nv">Item addresses</a><a class="nv">Capacity management</a><a class="nv">Picking zones</a>
+      <div class="ng"><svg width="20" height="20" aria-hidden="true"><use href="#i-stat"/></svg>Statistics<svg class="chev" width="16" height="16" aria-hidden="true"><use href="#i-chev"/></svg></div>
+      <a class="nv">Picking statistics</a>
+    </nav>
+  </aside>
+  <main class="flex-1 min-w-0">
+    <header class="sticky top-0 z-[6] h-14 bg-white border-b flex items-center justify-end gap-6 text-sm text-gray-600" style="padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))">
+      <span class="text-gray-900 border-b-2 border-red-600 py-4">Picking</span><span>Assortment</span><span>Reports</span><span>Payments</span>
+      <span class="w-8 h-8 rounded-full bg-red-800 text-white grid place-items-center text-xs">VU</span>
+    </header>
+    <div id="outer" class="md:mr-[76px]"><div id="wrap" class="max-w-[1600px] mx-auto py-6" style="padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))">
+
+      <!-- DASHBOARD -->
+      <section id="v-dash">
+      <div class="dgrid" id="dgrid">
+        <div class="wcol">
+      <div class="ph">
+        <div style="min-width:0">
+          <h1>Dashboard</h1>
+          <div class="meta" id="dayMeta"></div>
+        </div>
+        <div class="daybtn">
+          <button class="btn" id="dayBtn" aria-haspopup="menu" aria-expanded="false" onclick="dDayMenu()"><svg width="20" height="20"><use href="#i-cal"/></svg><span id="dayLbl">Today</span></button>
+          <div class="menu" id="dayMenu" role="menu" hidden></div>
+        </div>
+      </div>
+      <div class="sect">
+        <h2>Standard orders <span class="sep">·</span> <span class="d"><svg width="18" height="18"><use href="#i-cal"/></svg><span id="sectDay">Today</span></span></h2>
+        <label class="chk"><input type="checkbox" id="hideFin" onchange="dRender()"> Hide finished waves</label>
+      </div>
+      <div class="waves" id="waves"></div>
+        </div>
+        <div id="dock"></div>
+      </div>
+      </section>
+
+      <!-- SĄRAŠAS -->
+      <section id="v-list" class="hidden">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div><h1 class="text-2xl font-semibold">Picker accounts</h1><p class="text-sm text-gray-500 mt-1">📍 X864 Hyper</p></div>
+          <button class="bg-indigo-600 text-white text-sm px-4 py-2 rounded" onclick="go('edit')">+ Sukurti</button>
+        </div>
+        <div class="flex flex-wrap items-center gap-2 mt-5 text-sm">
+          <svg class="w-5 h-5 text-gray-500" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M3 4h18l-7 8v7l-4 2v-9z"/></svg>
+          <button id="fName" class="fb" style="cursor:default" title="Prototipe neveikia">Name</button>
+          <button id="fLast" class="fb" style="cursor:default" title="Prototipe neveikia">Last name</button>
+          <button id="fTc" class="fb" style="cursor:default" title="Prototipe neveikia">Time card</button>
+          <input type="hidden" id="fShift" value=""><button data-f="fShift" data-o="Morning|Evening|Night" class="fb" aria-haspopup="true" onclick="fpop(this)">Shift name</button>
+          <input type="hidden" id="fRole" value=""><button data-f="fRole" data-o="Picker|Inspector" class="fb" aria-haspopup="true" onclick="fpop(this)">Role</button>
+          <input type="hidden" id="fSt" value=""><button data-f="fSt" data-o="Renka|Laukia užduoties|Nesinchronizavo|Nerenka" class="fb" aria-haspopup="true" onclick="fpop(this)">Būsena</button>
+          <input type="hidden" id="fAuto" value=""><button data-f="fAuto" data-o="Įjungta|Išjungta" class="fb" aria-haspopup="true" onclick="fpop(this)">Auto tasks</button>
+          <button id="fNk" type="button" class="qf" aria-pressed="false" onclick="nk(!fN)">Naujokai<span class="ck" aria-hidden="true"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8.5l3.2 3L13 4.5"/></svg></span></button>
+          <button class="text-indigo-600 px-2 py-1.5" onclick="clr()">Išvalyti</button>
+        </div>
+        <div id="bulk" class="hidden mt-3 flex flex-wrap items-center gap-3 bg-indigo-50 border border-indigo-200 rounded px-4 py-2 text-sm">
+          <b id="bulkN">0</b> pažymėta
+          <button class="bg-green-600 text-white px-3 py-1 rounded" onclick="bulk(1)">Įjungti auto tasks</button>
+          <button class="bg-white border px-3 py-1 rounded" onclick="bulk(0)">Išjungti</button>
+        </div>
+        <div class="mt-3 bg-white border rounded overflow-x-auto"><table class="w-full text-sm">
+          <thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-3"><input id="selAll" type="checkbox" onchange="all_(this.checked)"></th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Last name</th><th class="px-4 font-medium">Time card</th><th class="px-4 font-medium">Shift name</th><th class="px-4 font-medium">Role</th><th class="px-4 font-medium">Auto tasks</th><th class="px-4 font-medium">Būsena</th><th class="px-4" aria-label="Efektyvumo korekcijos"></th><th></th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table></div>
+        <p id="foot" class="text-center text-sm text-gray-500 mt-4"></p>
+      </section>
+
+      <!-- PERŽIŪRA -->
+      <section id="v-view" class="hidden">
+        <p class="text-sm text-gray-500"><a class="cursor-pointer" onclick="go('list')">Picker accounts</a> › <span class="text-indigo-600">Silvija Švaikevičiūtė</span></p>
+        <div class="flex flex-wrap justify-between items-center gap-3 mt-2">
+          <h1 class="text-2xl font-semibold"><a class="cursor-pointer text-gray-400 mr-2" onclick="back()">←</a>Account</h1>
+          <div class="flex gap-2"><button class="bg-red-50 text-red-700 text-sm px-4 py-2 rounded">Delete account</button><button class="bg-indigo-600 text-white text-sm px-4 py-2 rounded" onclick="go('edit')">✎ Edit</button></div>
+        </div>
+        <div class="bg-white rounded border mt-5 p-6 max-w-3xl mx-auto">
+          <h2 class="text-xl font-semibold">Silvija Švaikevičiūtė</h2>
+          <p class="text-sm text-gray-500">Picker</p>
+          <h3 class="font-medium mt-6 pb-2 border-b">Employee information</h3>
+          <dl class="text-sm divide-y" id="dl"></dl>
+          <h3 class="font-medium mt-6 pb-2 border-b">Auto tasks</h3>
+          <dl id="vAuto" class="text-sm divide-y"></dl>
+          <h3 class="font-medium mt-6 pb-2 border-b">Kelios zonos</h3>
+          <dl class="text-sm">
+            <div class="py-3"><div class="grid grid-cols-3 items-center"><dt class="text-gray-500">Can work in multiple zones</dt><dd class="col-span-2"><span class="inline-flex items-center gap-1.5 text-xs font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Enabled</span></dd></div>
+              <div class="mt-3 border rounded-lg bg-gray-50 p-4 space-y-3">
+                <div class="grid grid-cols-3"><dt class="text-gray-500">Allowed zone combinations</dt><dd id="cbView" class="col-span-2 flex flex-wrap gap-2"></dd></div>
+              </div></div>
+          </dl>
+          <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zonos ir efektyvumas <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3><button id="korBtn" class="ml-auto text-sm border border-indigo-600 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-50" onclick="korOpen()">Korekcija visoms zonoms</button></div>
+          <div id="korCard" class="mt-3 empty:hidden"></div>
+          <div id="effView" class="mt-3 space-y-3"></div>
+        </div>
+      </section>
+
+      <!-- REDAGAVIMAS -->
+      <section id="v-edit" class="hidden">
+        <p class="text-sm text-gray-500"><a class="cursor-pointer" onclick="go('list')">Picker accounts</a> › <span class="text-indigo-600">Edit picker account</span></p>
+        <h1 class="text-2xl font-semibold mt-2"><a class="cursor-pointer text-gray-400 mr-2" onclick="back()">←</a>Edit picker account</h1>
+        <div class="bg-white rounded border mt-5 p-6 max-w-3xl mx-auto space-y-6 text-sm">
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Personal information</h3>
+            <div class="grid sm:grid-cols-2 gap-4"><label>First name<input id="fn" class="mt-1 w-full border rounded px-3 py-2" value="Silvija"></label><label>Last name<input id="ln" class="mt-1 w-full border rounded px-3 py-2" value="Švaikevičiūtė"></label></div></div>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Employee information</h3>
+            <div class="grid sm:grid-cols-2 gap-4"><label>Shop<select id="sp" class="mt-1 w-full border rounded px-3 py-2"><option>X016 Liepkalnis</option><option selected>X864 HYPER</option><option>X500 Akropolis</option><option>X532 Olinda</option></select></label><div class="hidden sm:block"></div>
+            <label>Time card<input id="tc" class="mt-1 w-full border rounded px-3 py-2" value="3360"></label><label>Shift name<input id="sh" class="mt-1 w-full border rounded px-3 py-2" value="Evening"></label>
+            <label>Role<select id="ro" class="mt-1 w-full border rounded px-3 py-2"><option>Picker</option><option>Inspector</option></select></label>
+            <div class="sm:pt-[33px]"><label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="VA=VA&&!this.checked"><span>Naujokas<br><span class="text-gray-500">Kol pažymėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.</span></span></label></div></div></div>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Zonos ir efektyvumas</h3>
+            <p class="text-gray-500 mb-2">Pažymėk zonas; pažymėtoms suvesk efektyvumą rankomis.</p>
+            <div class="flex flex-wrap items-center gap-2 mb-2"><button class="border border-indigo-600 text-indigo-700 px-3 py-1 rounded" onclick="allZ(1)">Įjungti visas zonas</button><button class="border px-3 py-1 rounded" onclick="allZ(0)">Išjungti visas</button><span id="zc" class="text-gray-500 ml-auto"></span></div>
+            <input id="zq" placeholder="Ieškoti zonos…" class="w-full border rounded px-3 py-2 mb-2" oninput="zones()">
+            <div id="zl" class="border rounded divide-y"></div>
+            <div class="mt-5 pt-4 border-t">
+              <label class="flex gap-3 items-start"><input id="mz" type="checkbox" checked class="mt-1" onchange="cbs()"><span>Can work in multiple zones<br><span class="text-gray-500">Surinkėjas gali gauti kelių zonų užduotis vienu kartu pagal pasirinktas kombinacijas.</span></span></label>
+              <details id="mzo" open class="mt-3 ml-7 border rounded-lg">
+                <summary class="flex items-center gap-2 px-3 py-2 cursor-pointer select-none list-none [&::-webkit-details-marker]:hidden">Allowed zone combinations <span id="cbn" class="text-gray-500"></span><span class="ml-auto text-xs text-gray-400">iš SC nustatymų</span><svg class="cv w-4 h-4 text-gray-500 transition-transform" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg></summary>
+                <div id="cbl" class="border-t divide-y"></div>
+              </details>
+            </div></div>
+          <div class="flex flex-wrap justify-end gap-2 pt-4 border-t">
+            <button class="border px-4 py-2 rounded" onclick="back()">Atšaukti</button>
+            <button class="border border-indigo-600 text-indigo-700 px-4 py-2 rounded" onclick="go('edit')">Išsaugoti ir kitas</button>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded" onclick="back()">Išsaugoti</button>
+          </div>
+        </div>
+      </section>
+    </div></div>
+  </main>
+</div>
+
+
+<!-- SIDEBAR: suskleistas -->
+<aside id="rail" class="hidden md:flex fixed right-0 top-14 bottom-0 w-[76px] bg-white border-l flex-col items-stretch z-[5]">
+  <button id="railA" class="flex flex-col items-center pt-3 pb-3 hover:bg-gray-50 transition-colors" aria-label="Išskleisti Dirba dabar" title="Dirba dabar" onclick="sbOpen()">
+  <div class="flex flex-col items-center text-gray-600"><svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Dirba<br>dabar</div><div id="rC" class="empty:hidden mt-1 text-[10px] font-semibold text-sky-800 bg-sky-50 border border-sky-200 rounded px-1"></div></div>
+  <div class="w-12 border-t my-2.5"></div>
+  <div class="rc"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Auto</div>
+  <div class="rs"><span>Įjungta</span><b id="rA"></b><em id="rB" class="not-italic text-[10px] text-amber-700"></em></div>
+  <div class="rs"><span>Renka</span><b id="rAR"></b></div>
+  <div class="rs"><span>Laukia</span><b id="rAL"></b></div>
+  <div class="rs"><span>Nesinchr.</span><b id="rAN"></b></div></div>
+  <div class="rc mt-2"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Rank.</div>
+  <div class="rs"><span>Renka</span><b id="rMR"></b></div>
+  <div class="rs"><span>Nesinchr.</span><b id="rMN"></b></div>
+  <div class="rs"><span>Naujokai</span><b id="rNk"></b></div></div>
+  </button>
+  <button id="railB" class="flex-1 flex flex-col items-center pt-3 pb-2 border-t hover:bg-gray-50 transition-colors" aria-label="Išskleisti Laikini pakeitimai" title="Laikini pakeitimai" onclick="kpOpen()">
+    <div class="flex flex-col items-center text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Laikini<br>pakeitimai</div></div>
+    <div class="w-12 border-t my-2.5"></div>
+    <div id="rK" class="flex flex-col items-center gap-1.5"></div>
+  </button>
+</aside>
+<button id="fab" class="md:hidden fixed right-4 bottom-4 z-[5] bg-indigo-600 text-white text-sm px-4 py-2.5 rounded-full shadow-lg" onclick="sbOpen()">Dirba dabar</button>
+<button id="fab2" class="md:hidden fixed right-4 bottom-16 z-[5] bg-white border text-gray-800 text-sm px-4 py-2.5 rounded-full shadow-lg" onclick="kpOpen()">Laikini pakeitimai</button>
+
+<!-- SIDEBAR: išskleistas -->
+<section id="sb" hidden class="fixed right-0 top-14 bottom-0 z-10 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Dirba dabar">
+  <button id="sbXb" class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Suskleisti" title="Suskleisti (Esc)" onclick="sbClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
+  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Dirba dabar</div><button id="kpDockBtn" hidden class="ml-auto text-xs border bg-white rounded px-2 py-1 text-gray-700 hover:bg-gray-50" onclick="kpOpen()">Laikini pakeitimai <span id="kpDockN" class="text-gray-500"></span></button></div>
+  
+  <div id="sbScroll" class="flex-1 overflow-y-auto">
+  <div class="px-4 pt-3 pb-4 space-y-2">
+    <div class="sc">
+      <div class="flex items-center justify-between h-6 -mr-1.5"><div class="text-[13px] font-semibold text-gray-800">Auto tasks</div>
+        <div class="flex items-center gap-1"><button id="kb" class="w-8 h-8 rounded text-gray-500 hover:bg-gray-100 text-lg leading-none disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Auto tasks veiksmai" aria-haspopup="true" onclick="kOpen(this)">⋮</button></div></div>
+      <div class="grid grid-cols-4 gap-3 mt-1"><div class="st"><span>Įjungta</span><b id="cnt"></b></div><div class="st"><span>Renka</span><b id="sR"></b></div><div class="st" title="Laukia užduoties"><span>Laukia</span><b id="sL"></b></div><div class="st" title="Nesinchronizavo"><span>Nesinchr.</span><b id="sN"></b></div></div>
+    </div>
+    <div class="sc">
+      <div class="h-6 flex items-center text-[13px] font-semibold text-gray-800">Rankinis skyrimas</div>
+      <div class="grid grid-cols-4 gap-3 mt-1"><div class="st"><span>Renka</span><b id="mR"></b></div><div class="st" title="Nesinchronizavo"><span>Nesinchr.</span><b id="mN"></b></div><div class="st"><span>Naujokai</span><b id="sNa"></b></div></div>
+    </div>
+  </div>
+  <div class="border-y bg-white grid grid-cols-2 sticky top-0 z-[3]" role="tablist"><button id="tz" class="tab" role="tab" onclick="sbTab('z')">Zonos</button><button id="tp" class="tab" role="tab" onclick="sbTab('p')">Surinkėjai <span id="tpn" class="text-gray-400 font-normal"></span></button></div>
+  <div id="sbBody"></div>
+  </div>
+</section>
+<!-- SIDEBAR: Laikini pakeitimai -->
+<section id="kp" hidden class="fixed right-0 top-14 bottom-0 z-20 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Laikini pakeitimai">
+  <button class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Suskleisti" title="Suskleisti (Esc)" onclick="kpClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
+  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><div class="font-semibold text-lg text-gray-900">Laikini pakeitimai</div></div>
+  <div id="kpBody" class="flex-1 overflow-y-auto"></div>
+</section>
+<div id="dtoast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 bg-gray-800 text-white text-sm rounded px-4 py-2.5 shadow-lg" role="status" hidden></div>
+<div id="toast" hidden class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 bg-gray-900 text-white text-sm rounded px-4 py-2.5 shadow-lg flex items-center gap-4"></div>
+<div id="kmenu" hidden class="fixed z-20 w-60 bg-white border rounded shadow-lg text-sm py-1"><button class="block w-full text-left px-3 py-2 hover:bg-red-50 text-red-700" onclick="kmenu.hidden=true;offAsk()">Išjungti auto tasks visiems</button></div>
+<div id="offdlg" hidden class="fixed inset-0 z-30 bg-black/30 grid place-items-center p-4" style="background:rgba(0,0,0,.3)"><div class="bg-white rounded-lg shadow-xl p-5 max-w-sm w-full text-sm"><div class="font-semibold text-base mb-2">Išjungti auto tasks visiems?</div><p id="offtx" class="text-gray-600 mb-4"></p><div class="flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="offdlg.hidden=true">Atšaukti</button><button class="bg-red-600 text-white px-4 py-1.5 rounded" onclick="offAll()">Išjungti</button></div></div></div>
+<div id="epop" hidden class="fixed z-30 w-72 bg-white border rounded-lg shadow-lg text-sm p-3" role="dialog" aria-label="Efektyvumo korekcijos"></div>
+<div id="kordlg" hidden class="fixed inset-0 z-30 grid place-items-center p-4" style="background:rgba(0,0,0,.3)" onclick="if(event.target==this)this.hidden=true"><div id="kordlgB" class="bg-white rounded-lg shadow-xl p-5 max-w-md w-full text-sm max-h-[90vh] overflow-y-auto" role="dialog" aria-modal="true" aria-labelledby="korT"></div></div>
+<div id="fpop" hidden class="fixed z-20 min-w-[160px] bg-white border rounded shadow-lg text-sm py-1"></div>
+<div id="rmenu" hidden class="fixed z-20 w-32 bg-white border rounded shadow-lg text-sm py-1"><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="go('view')">Rodyti</button><button class="block w-full text-left px-3 py-2 hover:bg-gray-50" onclick="go('edit')">Redaguoti</button></div>
+<script>
+const N=[["Silvija","Švaikevičiūtė",3360,"Evening","Picker",0,"Renka",1],["Nerijus","Petrauskas",4200,"Evening","Picker",1,"Laukia užduoties",0],["Aldonas","Kazlauskas",4327,"Evening","Picker",1,"Renka",0],["Karolis","Jankauskas",7854,"Evening","Picker",1,"Nesinchronizavo",0],["Remigijus","Stankevičius",1756,"Evening","Picker",0,"Renka",1],["Tomas","Vasiliauskas",7142,"Evening","Picker",1,"Renka",0],["Silvestr","Žukauskas",3975,"Evening","Inspector",1,"Laukia užduoties",0],["Darius","Butkus",1758,"Morning","Picker",1,"Laukia užduoties",0],["Aleksandr","Paulauskas",1270,"Morning","Inspector",1,"Laukia užduoties",0],["Tautvydas","Urbonas",1432,"Morning","Picker",0,"Nesinchronizavo",0],["Alma","Kavaliauskienė",8574,"Morning","Inspector",1,"Renka",0],["Vilma","Navickienė",1546,"Morning","Picker",0,"Renka",1],["Gediminas","Kairys",2214,"Morning","Picker",0,"Nerenka",0],["Rūta","Mockutė",2389,"Morning","Picker",0,"Nerenka",0],["Edvinas","Petraitis",5120,"Evening","Picker",0,"Nerenka",0],["Laura","Žilinskienė",6031,"Night","Picker",0,"Nerenka",0],["Mantas","Grigas",6045,"Night","Picker",0,"Nerenka",0],["Jolanta","Balčiūnienė",4418,"Evening","Picker",0,"Nerenka",0],["Paulius","Lukoševičius",3307,"Morning","Picker",0,"Nerenka",1],["Ieva","Sakalauskaitė",2876,"Night","Picker",0,"Nerenka",0],["Andrius","Ramanauskas",7710,"Evening","Picker",0,"Nerenka",0],["Kristina","Juškienė",5582,"Morning","Picker",0,"Nerenka",0]];
+const ST={"Renka":"bg-green-100 text-green-800","Laukia užduoties":"bg-blue-100 text-blue-800","Nesinchronizavo":"bg-amber-100 text-amber-800"};
+const Z=["Pampers / Toilet Paper","Cosmetics","Cofee, tea, candy","Chemicals","Chips","Conservation","Kiaušiniai","Easter","Stationery Goods","Tortai","Flowers","Morning Morning.Garden","Fruits, vegetables - RYTAS","Christmas","Fruits, vegetables","Not available","OOS zone","Frozen goods","Confectionery Cakes","Bread products - RYTAS","Gifts_Bak","Gifts_Šal","Gifts_Pie","Gifts_Pra","Gifts_Duo","Gifts_Kup","Own product range","Ramp","UP-Šaldytuvas","Maltese","Food bank","Hot line","Non-alcoholic beverages","UAT Milk","Soft drinks","Manufactured goods","Confectionery MXM","Gastronomy","Fresh fish","Fresh meat","Candies","Fresh poultry","Alcoholic beverages","Weighed, smoked meat products","Press","Weighed cheese","Confectionery Mantinga","Chemistry stuff","Mėnesio akcijos","Bread products","Milk, fish, poultry","Groceries"];
+const EFF={"NONE":[],"Fruits, vegetables":[38,95,42,20,50,25,4],"Fresh meat":[30,60,35,15,30,20,3],"Groceries":[55,140,48,30,70,25,5],"Milk, fish, poultry":[45,110,40,25,55,22,4]};
+const sel=new Set(),keep=new Set();let vis=[],fN=false;
+function nk(v){fN=v;document.getElementById('fNk').setAttribute('aria-pressed',v);fc()}
+const fv=id=>document.getElementById(id).value.trim().toLowerCase();
+function fc(){keep.clear();sel.clear();document.querySelectorAll('[data-f]').forEach(b=>b.classList.toggle('act',!!document.getElementById(b.dataset.f).value));render()}
+function fpop(b){const p=document.getElementById('fpop'),f=b.dataset.f,v=document.getElementById(f).value;if(!p.hidden&&p.dataset.f==f){p.hidden=true;return}p.dataset.f=f;p.innerHTML=b.dataset.o.split('|').map(o=>`<button role="menuitemradio" aria-checked="${o==v}" onclick="fset('${f}','${o}')">${o}${o==v?' ✓':''}</button>`).join('')+(v?`<button class="border-t text-gray-500" onclick="fset('${f}','')">Išvalyti</button>`:'');const r=b.getBoundingClientRect();p.style.top=r.bottom+4+'px';p.style.left=Math.min(r.left,innerWidth-176)+'px';p.hidden=false}
+function sumR(){const on=N.filter(r=>r[5]),c=s=>on.filter(r=>r[6]==s).length;const off=N.filter(r=>!r[5]),m=s=>off.filter(r=>r[6]==s).length;sR.textContent=c('Renka');sL.textContent=c('Laukia užduoties');sN.textContent=c('Nesinchronizavo');mR.textContent=m('Renka');mN.textContent=m('Nesinchronizavo');sNa.textContent=N.filter(r=>r[7]).length;kb.disabled=!on.length;if(!on.length)kmenu.hidden=true;
+  cBarR()}
+function kOpen(b){if(!kmenu.hidden){kmenu.hidden=true;return}const r=b.getBoundingClientRect();kmenu.style.top=r.bottom+4+'px';kmenu.style.left=Math.max(8,Math.min(r.left,innerWidth-248))+'px';kmenu.hidden=false}
+function offAsk(){const n=N.filter(r=>r[5]&&r[4]!='Inspector').length;offtx.textContent=n?`Auto tasks bus išjungtas ${n} pickeriams. Einamos užduotys nenutraukiamos, naujų auto užduočių nebeateis.`:'Šiuo metu auto tasks neįjungtas nė vienam pickeriui.';offdlg.hidden=false}
+function offAll(){N.forEach((r,i)=>{if(r[5])setA(i,0)});offdlg.hidden=true;render()}
+document.addEventListener('click',e=>{if(!e.target.closest('#kmenu,#kb'))kmenu.hidden=true});
+function qs(s,a){document.getElementById('fSt').value=s;document.getElementById('fAuto').value=a;fc()}
+function fset(f,o){const e=document.getElementById(f);e.value=e.value==o?'':o;document.getElementById('fpop').hidden=true;fc()}
+document.addEventListener('click',e=>{if(!e.target.closest('#fpop,[data-f]'))document.getElementById('fpop').hidden=true});
+function clr(){['fName','fLast','fTc','fShift','fRole','fSt','fAuto'].forEach(i=>document.getElementById(i).value='');fN=false;document.getElementById('fNk').setAttribute('aria-pressed','false');fc()}
+function match(r,i){return keep.has(i)||(r[0].toLowerCase().includes(fv('fName'))&&r[1].toLowerCase().includes(fv('fLast'))&&String(r[2]).includes(fv('fTc'))&&(!fv('fShift')||r[3].toLowerCase()==fv('fShift'))&&(!fv('fRole')||r[4].toLowerCase()==fv('fRole'))&&(!fv('fSt')||r[6].toLowerCase()==fv('fSt'))&&(!fv('fAuto')||(fv('fAuto')=='įjungta'?r[5]:!r[5]))&&(!fN||r[7]))}
+let mi=0;
+function setA(i,on){const r=N[i];if(on&&r[7])return;if(r[4]=='Inspector')return;r[5]=on;if(on){if(r[6]=='Nerenka')r[6]='Laukia užduoties'}else{if(r[6]=='Laukia užduoties')r[6]='Nerenka'}if(fv('fAuto'))keep.add(i);else keep.delete(i)}
+function tg(i,on){setA(i,on);render()}
+function render(){
+  vis=N.map((r,i)=>[r,i]).filter(([r,i])=>match(r,i));
+  document.getElementById('cnt').textContent=N.filter(r=>r[5]).length;sumR();
+  document.getElementById('tbody').innerHTML=vis.map(([r,i])=>{const g=keep.has(i)&&!r[5];return `<tr class="border-b hover:bg-gray-50 cursor-pointer ${g?'opacity-50':''}" onclick="go('view')"><td class="px-4" onclick="event.stopPropagation()"><input type="checkbox" ${sel.has(i)?'checked':''} onchange="pick(${i},this.checked)"></td><td class="px-4 py-3 font-medium">${r[0]}</td><td class="px-4">${r[1]}</td><td class="px-4 tabular-nums">${r[2]}</td><td class="px-4">${r[3]}</td><td class="px-4 whitespace-nowrap">${r[4]}${r[7]?' <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}</td><td class="px-4" onclick="event.stopPropagation()"><div class="flex items-center gap-2">${r[4]=='Inspector'?'<button class="tog on" style="opacity:.5;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Inspektoriams auto tasks visada įjungti, išjungti negalima (R05)"></button>':r[7]?'<button class="tog" style="opacity:.4;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Naujokui auto tasks įjungti negalima"></button>':`<button class="tog ${r[5]?'on':''}" aria-label="Auto tasks" onclick="tg(${i},${r[5]?0:1})"></button>`}${g?`<button class="text-indigo-600 text-xs" onclick="tg(${i},1)">Atšaukti</button>`:''}</div></td><td class="px-4">${r[6]=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded ${ST[r[6]]}">${r[6]}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${eTags(i)}</div></td><td class="px-2" onclick="event.stopPropagation()"><button data-menu class="px-2 py-1 rounded text-gray-500 hover:bg-gray-100" aria-label="Veiksmai" onclick="menu(this,${i})">⋮</button></td></tr>`}).join('')||'<tr><td colspan="10" class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nerasta.</td></tr>';
+  document.getElementById('foot').textContent=`Rodoma ${vis.length} iš ${N.length}`+(keep.size?' · išjungti lieka matomi, kol pakeisi filtrą':'');
+  document.getElementById('bulk').classList.toggle('hidden',!sel.size);document.getElementById('bulkN').textContent=sel.size;
+  document.getElementById('selAll').checked=vis.length>0&&vis.every(([,i])=>sel.has(i));
+  sbR();
+}
+function pick(i,c){c?sel.add(i):sel.delete(i);render()}
+function all_(c){vis.forEach(([,i])=>c?sel.add(i):sel.delete(i));render()}
+function bulk(on){sel.forEach(i=>setA(i,on));sel.clear();render()}
+let cv='dash';const hist=[];
+function back(){go(hist.pop()||'dash',false)}
+function menu(b,i){mi=i;const m=document.getElementById('rmenu'),r=b.getBoundingClientRect();m.style.top=r.bottom+4+'px';m.style.left=Math.max(8,r.right-128)+'px';m.hidden=false}
+document.addEventListener('click',e=>{if(!e.target.closest('#rmenu,[data-menu]'))document.getElementById('rmenu').hidden=true});
+function go(v,push=true){try{parent.postMessage({proto:v},'*')}catch(e){}document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
+function allZ(on){if(on)Z.forEach(n=>EFF[n]??=[]);else Object.keys(EFF).forEach(k=>delete EFF[k]);zones()}
+function zones(){const q=document.getElementById('zq').value.toLowerCase();document.getElementById('zc').textContent=Z.filter(n=>EFF[n]).length+' iš 52 įjungta';
+  const inp=(i,u,v,n,k)=>`<label class="flex flex-col gap-1 text-xs text-gray-500">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white" value="${v??''}" oninput="zEf('${n}',${k},this.value)"></label>`;
+  const box=(t,us,e,o)=>`<fieldset class="border rounded bg-white px-3 pb-3"><legend class="px-1 text-xs font-semibold uppercase tracking-wide text-gray-600">${t}</legend><div class="grid gap-2" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>inp(e.i,u,e.v[k+o],e.n,k+o)).join('')}</div></fieldset>`;
+  document.getElementById('zl').innerHTML=['NONE',...Z].map((n,i)=>[n,i]).filter(([n])=>n.toLowerCase().includes(q)).map(([n,i])=>{const e=EFF[n],no=n=='NONE';return `<div id="zr${i}" class="px-3 py-2 ${e?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input id="z${i}" type="checkbox" ${e?'checked':''} onchange="if(this.checked)EFF['${n}']=[];else delete EFF['${n}'];zones()">${no?'<b>NONE</b>':n}<span id="zt${i}" class="ml-auto">${zTag(n)}</span><span id="zi${i}" class="empty:hidden">${zIco(n)}</span></label>${e&&!no?`<div class="mt-2 pl-6 grid md:grid-cols-2 gap-3">${box('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],{i,n,v:e},0)}${box('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],{i,n,v:e},3)}</div>`:''}</div>`}).join('')}
+// Kombinacijos ateina iš SC nustatymų; viena zona gali būti tik vienoje kombinacijoje (S09). Efektyvumas vedamas tik zonų sąraše.
+const CB=[{z:["Fresh meat","Fresh poultry"],on:1},{z:["Fruits, vegetables","Groceries"],on:1},{z:["Milk, fish, poultry","Weighed cheese"],on:0},{z:["Frozen goods","Bread products"],on:0}];
+function cbs(){const mz=document.getElementById('mz').checked;document.getElementById('mzo').hidden=!mz;
+  document.getElementById('cbn').textContent=`(${CB.filter(c=>c.on).length} iš ${CB.length})`;
+  document.getElementById('cbl').innerHTML=CB.map((c,k)=>{const ms=c.z.filter(n=>!zOk(n));
+    return `<div class="px-3 py-2 ${c.on?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input type="checkbox" ${c.on?'checked':''} onchange="CB[${k}].on=this.checked;cbs()"><span class="font-medium">${c.z.join(' + ')}</span></label>
+      ${ms.map(n=>`<div class="pl-6 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-amber-800"><span><span aria-hidden="true">⚠</span> ${n} nepriskirta surinkėjui</span>${c.on?`<button class="text-indigo-700 font-medium hover:underline" onclick="zGo('${n}')">Rodyti zoną sąraše ↑</button>`:''}</div>`).join('')}</div>`}).join('')}
+function zGo(n){const q=document.getElementById('zq');if(q.value){q.value='';zones()}
+  const el=document.getElementById('zr'+['NONE',...Z].indexOf(n));el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('zfl');void el.offsetWidth;el.classList.add('zfl')}
+const zOk=n=>!!EFF[n]&&[0,1,2].every(k=>EFF[n][k]!=null&&String(EFF[n][k]).trim()!=='');
+// Žyma tik pasirinktos kombinacijos zonoms: pilka, kai zona priskirta; raudona, kai ne
+function zTag(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c)return '';const o=c.z.filter(x=>x!=n),ok=zOk(n);
+  return `<span class="flex flex-wrap items-center justify-end gap-1 text-xs font-normal text-gray-500" title="${c.z.join(' + ')}">Kombinacija su ${o.map(x=>`<span class="rounded-full border px-2 py-0.5 whitespace-nowrap bg-gray-100 border-gray-200 text-gray-700">${x}</span>`).join('')}</span>`}
+// Atskira ikona: pasirinktos kombinacijos zona nepriskirta (nepažymėta arba nesuvestas efektyvumas)
+function zIco(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c||zOk(n))return '';
+  return `<span class="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full bg-red-600 text-white text-xs font-bold leading-none" role="img" aria-label="Zona nepriskirta" title="Zona nepriskirta: pažymėk ir suvesk Efficiency per hour, kad kombinacija ${c.z.join(' + ')} veiktų">!</span>`}
+function zTags(){['NONE',...Z].forEach((n,i)=>{const t=document.getElementById('zt'+i),c=document.getElementById('zi'+i);if(t)t.innerHTML=zTag(n);if(c)c.innerHTML=zIco(n)})}
+function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs()}
+{const _z=zones;zones=function(){_z();cbs()}}
+{const _c=cbs;cbs=function(){_c();zTags()}}
+document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span id="vNk" class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
+// Laikinos korekcijos (EK3, EK4): viena % korekcija (kryptis, procentas, zonos) ir užduočių skyrimo zonai stabdymas. Veikia iškart, ne per Edit; bazinis efektyvumas nekeičiamas.
+let KOR=null,KD=null;const PAU=new Map(),KP={down:[5,10,20,30],up:[5,10,15,20]};
+// Kryptis spalva: mažinimas raudonas, didinimas žalias (žymos, ikonos, kortelės, pasirinkti mygtukai)
+const DT=d=>d=='up'?'border-green-300 bg-green-50 text-green-800':'border-red-300 bg-red-50 text-red-700',DX=d=>d=='up'?'text-green-700':'text-red-700',
+  DB=d=>d=='up'?'border-green-200 bg-green-50':'border-red-200 bg-red-50',DS=d=>(d=='up'?'border-green-600 bg-green-50 text-green-800':'border-red-600 bg-red-50 text-red-700')+' font-medium';
+const azs=()=>Z.filter(n=>EFF[n]),korZ=n=>KOR&&!PAU.has(n)?KOR.z[n]||null:null,sg=d=>d=='up'?'+':'−';
+const pct=k=>`${sg(k.d)}${k.p} %`,korN=K=>K&&Object.keys(K.z).length?K:null,
+  ltZ=n=>n%10==1&&n%100!=11?'zona':n%10>=2&&(n%100<10||n%100>=20)?'zonos':'zonų';
+const IPA='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>',
+  IPL='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 6 4.5z"/></svg>';
+// Auto tasks ir naujoko žyma peržiūroje: operatyvūs jungikliai, veikia iškart (naujoko žyma su patvirtinimu). Redagavime lieka tik naujoko varnelė.
+let VA=false;const vNkOn=()=>document.getElementById('nk').checked;
+function vAuto(){const nk=vNkOn(),row=(l,c,h)=>`<div class="grid grid-cols-3 py-3 items-center"><dt class="text-gray-500">${l}</dt><dd class="col-span-2 flex items-center gap-3">${c}<span class="text-xs text-gray-500">${h}</span></dd></div>`;
+  document.getElementById('vNk').hidden=!nk;
+  document.getElementById('vAuto').innerHTML=
+    row('Auto tasks',nk?`<button class="tog" style="opacity:.4;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Naujokui auto tasks įjungti negalima"></button>`:`<button class="tog ${VA?'on':''}" role="switch" aria-checked="${VA}" aria-label="Auto tasks" onclick="vAutoTg()"></button>`,
+      nk?'Naujokui auto tasks įjungti negalima. Užduotys skiriamos rankiniu būdu.':VA?'Įjungta: užduotys skiriamos automatiškai.':'Išjungta: užduotys skiriamos rankiniu būdu.')
+   +row('Naujokas',`<button class="tog ${nk?'on':''}" role="switch" aria-checked="${nk}" aria-label="Naujokas" onclick="vNkAsk()"></button>`,nk?'Kol pažymėta, auto tasks įjungti negalima.':'')}
+function vAutoTg(){VA=!VA;N[0][5]=VA?1:0;vAuto();rv();render();toast(`Auto tasks ${VA?'įjungti':'išjungti'}: Silvija Švaikevičiūtė`,()=>{VA=!VA;N[0][5]=VA?1:0;vAuto();rv();render()})}
+function vNkAsk(){const on=!vNkOn();document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${on?'Pažymėti naujoku?':'Nuimti naujoko žymą?'}</div>
+    <p class="text-gray-600 mt-2">${on?`Kol žyma uždėta, auto tasks įjungti negalima, užduotys skiriamos rankiniu būdu.${VA?' <b>Auto tasks bus išjungti.</b>':''}`:'Auto tasks automatiškai neįsijungs: galėsi juos įjungti jungikliu.'}</p>
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600" onclick="vNkSet(${on})">${on?'Pažymėti naujoku':'Nuimti žymą'}</button></div>`;
+  document.getElementById('kordlg').hidden=false}
+function vNkSet(on){document.getElementById('nk').checked=on;N[0][7]=on?1:0;if(on){VA=false;N[0][5]=0}document.getElementById('kordlg').hidden=true;rv();render()}
+
+// Efektyvumo korekcijos: vienas lygis – zonų korekcijos kiekvienam surinkėjui. Paskyroje – vienam surinkėjui,
+// sidebar'e – grupinis veiksmas daugeliui surinkėjų (ta pati korekcija visoms jų zonoms, esamos perrašomos). Paskutinis veiksmas laimi.
+let GD=null;const ZD=['Groceries','Candies','Fruits, vegetables','Fresh meat','Bread products','Chips','Cosmetics','Chemicals','Conservation','Frozen goods','Weighed cheese','Alcoholic beverages'],
+  zAll=(k,ex={})=>({z:Object.fromEntries(ZD.map(z=>[z,ex[z]||k]))});
+const PC={2:zAll({d:'down',p:10,t:''}),3:{z:{'Alcoholic beverages':{d:'down',p:20,t:'14:00'}}},5:zAll({d:'up',p:10,t:''}),7:zAll({d:'down',p:10,t:''},{'Candies':{d:'up',p:5,t:''},'Bread products':{d:'down',p:20,t:''}})};// zonų korekcijos; 0 = Silvija, jos korekcijos paskyroje (KOR)
+const SZ={4:[['Alcoholic beverages','']],5:[['Frozen goods','16:00']]};// sustabdytos zonos [zona, iki kada]; Silvijos – PAU
+const pers=i=>korN(i==0?KOR:PC[i]);
+// Korekcijos ikona pagal kryptį: mažinimas – žemyn, didinimas – aukštyn, skirtingos kryptys – abi
+const IKU='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 14l4-4 3 3 5-6"/><path d="M12 7h4v4"/></svg>',IKD='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6l4 4 3-3 5 6"/><path d="M12 13h4V9"/></svg>',IKM='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 16V4M4 7l3-3 3 3M13 4v12M10 13l3 3 3-3"/></svg>',IK=d=>d=='up'?IKU:d=='down'?IKD:IKM;
+// Lentelėje išsamios žymos (dydis ir apimtis), sidebar'e tik ikonos su iššokančiu langeliu
+const stops=i=>i==0?[...PAU].map(([z,t])=>[z,t]):(SZ[i]||[]),zTx=z=>z.length==1?z[0]:z.length+' zonos',tl=t=>t?'iki '+t:'kol išjungs';
+const pGr=P=>{const g={};Object.entries(P.z).forEach(([z,k])=>{(g[k.d+k.p+'|'+k.t]??={...k,zs:[]}).zs.push(z)});return Object.values(g).sort((a,b)=>b.zs.length-a.zs.length)},
+  gL=g=>g.zs.length==1?g.zs[0]:`${g.zs.length} ${ltZ(g.zs.length)}`,
+  pTx=P=>pGr(P).map(g=>`${gL(g)} ${pct(g)}${g.t?' iki '+g.t:''}`).join('; '),
+  pD=P=>{const d=pGr(P).map(g=>g.d);return d.every(x=>x==d[0])?d[0]:null};
+const eInfo=i=>{const P=pers(i),S=stops(i);return {P,S,
+  tP:P&&`Efektyvumo korekcija: ${pTx(P)}`,
+  tS:S.length&&`Sustabdytas užduočių skyrimas: ${S.map(([z,t])=>z+(t?' (iki '+t+')':'')).join(', ')}`}};
+const ETG='inline-flex items-center gap-1 text-xs rounded-full border px-1.5 tabular-nums whitespace-nowrap max-w-[200px]';
+const zCor=(i,q)=>pers(i)?.z[q]||null;
+function eTags(i){const e=eInfo(i);
+  return (e.P?pGr(e.P).map(g=>`<span class="${ETG} ${DT(g.d)}" title="${e.tP}">${IK(g.d)}<span class="truncate">${pct(g)} · ${gL(g)}</span></span>`).join(''):'')
+   +(e.S.length?`<span class="${ETG} border-gray-300 bg-gray-100 text-gray-700" title="${e.tS}">${IPA.replace('w-3.5 h-3.5','w-3 h-3')}<span class="truncate">${zTx(e.S.map(x=>x[0]))}</span></span>`:'')}
+// Sidebar'o kortelėje: korekcija greta laiko („Surinkimo trukmė“), sustabdytos zonos greta „Užduotys“; detalės – stalčiuje
+const ECH='inline-flex items-center gap-0.5 text-[11px] font-medium rounded-full border px-1 leading-4 whitespace-nowrap';
+function eChip(i){const P=pers(i);if(!P)return '';const g=pGr(P),sh=g.length>2?g.slice(0,1):g,ch=(c,t)=>`<span class="${ECH} ${c}" title="${pTx(P)}">${t}</span>`;return sh.map(x=>ch(DT(x.d),`${IK(x.d)}${sg(x.d)}${x.p}%`)).join('')+(g.length>2?ch('border-gray-300 bg-white text-gray-700',`+${g.length-1}`):'')}
+function sChip(i){const S=stops(i);return S.length?`<span class="${ECH} border-gray-300 bg-gray-100 text-gray-700" title="Sustabdytas užduočių skyrimas: ${S.map(x=>x[0]).join(', ')}">${IPA.replace('w-3.5 h-3.5','w-3 h-3')}${S.length} ${ltZ(S.length)}</span>`:''}
+function eIcons(i){const e=eInfo(i);if(!e.P&&!e.S.length)return '';const ic=(c,x)=>`<span class="inline-flex items-center justify-center w-6 h-6 rounded-full border ${c}">${x.replace(/w-3(\.5)? h-3(\.5)?/,'w-3.5 h-3.5')}</span>`;
+  return `<button class="flex items-center -space-x-1 rounded-full hover:ring-2 hover:ring-indigo-200" aria-label="Efektyvumo korekcijos: ${[e.tP,e.tS].filter(Boolean).join('; ')}" aria-haspopup="dialog" onclick="event.stopPropagation();ePop(${i},this)">${e.P?ic(pD(e.P)?DT(pD(e.P)):'border-gray-300 bg-white text-gray-700',IK(pD(e.P))):''}${e.S.length?ic('border-gray-300 bg-gray-100 text-gray-700',IPA):''}</button>`}
+function ePop(i,b){const p=document.getElementById('epop');if(!p.hidden&&p._i==i){p.hidden=true;return}const e=eInfo(i),r=b.getBoundingClientRect(),row=(c,x,t)=>`<div class="flex gap-2"><span class="mt-0.5 ${c}">${x}</span><span>${t}</span></div>`;
+  p.innerHTML=`<div class="font-semibold text-gray-900 mb-2">${N[i][0]} ${N[i][1]}</div><div class="space-y-1.5">${e.P?row(pD(e.P)?DX(pD(e.P)):'text-gray-700',IK(pD(e.P)),e.tP):''}${e.S.length?row('text-gray-600',IPA,e.tS):''}</div><button class="mt-3 text-indigo-700 font-medium hover:underline" onclick="epop.hidden=true;go('view')">Atidaryti paskyrą →</button>`;
+  p._i=i;p.style.top=r.bottom+6+'px';p.style.left=Math.max(8,Math.min(r.right-288,innerWidth-296))+'px';p.hidden=false}
+document.addEventListener('click',e=>{const p=document.getElementById('epop');if(p&&!p.hidden&&!e.target.closest('#epop'))p.hidden=true});
+addEventListener('scroll',()=>{const p=document.getElementById('epop');if(p)p.hidden=true},true);
+let ZLS=[];
+const zChip=zs=>zs.length==1?`<span class="font-medium text-gray-900">${zs[0]}</span>`:`<button class="rounded-full border border-gray-300 bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium px-2 py-0.5 whitespace-nowrap" aria-haspopup="dialog" onclick="event.stopPropagation();zList(this,${ZLS.push(zs)-1})">${zs.length} ${ltZ(zs.length)}</button>`;
+function zList(b,k){const p=document.getElementById('epop'),zs=ZLS[k],r=b.getBoundingClientRect();if(!p.hidden&&p._z==k){p.hidden=true;return}
+  p.innerHTML=`<div class="flex flex-wrap gap-1.5">${zs.slice(0,5).map(z=>`<span class="rounded-full bg-gray-100 px-2.5 py-0.5">${z}</span>`).join('')}${zs.length>5?`<span class="rounded-full bg-gray-100 px-2.5 py-0.5 font-medium">+${zs.length-5} ${ltZ(zs.length-5)}</span>`:''}</div>`;
+  p._z=k;p._i=null;p.style.top=r.bottom+6+'px';p.style.left=Math.max(8,Math.min(r.left,innerWidth-296))+'px';p.hidden=false}
+const gRows=(P,act)=>pGr(P).map(g=>`<div class="flex flex-wrap items-center gap-2 py-1">${zChip(g.zs)}<span class="text-xs rounded-full border px-1.5 tabular-nums ${DT(g.d)}">${pct(g)}</span>${g.t?`<span class="text-xs text-gray-500">iki ${g.t}</span>`:''}${act?act(g):''}</div>`).join('');
+function eLine(i){const P=pers(i);return P?`<div class="px-2.5 py-1.5 text-gray-700 border-t"><div class="text-gray-500 mb-0.5">Efektyvumo korekcijos</div>${gRows(P)}</div>`:''}
+// Grupinis veiksmas sidebar'e: ta pati korekcija visoms pasirinktų surinkėjų zonoms
+const gNow=()=>N.map((r,i)=>i).filter(i=>works(N[i])),gAll=()=>N.map((r,i)=>i),gZ=i=>i==0?azs():ZD,gHas=()=>gAll().filter(i=>pers(i));
+// Viena vieta po antrašte: be korekcijų – viso pločio mygtukas, su korekcijomis – santraukos kortelė su abiem veiksmais
+// Santrauka: žyma vienai korekcijai (kryptis, procentas) su surinkėjų skaičiumi, iki 2 ir „+N“; sustabdytos zonos – atskira žyma.
+// Paspaudus žymą „Surinkėjų“ tab'as filtruojamas iki tų surinkėjų.
+let sbE=null,cExp=false;
+const eM=i=>sbE=='s'?stops(i).length>0:!!pers(i)&&Object.values(pers(i).z).some(k=>k.d+'|'+k.p==sbE);
+const svN=x=>`${x} ${x%10==1&&x%100!=11?'surinkėjas':x%10>=2&&(x%100<10||x%100>=20)?'surinkėjai':'surinkėjų'}`;
+function eGo(k){sbE=sbE==k?null:k;sbT='p';sbR();cBarR()}
+function cBarR(){const b=document.getElementById('cBar');if(!b)return;const h=gHas(),st=gAll().filter(i=>stops(i).length),n=h.length;
+  const cnt={};h.forEach(i=>new Set(Object.values(pers(i).z).map(k=>k.d+'|'+k.p)).forEach(x=>cnt[x]=(cnt[x]||0)+1));
+  const g=Object.entries(cnt).sort((a,b)=>b[1]-a[1]),ch='inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 tabular-nums hover:ring-2 hover:ring-indigo-200';
+  const chip=([k,c])=>{const [d,p]=k.split('|');return `<button class="${ch} ${DT(d)} ${sbE==k?'ring-2 ring-indigo-400':''}" onclick="eGo('${k}')" title="Rodyti šiuos surinkėjus">${IK(d)}${sg(d)}${p}% · ${c}</button>`};
+  b.innerHTML=n||st.length?`<div class="rounded-lg border border-gray-200 bg-white px-3 py-2.5"><div class="font-medium text-gray-900">Efektyvumo korekcijos${n?` · ${svN(n)}`:''}</div>
+    <div class="mt-1.5 flex flex-wrap items-center gap-1.5">${(cExp?g:g.slice(0,2)).map(chip).join('')}${g.length>2?`<button class="${ch} border-gray-300 bg-white text-gray-700" aria-expanded="${cExp}" onclick="cExp=!cExp;cBarR()">${cExp?'Mažiau':'+'+(g.length-2)}</button>`:''}${st.length?`<button class="${ch} border-gray-300 bg-gray-100 text-gray-700 ${sbE=='s'?'ring-2 ring-indigo-400':''}" onclick="eGo('s')" title="Rodyti šiuos surinkėjus">${IPA.replace('w-3.5 h-3.5','w-3 h-3')}Sustabdytos zonos · ${st.length}</button>`:''}</div>
+    <div class="mt-2 grid grid-cols-2 gap-2"><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-gray-50 text-gray-800" onclick="cOpen()">Koreguoti efektyvumą</button><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-red-50 text-red-700 disabled:opacity-40" ${n?'':'disabled'} onclick="gOffAsk()">Nuimti visiems</button></div></div>`
+   :`<button class="w-full flex items-center justify-center gap-2 text-sm font-medium border border-gray-300 rounded-lg bg-white px-3 py-2.5 text-gray-800 hover:bg-gray-50" onclick="cOpen()">${IKM}Koreguoti efektyvumą</button>`}
+function cOpen(){GD={d:'up',p:10,all:true,t:'',sl:false};cR();document.getElementById('kordlg').hidden=false}
+function cR(){const D=GD,now=gNow(),tgt=D.all?gAll():now,ex=tgt.filter(i=>pers(i)),
+    seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="GD.d='${v}';if(!KP.${v}.includes(GD.p))GD.p=KP.${v}[1];cR()">${l}</button>`;
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Efektyvumo korekcija surinkėjams</div><p class="text-gray-500 mt-1">Visoms pasirinktų surinkėjų zonoms uždedama ta pati korekcija. Taikoma visoms užduotims: auto ir rankiniu būdu. Bazinis efektyvumas nekeičiamas.</p>
+    <div class="mt-4 font-medium">Kryptis</div><div class="mt-1 flex gap-1 bg-gray-100 rounded p-1">${seg('down','Mažinti')}${seg('up','Didinti')}</div>
+    <div class="mt-4 font-medium">Dydis</div><div class="mt-1 flex flex-wrap gap-2">${KP[D.d].map(v=>`<button class="px-3 py-1 rounded border tabular-nums ${D.p==v?DS(D.d):'hover:bg-gray-50'}" aria-pressed="${D.p==v}" onclick="GD.p=${v};cR()">${sg(D.d)}${v} %</button>`).join('')}</div>
+    <div class="mt-4 font-medium">Kam taikyti</div><div class="mt-1 space-y-1.5">
+      <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'checked':''} onchange="GD.all=true;cR()"><span>Visiems, įskaitant pradėsiančius dirbti vėliau <span class="text-gray-500">(${gAll().length})</span></span></label>
+      <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'':'checked'} onchange="GD.all=false;cR()"><span>Tik dabar dirbantiems <span class="text-gray-500">(${now.length})</span>${D.all?'':` · <button class="text-indigo-700 hover:underline" onclick="event.preventDefault();GD.sl=!GD.sl;cR()">${D.sl?'Slėpti':'Rodyti'} sąrašą</button>`}</span></label>
+      ${!D.all&&D.sl?`<div class="ml-6 border rounded max-h-40 overflow-y-auto divide-y text-xs">${now.map(i=>`<div class="px-2.5 py-1">${N[i][0]} ${N[i][1]} <span class="text-gray-500">· ${N[i][5]?'auto':'rankinis'}, ${N[i][6].toLowerCase()}</span></div>`).join('')}</div><p class="ml-6 text-xs text-gray-500">Rankinio skyrimo surinkėjai, kurie dabar neturi užduoties, į sąrašą nepatenka.</p>`:''}</div>
+    <div class="mt-4 font-medium">Galioja</div><div class="mt-1 space-y-1.5"><label class="flex items-center gap-2"><input type="radio" name="ct" ${D.t?'':'checked'} onchange="GD.t='';cR()">Kol išjungsiu</label><label class="flex items-center gap-2"><input type="radio" name="ct" ${D.t?'checked':''} onchange="GD.t='18:00';cR()">Iki${D.t?` <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="GD.t=this.value">`:''}</label></div>
+    ${(()=>{const cnt={};ex.forEach(i=>new Set(Object.values(pers(i).z).map(k=>k.d+'|'+k.p)).forEach(x=>cnt[x]=(cnt[x]||0)+1));const g=Object.entries(cnt).sort((a,b)=>b[1]-a[1]),st=tgt.filter(i=>stops(i).length).length,
+        c=(d,t)=>`<span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 tabular-nums ${d?DT(d):'border-gray-300 bg-gray-100 text-gray-700'}">${t}</span>`;
+      return `<div class="mt-4 rounded border border-gray-200 px-3 py-2"><div class="text-gray-500 text-xs font-semibold uppercase tracking-wide">Dabar (${D.all?'visi':'dabar dirbantys'})</div>
+        <div class="mt-1.5 flex flex-wrap gap-1.5">${g.length?g.map(([k,n])=>{const [d,p]=k.split('|');return c(d,`${IK(d)}${sg(d)}${p}% · ${n}`)}).join(''):'<span class="text-gray-500">Korekcijų nėra</span>'}${st?c(null,`${IPA.replace('w-3.5 h-3.5','w-3 h-3')}Sustabdytos zonos · ${st}`):''}</div>
+        <div class="mt-3 text-gray-500 text-xs font-semibold uppercase tracking-wide">Po taikymo</div>
+        <div class="mt-1.5 flex flex-wrap items-center gap-1.5">${c(D.d,`${IK(D.d)}${sg(D.d)}${D.p}% · ${tgt.length}`)}<span class="text-gray-600">${ex.length?`perrašomos ${ex.length} ${ex.length==1?'surinkėjo':'surinkėjų'} korekcijos`:'visoms jų zonoms'}</span></div>
+        ${st?`<p class="mt-1.5 text-xs text-gray-500">Sustabdytos zonos lieka sustabdytos.</p>`:''}</div>`})()}
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600" onclick="cApply()">Taikyti ${tgt.length}</button></div>`}
+const gSnap=()=>({k:korCp(KOR),pc:JSON.parse(JSON.stringify(PC))}),gRestore=x=>{KOR=x.k;Object.keys(PC).forEach(k=>delete PC[k]);Object.assign(PC,x.pc)},gRe=()=>{render();if(cv=='view')rv()};
+function cApply(){const D=GD,prev=gSnap(),k={d:D.d,p:D.p,t:D.t},tgt=D.all?gAll():gNow();
+  tgt.forEach(i=>{const z={z:Object.fromEntries(gZ(i).map(q=>[q,{...k}]))};if(i==0)KOR=korN(z);else PC[i]=z});
+  document.getElementById('kordlg').hidden=true;gRe();toast(`Korekcija ${pct(k)} taikoma ${tgt.length} surinkėjams`,()=>{gRestore(prev);gRe()})}
+function gOffAsk(){const h=gHas();document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Nuimti efektyvumo korekcijas visiems?</div><p class="text-gray-600 mt-2">Bus nuimtos visų ${h.length} surinkėjų zonų korekcijos; jie grįš prie bazinio efektyvumo.</p><div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-red-600" onclick="gOff()">Nuimti visiems</button></div>`;document.getElementById('kordlg').hidden=false}
+function gOff(){const prev=gSnap();KOR=null;Object.keys(PC).forEach(k=>delete PC[k]);document.getElementById('kordlg').hidden=true;gRe();toast('Efektyvumo korekcijos nuimtos visiems',()=>{gRestore(prev);gRe()})}
+function rv(){vAuto();const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos${PAU.size?`, ${PAU.size} sustabdyta`:''})`;
+  const vb=(t,us,e,o,k)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><dl class="grid gap-2 mt-1" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,x)=>{const v=e[x+o];return `<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${k&&typeof v=='number'?`<span class="font-semibold ${DX(k.d)}">${Math.round(v*(1+(k.d=='up'?1:-1)*k.p/100))}</span><span class="block text-xs font-normal text-gray-400">buvo ${v}</span>`:v??'–'}</dd></div>`}).join('')}</dl></div>`;
+  const mz=document.getElementById('mz').checked;
+  document.getElementById('cbView').innerHTML=mz?CB.filter(c=>c.on).map(c=>{const pz=c.z.filter(n=>PAU.has(n));return pz.length?`<span class="border rounded px-2 py-0.5 bg-gray-100 text-gray-500" title="Kombinacija neveikia, kol ${pz.join(', ')} užduočių skyrimas sustabdytas"><s>${c.z.join(' + ')}</s> · neveikia: sustabdyta ${pz.join(', ')}</span>`:`<span class="border rounded px-2 py-0.5 bg-gray-50">${c.z.join(' + ')}</span>`}).join('')||'<span class="text-gray-500">Nepasirinkta</span>':'';
+  ZLS=[];
+  const KP0=pers(0),cRow='';
+  document.getElementById('korCard').innerHTML=cRow+(KP0?`<div class="border rounded-lg px-4 py-2 bg-white"><div class="flex flex-wrap items-center gap-2 py-1"><span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Laikina efektyvumo korekcija</span>${pGr(KP0).length>1?`<button class="ml-auto text-xs text-red-700 hover:underline" onclick="korOff()">Nuimti visas</button>`:''}</div>
+    <div class="divide-y">${gRows(KP0,g=>`<span class="ml-auto flex gap-2"><button class="text-xs border bg-white px-2.5 py-1 rounded hover:bg-gray-50" onclick="korGrp('${g.d}',${g.p},'${g.t}')">Keisti</button><button class="text-xs border bg-white px-2.5 py-1 rounded text-red-700 hover:bg-red-50" onclick="korRmG('${g.d}',${g.p},'${g.t}')">Nuimti</button></span>`)}</div></div>`:'');
+  document.getElementById('effView').innerHTML=zs.map(n=>{const e=EFF[n],pa=PAU.has(n),no=n=='NONE';
+    return `<div class="border rounded p-3 ${pa?'bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${n}</span>
+      ${pa?`<span class="text-xs rounded-full border border-gray-300 bg-gray-100 text-gray-700 px-2 py-0.5">Užduočių skyrimas sustabdytas · ${PAU.get(n)?'iki '+PAU.get(n):'kol įjungsi'}</span>`:''}
+      ${korZ(n)?`<span class="text-xs rounded-full border ${DT(korZ(n).d)} px-2 py-0.5" title="Laikina korekcija${korZ(n).t?' iki '+korZ(n).t:''}; bazinis efektyvumas nekeičiamas">${pct(korZ(n))}</span>`:''}
+      ${no?'':`<span class="ml-auto flex flex-wrap justify-end gap-2">${pa?'':`<button class="inline-flex items-center gap-1.5 text-xs border rounded px-2 py-1 bg-white hover:bg-gray-50 text-gray-700" onclick="korZone('${n}')" title="Laikinai keisti efektyvumą šioje zonoje">${IEF}${korZ(n)?'Keisti korekciją':'Koreguoti efektyvumą'}</button>${korZ(n)?`<button class="text-xs border rounded px-2 py-1 bg-white hover:bg-red-50 text-red-700" onclick="korRm(['${n}'])">Pašalinti korekciją</button>`:''}`}<button class="inline-flex items-center gap-1.5 text-xs border rounded px-2 py-1 bg-white hover:bg-gray-50 ${pa?'text-indigo-700 border-indigo-300':'text-gray-700'}" onclick="zPau('${n}')" title="${pa?'Vėl skirti užduotis šiai zonai':'Laikinai neskirti užduočių šiai zonai'}">${pa?IPL+'Atnaujinti skyrimą':IPA+'Stabdyti užduočių skyrimą'}</button></span>`}</div>
+      ${no?'':`<div class="mt-2 grid md:grid-cols-2 gap-3 ${pa?'opacity-50':''}">${vb('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],e,0,korZ(n))}${vb('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],e,3)}</div>`}</div>`}).join('')}
+// Zonos stabdymas: atnaujinama iškart, stabdant pasirenkama, iki kada
+function zPau(n){if(PAU.has(n)){const t=PAU.get(n);PAU.delete(n);rv();toast(`${n}: užduočių skyrimas atnaujintas`,()=>{PAU.set(n,t);rv()});return}
+  KD={pz:n,t:''};pauR();document.getElementById('kordlg').hidden=false}
+function pauR(){const D=KD,rad=(on,l,ch)=>`<label class="flex items-center gap-2"><input type="radio" name="pt" ${on?'checked':''} onchange="${ch}">${l}</label>`;
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Stabdyti užduočių skyrimą zonai</div><p class="mt-1 text-gray-700">${D.pz}</p><p class="text-gray-500 mt-1">Surinkėjui nebus skiriamos šios zonos užduotys. Jau pradėtos nenutraukiamos, bazinis efektyvumas nekeičiamas.</p>
+    <div class="mt-4 font-medium">Galioja</div><div class="mt-1 space-y-1.5">${rad(!D.t,'Kol įjungsiu',"KD.t='';pauR()")}<label class="flex items-center gap-2"><input type="radio" name="pt" ${D.t?'checked':''} onchange="KD.t='18:00';pauR()">Iki${D.t?` <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="KD.t=this.value">`:''}</label></div>
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600" onclick="pauApply()">Stabdyti skyrimą</button></div>`}
+function pauApply(){const {pz:n,t}=KD;PAU.set(n,t);document.getElementById('kordlg').hidden=true;rv();toast(`${n}: užduočių skyrimas sustabdytas ${t?'iki '+t:'kol įjungsi'}`,()=>{PAU.delete(n);rv()})}
+// Langelis: visoms zonoms (perrašo atskirų zonų korekcijas) arba vienai zonai (viena korekcija zonai, svarbesnė už „visoms zonoms“)
+const IEF='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14l4-4 3 3 5-6"/><path d="M12 7h4v4"/></svg>';
+function korZone(n){const k=KOR?.z[n];KD={zs:[n],d:k?.d||'down',p:k?.p||10,t:k?.t||'',ex:!!k};korR();document.getElementById('kordlg').hidden=false}
+function korOpen(){KD={zs:azs(),d:'down',p:10,t:'',ex:false,all:true};korR();document.getElementById('kordlg').hidden=false}
+const gZs=(d,p,t)=>Object.entries(KOR.z).filter(([z,k])=>k.d==d&&k.p==p&&k.t==t).map(([z])=>z);
+function korGrp(d,p,t){KD={zs:gZs(d,p,t),d,p,t,ex:true};korR();document.getElementById('kordlg').hidden=false}
+function korR(){const D=KD,ov=D.all&&KOR?Object.entries(KOR.z).filter(([z,k])=>k.d!=D.d||k.p!=D.p):[],
+    seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="KD.d='${v}';if(!KP.${v}.includes(KD.p))KD.p=KP.${v}[1];korR()">${l}</button>`,
+    rad=(c,l,on)=>`<label class="flex items-center gap-2"><input type="radio" name="${c}" ${on?'checked':''} onchange="${l}">`;
+  ZLS=[];
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${D.all?'Efektyvumo korekcija visoms zonoms':D.zs.length==1?'Efektyvumo korekcija zonai':'Efektyvumo korekcija zonoms'}</div><p class="mt-1 text-gray-700">${D.all?`Visos priskirtos zonos (${D.zs.length})`:D.zs.length==1?D.zs[0]:zChip(D.zs)}</p><p class="text-gray-500 mt-1">Veikia iškart. Bazinis efektyvumas paskyroje nekeičiamas.</p>
+    <div class="mt-4 font-medium">Kryptis</div><div class="mt-1 flex gap-1 bg-gray-100 rounded p-1">${seg('down','Mažinti')}${seg('up','Didinti')}</div>
+    <div class="mt-4 font-medium">Dydis</div><div class="mt-1 flex flex-wrap gap-2">${KP[D.d].map(v=>`<button class="px-3 py-1 rounded border tabular-nums ${D.p==v?DS(D.d):'hover:bg-gray-50'}" aria-pressed="${D.p==v}" onclick="KD.p=${v};korR()">${sg(D.d)}${v} %</button>`).join('')}</div>
+    <div class="mt-4 font-medium">Galioja</div><div class="mt-1 space-y-1.5">${rad('kt',"KD.t='';korR()",!D.t)}Kol išjungsiu</label>${rad('kt',"KD.t='18:00';korR()",!!D.t)}Iki${D.t?` <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="KD.t=this.value">`:''}</label></div>
+    ${ov.length?`<div class="mt-4 rounded border border-amber-200 bg-amber-50 px-3 py-2"><div class="text-amber-900">Bus perrašytos esamos zonų korekcijos:</div><div class="mt-1">${gRows({z:Object.fromEntries(ov)})}</div></div>`:''}
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600" onclick="korApply()">${D.ex?'Išsaugoti korekciją':'Taikyti'}</button></div>`}
+const korCp=K=>K&&{z:Object.fromEntries(Object.entries(K.z).map(([z,k])=>[z,{...k}]))};
+function korApply(){const prev=korCp(KOR),D=KD,k={d:D.d,p:D.p,t:D.t};KOR=korCp(KOR)||{z:{}};D.zs.forEach(z=>KOR.z[z]={...k});
+  document.getElementById('kordlg').hidden=true;rv();render();toast(`Korekcija ${pct(k)} ${D.all?'visoms zonoms':D.zs.length==1?'zonai '+D.zs[0]:D.zs.length+' '+ltZ(D.zs.length)} taikoma`,()=>{KOR=prev;rv();render()})}
+function korRm(zs){const prev=korCp(KOR);zs.forEach(z=>delete KOR.z[z]);KOR=korN(KOR);rv();render();toast(`Korekcija nuimta: ${zs.length==1?zs[0]:zs.length+' '+ltZ(zs.length)}`,()=>{KOR=prev;rv();render()})}
+function korRmG(d,p,t){korRm(gZs(d,p,t))}
+function korOff(){const prev=KOR;KOR=null;rv();render();toast('Korekcijos nuimtos',()=>{KOR=prev;rv();render()})}
+// Sidebar „Dirba dabar“: užduotys [id, zona, surinkta eil., viso eil., būsena, efektyvumas zonoje SKU/1h]
+const TK={0:[["X864261021/590R","Groceries",4,9,"Picking",120]],
+  2:[["X864261021/300R","Fruits, vegetables",12,30,"Picking",95],["X864261021/197R","Fruits, vegetables",0,8,"Not synced",95],["X864261021/dbcR","Groceries",14,14,"Done",140]],
+  3:[["X864261021/2b8R","Groceries",0,12,"Not synced",130]],
+  4:[["X864261021/0a7R","Bread products",3,10,"Picking",80]],
+  5:[["X864261021/d12R","Groceries",20,46,"Picking",140],["X864261021/3a6R","Candies",0,6,"Not synced",90],["X864261021/7aaR","Groceries",22,22,"Done",140]],
+  9:[["X864261021/c8fR","Fresh meat",0,15,"Not synced",60]],
+  10:[["X864261021/e41R","Fruits, vegetables",1,3,"Picking",0],["X864261021/e42R","Groceries",0,2,"Picking",0]],
+  11:[["X864261021/7ddR","Fruits, vegetables",7,25,"Picking",85],["X864261021/5e1R","Bread products",2,6,"Picking",0],["X864261021/5e2R","Candies",0,4,"Picking",0],["X864261021/5e3R","Fresh meat",1,3,"Picking",0]]};
+// Laikas: s = pradėjo (sinchronizavo), e = numatyta išėjimo trukmė min, w = laukia min. Dabar 10:17.
+const NOW=10*60+17,TM={0:{s:'10:09',e:14},2:{s:'10:02',e:30},3:{e:20},4:{s:'10:05',e:12},5:{s:'09:58',e:35},9:{e:25},11:{s:'10:00',e:20},10:{s:'10:11',e:10}};
+// Zonos nustatymai kaip paskyroje: per val. SKU, Units, KG; vienam išėjimui SKU, Units, KG, Unique orders
+const EZ={"Groceries":[55,140,48,30,70,25,5],"Fruits, vegetables":[38,95,42,20,50,25,4],"Bread products":[40,90,10,20,45,5,4],"Candies":[45,110,15,25,60,8,4],"Fresh meat":[30,60,35,15,30,20,3]};
+const hm=t=>{const[h,m]=t.split(':');return h*60+ +m},fm=v=>`${Math.floor(v/60)}:${String(v%60).padStart(2,'0')}`;
+// Užduoties duomenys kaip Unfinished picking tasks: banga, vienetai, kg, užsakymai (statiniai, išvesti iš eilučių)
+const TX=t=>{const h=[...t[0]].reduce((a,c)=>a+c.charCodeAt(0),0),w=['1B','2B','2B','3B','5B'][h%5],kgZ={"Fruits, vegetables":.55,"Fresh meat":.8};return {w,pcs:Math.round(t[3]*(2+h%3*.4)),kg:(t[3]*(kgZ[t[1]]||0)).toFixed(2),o:Math.max(1,Math.ceil(t[3]/8))}};
+// Chevron ikona: d = 'r' (dešinėn), 'd' (žemyn), 'u' (aukštyn)
+const CV=d=>`<svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="display:inline-block;vertical-align:-2px;transform:rotate(${{r:-90,d:0,u:180}[d]}deg)"><path d="M4 6l4 4 4-4"/></svg>`;
+const TS={"Picking":"bg-green-100 text-green-800","Not synced":"bg-amber-100 text-amber-800","Done":"bg-gray-100 text-gray-600"};
+const sbZX=new Set();let sbT='z',sbG='all',sbS='',sbN=0,sbDD=0;const sbZO=new Set();const sbX={};
+const isP=r=>r[4]=='Picker';
+const works=r=>r[5]||r[6]=='Renka'||r[6]=='Nesinchronizavo';
+const open_=i=>(TK[i]||[]).filter(t=>t[4]!='Done');
+const curZ=i=>{const o=open_(i);return (o.find(t=>t[4]=='Picking')||o[0]||[])[1]||''};
+const cur_=i=>{const o=open_(i),p=o.filter(t=>t[4]=='Picking');return p.length?p:o};
+const zonesOf=i=>[...new Set(cur_(i).map(t=>t[1]))];
+function sbD(i,k){sbX[i]=sbX[i]==k?'':k;sbR()}
+function sbOpen(t,g,s,n){sbK.clear();if(t)sbT=t;if(g!==undefined){sbG=g;sbS=s||'';sbN=n?1:0}sb.hidden=false;rail.classList.add('md:invisible');fab.hidden=true;sbR();sb.querySelector('button').focus()}
+function sbClose(){sb.hidden=true;rail.classList.remove('md:invisible');fab.hidden=false;kmenu.hidden=true}
+function sbTab(t){sbT=t;sbR()}
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&!sb.hidden&&offdlg.hidden&&kordlg.hidden)sbClose()});
+
+function sbF(k,v){sbK.clear();if(k=='g'){sbG=v;sbS='';if(v=='auto')sbN=0;sbDD=0}if(k=='s')sbS=sbS==v?'':v;if(k=='n')sbN=sbN?0:1;sbR()}
+function sbZA(on){document.querySelectorAll('#sbBody tbody tr[aria-expanded]').forEach(t=>{const z=t.children[1].textContent;on?sbZO.add(z):sbZO.delete(z)});sbR()}
+function sbZT(z){sbZO.has(z)?sbZO.delete(z):sbZO.add(z);sbR()}
+function sbJump(i){sbT='p';sbG='all';sbS='';sbN=0;sbDD=0;sbR();const e=document.getElementById('sbc'+i);if(e){e.scrollIntoView({block:'center'});e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),1600)}}
+document.addEventListener('click',e=>{if(sbDD&&e.target.isConnected&&!e.target.closest('#sbdd')){sbDD=0;sbR()}});
+const sbK=new Set();
+function sbTg(i,on){sbK.add(i);setA(i,on);render();toast(`Auto tasks ${on?'įjungtas':'išjungtas'}: ${N[i][0]} ${N[i][1]}`,()=>{setA(i,on?0:1);render()})}
+function toast(t,u){const e=document.getElementById('toast');e.innerHTML=`<span>${t}</span><button class="text-indigo-300 font-medium">Atšaukti</button>`;e.lastChild.onclick=()=>{u();e.hidden=true};e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,5000)}
+function sbR(){
+  const on=N.filter(r=>r[5]),off=N.filter(r=>!r[5]),c=(a,s)=>a.filter(r=>r[6]==s).length;
+  rA.textContent=on.length;rAR.textContent=c(on,'Renka');rAL.textContent=c(on,'Laukia užduoties');rAN.textContent=c(on,'Nesinchronizavo');
+  rMR.textContent=c(off,'Renka');rMN.textContent=c(off,'Nesinchronizavo');rNk.textContent=N.filter(r=>r[7]&&works(r)).length;sNa.textContent=rNk.textContent;rB.textContent='';rC.textContent='';
+  tz.classList.toggle('on',sbT=='z');tp.classList.toggle('on',sbT=='p');tz.setAttribute('aria-selected',sbT=='z');tp.setAttribute('aria-selected',sbT=='p');
+  const W=N.map((r,i)=>[r,i]).filter(([r])=>works(r));tpn.textContent=W.length;
+  if(sb.hidden)return;
+  if(sbT=='z'){
+    const zs={};W.forEach(([r,i])=>zonesOf(i).forEach(z=>{zs[z]??=[0,0,0];zs[z][r[6]=='Renka'?0:1]++;if(r[7])zs[z][2]++}));
+    const rows=Object.entries(zs).sort((a,b)=>(b[1][0]+b[1][1])-(a[1][0]+a[1][1])||a[0].localeCompare(b[0]));
+    const n0=v=>v||'<span class="text-gray-300">0</span>';
+    const zp=z=>W.filter(([r,i])=>zonesOf(i).includes(z)).map(([r,i])=>{const ts=cur_(i).filter(t=>t[1]==z),pk=ts.reduce((a,t)=>a+t[2],0),tt=ts.reduce((a,t)=>a+t[3],0),R=r[6]=='Renka';return `<li class="flex items-center gap-2 px-3 py-2"><span class="text-[13px] font-medium text-gray-900 truncate">${r[0]} ${r[1]}</span><span class="text-[11px] text-gray-500 shrink-0">${r[4]}</span><span class="ml-auto shrink-0 text-xs px-1.5 py-0.5 rounded tabular-nums ${R?'bg-green-50 text-green-800':'bg-amber-50 text-amber-800'}">${R?`Renka · ${pk}/${tt}`:`Nesinchr. · ${tt}`} eil.</span><span class="w-2 h-2 rounded-full shrink-0 ${r[5]?'bg-green-500':'bg-gray-300'}" role="img" aria-label="${r[5]?'Auto tasks':'Rankinis skyrimas'}" title="${r[5]?'Auto tasks: užduotys skiriamos automatiškai':'Rankinis skyrimas: užduotis skiria SC vadovas'}"></span></li>`}).join('');
+    sbBody.innerHTML=`<table class="w-full text-sm bg-white"><thead class="text-xs text-gray-500 border-b"><tr class="text-left"><th class="pl-3 pr-0 w-7">${(()=>{const all=rows.length&&rows.every(([z])=>sbZO.has(z));return `<button class="w-6 h-6 rounded hover:bg-gray-200 text-gray-500 text-xs" aria-label="${all?'Suskleisti visas zonas':'Išskleisti visas zonas'}" title="${all?'Suskleisti visas':'Išskleisti visas'}" onclick="sbZA(${all?0:1})">${CV(all?'d':'r')}</button>`})()}</th><th class="py-2 font-normal">Zona</th><th class="px-2 font-normal text-right" title="Renka arba turi priskirtą šios zonos užduotį">Aktyvūs</th><th class="px-2 font-normal text-right">Renka</th><th class="px-2 font-normal text-right">Nesinchr.</th><th class="pl-2 pr-4 font-normal text-right" title="Naujokai, renkantys arba turintys šios zonos užduotį">Naujokai</th></tr></thead><tbody>${rows.map(([z,[r,n,k]])=>{const o=sbZO.has(z);return `<tr class="${o?'bg-gray-100':'border-b hover:bg-gray-50'} cursor-pointer" onclick="sbZT('${z}')" aria-expanded="${o}"><td class="pl-3 pr-0 text-gray-400 text-center">${CV(o?'d':'r')}</td><td class="py-2.5 font-medium" style="white-space:normal">${z}</td><td class="px-2 text-right tabular-nums font-semibold">${r+n}</td><td class="px-2 text-right tabular-nums">${n0(r)}</td><td class="px-2 text-right tabular-nums">${n0(n)}</td><td class="pl-2 pr-4 text-right tabular-nums">${n0(k)}</td></tr>${o?`<tr class="border-b bg-gray-100"><td colspan="6" class="px-4 pb-3" style="white-space:normal"><ul class="bg-white border border-gray-200 rounded-md divide-y shadow-sm">${zp(z)}</ul></td></tr>`:''}`}).join('')||'<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Šiuo metu niekas nerenka.</td></tr>'}</tbody></table>`;
+    return}
+  const L=W.filter(([r,i])=>(sbK.has(i)||(sbG=='all'||(sbG=='auto'?r[5]:!r[5]))&&(!sbS||r[6]==sbS)&&(!sbN||r[7]))&&(!sbE||eM(i)));
+  const gc=g=>W.filter(([r])=>g=='all'||(g=='auto'?r[5]:!r[5])).length;
+  const sts=sbG=='man'?['Renka','Nesinchronizavo']:['Renka','Laukia užduoties','Nesinchronizavo'];
+  sbBody.innerHTML=`<div class="px-4 py-3 border-b sticky top-[47px] bg-white z-[2]">
+    ${sbE?(()=>{const all=gAll().filter(eM).length;return `<div class="mb-2 flex items-center gap-2 rounded border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 text-xs text-indigo-900"><span>Rodomi su: ${sbE=='s'?'sustabdytomis zonomis':pct({d:sbE.split('|')[0],p:sbE.split('|')[1]})}</span><span class="text-indigo-700">${L.length} iš ${all}${L.length<all?' (kiti dabar nedirba)':''}</span><button class="ml-auto w-5 h-5 rounded hover:bg-indigo-100" aria-label="Išvalyti filtrą" onclick="sbE=null;sbR();cBarR()">✕</button></div>`})():''}
+    <div><div class="flex w-full border rounded-md p-0.5 gap-0.5" role="group" aria-label="Grupė">${[['all','Visi'],['auto','Auto'],['man','Rankinis']].map(([g,t])=>`<button class="sg flex-1 ${sbG==g?'on':''}" aria-pressed="${sbG==g}" onclick="sbF('g','${g}')">${t} <span class="text-gray-400 tabular-nums">${gc(g)}</span></button>`).join('')}</div></div>
+    <div class="flex flex-wrap items-center gap-1 mt-2.5">${sts.map(v=>`<button class="fc ${sbS==v?'on':''}" aria-pressed="${sbS==v}" onclick="sbF('s','${v}')">${v}</button>`).join('')}${sbG!='auto'?`<span class="w-px h-4 bg-gray-200 mx-1"></span><button class="fc ${sbN?'on':''}" aria-pressed="${!!sbN}" onclick="sbF('n')">Naujokai</button>`:''}</div></div>
+  ${L.map(([r,i])=>{const o=open_(i),c_=cur_(i),q=o.filter(t=>!c_.includes(t)),pk=c_.reduce((a,t)=>a+t[2],0),tt=c_.reduce((a,t)=>a+t[3],0),dn=(TK[i]||[]).length-o.length,zs=zonesOf(i),z=zs.join(' + '),m=TM[i]||{},x=sbX[i]||'',el=m.s?NOW-hm(m.s):0,tl=m.s?`Renka ${el} min`:'Nepradėjo',cb=(k,l,v,d)=>`<button class="cb ${x==k?'on':''}" ${d?'disabled':`aria-expanded="${x==k}" onclick="sbD(${i},'${k}')"`}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="flex items-center gap-1 font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV(x==k?'u':'d')}</span>`}</button>`;
+    return `<div id="sbc${i}" class="mx-3 mt-2 p-3 bg-white border border-gray-200 rounded-lg transition-colors">
+      <div class="flex items-center gap-2"><div class="min-w-0"><div class="flex items-center gap-2"><button class="text-[15px] font-semibold text-gray-900 hover:underline text-left" onclick="go('view')">${r[0]} ${r[1]}</button>${r[7]?'<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}</div><div class="text-[11px] text-gray-500 leading-tight">${r[4]}</div></div>
+        <div class="ml-auto flex items-center gap-2"><span class="text-xs text-gray-500">Auto</span>${r[7]||!isP(r)?`<button class="tog ${r[5]?'on':''}" style="opacity:${isP(r)?.4:.5};cursor:not-allowed" aria-label="Auto tasks: ${r[0]} ${r[1]}" aria-disabled="true" title="${r[7]?'Naujokui auto tasks įjungti negalima':'Inspektoriams auto tasks visada įjungti, išjungti negalima (R05)'}"></button>`:`<button class="tog ${r[5]?'on':''}" role="switch" aria-checked="${!!r[5]}" aria-label="Auto tasks: ${r[0]} ${r[1]}" onclick="sbTg(${i},${r[5]?0:1})"></button>`}</div></div>
+      ${(()=>{const pc=tt?Math.round(pk/tt*100):0,c={Renka:['bg-green-50 border-green-100 text-green-900','bg-green-200'],Nesinchronizavo:['bg-amber-50 border-amber-100 text-amber-900',''],'Laukia užduoties':['bg-blue-50 border-blue-100 text-blue-900','']}[r[6]]||['bg-gray-50 border-gray-200 text-gray-700',''],
+        lab=r[6]=='Renka'?`<span class="font-medium">Renka</span> · ${pk}/${tt} eil.`:r[6]=='Nesinchronizavo'?`<span class="font-medium">Nesinchronizavo</span> · ${tt} eil.`:`<span class="font-medium">${r[6]}</span>`,
+        zl=zs.map(q=>[q,c_.filter(t=>t[1]==q).reduce((a,t)=>a+t[3],0)]).sort((a,b)=>b[1]-a[1]).map(v=>v[0]),sh=zl.slice(0,2),more=zl.length-sh.length;
+        const zc=q=>`<span class="max-w-full truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5" title="${q}">${q}</span>`,ex=sbZX.has(i);
+        return `${zl.length?`<div class="mt-2 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}<div class="mt-2 flex items-center gap-2"><div class="flex-1 min-w-0 relative h-6 rounded border overflow-hidden ${c[0]}" ${r[6]=='Renka'?`role="progressbar" aria-valuenow="${pc}" aria-valuemin="0" aria-valuemax="100"`:''}>${c[1]?`<span class="absolute inset-y-0 left-0 ${c[1]}" style="width:${pc}%"></span>`:''}<span class="relative h-full flex items-center px-2.5 text-[13px] tabular-nums"><span>${lab}</span></span></div></div>
+`})()}
+      <div class="mt-2 grid grid-cols-2 gap-2">${cb('t','Surinkimo trukmė',(o.length&&m.s?`${el} min`:'–')+eChip(i),!o.length)}${cb('u','Užduotys',o.length+(q.length?` <span class="text-gray-500 font-normal text-xs">· ${q.length} eilėje</span>`:'')+sChip(i),!o.length)}</div>
+      ${o.length?`
+        ${x=='u'?`<div class="mt-2 dr rounded divide-y">${[...c_,...q].map(t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="px-2.5 py-2 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span><span class="ml-auto px-1.5 py-0.5 rounded shrink-0 ${TS[t[4]]}">${t[4]}</span></div><div class="mt-1.5 grid grid-cols-5 gap-2">${f('Banga',d.w)}${f('Eilutės',`${t[2]}/${t[3]}`,'Picked lines / Total lines')}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div></div>`}).join('')}</div>`:''}
+        ${x=='t'?`<div class="mt-2 dr rounded text-xs"><div class="grid grid-cols-2 gap-3 px-2.5 py-2 border-b">${m.s?`<div><div class="text-gray-500">Pradėjo</div><div class="font-medium tabular-nums">${m.s}</div></div><div><div class="text-gray-500">Planuojama baigti</div><div class="font-medium tabular-nums">~${fm(hm(m.s)+m.e)}</div></div>`:`<div><div class="text-gray-500">Pradėjo</div><div class="text-gray-500">Dar nesinchronizavo</div></div><div><div class="text-gray-500">Numatyta trukmė</div><div class="font-medium tabular-nums">~${m.e} min</div></div>`}</div>
+          <table class="w-full text-xs"><thead class="text-gray-500"><tr class="text-left"><th class="px-2.5 pt-2 pb-1 font-normal"></th><th class="px-2 font-normal text-right">SKU</th><th class="px-2 font-normal text-right">Units</th><th class="px-2 font-normal text-right">KG</th><th class="px-2.5 font-normal text-right" title="Unique orders">Užsak.</th></tr></thead>${zs.map(q=>{const e=EZ[q]||Array(7).fill('–'),c=v=>`<td class="px-2 text-right tabular-nums">${v}</td>`,k=zCor(i,q),f=k?1+(k.d=='up'?1:-1)*k.p/100:1,
+            ce=v=>k&&typeof v=='number'?`<td class="px-2 text-right tabular-nums font-semibold ${DX(k.d)}">${Math.round(v*f)}</td>`:c(v),
+            cb=v=>`<td class="px-2 text-right tabular-nums text-[11px] text-gray-400">${v}</td>`,
+            ex=v=>v>0?Math.round(e[3]/v*60):'–';
+          return `<tbody class="border-t"><tr><td colspan="5" class="px-2.5 pt-1.5 font-medium text-gray-800" style="white-space:normal">${q}</td></tr><tr><td class="px-2.5 py-0.5 text-gray-500 align-bottom">Efektyvumas per val.${k?` <span class="ml-1 text-[11px] rounded-full border px-1.5 ${DT(k.d)}" title="Laikina efektyvumo korekcija">${sg(k.d)}${k.p} %</span>`:''}</td>${ce(e[0])}${ce(e[1])}${ce(e[2])}<td class="px-2.5 text-right text-gray-300 align-bottom">–</td></tr>${k?`<tr><td class="px-2.5 text-[11px] text-gray-400" style="padding-left:1.25rem">buvo</td>${cb(e[0])}${cb(e[1])}${cb(e[2])}<td></td></tr>`:''}<tr><td class="px-2.5 py-0.5 text-gray-500">Maks. vienam išėjimui</td>${c(e[3])}${c(e[4])}${c(e[5])}<td class="px-2.5 text-right tabular-nums">${e[6]}</td></tr><tr><td class="px-2.5 pb-1.5 text-gray-500 align-top">Planuojamas išėjimas</td><td colspan="4" class="px-2.5 pb-1.5 text-right tabular-nums">${k&&e[0]>0?`<span class="font-semibold ${DX(k.d)}">~${ex(e[0]*f)} min</span><span class="block text-[11px] text-gray-400">buvo ~${ex(e[0])} min</span>`:`~${ex(e[0])} min`}</td></tr></tbody>`}).join('')}</table>
+          ${eLine(i)}<div class="h-1.5"></div></div>`:''}`
+      :''}
+    </div>`}).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'}<div class="h-3"></div>`;
+}
+
+rv();
+render();zones();
+(function(){
+// Statusų tvarka kaip Figma „status legend“
+const ST=[
+  {k:'sub',  n:'Submitted',          c:'var(--s-sub)'},
+  {k:'new',  n:'New addition',       c:'var(--s-new)'},
+  {k:'pick', n:'Being picked',       c:'var(--s-pick)'},
+  {k:'done', n:'Picking done',       c:'var(--s-done)'},
+  {k:'ready',n:'Ready for delivery', c:'var(--s-ready)'},
+  {k:'fin',  n:'Finished'},
+  {k:'open', n:'Open capacity'}
+];
+const NOTE={
+  tasks:  {i:'i-clip',  t:'There are orders without picking tasks', a:'Create tasks'},
+  gather: {i:'i-ticket',t:'Gathering stickers not printed',         a:'Print gathering stickers'},
+  shop:   {i:'i-chef',  t:'Workshop stickers not printed',          a:'Print workshop stickers'}
+};
+// Šiandien: skaičiai iš ekrano nuotraukos (X864 Hyper). home/drive = išgalvoti pavyzdžiai.
+function W(id,t,o,cap,la,ia,wa,st,home,drive,nc,ci,notes){return {id,t,o,cap,la:la.toFixed(2),lt:Math.round(o*la),ia:ia.toFixed(2),it:Math.round(o*ia),wa:wa.toFixed(2),wt:(o*wa).toFixed(2),s:st,home,drive,nc,ci,notes}}
+const DAYS={
+  today:{label:'Today',d:'2026-10-21',
+    waves:[
+      W('1B','8:00 - 14:00', 82,87, 26.0,44.6,5.96,{sub:10,pick:18,done:30,ready:24,open:5},[20,76],[4,6],1,0),
+      W('2B','10:00 - 13:00',120,126,27.7,38.9,3.77,{sub:52,new:3,pick:25,done:40,open:6},[0,112],[0,8],2,1,['shop']),
+      W('3B','13:00 - 15:00',85,90, 27.8,38.8,4.41,{sub:85,open:5},[0,81],[0,4],0,0,['tasks','gather']),
+      W('4B','15:00 - 20:00',96,138, 28.7,40.5,5.20,{sub:96,open:42},[0,90],[0,6],0,0,['tasks']),
+      W('5B','18:00 - 21:00',71,140, 27.8,39.2,4.63,{sub:71,open:69},[0,67],[0,4],0,0)
+    ]},
+  tomorrow:{label:'Tomorrow',d:'2026-10-22',
+    waves:[
+      {id:'1B',t:'8:00 - 14:00', o:64, cap:87, la:'25.40',lt:1626,ia:'41.20',it:2637,wa:'5.10',wt:'326.40',s:{sub:64,open:23},home:[0,60],drive:[0,4],nc:0,ci:0,notes:['gather']},
+      {id:'2B',t:'10:00 - 13:00',o:92, cap:126,la:'26.90',lt:2475,ia:'37.80',it:3478,wa:'3.90',wt:'358.80',s:{sub:92,open:34},home:[0,86],drive:[0,6],nc:0,ci:0},
+      {id:'3B',t:'13:00 - 15:00',o:51, cap:90, la:'27.10',lt:1382,ia:'39.00',it:1989,wa:'4.20',wt:'214.20',s:{sub:51,open:39},home:[0,49],drive:[0,2],nc:0,ci:0},
+      {id:'4B',t:'15:00 - 20:00',o:70, cap:138,la:'28.00',lt:1960,ia:'40.10',it:2807,wa:'5.00',wt:'350.00',s:{sub:70,open:68},home:[0,66],drive:[0,4],nc:0,ci:0},
+      {id:'5B',t:'18:00 - 21:00',o:38, cap:140,la:'27.30',lt:1037,ia:'38.60',it:1467,wa:'4.40',wt:'167.20',s:{sub:38,open:102},home:[0,36],drive:[0,2],nc:0,ci:0}
+    ]}
+};
+let day='today';const open=new Set();
+
+const ic=(id,s=20)=>`<svg width="${s}" height="${s}" aria-hidden="true"><use href="#${id}"/></svg>`;
+const fmt=n=>typeof n=='number'?n.toLocaleString('en-US',{useGrouping:false}):n;
+function stats(x,pie){return `
+  <span class="mi" tabindex="0" data-tip="Orders in wave / wave capacity">${ic(pie)}<span><b>${x.o}</b>/${x.cap}</span></span>
+  <span class="mi" tabindex="0" data-tip="Average and total line count in cart">${ic(pie=='i-pie-s'?'i-cart':'i-cart')}<span><b>${x.la}</b> avg., <b>${fmt(x.lt)}</b> total</span></span>
+  <span class="mi" tabindex="0" data-tip="Average and total item count in orders">${ic(pie=='i-pie-s'?'i-puzzle-s':'i-puzzle')}<span><b>${x.ia}</b> avg., <b>${fmt(x.it)}</b> total</span></span>
+  <span class="mi" tabindex="0" data-tip="Average and total cart weight">${ic('i-scale')}<span><b>${x.wa}</b> kg avg., <b>${x.wt}</b> kg total</span></span>`}
+
+function daySum(){const D=DAYS[day];if(D.sum)return D.sum;const w=D.waves,s=k=>w.reduce((a,x)=>a+x[k],0);
+  const o=s('o'),lt=s('lt'),it=s('it'),wt=w.reduce((a,x)=>a+parseFloat(x.wt),0);
+  return {o,cap:s('cap'),la:(lt/o).toFixed(2),lt,ia:(it/o).toFixed(2),it,wa:(wt/o).toFixed(2),wt:wt.toFixed(2)}}
+
+function bar(s){const parts=ST.filter(x=>s[x.k]).map(x=>({...x,v:s[x.k]}));
+  return `<div class="bar" role="img" aria-label="${parts.map(p=>p.n+': '+p.v).join(', ')}">`+parts.map((p,i)=>{
+    const pos=parts.length==1?'only':i==0?'first':i==parts.length-1?'last':'';
+    if(p.k=='fin')return `<div class="seg fin ${pos}" style="flex:${p.v} 1 0">${ic('i-check',18)}${p.v}</div>`;
+    if(p.k=='open')return `<div class="seg open ${pos}" style="flex:${p.v} 1 0">${p.v}</div>`;
+    return `<div class="seg ${pos}" style="flex:${p.v} 1 0;background:${p.c}">${p.v}</div>`}).join('')+`</div>`}
+
+function legend(){return `<div class="lg">`+ST.map(x=>{
+  const st=x.k=='fin'?'background:var(--s-fin-bg);border:2px solid var(--s-ready)':x.k=='open'?'background:var(--chip);border:2px solid var(--muted)':'background:'+x.c;
+  return `<span><i style="${st}"></i>${x.n}</span>`}).join('')+`</div>`}
+
+function bcb(k,t,i,n,id){return n?`<button class="bcb ${k}" data-tip="${t}" onclick="dAct('${t}','${id}')">${ic(i,16)}${n}</button>`:`<span class="bcb" tabindex="0" data-tip="${t}">${ic(i,16)}0</span>`}
+function card(w,i){const isOpen=open.has(day+i);
+  const notes=(w.notes||[]).map(k=>{const n=NOTE[k];return `<div class="nt">${ic(n.i,24)}<span class="tx">${n.t}</span><button onclick="dAct('${n.a}','${w.id}')">${n.a}</button></div>`}).join('');
+  return `<article class="card${isOpen?' open':''}">
+    <div class="chead">
+      <div class="ov">
+        <button class="dtg" aria-expanded="${isOpen}" aria-label="${isOpen?'Suskleisti':'Išskleisti'} ${w.id}" onclick="dTog(${i})">${ic('i-chev')}</button>
+        <div class="cs">
+          <div class="wh">${w.id}<span class="t">${ic('i-clock')}${w.t}</span></div>
+          <div class="meta">${stats(w,'i-pie')}</div>
+        </div>
+      </div>
+      <div class="bc">
+        ${bcb('nc','Not compared','i-bag',w.nc,w.id)}
+        ${bcb('ci','Compared incorrectly','i-flag',w.ci,w.id)}
+      </div>
+    </div>
+    <div class="cbody">${bar(w.s)}${isOpen?legend():''}${notes}</div>
+    ${isOpen?`<div class="ex">
+      <span class="mi" tabindex="0" data-tip="Home delivery">${ic('i-home')}<span><b>${w.home[0]}</b>/${w.home[1]}</span></span>
+      <span class="mi" tabindex="0" data-tip="Drive in">${ic('i-car')}<span><b>${w.drive[0]}</b>/${w.drive[1]}</span></span>
+    </div>`:''}
+  </article>`}
+
+function render(){const D=DAYS[day],s=daySum();
+  document.getElementById('dayMeta').innerHTML=`<span class="mi">${ic('i-pin')}<span><b>X864</b>&nbsp; Hyper</span></span>`+stats(s,'i-pie-s');
+  document.getElementById('dayLbl').textContent=D.label;document.getElementById('sectDay').textContent=D.label;
+  const hide=document.getElementById('hideFin').checked;
+  const list=D.waves.map((w,i)=>[w,i]).filter(([w])=>!(hide&&w.s.fin&&Object.keys(w.s).length==1));
+  document.getElementById('waves').innerHTML=list.length?list.map(([w,i])=>card(w,i)).join(''):`<div class="empty">All waves are finished</div>`}
+
+function tog(i){const k=day+i;open.has(k)?open.delete(k):open.add(k);render()}
+function toggleDayMenu(){const m=document.getElementById('dayMenu'),b=document.getElementById('dayBtn');
+  if(!m.hidden){m.hidden=true;b.setAttribute('aria-expanded','false');return}
+  m.innerHTML=Object.entries(DAYS).map(([k,d])=>`<button role="menuitemradio" aria-checked="${k==day}" onclick="dSetDay('${k}')">${d.label}${k==day?' ✓':''}</button>`).join('');
+  m.hidden=false;b.setAttribute('aria-expanded','true')}
+function setDay(k){day=k;document.getElementById('dayMenu').hidden=true;document.getElementById('dayBtn').setAttribute('aria-expanded','false');render()}
+function act(a,id){const t=document.getElementById('dtoast');t.textContent=`${a} (${id}) – prototipe veiksmas neatliekamas`;t.hidden=false;clearTimeout(t._t);t._t=setTimeout(()=>t.hidden=true,2600)}
+document.addEventListener('click',e=>{if(!e.target.closest('.daybtn'))document.getElementById('dayMenu').hidden=true});
+document.addEventListener('keydown',e=>{if(e.key=='Escape')document.getElementById('dayMenu').hidden=true});
+
+render();
+
+window.dRender=render;window.dTog=tog;window.dDayMenu=toggleDayMenu;window.dSetDay=setDay;window.dAct=act;})();
+
+// 2 variantas: „Dirba dabar“ prisegtas dešinėje, kol bangų stulpelis ≥ 600 px; kitaip veikia kaip Picker accounts (suskleistas + išskleidžiamas)
+let docked=false;
+function layout(){const g=document.getElementById('dgrid'),dash=!document.getElementById('v-dash').classList.contains('hidden');
+  document.getElementById('wrap').classList.toggle('wide',dash);
+  const can=dash&&innerWidth>=768&&g.clientWidth-440-24>=600;
+  if(can==docked)return;docked=can;
+  g.classList.toggle('two',can);document.getElementById('outer').classList.toggle('docked',can);
+  if(can){document.getElementById('dock').appendChild(sb);sb.hidden=false;rail.hidden=true;fab.hidden=true;if(window.fab2)fab2.hidden=true}
+  else{document.body.appendChild(sb);sb.hidden=true;rail.hidden=false;rail.classList.remove('md:invisible');fab.hidden=false}
+  document.getElementById("sbXb").hidden=can;const kb=document.getElementById("kpDockBtn");if(kb)kb.hidden=!can;sbR()}
+const _sbClose=sbClose;sbClose=function(){if(docked)return;_sbClose()};
+const _go=go;go=function(v,p){_go(v,p);layout()};
+addEventListener('resize',layout);layout();
+// Variantas: laikini pakeitimai – atskiras skydelis. Juostoje du mygtukai: „Dirba dabar“ (stebėjimas) ir „Laikini pakeitimai“ (kas pakeista ir ką keičiu).
+// Vienu metu atidarytas vienas skydelis. Skydelis rodo visų surinkėjų pakeitimus visose zonose, ne tik tai, kas vyksta dabar.
+let kpF='all',kpQ='';
+const kpList=()=>gAll().filter(i=>pers(i)||stops(i).length);
+function kpOpen(){if(!docked){sb.hidden=true}kmenu.hidden=true;document.getElementById('kp').hidden=false;rail.classList.add('md:invisible');fab.hidden=true;fab2.hidden=true;kpR();document.querySelector('#kp button').focus()}
+function kpClose(){document.getElementById('kp').hidden=true;if(!docked){rail.classList.remove('md:invisible');fab.hidden=false;fab2.hidden=false}}
+{const _o=sbOpen;sbOpen=function(...a){document.getElementById('kp').hidden=true;fab2.hidden=true;_o(...a)}}
+{const _c=sbClose;sbClose=function(){_c();if(!docked)fab2.hidden=false}}
+function kpRail(){const L=kpList(),c=L.filter(i=>pers(i)).length,st=L.filter(i=>stops(i).length).length,b=document.getElementById('rK');if(!b)return;
+  const row=(ic,n,t)=>`<div class="flex flex-col items-center" title="${t}"><span class="text-gray-500">${ic}</span><b class="text-sm tabular-nums">${n}</b></div>`;
+  b.innerHTML=L.length?row(IKM,c,'Surinkėjai su efektyvumo korekcija')+row(IPA,st,'Surinkėjai su sustabdytomis zonomis'):'<span class="text-[11px] text-gray-400">Nėra</span>';
+  const dn=document.getElementById('kpDockN');if(dn)dn.textContent=L.length?'· '+L.length:'';}
+function kpRow(i){const P=pers(i),S=stops(i),r=N[i];
+  const cor=P?pGr(P).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 tabular-nums ${DT(g.d)}">${IK(g.d)}${pct(g)}</span><span class="text-gray-800">${gL(g)}</span><span class="text-xs text-gray-500">${g.t?'iki '+g.t:'kol išjungs'}</span></div>`).join(''):'';
+  const stp=S.map(([z,t])=>`<div class="flex flex-wrap items-center gap-1.5"><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 border-gray-300 bg-gray-100 text-gray-700">${IPA.replace('w-3.5 h-3.5','w-3 h-3')}Sustabdyta</span><span class="text-gray-800">${z}</span><span class="text-xs text-gray-500">${t?'iki '+t:'kol įjungs'}</span></div>`).join('');
+  return `<button class="w-full text-left px-4 py-3 bg-white border-b hover:bg-gray-50 flex gap-3" onclick="kpClose();go('view')" title="Atidaryti paskyrą"><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-gray-900">${r[0]} ${r[1]}</span>${r[7]?'<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}<span class="text-[11px] text-gray-500">${works(r)?r[6]:'Nedirba'}</span></div><div class="mt-1.5 space-y-1">${cor}${stp}</div></div><span class="self-center text-gray-400">${CV('r')}</span></button>`}
+function kpR(){kpRail();const p=document.getElementById('kp');if(!p||p.hidden)return;const L=kpList(),c=L.filter(i=>pers(i)),st=L.filter(i=>stops(i).length);
+  const f=kpF=='cor'?c:kpF=='st'?st:L,q=kpQ.toLowerCase(),v=f.filter(i=>(N[i][0]+' '+N[i][1]).toLowerCase().includes(q));
+  document.getElementById('kpBody').innerHTML=`<div class="px-4 pt-1 pb-3 space-y-3 sticky top-0 bg-gray-50 z-[2] border-b">
+    <div class="grid grid-cols-2 gap-2"><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-gray-50 text-gray-800" onclick="cOpen()">Koreguoti efektyvumą visiems</button><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-red-50 text-red-700 disabled:opacity-40" ${c.length?'':'disabled'} onclick="gOffAsk()">Nuimti visiems</button></div>
+    ${L.length?`<div class="flex w-full border rounded-md p-0.5 gap-0.5 bg-white" role="group" aria-label="Pakeitimo tipas">${[['all','Visi',L.length],['cor','Korekcijos',c.length],['st','Sustabdytos zonos',st.length]].map(([k,t,n])=>`<button class="sg flex-1 ${kpF==k?'on':''}" aria-pressed="${kpF==k}" onclick="kpF='${k}';kpR()">${t} <span class="text-gray-400 tabular-nums">${n}</span></button>`).join('')}</div>
+    <input id="kpQ" class="w-full border rounded px-3 py-1.5 bg-white" placeholder="Ieškoti surinkėjo…" value="${kpQ}" oninput="kpQ=this.value;kpList_()">`:''}</div>
+    <div id="kpList">${kpItems(v,L.length)}</div>`}
+function kpItems(v,total){return total?(v.map(kpRow).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'):'<div class="px-4 py-10 text-center text-gray-500">Laikinų pakeitimų nėra.<br><span class="text-xs">Vieno surinkėjo pakeitimai daromi jo paskyroje.</span></div>'}
+function kpList_(){const L=kpList(),f=kpF=='cor'?L.filter(i=>pers(i)):kpF=='st'?L.filter(i=>stops(i).length):L,q=kpQ.toLowerCase();document.getElementById('kpList').innerHTML=kpItems(f.filter(i=>(N[i][0]+' '+N[i][1]).toLowerCase().includes(q)),L.length)}
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&!document.getElementById('kp').hidden&&kordlg.hidden)kpClose()});
+{const _r=render;render=function(){_r();kpR()}}
+kpR();
+</script>
+<script>
+// Pradinis ekranas pagal adresą (#dashboard arba #picker-accounts); apvalkalas keičia adresą perjungdamas skirtukus
+function fromHash(){const h=location.hash.slice(1);if(h=='edit'&&cv!='edit')go('edit',false);else if(h=='picker-accounts'&&cv=='dash')go('list',false);else if(h=='dashboard'&&cv!='dash')go('dash',false)}
+// Kairiojo meniu žymėjimas pagal atidarytą ekraną
+const _goNav=go;go=function(v,p){_goNav(v,p);nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash')};
+fromHash();addEventListener('hashchange',fromHash);
+</script>
