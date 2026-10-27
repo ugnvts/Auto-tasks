@@ -369,7 +369,7 @@ a { color: var(--accent); }
       <ul><li>Vardas su naujoko žyma, rolė po vardu; dešinėje jungiklis su pastoviu užrašu „Auto“ (visiems).</li><li>Zonų žymos: rodomos visos zonos, kuriose surinkėjas turi užduočių (pagal eilučių skaičių); Laukia atveju žymų nėra.</li><li>Būsena sujungta su progresu: Renka „4/9 eil.“, Nesinchronizavo „N eil.“, Laukia be laiko. Toje pačioje eilutėje dešinėje efektyvumo korekcijų ikonos (asmeninė, sustabdyta zona, centro); paspaudus atsiveria langelis su detalėmis ir „Atidaryti paskyrą“ (<a href="#f-EK5">EK5</a>).</li><li>Du mygtukai: „Surinkimo trukmė“ ir „Užduotys“, atsidaro kaip stalčius (<a href="#f-DD8">DD8</a>, <a href="#f-DD9">DD9</a>).</li></ul>
     </div></details>
     <details class="item" id="f-DD8"><summary><span class="id">DD8</span><span class="name">Surinkimo trukmės stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos, maks. vienam išėjimui, planuojamas išėjimas, efektyvumo korekcijos eilutė (kuri galioja: asmeninė ar surinkimo centro). Vėlavimas nepabrėžiamas. Laukia ir Nesinchronizavo atveju „–“.</p>
+      <p class="desc">Pradėjo, planuojama baigti, efektyvumas tik dabartinės zonos, maks. vienam išėjimui, planuojamas išėjimas, efektyvumo korekcijos eilutė (kuri galioja: asmeninė ar surinkimo centro). Kai zonai galioja korekcija, prie „Efektyvumas per val.“ rodoma korekcijos žyma, bazinis skaičius perbrauktas, po juo skaičius po korekcijos (raudonas mažinant, žalias didinant); planuojamas išėjimas perskaičiuojamas taip pat. Maks. vienam išėjimui nekeičiamas. Vėlavimas nepabrėžiamas. Laukia ir Nesinchronizavo atveju „–“.</p>
     </div></details>
     <details class="item" id="f-DD9"><summary><span class="id">DD9</span><span class="name">Užduočių stalčius</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Sąrašas be antraščių: dabartinės, po to eilėje. Kiekviena kaip Unfinished picking tasks lange: Task ID (nuoroda), zonos žyma, būsena; Banga, Eilutės, Vnt., Kg, Užsak. Atliktos nerodomos.</p>
@@ -917,6 +917,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-27</td><td>DD8: „Surinkimo trukmės“ stalčiuje rodomas korekcijos efektas – efektyvumas po korekcijos (bazinis perbrauktas) ir perskaičiuotas planuojamas išėjimas.</td></tr>
       <tr><td>2026-10-26</td><td>Dokumentas suvienodintas su prototipu: PA1 (efektyvumo žymų stulpelis), DD7 (ikonos prie būsenos), DD8 (korekcijos eilutė), DD11 ir K04 susiaurinti iki kombinacijų. Į Archyvą perkelti pakeisti ar išimti blokai: DD4, senas PK7, DD10, DB1, DB2, zonų grupavimas pagal kombinacijas.</td></tr>
       <tr><td>2026-10-26</td><td>Naujokų išimtis efektyvumo korekcijoms panaikinta (T3, EK2): ji buvo paveldėta iš pradinio auto-only efektyvumo kėlimo, šaltiniuose reikalavimo nėra. Surinkimo centro korekcija taikoma visiems, taip pat naujokams.</td></tr>
       <tr><td>2026-10-26</td><td>EK5: efektyvumo korekcijų spalva pagal kryptį – mažinimas raudonas, didinimas žalias; taikoma žymoms, ikonoms, kortelėms, juostai ir korekcijos langelių mygtukams paskyroje ir sidebar'e.</td></tr>
