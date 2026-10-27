@@ -39,10 +39,10 @@ const sg=d=>d<0?'−':'+';
 // Atvejai: P – asmeninė {v, z: [] = visos zonos, t – iki kada}, S – sustabdytos zonos {z, t}, C – centro korekcija, K – kombinacija, kuri neveikia
 const CASES=[
   {g:'Be korekcijų',n:'Nerijus Petrauskas',s:'Laukia užduoties'},
-  {g:'Asmeninė, visos zonos',n:'Aldonas Kazlauskas',s:'Renka',P:{v:-10,z:[]}},
+  {g:'Asmeninė, visos zonos (12)',n:'Aldonas Kazlauskas',s:'Renka',P:{v:-10,z:[]}},
   {g:'Asmeninė, viena zona',n:'Karolis Jankauskas',s:'Nesinchronizavo',P:{v:-20,z:['Alcoholic beverages']}},
   {g:'Asmeninė, kelios zonos',n:'Remigijus Butkus',s:'Renka',P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
-  {g:'Visoms zonoms + atskira zona',n:'Simona Jakštė',s:'Renka',P:[{v:-10,z:[]},{v:5,z:['Candies']}]},
+  {g:'Visos zonos, viena pakeista atskirai',n:'Simona Jakštė',s:'Renka',P:[{v:-10,z:Array(11).fill('')},{v:5,z:['Candies']}]},
   {g:'Skirtingos zonų korekcijos',n:'Paulius Grigas',s:'Nesinchronizavo',P:[{v:-20,z:['Alcoholic beverages']},{v:10,z:['Groceries','Candies']}]},
   {g:'Asmeninė, didinimas',n:'Tomas Vaitkus',s:'Renka',P:{v:10,z:[]}},
   {g:'Sustabdyta viena zona',n:'Ieva Kairytė',s:'Renka',S:{z:['Alcoholic beverages']}},
@@ -56,14 +56,14 @@ const CASES=[
   {g:'Visos trys kartu',n:'Jonas Petraitis',s:'Renka',P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']},C:{v:10}},
   {g:'Ilgi zonų pavadinimai',n:'Mantas Kazakevičius',s:'Renka',P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
 ];
-const zTxt=z=>z.length==1?z[0]:z.length+' zonos',till=t=>t?'iki '+t:'kol išjungs';
+const ltZ=n=>n%10==1&&n%100!=11?'zona':n%10>=2&&(n%100<10||n%100>=20)?'zonos':'zonų',zTxt=z=>z.length==1?z[0]:z.length+' '+ltZ(z.length),gZ=z=>z.length?zTxt(z):'12 zonų',till=t=>t?'iki '+t:'kol išjungs';
 const PL=c=>c.P?[].concat(c.P):[],pS=c=>{const v=PL(c).map(g=>Math.sign(g.v));return v.every(x=>x==v[0])?v[0]:0};
-const tipP=c=>'Asmeninė korekcija: '+PL(c).map(g=>`${g.z.length?g.z.join(', '):'visoms zonoms'} ${sg(g.v)}${Math.abs(g.v)} % · ${till(g.t)}`).join('; '),
+const tipP=c=>'Asmeninė korekcija: '+PL(c).map(g=>`${gZ(g.z)} ${sg(g.v)}${Math.abs(g.v)} % · ${till(g.t)}`).join('; '),
   tipS=c=>`Sustabdytas užduočių skyrimas: ${c.S.z.join(', ')} · ${till(c.S.t)}${c.K?` · kombinacija ${c.K} neveikia`:''}`,
   tipC=c=>c.P?`Surinkimo centro korekcija ${sg(c.C.v)}${Math.abs(c.C.v)} % negalioja: yra asmeninė korekcija`:`Surinkimo centro korekcija ${sg(c.C.v)}${Math.abs(c.C.v)} %`;
 const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`;
 // A: išsamios žymos
-const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IPER}<span class="t">${pct(g.v)}${g.z.length?' · '+zTxt(g.z):''}</span></span>`).join('')
+const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IPER}<span class="t">${pct(g.v)} · ${gZ(g.z)}</span></span>`).join('')
   +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'')
   +(c.C&&!c.P?`<span class="tg ${dc(c.C.v)}" title="${tipC(c)}">${ICEN}<span class="t">${pct(c.C.v)}</span></span>`:'');
 // C: tik ikonos
@@ -91,7 +91,7 @@ const card=c=>{const g=PRG[c.s],pc=g.tt?Math.round(g.pk/g.tt*100):0,
   <div class="mt-2 grid grid-cols-2 gap-2">${cb('Surinkimo trukmė',g.m,!g.u)}${cb('Užduotys',g.u,!g.u)}</div></div>`};
 out.innerHTML=`<section class="bg-white border rounded-lg">
   <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
-    <p class="text-gray-600 mt-1">Stulpelyje be antraštės dešinėje nuo „Būsena“. Kiekvienam tipui atskira žyma su dydžiu ir apimtimi; žyma be zonos reiškia „visos zonos“. Kai yra asmeninė korekcija, centro korekcijos žyma nerodoma. Užvedus pelę – detalės.</p></div>
+    <p class="text-gray-600 mt-1">Stulpelyje be antraštės dešinėje nuo „Būsena“. Zonos su vienoda korekcija sugrupuotos: viena zona – pavadinimas, kelios – skaičius („−10 % · 12 zonų“). Kai yra asmeninė korekcija, centro korekcijos žyma nerodoma. Užvedus pelę – detalės.</p></div>
   <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Atvejis</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Būsena</th><th class="px-4"></th></tr></thead>
   <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4">${c.s=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded whitespace-nowrap ${ST[c.s]}">${c.s}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
 </section>
