@@ -494,8 +494,12 @@ function eLine(i){const P=pers(i);return P?`<div class="px-2.5 py-1.5 text-gray-
 // Grupinis veiksmas sidebar'e: ta pati korekcija visoms pasirinktų surinkėjų zonoms
 const gNow=()=>N.map((r,i)=>i).filter(i=>works(N[i])),gAll=()=>N.map((r,i)=>i),gZ=i=>i==0?azs():ZD,gHas=()=>gAll().filter(i=>pers(i));
 // Viena vieta po antrašte: be korekcijų – viso pločio mygtukas, su korekcijomis – santraukos kortelė su abiem veiksmais
-function cBarR(){const b=document.getElementById('cBar');if(!b)return;const h=gHas(),n=h.length,w=n%10==1&&n%100!=11?'surinkėjas':n%10>=2&&(n%100<10||n%100>=20)?'surinkėjai':'surinkėjų';
-  b.innerHTML=n?`<div class="rounded-lg border border-gray-200 bg-white px-3 py-2.5"><div class="flex items-center gap-2"><span class="text-gray-500">${IKM}</span><span>Efektyvumo korekcijos: <b>${n}</b> ${w}</span></div>
+function cBarR(){const b=document.getElementById('cBar');if(!b)return;const h=gHas(),n=h.length;
+  // Santraukoje – dažniausia korekcija (kryptis, procentas) ir kiek surinkėjų ją turi; kiti – atskira eilute
+  const cnt={};h.forEach(i=>new Set(Object.values(pers(i).z).map(k=>k.d+'|'+k.p)).forEach(x=>cnt[x]=(cnt[x]||0)+1));
+  const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1])[0]||[],[td,tp]=(top[0]||'').split('|'),tn=top[1]||0,oth=h.filter(i=>Object.values(pers(i).z).some(k=>k.d+'|'+k.p!=top[0])).length,
+    sv=x=>`${x} ${x%10==1&&x%100!=11?'surinkėjas':x%10>=2&&(x%100<10||x%100>=20)?'surinkėjai':'surinkėjų'}`;
+  b.innerHTML=n?`<div class="rounded-lg border border-gray-200 bg-white px-3 py-2.5"><div class="flex flex-wrap items-center gap-2"><span>Efektyvumo korekcija</span><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 tabular-nums ${DT(td)}">${IK(td)}${sg(td)}${tp} %</span><span class="text-gray-600">· ${sv(tn)}</span></div>${oth?`<div class="text-xs text-gray-500 mt-0.5">Kitokios korekcijos: ${sv(oth)}</div>`:''}
     <div class="mt-2 grid grid-cols-2 gap-2"><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-gray-50 text-gray-800" onclick="cOpen()">Koreguoti efektyvumą</button><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-red-50 text-red-700" onclick="gOffAsk()">Nuimti visiems</button></div></div>`
    :`<button class="w-full flex items-center justify-center gap-2 text-sm font-medium border border-gray-300 rounded-lg bg-white px-3 py-2.5 text-gray-800 hover:bg-gray-50" onclick="cOpen()">${IKM}Koreguoti efektyvumą</button>`}
 function cOpen(){GD={d:'up',p:10,all:true,t:'',sl:false};cR();document.getElementById('kordlg').hidden=false}
