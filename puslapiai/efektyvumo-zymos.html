@@ -74,13 +74,13 @@ addEventListener('scroll',()=>{document.getElementById('ep').hidden=true},true);
 const CV='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 8l5 5 5-5"/></svg>';
 const PRG={'Renka':{z:['Groceries','Candies'],pk:4,tt:9,m:'12 min',u:2},'Nesinchronizavo':{z:['Fresh meat'],pk:0,tt:14,m:'–',u:1},'Laukia užduoties':{z:[],m:'–',u:0},'Nerenka':{z:[],m:'–',u:0}};
 // Kaip prototipe: korekcijos žyma greta laiko, sustabdytos zonos greta užduočių
-const ECH='display:inline-flex;align-items:center;gap:4px;font-size:11px;line-height:16px;padding:0 6px';
-const eCh=c=>{const L=PL(c);if(!L.length)return '';return L.length==1?`<span class="tg ${dc(L[0].v)}" style="${ECH}" title="${tipP(c)}">${IK(L[0].v)}${pct(L[0].v)}</span>`:`<span class="tg ${pS(c)?dc(pS(c)):'ts'}" style="${ECH}" title="${tipP(c)}">${IK(pS(c))}${L.length} korekc.</span>`};
+const ECH='display:inline-flex;align-items:center;gap:2px;font-size:11px;line-height:16px;padding:0 4px;white-space:nowrap';
+const eCh=c=>{const L=PL(c),sh=L.length>2?L.slice(0,1):L;return sh.map(g=>`<span class="tg ${dc(g.v)}" style="${ECH}" title="${tipP(c)}">${IK(g.v)}${sg(g.v)}${Math.abs(g.v)}%</span>`).join('')+(L.length>2?`<span class="tg ts" style="${ECH}" title="${tipP(c)}">+${L.length-1}</span>`:'')};
 const sCh=c=>c.S?`<span class="tg ts" style="${ECH}" title="${tipS(c)}">${IPA}${zTxt(c.S.z)}</span>`:'';
 const card=c=>{const g=PRG[c.s],pc=g.tt?Math.round(g.pk/g.tt*100):0,
     col={'Renka':['bg-green-50 border-green-100 text-green-900','bg-green-200'],'Nesinchronizavo':['bg-amber-50 border-amber-100 text-amber-900',''],'Laukia užduoties':['bg-blue-50 border-blue-100 text-blue-900','']}[c.s]||['bg-gray-50 border-gray-200 text-gray-700',''],
     lab=c.s=='Renka'?`<span class="font-medium">Renka</span> · ${g.pk}/${g.tt} eil.`:c.s=='Nesinchronizavo'?`<span class="font-medium">Nesinchronizavo</span> · ${g.tt} eil.`:`<span class="font-medium">${c.s}</span>`,
-    cb=(l,v,d)=>`<span class="cb" ${d?'style="background:#f9fafb;color:#6b7280"':''}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="flex items-center gap-1.5 font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV}</span>`}</span>`;
+    cb=(l,v,d)=>`<span class="cb" ${d?'style="background:#f9fafb;color:#6b7280"':''}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="flex items-center gap-1 font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV}</span>`}</span>`;
   return `<div class="p-3 bg-white border border-gray-200 rounded-lg"><div class="text-[11px] text-gray-400 mb-1">${c.g}</div>
   <div class="flex items-center gap-2"><div class="min-w-0"><div class="text-[15px] font-semibold text-gray-900 truncate">${c.n}</div><div class="text-[11px] text-gray-500 leading-tight">Picker</div></div>
     <div class="ml-auto flex items-center gap-2"><span class="text-xs text-gray-500">Auto</span><span class="inline-block w-9 h-5 rounded-full bg-green-600 relative" aria-hidden="true"><span class="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white"></span></span></div></div>
@@ -95,7 +95,7 @@ out.innerHTML=`<section class="bg-white border rounded-lg">
 </section>
 <section class="bg-white border rounded-lg">
   <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">„Dirba dabar“ sidebar'o kortelės: žymos mygtukuose</h2>
-    <p class="text-gray-600 mt-1">„Surinkimo trukmės“ mygtuke greta laiko – korekcijos žyma su rodykle ir procentu (kelios skirtingos – „N korekc.“), „Užduočių“ mygtuke – sustabdytų zonų žyma. Užvedus pelę – detalės; paspaudus mygtuką prototipe atsiveria stalčius.</p></div>
+    <p class="text-gray-600 mt-1">„Surinkimo trukmės“ mygtuke greta laiko – korekcijos žyma su rodykle ir procentu (iki dviejų korekcijų – atskiros žymos; daugiau – pirmoji ir „+N“), „Užduočių“ mygtuke – sustabdytų zonų žyma. Užvedus pelę – detalės; paspaudus mygtuką prototipe atsiveria stalčius.</p></div>
   <div class="p-4 bg-gray-50 rounded-b-lg grid gap-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))">${CASES.map(card).join('')}</div>
 </section>`;
 </script>
