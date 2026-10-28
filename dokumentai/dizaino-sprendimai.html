@@ -235,7 +235,7 @@ a { color: var(--accent); }
   </div>
   <p class="note">Šaltiniai: <a href="https://barbora.atlassian.net/wiki/x/AwBtt" target="_blank" rel="noopener">PM puslapis „Auto tasks - STAGE II“</a> (prioritetinis), <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3302096907" target="_blank" rel="noopener">Algoritmo logika</a> (S, Q), <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3303604225" target="_blank" rel="noopener">susitikimų užrašai</a>. Už sistemos ribų: grafikai (Workofo, NUMO, Virosoft), ne surinkimo darbai, koordinatorių užduotys, lipdukai.</p>
   <nav class="toc" aria-label="Turinys">
-    <a href="#h-gloss">Terminai</a><a href="#h-journey">Diena</a><a href="#h-pa">PA · Picker accounts</a><a href="#h-pk">PK · Paskyra</a><a href="#h-dd">DD · Dirba dabar</a><a href="#h-db">DB · Dashboard</a><a href="#h-sc">SC · Nustatymai</a><a href="#h-ek">EK · Efektyvumo korekcijos</a><a href="#h-vl">VL · Veikimo logika</a><a href="#h-t">Bendros taisyklės</a><a href="#h-k">Atviri klausimai</a><a href="#h-dv">Techniniai klausimai</a><a href="#h-p">Ateities idėjos</a>
+    <a href="#h-gloss">Terminai</a><a href="#h-journey">Diena</a><a href="#h-lz">Langų žemėlapis</a><a href="#h-pa">PA · Picker accounts</a><a href="#h-pk">PK · Paskyra</a><a href="#h-dd">DD · Dirba dabar</a><a href="#h-db">DB · Dashboard</a><a href="#h-sc">SC · Nustatymai</a><a href="#h-ek">EK · Efektyvumo korekcijos</a><a href="#h-vl">VL · Veikimo logika</a><a href="#h-t">Bendros taisyklės</a><a href="#h-k">Atviri klausimai</a><a href="#h-dv">Techniniai klausimai</a><a href="#h-p">Ateities idėjos</a>
   </nav>
   <div class="stlegend"><span class="status st-ready">Sutarta</span> sprendimas priimtas <span class="status st-wip">Derinama</span> kryptis aiški, detalės atviros <span class="status st-idea">Idėja</span> nepatvirtinta <span class="status st-later">Vėliau</span> ne šiam etapui</div>
 </section>
@@ -257,6 +257,51 @@ a { color: var(--accent); }
 <section class="sec" aria-labelledby="h-journey">
   <div class="sec-head"><h2 id="h-journey">Pamainos vadybininko diena</h2><span class="eyebrow">overview</span></div>
   <div class="journey-box"><div class="journey-scroll"><div class="journey" id="journey"></div></div></div>
+</section>
+
+<!-- LANGŲ ŽEMĖLAPIS -->
+<section class="sec" aria-labelledby="h-lz">
+  <div class="sec-head"><h2 id="h-lz">Langų žemėlapis</h2><span class="eyebrow">paskirtys, ribos, šaltiniai · apžvalga prieš detales</span></div>
+  <p class="note">Kiekvienas langas atsako į vieną vadovo klausimą. Naujas funkcionalumas dedamas į tą langą, į kurio klausimą jis atsako; jei į nė vieno – trūksta lango arba funkcionalumas nereikalingas. Skiltis atnaujinama, kai keičiasi lango paskirtis ar ribos; funkcionalumų detalės – langų skiltyse.</p>
+  <div class="tbl"><table class="log"><thead><tr><th>Langas</th><th>Klausimas</th><th>Kas ir kada</th><th>Pobūdis</th></tr></thead><tbody>
+    <tr><td><a href="#h-pa">PA</a> Picker accounts lentelė</td><td>Kas yra mano surinkėjai ir kas jiems įjungta?</td><td>Pamainos vadovas, pamainos pradžioje ir pabaigoje</td><td>Registras ir kasdieniai veiksmai (auto tasks vienam ir keliems)</td></tr>
+    <tr><td><a href="#h-pk">PK</a> Surinkėjo paskyra – peržiūra</td><td>Kaip šis žmogus nustatytas ir kas jam šiandien kitaip?</td><td>Vadovas, kai reikia vieno žmogaus</td><td>Šaltinis ir operatyvūs veiksmai (auto tasks, naujokas, laikinos korekcijos, zonų stabdymas)</td></tr>
+    <tr><td><a href="#h-pk">PK</a> Surinkėjo paskyra – redagavimas ir kūrimas</td><td>Koks šio žmogaus pamatas?</td><td>Retai: naujas žmogus, pasikeitęs efektyvumas ar zonos</td><td>Pamato nustatymas (informacija, zonos, efektyvumas, kombinacijos)</td></tr>
+    <tr><td><a href="#h-dd">DD</a> „Dirba dabar“ sidebar'as</td><td>Kas vyksta dabar?</td><td>Nuolat, bangos eigoje</td><td>Stebėjimas: Zonos – kur žmonės, Surinkėjai – kaip kiekvienam sekasi</td></tr>
+    <tr><td><a href="#f-DD12">DD12</a> „Laikini pakeitimai“ skydelis <span class="status st-idea">Tikrinamas variantas</span></td><td>Kas šiandien pakeista ir kam?</td><td>Ryte, perduodant pamainą, kai kažkas atrodo keistai</td><td>Valdymas: pakeitimų sąrašas ir veiksmai visiems</td></tr>
+    <tr><td><a href="#h-db">DB</a> Dashboard</td><td>Kaip eina bangos?</td><td>Nuolat</td><td>Bangų stebėjimas ir prisegtas „Dirba dabar“</td></tr>
+    <tr><td><a href="#h-sc">SC</a> SC nustatymai</td><td>Pagal kokias taisykles veikia variklis?</td><td>Retai, SC vadovas</td><td>Taisyklės (prototipe nėra)</td></tr>
+  </tbody></table></div>
+
+  <h3 style="margin-top:20px;margin-bottom:8px">Ribų taisyklės</h3>
+  <ul class="d" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:85ch;font-size:14px">
+    <li><b>Pamatas redagavime, operatyvūs veiksmai peržiūroje</b> (<a href="#f-T8">T8</a>): redaguojama ir išsaugoma tai, kas pastovu; peržiūroje – tai, kas veikia iškart, su „Atšaukti“ ar patvirtinimu.</li>
+    <li><b>Stebėjimas ir valdymas atskirti:</b> „Dirba dabar“ rodo, kas vyksta; tai, kas keičia vykstantį darbą (laikini pakeitimai), turi savo vietą (<a href="#f-DD12">DD12</a>, tikrinamas variantas). Auto tasks valdymas lieka „Dirba dabar“.</li>
+    <li><b>Vienam – paskyroje, daugeliui – grupiniu veiksmu:</b> vieno surinkėjo pakeitimai daromi jo paskyroje; tas pats daugeliui – lentelės bulk actions arba sidebar'e (<a href="#f-EK1">EK1</a>).</li>
+    <li><b>Taisyklės – SC nustatymuose:</b> tai, kas galioja visiems ir keičiama retai (bangų laikai, kitos bangos %, kombinacijų apibrėžimai).</li>
+    <li><b>Detalumas pagal lygį:</b> SC lygis – kiekiai; surinkėjo lygis – kryptis ir procentas; zonos lygis – viskas. Sutraukta informacija atskleidžiama kitame lygyje, ne iššokančiais langeliais.</li>
+  </ul>
+
+  <h3 style="margin-top:20px;margin-bottom:8px">Šaltinių žemėlapis</h3>
+  <div class="tbl"><table class="log"><thead><tr><th>Duomenys</th><th>Kur keičiami</th><th>Kur tik rodomi</th></tr></thead><tbody>
+    <tr><td>Asmeninė informacija, rolė, parduotuvė</td><td>Paskyros redagavimas</td><td>Lentelė, paskyros peržiūra</td></tr>
+    <tr><td>Zonos, efektyvumas, lubos, kombinacijos</td><td>Paskyros redagavimas</td><td>Paskyros peržiūra, „Surinkimo trukmės“ stalčius</td></tr>
+    <tr><td>Kombinacijų apibrėžimai, zonų apibrėžimai</td><td>SC nustatymai, Picking zones</td><td>Paskyros redagavimas (pasirinkimui)</td></tr>
+    <tr><td>Auto tasks</td><td>Lentelė, sidebar'o kortelė, paskyros peržiūra (sąmoningai trijose vietose – kasdienis veiksmas)</td><td>„Dirba dabar“ suvestinė</td></tr>
+    <tr><td>Naujoko žyma</td><td>Paskyros redagavimas (varnelė), paskyros peržiūra (jungiklis)</td><td>Lentelė, sidebar'as</td></tr>
+    <tr><td>Laikinos efektyvumo korekcijos</td><td>Paskyros peržiūra (vienam), sidebar'as / „Laikini pakeitimai“ (daugeliui)</td><td>Lentelė (kam), sidebar'o kortelė (kodėl trukmė kitokia), stalčius (poveikis skaičiams), „Laikini pakeitimai“ (visuma)</td></tr>
+    <tr><td>Užduočių skyrimo zonai stabdymas</td><td>Paskyros peržiūra</td><td>Lentelė, sidebar'o kortelė, „Laikini pakeitimai“</td></tr>
+    <tr><td>Būsenos (Renka, Laukia, Nesinchronizavo)</td><td>Sistema</td><td>Lentelė, „Dirba dabar“</td></tr>
+  </tbody></table></div>
+
+  <h3 style="margin-top:20px;margin-bottom:8px">Žinomos spragos</h3>
+  <ul class="d" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:85ch;font-size:14px">
+    <li>Ryšys su Unfinished picking tasks, kur skiriamos rankinės užduotys (<a href="#k-K08">K08</a>).</li>
+    <li>SC nustatymai neprototipuoti; daug punktų „Derinama“ (<a href="#h-sc">SC</a>).</li>
+    <li>Dashboard'o vaidmuo, kai veikia auto tasks (<a href="#k-K17">K17</a>), ir prisegto režimo sprendimas su „Laikinais pakeitimais“ (<a href="#f-DD12">DD12</a>).</li>
+    <li>Zonų ir kombinacijų rodymas lentelėje (<a href="#k-K19">K19</a>).</li>
+    <li>„Dirba dabar“ surinkėjo kortelės elementų paskirtys – pradėta, nebaigta.</li>
+  </ul>
 </section>
 
 <!-- PICKER ACCOUNTS -->
@@ -975,6 +1020,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-28</td><td>Nauja skiltis „Langų žemėlapis“: kiekvieno lango klausimas, naudojimas ir pobūdis, ribų taisyklės (įskaitant T8), šaltinių žemėlapis, žinomos spragos. „Laikini pakeitimai“ pažymėti kaip tikrinamas variantas.</td></tr>
       <tr><td>2026-10-27</td><td>Naujas prototipo variantas „Laikini pakeitimai atskirai“ (DD12): juostoje du mygtukai – „Dirba dabar“ ir „Laikini pakeitimai“; atskiras skydelis su pakeitimų sąrašu ir veiksmais visiems.</td></tr>
       <tr><td>2026-10-27</td><td>EK2, VL1: sidebar'o santraukos „+N“ išskleidžia visas žymas; korekcijos langelyje blokai „Dabar“ ir „Po taikymo“.</td></tr>
       <tr><td>2026-10-27</td><td>EK2, VL1, DD6: sidebar'o santraukos kortelėje žymos pagal korekciją su surinkėjų skaičiumi (iki 2 ir „+N“) ir sustabdytų zonų žyma; paspaudus žymą – „Surinkėjų“ tab'o filtras.</td></tr>
