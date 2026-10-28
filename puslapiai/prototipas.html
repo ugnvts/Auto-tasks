@@ -265,6 +265,9 @@ td,th{white-space:nowrap}
           <dl class="text-sm divide-y" id="dl"></dl>
           <h3 class="font-medium mt-6 pb-2 border-b">Auto tasks</h3>
           <dl id="vAuto" class="text-sm divide-y"></dl>
+          <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zonos ir efektyvumas <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3><button id="korBtn" class="ml-auto text-sm border border-indigo-600 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-50" onclick="korOpen()">Korekcija visoms zonoms</button></div>
+          <div id="korCard" class="mt-3 empty:hidden"></div>
+          <div id="effView" class="mt-3 space-y-3"></div>
           <h3 class="font-medium mt-6 pb-2 border-b">Kelios zonos</h3>
           <dl class="text-sm">
             <div class="py-3"><div class="grid grid-cols-3 items-center"><dt class="text-gray-500">Can work in multiple zones</dt><dd class="col-span-2"><span class="inline-flex items-center gap-1.5 text-xs font-medium bg-green-100 text-green-800 px-2 py-0.5 rounded"><span class="w-1.5 h-1.5 rounded-full bg-green-600"></span>Enabled</span></dd></div>
@@ -272,9 +275,6 @@ td,th{white-space:nowrap}
                 <div class="grid grid-cols-3"><dt class="text-gray-500">Allowed zone combinations</dt><dd id="cbView" class="col-span-2 flex flex-wrap gap-2"></dd></div>
               </div></div>
           </dl>
-          <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zonos ir efektyvumas <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3><button id="korBtn" class="ml-auto text-sm border border-indigo-600 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-50" onclick="korOpen()">Korekcija visoms zonoms</button></div>
-          <div id="korCard" class="mt-3 empty:hidden"></div>
-          <div id="effView" class="mt-3 space-y-3"></div>
         </div>
       </section>
 
@@ -569,8 +569,9 @@ function rv(){vAuto();const zs=['NONE',...Z].filter(n=>EFF[n]);document.getEleme
   document.getElementById('cbView').innerHTML=mz?CB.filter(c=>c.on).map(c=>{const pz=c.z.filter(n=>PAU.has(n));return pz.length?`<span class="border rounded px-2 py-0.5 bg-gray-100 text-gray-500" title="Kombinacija neveikia, kol ${pz.join(', ')} užduočių skyrimas sustabdytas"><s>${c.z.join(' + ')}</s> · neveikia: sustabdyta ${pz.join(', ')}</span>`:`<span class="border rounded px-2 py-0.5 bg-gray-50">${c.z.join(' + ')}</span>`}).join('')||'<span class="text-gray-500">Nepasirinkta</span>':'';
   ZLS=[];
   const KP0=pers(0),cRow='';
-  document.getElementById('korCard').innerHTML=cRow+(KP0?`<div class="border rounded-lg px-4 py-2 bg-white"><div class="flex flex-wrap items-center gap-2 py-1"><span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Laikina efektyvumo korekcija</span>${pGr(KP0).length>1?`<button class="ml-auto text-xs text-red-700 hover:underline" onclick="korOff()">Nuimti visas</button>`:''}</div>
-    <div class="divide-y">${gRows(KP0,g=>`<span class="ml-auto flex gap-2"><button class="text-xs border bg-white px-2.5 py-1 rounded hover:bg-gray-50" onclick="korGrp('${g.d}',${g.p},'${g.t}')">Keisti</button><button class="text-xs border bg-white px-2.5 py-1 rounded text-red-700 hover:bg-red-50" onclick="korRmG('${g.d}',${g.p},'${g.t}')">Nuimti</button></span>`)}</div></div>`:'');
+  const PZ=[...PAU];// sustabdytos zonos – toje pačioje kortelėje, kad stabdymą būtų galima atšaukti nesigilinant į sąrašą
+  document.getElementById('korCard').innerHTML=cRow+(KP0||PZ.length?`<div class="border rounded-lg px-4 py-2 bg-white"><div class="flex flex-wrap items-center gap-2 py-1"><span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Laikini pakeitimai</span>${KP0&&pGr(KP0).length>1?`<button class="ml-auto text-xs text-red-700 hover:underline" onclick="korOff()">Nuimti visas</button>`:''}</div>
+    <div class="divide-y">${KP0?gRows(KP0,g=>`<span class="ml-auto flex gap-2"><button class="text-xs border bg-white px-2.5 py-1 rounded hover:bg-gray-50" onclick="korGrp('${g.d}',${g.p},'${g.t}')">Keisti</button><button class="text-xs border bg-white px-2.5 py-1 rounded text-red-700 hover:bg-red-50" onclick="korRmG('${g.d}',${g.p},'${g.t}')">Nuimti</button></span>`):''}${PZ.map(([z,t])=>`<div class="flex flex-wrap items-center gap-2 py-1"><span class="font-medium text-gray-900">${z}</span><span class="inline-flex items-center gap-1 text-xs rounded-full border border-gray-300 bg-gray-100 text-gray-700 px-1.5">${IPA.replace('w-3.5 h-3.5','w-3 h-3')}Užduočių skyrimas sustabdytas</span><span class="text-xs text-gray-500">${t?'iki '+t:'kol įjungsi'}</span><span class="ml-auto flex gap-2"><button class="text-xs border bg-white px-2.5 py-1 rounded hover:bg-gray-50 text-indigo-700" onclick="zPau('${z}')">Atnaujinti skyrimą</button></span></div>`).join('')}</div></div>`:'');
   document.getElementById('effView').innerHTML=zs.map(n=>{const e=EFF[n],pa=PAU.has(n),no=n=='NONE';
     return `<div class="border rounded p-3 ${pa?'bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${n}</span>
       ${pa?`<span class="text-xs rounded-full border border-gray-300 bg-gray-100 text-gray-700 px-2 py-0.5">Užduočių skyrimas sustabdytas · ${PAU.get(n)?'iki '+PAU.get(n):'kol įjungsi'}</span>`:''}
