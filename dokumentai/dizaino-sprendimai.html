@@ -314,7 +314,7 @@ a { color: var(--accent); }
   </div>
   <div class="list">
     <details class="item" id="f-PA1"><summary><span class="id">PA1</span><span class="name">Surinkėjų lentelė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <ul><li>Stulpeliai: checkbox, Name, Last name, Time card, Shift name, Role (su violetine naujoko žyma), Kelios zonos („Taip · N komb.“ arba „Ne“ – ar surinkėjas gali dirbti keliose zonose vienu metu), Auto tasks (jungiklis), Būsena, stulpelis be antraštės su efektyvumo korekcijų žymomis (<a href="#f-EK5">EK5</a>), ⋮ (Rodyti, Redaguoti).</li><li>Zonų ir efektyvumo lentelėje nėra, jie matomi paskyroje. Express žyma pašalinta.</li></ul>
+      <ul><li>Stulpeliai: checkbox, Name, Last name, Time card, Shift name, Role (su violetine naujoko žyma), Kelios zonos („Taip · N komb.“ arba „Ne“ – ar surinkėjas gali dirbti keliose zonose vienu metu; užvedus – priskirtų kombinacijų pavadinimai), Auto tasks (jungiklis), Būsena, stulpelis be antraštės su efektyvumo korekcijų žymomis (<a href="#f-EK5">EK5</a>), ⋮ (Rodyti, Redaguoti, Ištrinti – esamas sistemos veiksmas, su patvirtinimu).</li><li>Zonų ir efektyvumo lentelėje nėra, jie matomi paskyroje. Express žyma pašalinta.</li></ul>
     </div></details>
     <details class="item" id="f-PA2"><summary><span class="id">PA2</span><span class="name">Auto tasks jungiklis eilutėje</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Kasdienis veiksmas: vadybininkas įjungia atėjusį surinkėją ir išjungia išeinantį ar einantį į pertrauką. Naujokui ir inspektoriui jungiklis neaktyvus (<a href="#f-T3">T3</a>, <a href="#f-T4">T4</a>). Atskirame stulpelyje be antraštės dešinėje nuo būsenos rodomos efektyvumo korekcijų ir sustabdytų zonų žymos (<a href="#f-EK5">EK5</a>).</p>
@@ -322,7 +322,7 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">S14</span><span class="ctx">Q05</span><span class="ctx">Q21</span><span class="was">buvęs A1</span></div>
     </div></details>
     <details class="item" id="f-PA3"><summary><span class="id">PA3</span><span class="name">Grupinis įjungimas ir išjungimas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
-      <p class="desc">Sistemoje jau yra bulk actions meniu. Pažymėjus kelias eilutes, jame prie esamų pasirinkimų atsiranda: „Įjungti auto tasks“, „Išjungti auto tasks“ ir „Koreguoti efektyvumą“ (laikina korekcija visoms pažymėtų surinkėjų zonoms, <a href="#f-EK2">EK2</a>). Lentelė – darbo dienos pradžios įrankis: čia pasirenkami surinkėjai, kuriems įjungiami auto tasks (2026-10-28). Išjungti visiems galima per sidebar'o ⋮ (<a href="#f-DD3">DD3</a>).</p>
+      <p class="desc">Sistemoje jau yra bulk actions meniu. Pažymėjus kelias eilutes, jame prie esamų pasirinkimų atsiranda: „Įjungti auto tasks“, „Išjungti auto tasks“, „Koreguoti efektyvumą“ (laikina korekcija visoms pažymėtų surinkėjų zonoms, <a href="#f-EK2">EK2</a>) ir esamas sistemos veiksmas „Ištrinti“ (patvirtinimas su vardų sąrašu). Lentelė – darbo dienos pradžios įrankis: čia pasirenkami surinkėjai, kuriems įjungiami auto tasks (2026-10-28). Išjungti visiems galima per sidebar'o ⋮ (<a href="#f-DD3">DD3</a>).</p>
       <div class="meta"><span class="was">buvęs D01</span></div>
     </div></details>
     <details class="item" id="f-PA4"><summary><span class="id">PA4</span><span class="name">Filtrai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -1032,6 +1032,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-28</td><td>Lentelė (PA1, PA3): „Kelios zonos“ užvedus rodo kombinacijų pavadinimus; prototipe pridėtas esamas paskyrų šalinimas – eilutės ⋮ ir bulk actions „Ištrinti“ su patvirtinimu.</td></tr>
       <tr><td>2026-10-28</td><td>Paskyros peržiūra: kortelė „Laikini pakeitimai“ apima ir sustabdytas zonas su „Atnaujinti skyrimą“ (PK7, PK8); „Kelios zonos“ perkelta po zonų sąrašu, kaip redagavime (PK1).</td></tr>
       <tr><td>2026-10-28</td><td>Temų lentos A dalis. „Laikini pakeitimai“ – pagrindinis sprendimas (DD12 „Derinama“, EK2 ir VL1 perrašyti, santraukos kortelė į Archyvą). Paskyra: visi 7 zonos laukai privalomi, išsaugoti neleidžiama, kol trūksta duomenų (PK4, PK6, VL5). Lentelė: stulpelis „Kelios zonos“, bulk „Koreguoti efektyvumą“, lentelė – dienos pradžios įrankis (PA1, PA3, PA6). Klausimai: K05, K08, K19, DV04 uždaryti; K09 ir DV03 patikslinti.</td></tr>
       <tr><td>2026-10-28</td><td>DD12 (šaka): „Nuimti visiems“ su pasirinkimu atnaujinti užduočių skyrimą sustabdytose zonose; stabdymas lieka asmeninis veiksmas, grupinės korekcijos jo neliečia.</td></tr>
