@@ -407,6 +407,7 @@ a { color: var(--accent); }
     </div></details>
     <details class="item" id="f-DD2"><summary><span class="id">DD2</span><span class="name">Suvestinė</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <ul><li>„Auto tasks“ kortelė (tik su įjungtu auto): Įjungta, Renka, Laukia, Nesinchronizavo. Renka + Laukia + Nesinchronizavo = Įjungta; Renka apima ir rankinę užduotį po cut-off.</li><li>„Rankinis skyrimas“ (be auto): Renka, Nesinchronizavo, Naujokai. Nerenka nerodomas, nes jį išpūstų nesantys darbe.</li><li>Tik informacija: skaičiai nefiltruoja nei sidebar'o, nei lentelės.</li></ul>
+      <p class="desc">Suvestinė grupuoja pagal jungiklį, ne pagal užduoties šaltinį: surinkėjas su įjungtu auto, renkantis rankinę užduotį (po cut-off ar protarpiais dėl nenumatytų situacijų), skaičiuojamas „Auto tasks · Renka“. Taip grupės stabilios visą pamainą ir atsako, kiek žmonių dirba su auto ir be jo (2026-10-28).</p>
       <div class="meta"><span class="was">buvusi „Statistikos juosta“</span></div>
     </div></details>
     <details class="item" id="f-DD3"><summary><span class="id">DD3</span><span class="name">Auto tasks ⋮ veiksmai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -482,6 +483,7 @@ a { color: var(--accent); }
     <details class="item" id="f-SC4"><summary><span class="id">SC4</span><span class="name">Bangų prioritetai</span><span class="status st-wip">Derinama</span></summary><div class="body">
       <p class="desc">Einamoji banga renkama 100 % surinkėjo efektyvumo. Kitai bangai nustatomas mažesnis procentas (pvz., 50 %), kad surinkėjas trumpiau būtų salėje ir greičiau grįžtų, jei atsiras einamosios bangos užsakymų.</p>
       <p class="desc">Sąveika su korekcijomis: kitos bangos taisyklė taikoma visada, galutiniam efektyvumui po korekcijų (<a href="#f-EK1">EK1</a>).</p>
+      <p class="desc">Kitos bangos procentas – sisteminė taisyklė, ne laikinas pakeitimas: „Laikinuose pakeitimuose“ nerodomas, kortelėje nežymimas. Užduočių stalčiuje užtenka bangos stulpelio, papildomai neišskiriama (2026-10-28).</p>
       <div class="meta"><span class="ctx">S07</span><span class="ctx">Q01</span><span class="was">buvęs C2</span></div>
     </div></details>
     <details class="item" id="f-SC5"><summary><span class="id">SC5</span><span class="name">Zonų prioritetai</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -600,6 +602,7 @@ a { color: var(--accent); }
     </div></details>
     <details class="item" id="f-T6"><summary><span class="id">T6</span><span class="name">Cut-off</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Po cut-off auto generavimas pristabdomas iki kitos bangos, jungiklis lieka įjungtas; skiriama rankiniu būdu. Pirmoje fazėje po cut-off auto nieko negeneruoja (workshop'ai vėliau). Atskiros cut-off būsenos nėra.</p>
+      <p class="desc">Cut-off metu „Dirba dabar“ „Auto tasks“ suvestinėje rodomas informacinis pranešimas: „Cut-off. Auto užduotys pristabdytos iki kitos bangos (13:00). Užduotys skiriamos rankiniu būdu; „Renka“ apima ir rankines užduotis.“ Tik ten, nes cut-off paveikia būtent auto skyrimą. Būsena „Laukia užduoties“ nekeičiama. Prototipo variantas „Cut-off metu“ (2026-10-28).</p>
       <div class="meta"><span class="ctx">S12</span><span class="ctx">Q29</span></div>
     </div></details>
     <details class="item" id="f-T7"><summary><span class="id">T7</span><span class="name">Komplektavimas (gathering)</span><span class="status st-ready">Sutarta</span></summary><div class="body">
@@ -626,7 +629,6 @@ a { color: var(--accent); }
     <tr id="k-K01"><td>K01</td><td>Kaip valdyti momentinį efektyvumą vienoje vietoje: efektyvumo kėlimas, laikinas surinkėjo koregavimas ir kitos bangos procentas; kėlimas ir mažinimas einamajai ir kitai bangai.</td><td>DD4, PK7, SC4, EK</td><td>Vytautas pasiūlė (EK, 2026-10-27: vienas lygis), PM tvirtina</td></tr>
     <tr id="k-K04"><td>K04</td><td>Kur ir kaip rodyti, kad surinkėjui įjungtos zonų kombinacijos? (Efektyvumo korekcijų dalis išspręsta EK5.)</td><td>PA, DD11</td><td>Vytautas</td></tr>
     <tr id="k-K06"><td>K06</td><td>Kaip dažnai keičiamas maksimalus efektyvumas ir ar jame lieka unique orders?</td><td>PK5</td><td>PM, SC</td></tr>
-    <tr id="k-K07"><td>K07</td><td>Ar rodyti užduoties šaltinį (Auto / Rankinė)? Po cut-off ir ką tik išjungus jungiklis su būsena nepakanka.</td><td>PA1, DD7</td><td>Vytautas</td></tr>
     <tr id="k-K09"><td>K09</td><td>Kaip rikiuoti sidebar'o surinkėjus? (Zonos rikiuojamos pagal SC nustatymuose sudėliotą zonų prioritetą, 2026-10-28.)</td><td>DD5, DD6</td><td>Vytautas</td></tr>
     <tr id="k-K10"><td>K10</td><td>Ar inspektoriams galima išjungti auto tasks?</td><td>T4</td><td>PM</td></tr>
     <tr id="k-K12"><td>K12</td><td>Kaip veikia Unfinished picking tasks, kai surinkėjas grąžinamas į naujokus?</td><td>PK3</td><td>PM</td></tr>
@@ -1040,6 +1042,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-28</td><td>T8 (bangos būsenos): kitos bangos procentas – sisteminė taisyklė, nerodomas kaip pakeitimas (SC4); cut-off metu informacinis pranešimas „Auto tasks“ suvestinėje (T6), prototipo variantas „Cut-off metu“; suvestinė grupuoja pagal jungiklį ir protarpinėms rankinėms užduotims (DD2). K07 uždarytas: užduoties šaltinio nerodome.</td></tr>
       <tr><td>2026-10-28</td><td>T5 baigta: „Kortelė: progresas kaip mygtukas“ tapo pagrindiniu prototipu; senas kortelės išdėstymas – Archyve (DD7).</td></tr>
       <tr><td>2026-10-28</td><td>DD7: zonų žymos kortelėje lieka; naujas prototipo variantas „Kortelė: progresas kaip mygtukas“ (progreso juosta atidaro užduotis, šalia trukmės mygtukas, be „eil.“).</td></tr>
       <tr><td>2026-10-28</td><td>„Dirba dabar“ kortelė (DD7, EK5, VL2, VL3, VL6): korekcijų ir sustabdytų zonų žymos pašalintos; korekcijos rodomos tik išskleidus „Surinkimo trukmės“ stalčių. Taisyklė peržiūrima, jei kortelė pradės rodyti planą ir faktą.</td></tr>
