@@ -22,7 +22,7 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
   <p class="mt-3 text-xs text-gray-600">Spalva rodo kryptį: <span class="tg dn">mažinimas</span> <span class="tg up">didinimas</span>. Ikona rodo tipą. Korekcija visada priklauso zonai; grupinis veiksmas sidebar'e uždeda tą pačią korekciją daugeliui surinkėjų.</p>
   <div class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
     <span class="flex items-center gap-1.5"><span class="tg dn" id="lgP"></span> efektyvumo korekcija</span>
-    <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdytas užduočių skyrimas zonai</span>
+    <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdyta zona</span>
   </div>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
@@ -54,7 +54,7 @@ const CASES=[
 const ltZ=n=>n%10==1&&n%100!=11?'zona':n%10>=2&&(n%100<10||n%100>=20)?'zonos':'zonų',zTxt=z=>z.length==1?z[0]:z.length+' '+ltZ(z.length),gZ=z=>z.length?zTxt(z):'12 zonų',till=t=>t?'iki '+t:'kol išjungs';
 const PL=c=>c.P?[].concat(c.P):[],pS=c=>{const v=PL(c).map(g=>Math.sign(g.v));return v.every(x=>x==v[0])?v[0]:0};
 const tipP=c=>'Efektyvumo korekcija: '+PL(c).map(g=>`${gZ(g.z)} ${sg(g.v)}${Math.abs(g.v)} % · ${till(g.t)}`).join('; '),
-  tipS=c=>`Sustabdytas užduočių skyrimas: ${c.S.z.join(', ')} · ${till(c.S.t)}${c.K?` · kombinacija ${c.K} neveikia`:''}`;
+  tipS=c=>`Sustabdytos zonos: ${c.S.z.join(', ')} · ${till(c.S.t)}${c.K?` · kombinacija ${c.K} neveikia`:''}`;
 const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`;
 // A: išsamios žymos
 const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IK(g.v)}<span class="t">${pct(g.v)} · ${gZ(g.z)}</span></span>`).join('')
