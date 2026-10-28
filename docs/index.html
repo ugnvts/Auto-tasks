@@ -62,20 +62,24 @@ iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; bac
 var PAGES = [
   { id: "dashboard", name: "Dashboard", variants: [
     { id: "dashboard", name: "„Dirba dabar“ prisegtas", file: "puslapiai/prototipas.html#dashboard",
-      note: "Bangos kairėje, „Dirba dabar“ visada matomas dešinėje." }
+      note: "Bangos kairėje, „Dirba dabar“ visada matomas dešinėje."},
+    { id: "dashboard-cutoff", name: "Cut-off metu", file: "puslapiai/prototipas-cutoff.html#dashboard",
+      note: "Tas pats prototipas cut-off metu: „Auto tasks“ suvestinėje pranešimas, kad auto užduotys pristabdytos." }
   ]},
   { id: "picker", name: "Picker accounts", variants: [
     { id: "picker-accounts", name: "Su „Dirba dabar“", file: "puslapiai/prototipas.html#picker-accounts",
-      note: "Surinkėjų lentelė ir paskyra; „Dirba dabar“ sidebar'as dešinėje, suskleidžiamas." }
+      note: "Surinkėjų lentelė ir paskyra; dešinėje „Dirba dabar“ ir „Laikini pakeitimai“."},
+    { id: "picker-cutoff", name: "Cut-off metu", file: "puslapiai/prototipas-cutoff.html#picker-accounts",
+      note: "Tas pats prototipas cut-off metu: „Auto tasks“ suvestinėje pranešimas, kad auto užduotys pristabdytos." }
   ]},
   { id: "zymos", name: "Efektyvumo žymos", variants: [
     { id: "efektyvumo-zymos", name: "Būsenų katalogas", file: "puslapiai/efektyvumo-zymos.html",
-      note: "Visos efektyvumo korekcijų žymų būsenos: išsamios žymos lentelėje, ikonos sidebar'o kortelėse." }
+      note: "Efektyvumo korekcijų ir sustabdytų zonų žymos: lentelėje, paskyroje, trukmės stalčiuje, „Laikinų pakeitimų“ skydelyje." }
   ]}
 ];
 // Abu ekranai yra viename prototipe su bendrais duomenimis; perėjus per kairįjį meniu skirtukas persijungia pats.
 // Senos nuorodos iš ankstesnių versijų
-var ALIAS = { "picker-zonu-kombinacijos": "picker-accounts", "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
+var ALIAS = { "picker-progresas": "picker-accounts", "dashboard-progresas": "dashboard", "picker-pakeitimai": "picker-accounts", "dashboard-pakeitimai": "dashboard", "picker-zonu-kombinacijos": "picker-accounts", "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
 
 var ALL = [];
 PAGES.forEach(function (p) { p.variants.forEach(function (v) { v.page = p; ALL.push(v); }); });
@@ -126,7 +130,11 @@ window.addEventListener("message", function (e) {
   if (e.source !== view.contentWindow || !e.data || !e.data.proto) return;
   var pid = e.data.proto === "dash" ? "dashboard" : "picker";
   if (cur.page.id === pid) return; // liekam tame pačiame variante
-  for (var i = 0; i < PAGES.length; i++) if (PAGES[i].id === pid) show(PAGES[i].variants[0]);
+  var base = cur.file.split("#")[0];
+  for (var i = 0; i < PAGES.length; i++) if (PAGES[i].id === pid) {
+    var same = PAGES[i].variants.filter(function (v) { return v.file.split("#")[0] === base; })[0];
+    show(same || PAGES[i].variants[0]);
+  }
 });
 show(fromHash());
 </script>
