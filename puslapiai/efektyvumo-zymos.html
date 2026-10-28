@@ -86,7 +86,7 @@ const card=c=>{const g=PRG[c.s],pc=g.tt?Math.round(g.pk/g.tt*100):0,
     <div class="ml-auto flex items-center gap-2"><span class="text-xs text-gray-500">Auto</span><span class="inline-block w-9 h-5 rounded-full bg-green-600 relative" aria-hidden="true"><span class="absolute right-0.5 top-0.5 w-4 h-4 rounded-full bg-white"></span></span></div></div>
   ${g.z.length?`<div class="mt-2 flex flex-wrap items-center gap-1.5">${g.z.map(q=>`<span class="rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5">${q}</span>`).join('')}</div>`:''}
   <div class="mt-2 flex items-center gap-2"><div class="flex-1 min-w-0 relative h-6 rounded border overflow-hidden ${col[0]}">${col[1]?`<span class="absolute inset-y-0 left-0 ${col[1]}" style="width:${pc}%"></span>`:''}<span class="relative h-full flex items-center px-2.5 text-[13px] tabular-nums"><span>${lab}</span></span></div></div>
-  <div class="mt-2 grid grid-cols-2 gap-2">${cb('Surinkimo trukmė',g.m+eCh(c),!g.u)}${cb('Užduotys',g.u+sCh(c),!g.u)}</div></div>`};
+  <div class="mt-2 grid grid-cols-2 gap-2">${cb('Surinkimo trukmė',g.m,!g.u)}${cb('Užduotys',g.u,!g.u)}</div></div>`};
 out.innerHTML=`<section class="bg-white border rounded-lg">
   <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
     <p class="text-gray-600 mt-1">Stulpelyje be antraštės dešinėje nuo „Būsena“. Zonos su vienoda korekcija sugrupuotos: viena zona – pavadinimas, kelios – skaičius („−10 % · 12 zonų“). Kai yra asmeninė korekcija, centro korekcijos žyma nerodoma. Užvedus pelę – detalės.</p></div>
@@ -94,8 +94,8 @@ out.innerHTML=`<section class="bg-white border rounded-lg">
   <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4">${c.s=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded whitespace-nowrap ${ST[c.s]}">${c.s}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
 </section>
 <section class="bg-white border rounded-lg">
-  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">„Dirba dabar“ sidebar'o kortelės: žymos mygtukuose</h2>
-    <p class="text-gray-600 mt-1">„Surinkimo trukmės“ mygtuke greta laiko – korekcijos žyma su rodykle ir procentu (iki dviejų korekcijų – atskiros žymos; daugiau – pirmoji ir „+N“), „Užduočių“ mygtuke – sustabdytų zonų žyma. Užvedus pelę – detalės; paspaudus mygtuką prototipe atsiveria stalčius.</p></div>
+  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">„Dirba dabar“ sidebar'o kortelės: korekcijų nerodo</h2>
+    <p class="text-gray-600 mt-1">Kortelėje korekcijų ir sustabdytų zonų žymų nėra: „Dirba dabar“ rodo tik tai, kas vyksta. Korekcijos matomos išskleidus „Surinkimo trukmės“ stalčių (skaičiai su „buvo“), visas vaizdas – „Laikinų pakeitimų“ skydelyje.</p></div>
   <div class="p-4 bg-gray-50 rounded-b-lg grid gap-2" style="grid-template-columns:repeat(auto-fill,minmax(min(100%,380px),1fr))">${CASES.map(card).join('')}</div>
 </section>`;
 </script>
