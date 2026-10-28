@@ -242,9 +242,10 @@ td,th{white-space:nowrap}
           <b id="bulkN">0</b> pažymėta
           <button class="bg-green-600 text-white px-3 py-1 rounded" onclick="bulk(1)">Įjungti auto tasks</button>
           <button class="bg-white border px-3 py-1 rounded" onclick="bulk(0)">Išjungti</button>
+          <button class="bg-white border px-3 py-1 rounded" onclick="cOpenSel()">Koreguoti efektyvumą</button>
         </div>
         <div class="mt-3 bg-white border rounded overflow-x-auto"><table class="w-full text-sm">
-          <thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-3"><input id="selAll" type="checkbox" onchange="all_(this.checked)"></th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Last name</th><th class="px-4 font-medium">Time card</th><th class="px-4 font-medium">Shift name</th><th class="px-4 font-medium">Role</th><th class="px-4 font-medium">Auto tasks</th><th class="px-4 font-medium">Būsena</th><th class="px-4" aria-label="Efektyvumo korekcijos"></th><th></th></tr></thead>
+          <thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-3"><input id="selAll" type="checkbox" onchange="all_(this.checked)"></th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Last name</th><th class="px-4 font-medium">Time card</th><th class="px-4 font-medium">Shift name</th><th class="px-4 font-medium">Role</th><th class="px-4 font-medium" title="Ar surinkėjas gali dirbti keliose zonose vienu metu">Kelios zonos</th><th class="px-4 font-medium">Auto tasks</th><th class="px-4 font-medium">Būsena</th><th class="px-4" aria-label="Efektyvumo korekcijos"></th><th></th></tr></thead>
           <tbody id="tbody"></tbody>
         </table></div>
         <p id="foot" class="text-center text-sm text-gray-500 mt-4"></p>
@@ -303,8 +304,9 @@ td,th{white-space:nowrap}
             </div></div>
           <div class="flex flex-wrap justify-end gap-2 pt-4 border-t">
             <button class="border px-4 py-2 rounded" onclick="back()">Atšaukti</button>
-            <button class="border border-indigo-600 text-indigo-700 px-4 py-2 rounded" onclick="go('edit')">Išsaugoti ir kitas</button>
-            <button class="bg-indigo-600 text-white px-4 py-2 rounded" onclick="back()">Išsaugoti</button>
+            <p id="zsave" class="hidden w-full text-right text-red-700"></p>
+            <button class="border border-indigo-600 text-indigo-700 px-4 py-2 rounded" onclick="if(zSave())go('edit')">Išsaugoti ir kitas</button>
+            <button class="bg-indigo-600 text-white px-4 py-2 rounded" onclick="if(zSave())back()">Išsaugoti</button>
           </div>
         </div>
       </section>
@@ -314,7 +316,8 @@ td,th{white-space:nowrap}
 
 
 <!-- SIDEBAR: suskleistas -->
-<aside id="rail" class="hidden md:flex fixed right-0 top-14 bottom-0 w-[76px] bg-white border-l flex-col items-center pt-3 pb-2 overflow-y-auto z-[5] cursor-pointer hover:bg-gray-50 transition-colors" role="button" tabindex="0" aria-label="Išskleisti Dirba dabar" title="Išskleisti" onclick="sbOpen()" onkeydown="if(event.key=='Enter'||event.key==' '){event.preventDefault();sbOpen()}">
+<aside id="rail" class="hidden md:flex fixed right-0 top-14 bottom-0 w-[76px] bg-white border-l flex-col items-stretch z-[5]">
+  <button id="railA" class="flex flex-col items-center pt-3 pb-3 hover:bg-gray-50 transition-colors" aria-label="Išskleisti Dirba dabar" title="Dirba dabar" onclick="sbOpen()">
   <div class="flex flex-col items-center text-gray-600"><svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Dirba<br>dabar</div><div id="rC" class="empty:hidden mt-1 text-[10px] font-semibold text-sky-800 bg-sky-50 border border-sky-200 rounded px-1"></div></div>
   <div class="w-12 border-t my-2.5"></div>
   <div class="rc"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Auto</div>
@@ -326,14 +329,21 @@ td,th{white-space:nowrap}
   <div class="rs"><span>Renka</span><b id="rMR"></b></div>
   <div class="rs"><span>Nesinchr.</span><b id="rMN"></b></div>
   <div class="rs"><span>Naujokai</span><b id="rNk"></b></div></div>
+  </button>
+  <button id="railB" class="flex-1 flex flex-col items-center pt-3 pb-2 border-t hover:bg-gray-50 transition-colors" aria-label="Išskleisti Laikini pakeitimai" title="Laikini pakeitimai" onclick="kpOpen()">
+    <div class="flex flex-col items-center text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Laikini<br>pakeitimai</div></div>
+    <div class="w-12 border-t my-2.5"></div>
+    <div id="rK" class="flex flex-col items-center gap-1.5"></div>
+  </button>
 </aside>
 <button id="fab" class="md:hidden fixed right-4 bottom-4 z-[5] bg-indigo-600 text-white text-sm px-4 py-2.5 rounded-full shadow-lg" onclick="sbOpen()">Dirba dabar</button>
+<button id="fab2" class="md:hidden fixed right-4 bottom-16 z-[5] bg-white border text-gray-800 text-sm px-4 py-2.5 rounded-full shadow-lg" onclick="kpOpen()">Laikini pakeitimai</button>
 
 <!-- SIDEBAR: išskleistas -->
 <section id="sb" hidden class="fixed right-0 top-14 bottom-0 z-10 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Dirba dabar">
   <button id="sbXb" class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Suskleisti" title="Suskleisti (Esc)" onclick="sbClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
-  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Dirba dabar</div></div>
-  <div id="cBar" class="px-4 pb-1"></div>
+  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Dirba dabar</div><button id="kpDockBtn" hidden class="ml-auto text-xs border bg-white rounded px-2 py-1 text-gray-700 hover:bg-gray-50" onclick="kpOpen()">Laikini pakeitimai <span id="kpDockN" class="text-gray-500"></span></button></div>
+  
   <div id="sbScroll" class="flex-1 overflow-y-auto">
   <div class="px-4 pt-3 pb-4 space-y-2">
     <div class="sc">
@@ -349,6 +359,12 @@ td,th{white-space:nowrap}
   <div class="border-y bg-white grid grid-cols-2 sticky top-0 z-[3]" role="tablist"><button id="tz" class="tab" role="tab" onclick="sbTab('z')">Zonos</button><button id="tp" class="tab" role="tab" onclick="sbTab('p')">Surinkėjai <span id="tpn" class="text-gray-400 font-normal"></span></button></div>
   <div id="sbBody"></div>
   </div>
+</section>
+<!-- SIDEBAR: Laikini pakeitimai -->
+<section id="kp" hidden class="fixed right-0 top-14 bottom-0 z-20 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Laikini pakeitimai">
+  <button class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Suskleisti" title="Suskleisti (Esc)" onclick="kpClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
+  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><div class="font-semibold text-lg text-gray-900">Laikini pakeitimai</div></div>
+  <div id="kpBody" class="flex-1 overflow-y-auto"></div>
 </section>
 <div id="dtoast" class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 bg-gray-800 text-white text-sm rounded px-4 py-2.5 shadow-lg" role="status" hidden></div>
 <div id="toast" hidden class="fixed left-1/2 -translate-x-1/2 bottom-6 z-40 bg-gray-900 text-white text-sm rounded px-4 py-2.5 shadow-lg flex items-center gap-4"></div>
@@ -385,7 +401,7 @@ function tg(i,on){setA(i,on);render()}
 function render(){
   vis=N.map((r,i)=>[r,i]).filter(([r,i])=>match(r,i));
   document.getElementById('cnt').textContent=N.filter(r=>r[5]).length;sumR();
-  document.getElementById('tbody').innerHTML=vis.map(([r,i])=>{const g=keep.has(i)&&!r[5];return `<tr class="border-b hover:bg-gray-50 cursor-pointer ${g?'opacity-50':''}" onclick="go('view')"><td class="px-4" onclick="event.stopPropagation()"><input type="checkbox" ${sel.has(i)?'checked':''} onchange="pick(${i},this.checked)"></td><td class="px-4 py-3 font-medium">${r[0]}</td><td class="px-4">${r[1]}</td><td class="px-4 tabular-nums">${r[2]}</td><td class="px-4">${r[3]}</td><td class="px-4 whitespace-nowrap">${r[4]}${r[7]?' <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}</td><td class="px-4" onclick="event.stopPropagation()"><div class="flex items-center gap-2">${r[4]=='Inspector'?'<button class="tog on" style="opacity:.5;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Inspektoriams auto tasks visada įjungti, išjungti negalima (R05)"></button>':r[7]?'<button class="tog" style="opacity:.4;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Naujokui auto tasks įjungti negalima"></button>':`<button class="tog ${r[5]?'on':''}" aria-label="Auto tasks" onclick="tg(${i},${r[5]?0:1})"></button>`}${g?`<button class="text-indigo-600 text-xs" onclick="tg(${i},1)">Atšaukti</button>`:''}</div></td><td class="px-4">${r[6]=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded ${ST[r[6]]}">${r[6]}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${eTags(i)}</div></td><td class="px-2" onclick="event.stopPropagation()"><button data-menu class="px-2 py-1 rounded text-gray-500 hover:bg-gray-100" aria-label="Veiksmai" onclick="menu(this,${i})">⋮</button></td></tr>`}).join('')||'<tr><td colspan="10" class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nerasta.</td></tr>';
+  document.getElementById('tbody').innerHTML=vis.map(([r,i])=>{const g=keep.has(i)&&!r[5];return `<tr class="border-b hover:bg-gray-50 cursor-pointer ${g?'opacity-50':''}" onclick="go('view')"><td class="px-4" onclick="event.stopPropagation()"><input type="checkbox" ${sel.has(i)?'checked':''} onchange="pick(${i},this.checked)"></td><td class="px-4 py-3 font-medium">${r[0]}</td><td class="px-4">${r[1]}</td><td class="px-4 tabular-nums">${r[2]}</td><td class="px-4">${r[3]}</td><td class="px-4 whitespace-nowrap">${r[4]}${r[7]?' <span class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}</td><td class="px-4 whitespace-nowrap">${(n=>n?`<span class="text-xs rounded border border-gray-300 bg-gray-50 px-1.5 py-0.5" title="Can work in multiple zones; priskirtų kombinacijų: ${n}">Taip · ${n} komb.</span>`:'<span class="text-gray-400">Ne</span>')(kZ(i))}</td><td class="px-4" onclick="event.stopPropagation()"><div class="flex items-center gap-2">${r[4]=='Inspector'?'<button class="tog on" style="opacity:.5;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Inspektoriams auto tasks visada įjungti, išjungti negalima (R05)"></button>':r[7]?'<button class="tog" style="opacity:.4;cursor:not-allowed" aria-label="Auto tasks" aria-disabled="true" title="Naujokui auto tasks įjungti negalima"></button>':`<button class="tog ${r[5]?'on':''}" aria-label="Auto tasks" onclick="tg(${i},${r[5]?0:1})"></button>`}${g?`<button class="text-indigo-600 text-xs" onclick="tg(${i},1)">Atšaukti</button>`:''}</div></td><td class="px-4">${r[6]=='Nerenka'?'<span class="text-gray-400">Nerenka</span>':`<span class="text-xs px-2 py-0.5 rounded ${ST[r[6]]}">${r[6]}</span>`}</td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${eTags(i)}</div></td><td class="px-2" onclick="event.stopPropagation()"><button data-menu class="px-2 py-1 rounded text-gray-500 hover:bg-gray-100" aria-label="Veiksmai" onclick="menu(this,${i})">⋮</button></td></tr>`}).join('')||'<tr><td colspan="11" class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nerasta.</td></tr>';
   document.getElementById('foot').textContent=`Rodoma ${vis.length} iš ${N.length}`+(keep.size?' · išjungti lieka matomi, kol pakeisi filtrą':'');
   document.getElementById('bulk').classList.toggle('hidden',!sel.size);document.getElementById('bulkN').textContent=sel.size;
   document.getElementById('selAll').checked=vis.length>0&&vis.every(([,i])=>sel.has(i));
@@ -393,6 +409,8 @@ function render(){
 }
 function pick(i,c){c?sel.add(i):sel.delete(i);render()}
 function all_(c){vis.forEach(([,i])=>c?sel.add(i):sel.delete(i));render()}
+// Kelios zonos: Silvijai – iš paskyros (Can work in multiple zones ir pasirinktos kombinacijos), kitiems – demonstraciniai duomenys
+const KZD={2:2,4:1,7:3,9:1,12:2},kZ=i=>i==0?(document.getElementById('mz')?.checked?CB.filter(c=>c.on).length:0):(KZD[i]||0);
 function bulk(on){sel.forEach(i=>setA(i,on));sel.clear();render()}
 let cv='dash';const hist=[];
 function back(){go(hist.pop()||'dash',false)}
@@ -401,7 +419,7 @@ document.addEventListener('click',e=>{if(!e.target.closest('#rmenu,[data-menu]')
 function go(v,push=true){try{parent.postMessage({proto:v},'*')}catch(e){}document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
 function allZ(on){if(on)Z.forEach(n=>EFF[n]??=[]);else Object.keys(EFF).forEach(k=>delete EFF[k]);zones()}
 function zones(){const q=document.getElementById('zq').value.toLowerCase();document.getElementById('zc').textContent=Z.filter(n=>EFF[n]).length+' iš 52 įjungta';
-  const inp=(i,u,v,n,k)=>`<label class="flex flex-col gap-1 text-xs text-gray-500">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white" value="${v??''}" oninput="zEf('${n}',${k},this.value)"></label>`;
+  const inp=(i,u,v,n,k)=>`<label class="flex flex-col gap-1 text-xs text-gray-500">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white ${zErr&&(v==null||String(v).trim()==='')?'border-red-500 bg-red-50':''}" value="${v??''}" oninput="zEf('${n}',${k},this.value)"></label>`;
   const box=(t,us,e,o)=>`<fieldset class="border rounded bg-white px-3 pb-3"><legend class="px-1 text-xs font-semibold uppercase tracking-wide text-gray-600">${t}</legend><div class="grid gap-2" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,k)=>inp(e.i,u,e.v[k+o],e.n,k+o)).join('')}</div></fieldset>`;
   document.getElementById('zl').innerHTML=['NONE',...Z].map((n,i)=>[n,i]).filter(([n])=>n.toLowerCase().includes(q)).map(([n,i])=>{const e=EFF[n],no=n=='NONE';return `<div id="zr${i}" class="px-3 py-2 ${e?'bg-indigo-50/50':''}"><label class="flex items-center gap-2"><input id="z${i}" type="checkbox" ${e?'checked':''} onchange="if(this.checked)EFF['${n}']=[];else delete EFF['${n}'];zones()">${no?'<b>NONE</b>':n}<span id="zt${i}" class="ml-auto">${zTag(n)}</span><span id="zi${i}" class="empty:hidden">${zIco(n)}</span></label>${e&&!no?`<div class="mt-2 pl-6 grid md:grid-cols-2 gap-3">${box('Efficiency per hour',['SKU/1h','Units/1h','KG/1h'],{i,n,v:e},0)}${box('Maks. priskyrimas vienam kartui',['SKU','Units','KG','Unique orders'],{i,n,v:e},3)}</div>`:''}</div>`}).join('')}
 // Kombinacijos ateina iš SC nustatymų; viena zona gali būti tik vienoje kombinacijoje (S09). Efektyvumas vedamas tik zonų sąraše.
@@ -413,7 +431,7 @@ function cbs(){const mz=document.getElementById('mz').checked;document.getElemen
       ${ms.map(n=>`<div class="pl-6 mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-amber-800"><span><span aria-hidden="true">⚠</span> ${n} nepriskirta surinkėjui</span>${c.on?`<button class="text-indigo-700 font-medium hover:underline" onclick="zGo('${n}')">Rodyti zoną sąraše ↑</button>`:''}</div>`).join('')}</div>`}).join('')}
 function zGo(n){const q=document.getElementById('zq');if(q.value){q.value='';zones()}
   const el=document.getElementById('zr'+['NONE',...Z].indexOf(n));el.scrollIntoView({behavior:'smooth',block:'center'});el.classList.remove('zfl');void el.offsetWidth;el.classList.add('zfl')}
-const zOk=n=>!!EFF[n]&&[0,1,2].every(k=>EFF[n][k]!=null&&String(EFF[n][k]).trim()!=='');
+const zOk=n=>!!EFF[n]&&[0,1,2,3,4,5,6].every(k=>EFF[n][k]!=null&&String(EFF[n][k]).trim()!=='');
 // Žyma tik pasirinktos kombinacijos zonoms: pilka, kai zona priskirta; raudona, kai ne
 function zTag(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c)return '';const o=c.z.filter(x=>x!=n),ok=zOk(n);
   return `<span class="flex flex-wrap items-center justify-end gap-1 text-xs font-normal text-gray-500" title="${c.z.join(' + ')}">Kombinacija su ${o.map(x=>`<span class="rounded-full border px-2 py-0.5 whitespace-nowrap bg-gray-100 border-gray-200 text-gray-700">${x}</span>`).join('')}</span>`}
@@ -421,7 +439,14 @@ function zTag(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on
 function zIco(n){const c=document.getElementById('mz')?.checked&&CB.find(c=>c.on&&c.z.includes(n));if(!c||zOk(n))return '';
   return `<span class="inline-flex items-center justify-center w-[18px] h-[18px] rounded-full bg-red-600 text-white text-xs font-bold leading-none" role="img" aria-label="Zona nepriskirta" title="Zona nepriskirta: pažymėk ir suvesk Efficiency per hour, kad kombinacija ${c.z.join(' + ')} veiktų">!</span>`}
 function zTags(){['NONE',...Z].forEach((n,i)=>{const t=document.getElementById('zt'+i),c=document.getElementById('zi'+i);if(t)t.innerHTML=zTag(n);if(c)c.innerHTML=zIco(n)})}
-function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs()}
+function zEf(n,k,v){(EFF[n]??=[])[k]=v;zTags();cbs();if(zErr){const b=document.getElementById('zsave');const m=zBad();b.textContent=zMsg(m);b.classList.toggle('hidden',!m.length)}}
+// Išsaugoti neleidžiama, kol kuri nors pažymėta zona neturi visų 7 laukų arba pasirinktos kombinacijos zona nepriskirta (DV04, K05)
+let zErr=false;
+const zBad=()=>{const mz=document.getElementById('mz').checked,z=Z.filter(n=>EFF[n]&&!zOk(n)),c=mz?CB.filter(c=>c.on&&c.z.some(n=>!EFF[n])).flatMap(c=>c.z.filter(n=>!EFF[n])):[];return [...new Set([...z,...c])]};
+const zMsg=m=>m.length?`Neišsaugota: ${m.length==1?'zonai':'zonoms'} ${m.slice(0,3).join(', ')}${m.length>3?' ir dar '+(m.length-3):''} trūksta efektyvumo duomenų. Suvesk visus laukus.`:'';
+function zSave(){const m=zBad(),b=document.getElementById('zsave');zErr=m.length>0;b.textContent=zMsg(m);b.classList.toggle('hidden',!zErr);
+  if(zErr){const q=document.getElementById('zq');if(q.value)q.value='';zones();const el=document.getElementById('zr'+['NONE',...Z].indexOf(m[0]));el?.scrollIntoView({behavior:'smooth',block:'center'});return false}
+  zErr=false;return true}
 {const _z=zones;zones=function(){_z();cbs()}}
 {const _c=cbs;cbs=function(){_c();zTags()}}
 document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span id="vNk" class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
@@ -509,30 +534,35 @@ function cBarR(){const b=document.getElementById('cBar');if(!b)return;const h=gH
     <div class="mt-2 grid grid-cols-2 gap-2"><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-gray-50 text-gray-800" onclick="cOpen()">Koreguoti efektyvumą</button><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-red-50 text-red-700 disabled:opacity-40" ${n?'':'disabled'} onclick="gOffAsk()">Nuimti visiems</button></div></div>`
    :`<button class="w-full flex items-center justify-center gap-2 text-sm font-medium border border-gray-300 rounded-lg bg-white px-3 py-2.5 text-gray-800 hover:bg-gray-50" onclick="cOpen()">${IKM}Koreguoti efektyvumą</button>`}
 function cOpen(){GD={d:'up',p:10,all:true,t:'',sl:false};cR();document.getElementById('kordlg').hidden=false}
-function cR(){const D=GD,now=gNow(),tgt=D.all?gAll():now,ex=tgt.filter(i=>pers(i)),
+function cOpenSel(){GD={d:'up',p:10,all:false,t:'',sel:[...sel]};cR();document.getElementById('kordlg').hidden=false}
+function cR(){const D=GD,now=gNow(),tgt=D.sel?D.sel:D.all?gAll():now,ex=tgt.filter(i=>pers(i)),
     seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="GD.d='${v}';if(!KP.${v}.includes(GD.p))GD.p=KP.${v}[1];cR()">${l}</button>`;
-  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Efektyvumo korekcija surinkėjams</div><p class="text-gray-500 mt-1">Visoms pasirinktų surinkėjų zonoms uždedama ta pati korekcija. Taikoma visoms užduotims: auto ir rankiniu būdu. Bazinis efektyvumas nekeičiamas.</p>
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${D.sel?`Efektyvumo korekcija pažymėtiems (${D.sel.length})`:'Efektyvumo korekcija surinkėjams'}</div><p class="text-gray-500 mt-1">Visoms pasirinktų surinkėjų zonoms uždedama ta pati korekcija. Taikoma visoms užduotims: auto ir rankiniu būdu. Bazinis efektyvumas nekeičiamas.</p>
     <div class="mt-4 font-medium">Kryptis</div><div class="mt-1 flex gap-1 bg-gray-100 rounded p-1">${seg('down','Mažinti')}${seg('up','Didinti')}</div>
     <div class="mt-4 font-medium">Dydis</div><div class="mt-1 flex flex-wrap gap-2">${KP[D.d].map(v=>`<button class="px-3 py-1 rounded border tabular-nums ${D.p==v?DS(D.d):'hover:bg-gray-50'}" aria-pressed="${D.p==v}" onclick="GD.p=${v};cR()">${sg(D.d)}${v} %</button>`).join('')}</div>
-    <div class="mt-4 font-medium">Kam taikyti</div><div class="mt-1 space-y-1.5">
+    ${D.sel?'':`<div class="mt-4 font-medium">Kam taikyti</div>`}<div class="mt-1 space-y-1.5" ${D.sel?'hidden':''}>
       <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'checked':''} onchange="GD.all=true;cR()"><span>Visiems, įskaitant pradėsiančius dirbti vėliau <span class="text-gray-500">(${gAll().length})</span></span></label>
       <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'':'checked'} onchange="GD.all=false;cR()"><span>Tik dabar dirbantiems <span class="text-gray-500">(${now.length})</span>${D.all?'':` · <button class="text-indigo-700 hover:underline" onclick="event.preventDefault();GD.sl=!GD.sl;cR()">${D.sl?'Slėpti':'Rodyti'} sąrašą</button>`}</span></label>
       ${!D.all&&D.sl?`<div class="ml-6 border rounded max-h-40 overflow-y-auto divide-y text-xs">${now.map(i=>`<div class="px-2.5 py-1">${N[i][0]} ${N[i][1]} <span class="text-gray-500">· ${N[i][5]?'auto':'rankinis'}, ${N[i][6].toLowerCase()}</span></div>`).join('')}</div><p class="ml-6 text-xs text-gray-500">Rankinio skyrimo surinkėjai, kurie dabar neturi užduoties, į sąrašą nepatenka.</p>`:''}</div>
     <div class="mt-4 font-medium">Galioja</div><div class="mt-1 space-y-1.5"><label class="flex items-center gap-2"><input type="radio" name="ct" ${D.t?'':'checked'} onchange="GD.t='';cR()">Kol išjungsiu</label><label class="flex items-center gap-2"><input type="radio" name="ct" ${D.t?'checked':''} onchange="GD.t='18:00';cR()">Iki${D.t?` <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="GD.t=this.value">`:''}</label></div>
-    ${(()=>{const cnt={};ex.forEach(i=>new Set(Object.values(pers(i).z).map(k=>k.d+'|'+k.p)).forEach(x=>cnt[x]=(cnt[x]||0)+1));const g=Object.entries(cnt).sort((a,b)=>b[1]-a[1]),st=tgt.filter(i=>stops(i).length).length,
-        c=(d,t)=>`<span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-2 py-0.5 tabular-nums ${d?DT(d):'border-gray-300 bg-gray-100 text-gray-700'}">${t}</span>`;
-      return `<div class="mt-4 rounded border border-gray-200 px-3 py-2"><div class="text-gray-500 text-xs font-semibold uppercase tracking-wide">Dabar (${D.all?'visi':'dabar dirbantys'})</div>
-        <div class="mt-1.5 flex flex-wrap gap-1.5">${g.length?g.map(([k,n])=>{const [d,p]=k.split('|');return c(d,`${IK(d)}${sg(d)}${p}% · ${n}`)}).join(''):'<span class="text-gray-500">Korekcijų nėra</span>'}${st?c(null,`${IPA.replace('w-3.5 h-3.5','w-3 h-3')}Sustabdytos zonos · ${st}`):''}</div>
-        <div class="mt-3 text-gray-500 text-xs font-semibold uppercase tracking-wide">Po taikymo</div>
-        <div class="mt-1.5 flex flex-wrap items-center gap-1.5">${c(D.d,`${IK(D.d)}${sg(D.d)}${D.p}% · ${tgt.length}`)}<span class="text-gray-600">${ex.length?`perrašomos ${ex.length} ${ex.length==1?'surinkėjo':'surinkėjų'} korekcijos`:'visoms jų zonoms'}</span></div>
-        ${st?`<p class="mt-1.5 text-xs text-gray-500">Sustabdytos zonos lieka sustabdytos.</p>`:''}</div>`})()}
+    ${ex.length?`<p class="mt-4 text-gray-600">Bus perrašytos ${ex.length} ${ex.length==1?'surinkėjo':'surinkėjų'} esamos korekcijos.</p>`:''}
     <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600" onclick="cApply()">Taikyti ${tgt.length}</button></div>`}
 const gSnap=()=>({k:korCp(KOR),pc:JSON.parse(JSON.stringify(PC))}),gRestore=x=>{KOR=x.k;Object.keys(PC).forEach(k=>delete PC[k]);Object.assign(PC,x.pc)},gRe=()=>{render();if(cv=='view')rv()};
-function cApply(){const D=GD,prev=gSnap(),k={d:D.d,p:D.p,t:D.t},tgt=D.all?gAll():gNow();
+function cApply(){const D=GD,prev=gSnap(),k={d:D.d,p:D.p,t:D.t},tgt=D.sel?D.sel:D.all?gAll():gNow();if(D.sel)sel.clear();
   tgt.forEach(i=>{const z={z:Object.fromEntries(gZ(i).map(q=>[q,{...k}]))};if(i==0)KOR=korN(z);else PC[i]=z});
   document.getElementById('kordlg').hidden=true;gRe();toast(`Korekcija ${pct(k)} taikoma ${tgt.length} surinkėjams`,()=>{gRestore(prev);gRe()})}
-function gOffAsk(){const h=gHas();document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">Nuimti efektyvumo korekcijas visiems?</div><p class="text-gray-600 mt-2">Bus nuimtos visų ${h.length} surinkėjų zonų korekcijos; jie grįš prie bazinio efektyvumo.</p><div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-red-600" onclick="gOff()">Nuimti visiems</button></div>`;document.getElementById('kordlg').hidden=false}
-function gOff(){const prev=gSnap();KOR=null;Object.keys(PC).forEach(k=>delete PC[k]);document.getElementById('kordlg').hidden=true;gRe();toast('Efektyvumo korekcijos nuimtos visiems',()=>{gRestore(prev);gRe()})}
+// „Nuimti visiems“: korekcijos nuimamos visada; sustabdytos zonos – tik pažymėjus varnelę (sustabdymas yra asmeninis veiksmas, dažnai apsauga)
+let GOst=false;
+function gOffAsk(){const h=gHas(),st=gAll().filter(i=>stops(i).length),zn=st.reduce((a,i)=>a+stops(i).length,0),sv=(n,a,b,c)=>`${n} ${n%10==1&&n%100!=11?a:n%10>=2&&(n%100<10||n%100>=20)?b:c}`;GOst=!h.length;
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${h.length?'Nuimti efektyvumo korekcijas visiems?':'Atnaujinti užduočių skyrimą visiems?'}</div>
+    ${h.length?`<p class="text-gray-600 mt-2">Bus nuimtos ${sv(h.length,'surinkėjo','surinkėjų','surinkėjų')} korekcijos; jie grįš prie bazinio efektyvumo.</p>`:''}
+    ${st.length?(h.length?`<label class="mt-3 flex items-start gap-2"><input type="checkbox" class="mt-1" onchange="GOst=this.checked"><span>Taip pat atnaujinti užduočių skyrimą sustabdytose zonose<br><span class="text-gray-500">${sv(st.length,'surinkėjas','surinkėjai','surinkėjų')}, ${sv(zn,'zona','zonos','zonų')}</span></span></label>`:`<p class="text-gray-600 mt-2">Bus atnaujintas užduočių skyrimas sustabdytose zonose: ${sv(st.length,'surinkėjas','surinkėjai','surinkėjų')}, ${sv(zn,'zona','zonos','zonų')}.</p>`):''}
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Atšaukti</button><button class="px-4 py-1.5 rounded text-white bg-red-600" onclick="gOff()">${h.length?'Nuimti':'Atnaujinti skyrimą'}</button></div>`;
+  document.getElementById('kordlg').hidden=false}
+function gOff(){const prev=gSnap(),pau=new Map(PAU),sz=JSON.parse(JSON.stringify(SZ)),st=GOst;KOR=null;Object.keys(PC).forEach(k=>delete PC[k]);
+  if(st){PAU.clear();Object.keys(SZ).forEach(k=>delete SZ[k])}
+  document.getElementById('kordlg').hidden=true;gRe();if(cv=='view')rv();
+  toast(st?'Korekcijos nuimtos, užduočių skyrimas atnaujintas visiems':'Efektyvumo korekcijos nuimtos visiems',()=>{gRestore(prev);PAU.clear();pau.forEach((v,k)=>PAU.set(k,v));Object.keys(SZ).forEach(k=>delete SZ[k]);Object.assign(SZ,sz);gRe();if(cv=='view')rv()})}
 function rv(){vAuto();const zs=['NONE',...Z].filter(n=>EFF[n]);document.getElementById('effN').textContent=`(${zs.length} priskirtos${PAU.size?`, ${PAU.size} sustabdyta`:''})`;
   const vb=(t,us,e,o,k)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><dl class="grid gap-2 mt-1" style="grid-template-columns:repeat(${us.length},minmax(0,1fr))">${us.map((u,x)=>{const v=e[x+o];return `<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${k&&typeof v=='number'?`<span class="font-semibold ${DX(k.d)}">${Math.round(v*(1+(k.d=='up'?1:-1)*k.p/100))}</span><span class="block text-xs font-normal text-gray-400">buvo ${v}</span>`:v??'–'}</dd></div>`}).join('')}</dl></div>`;
   const mz=document.getElementById('mz').checked;
@@ -777,12 +807,40 @@ function layout(){const g=document.getElementById('dgrid'),dash=!document.getEle
   const can=dash&&innerWidth>=768&&g.clientWidth-440-24>=600;
   if(can==docked)return;docked=can;
   g.classList.toggle('two',can);document.getElementById('outer').classList.toggle('docked',can);
-  if(can){document.getElementById('dock').appendChild(sb);sb.hidden=false;rail.hidden=true;fab.hidden=true}
+  if(can){document.getElementById('dock').appendChild(sb);sb.hidden=false;rail.hidden=true;fab.hidden=true;if(window.fab2)fab2.hidden=true}
   else{document.body.appendChild(sb);sb.hidden=true;rail.hidden=false;rail.classList.remove('md:invisible');fab.hidden=false}
-  document.getElementById("sbXb").hidden=can;sbR()}
+  document.getElementById("sbXb").hidden=can;const kb=document.getElementById("kpDockBtn");if(kb)kb.hidden=!can;sbR()}
 const _sbClose=sbClose;sbClose=function(){if(docked)return;_sbClose()};
 const _go=go;go=function(v,p){_go(v,p);layout()};
 addEventListener('resize',layout);layout();
+// Laikini pakeitimai – atskiras skydelis. Juostoje du mygtukai: „Dirba dabar“ (stebėjimas) ir „Laikini pakeitimai“ (kas pakeista ir ką keičiu).
+// Vienu metu atidarytas vienas skydelis. Skydelis rodo visų surinkėjų pakeitimus visose zonose, ne tik tai, kas vyksta dabar.
+let kpF='all',kpQ='';
+const kpList=()=>gAll().filter(i=>pers(i)||stops(i).length);
+function kpOpen(){if(!docked){sb.hidden=true}kmenu.hidden=true;document.getElementById('kp').hidden=false;rail.classList.add('md:invisible');fab.hidden=true;fab2.hidden=true;kpR();document.querySelector('#kp button').focus()}
+function kpClose(){document.getElementById('kp').hidden=true;if(!docked){rail.classList.remove('md:invisible');fab.hidden=false;fab2.hidden=false}}
+{const _o=sbOpen;sbOpen=function(...a){document.getElementById('kp').hidden=true;fab2.hidden=true;_o(...a)}}
+{const _c=sbClose;sbClose=function(){_c();if(!docked)fab2.hidden=false}}
+function kpRail(){const L=kpList(),c=L.filter(i=>pers(i)).length,st=L.filter(i=>stops(i).length).length,b=document.getElementById('rK');if(!b)return;
+  const row=(ic,n,t)=>`<div class="flex flex-col items-center" title="${t}"><span class="text-gray-500">${ic}</span><b class="text-sm tabular-nums">${n}</b></div>`;
+  b.innerHTML=L.length?row(IKM,c,'Surinkėjai su efektyvumo korekcija')+row(IPA,st,'Surinkėjai su sustabdytomis zonomis'):'<span class="text-[11px] text-gray-400">Nėra</span>';
+  const dn=document.getElementById('kpDockN');if(dn)dn.textContent=L.length?'· '+L.length:'';}
+function kpRow(i){const P=pers(i),S=stops(i),r=N[i];
+  const cor=P?pGr(P).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 tabular-nums ${DT(g.d)}">${IK(g.d)}${pct(g)}</span><span class="text-gray-800">${gL(g)}</span><span class="text-xs text-gray-500">${g.t?'iki '+g.t:'kol išjungs'}</span></div>`).join(''):'';
+  const stp=S.map(([z,t])=>`<div class="flex flex-wrap items-center gap-1.5"><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 border-gray-300 bg-gray-100 text-gray-700">${IPA.replace('w-3.5 h-3.5','w-3 h-3')}Sustabdyta</span><span class="text-gray-800">${z}</span><span class="text-xs text-gray-500">${t?'iki '+t:'kol įjungs'}</span></div>`).join('');
+  return `<button class="w-full text-left px-4 py-3 bg-white border-b hover:bg-gray-50 flex gap-3" onclick="kpClose();go('view')" title="Atidaryti paskyrą"><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><span class="font-semibold text-gray-900">${r[0]} ${r[1]}</span>${r[7]?'<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}<span class="text-[11px] text-gray-500">${works(r)?r[6]:'Nedirba'}</span></div><div class="mt-1.5 space-y-1">${cor}${stp}</div></div><span class="self-center text-gray-400">${CV('r')}</span></button>`}
+function kpR(){kpRail();const p=document.getElementById('kp');if(!p||p.hidden)return;const L=kpList(),c=L.filter(i=>pers(i)),st=L.filter(i=>stops(i).length);
+  const f=kpF=='cor'?c:kpF=='st'?st:L,q=kpQ.toLowerCase(),v=f.filter(i=>(N[i][0]+' '+N[i][1]).toLowerCase().includes(q));
+  document.getElementById('kpBody').innerHTML=`<div class="px-4 pt-1 pb-3 space-y-3 sticky top-0 bg-gray-50 z-[2] border-b">
+    <div class="grid grid-cols-2 gap-2"><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-gray-50 text-gray-800" onclick="cOpen()">Koreguoti efektyvumą visiems</button><button class="text-sm border rounded px-2 py-1.5 bg-white hover:bg-red-50 text-red-700 disabled:opacity-40" ${L.length?'':'disabled'} onclick="gOffAsk()">Nuimti visiems</button></div>
+    ${L.length?`<div class="flex w-full border rounded-md p-0.5 gap-0.5 bg-white" role="group" aria-label="Pakeitimo tipas">${[['all','Visi',L.length],['cor','Korekcijos',c.length],['st','Sustabdytos zonos',st.length]].map(([k,t,n])=>`<button class="sg flex-1 ${kpF==k?'on':''}" aria-pressed="${kpF==k}" onclick="kpF='${k}';kpR()">${t} <span class="text-gray-400 tabular-nums">${n}</span></button>`).join('')}</div>
+    <input id="kpQ" class="w-full border rounded px-3 py-1.5 bg-white" placeholder="Ieškoti surinkėjo…" value="${kpQ}" oninput="kpQ=this.value;kpList_()">`:''}</div>
+    <div id="kpList">${kpItems(v,L.length)}</div>`}
+function kpItems(v,total){return total?(v.map(kpRow).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'):'<div class="px-4 py-10 text-center text-gray-500">Laikinų pakeitimų nėra.<br><span class="text-xs">Vieno surinkėjo pakeitimai daromi jo paskyroje.</span></div>'}
+function kpList_(){const L=kpList(),f=kpF=='cor'?L.filter(i=>pers(i)):kpF=='st'?L.filter(i=>stops(i).length):L,q=kpQ.toLowerCase();document.getElementById('kpList').innerHTML=kpItems(f.filter(i=>(N[i][0]+' '+N[i][1]).toLowerCase().includes(q)),L.length)}
+document.addEventListener('keydown',e=>{if(e.key=='Escape'&&!document.getElementById('kp').hidden&&kordlg.hidden)kpClose()});
+{const _r=render;render=function(){_r();kpR()}}
+kpR();
 </script>
 <script>
 // Pradinis ekranas pagal adresą (#dashboard arba #picker-accounts); apvalkalas keičia adresą perjungdamas skirtukus
