@@ -334,7 +334,7 @@ td,th{white-space:nowrap}
   <button id="railB" class="flex flex-col items-center pt-3 pb-3 bg-white border rounded-lg shadow-sm hover:bg-gray-50 transition-colors" aria-label="Išskleisti Laikini pakeitimai" title="Laikini pakeitimai" onclick="kpOpen()">
     <div class="flex flex-col items-center text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Laikini<br>pakeitimai</div></div>
     <div class="w-12 border-t my-2.5"></div>
-    <div id="rK" class="flex flex-col items-center gap-1.5"></div>
+    <div id="rK" class="flex flex-col items-center"></div>
   </button>
 </aside>
 <button id="fab" class="md:hidden fixed right-4 bottom-4 z-[5] bg-indigo-600 text-white text-sm px-4 py-2.5 rounded-full shadow-lg" onclick="sbOpen()">Dirba dabar</button>
@@ -832,8 +832,8 @@ function kpClose(){document.getElementById('kp').hidden=true;if(!docked){rail.cl
 {const _o=sbOpen;sbOpen=function(...a){document.getElementById('kp').hidden=true;fab2.hidden=true;_o(...a)}}
 {const _c=sbClose;sbClose=function(){_c();if(!docked)fab2.hidden=false}}
 function kpRail(){const L=kpList(),c=L.filter(i=>pers(i)).length,st=L.filter(i=>stops(i).length).length,b=document.getElementById('rK');if(!b)return;
-  const row=(ic,n,t)=>`<div class="flex flex-col items-center" title="${t}"><span class="text-gray-500">${ic}</span><b class="text-sm tabular-nums">${n}</b></div>`;
-  b.innerHTML=L.length?row(IKM,c,'Surinkėjai su efektyvumo korekcija')+row(IPA,st,'Surinkėjai su sustabdytomis zonomis'):'<span class="text-[11px] text-gray-400">Nėra</span>';
+  // Kaip „Dirba dabar“: pilkai įrėminta kortelė, eilutės su tekstu ir skaičiumi
+  b.innerHTML=`<div class="rc"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Surink.</div>${L.length?`<div class="rs" title="Surinkėjai su efektyvumo korekcija"><span>Korekc.</span><b>${c}</b></div><div class="rs" title="Surinkėjai su sustabdytomis zonomis"><span>Sustabd.</span><b>${st}</b></div>`:'<div class="rs"><span>Nėra</span></div>'}</div>`;
   const dn=document.getElementById('kpDockN');if(dn)dn.textContent=L.length?'· '+L.length:'';}
 function kpRow(i){const P=pers(i),S=stops(i),r=N[i];
   const cor=P?pGr(P).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 tabular-nums ${DT(g.d)}">${IK(g.d)}${pct(g)}</span><span class="text-gray-800">${gL(g)}</span><span class="text-xs text-gray-500">${g.t?'iki '+g.t:'kol išjungs'}</span></div>`).join(''):'';
