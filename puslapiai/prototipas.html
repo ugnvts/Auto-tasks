@@ -194,7 +194,7 @@ td,th{white-space:nowrap}
       <span class="text-gray-900 border-b-2 border-red-600 py-4">Picking</span><span>Assortment</span><span>Reports</span><span>Payments</span>
       <span class="w-8 h-8 rounded-full bg-red-800 text-white grid place-items-center text-xs">VU</span>
     </header>
-    <div id="outer" class="md:mr-[76px]"><div id="wrap" class="max-w-[1600px] mx-auto py-6" style="padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))">
+    <div id="outer" class="md:mr-[92px]"><div id="wrap" class="max-w-[1600px] mx-auto py-6" style="padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))">
 
       <!-- DASHBOARD -->
       <section id="v-dash">
@@ -317,8 +317,8 @@ td,th{white-space:nowrap}
 
 
 <!-- SIDEBAR: suskleistas -->
-<aside id="rail" class="hidden md:flex fixed right-0 top-14 bottom-0 w-[76px] bg-white border-l flex-col items-stretch z-[5]">
-  <button id="railA" class="flex flex-col items-center pt-3 pb-3 hover:bg-gray-50 transition-colors" aria-label="Išskleisti Dirba dabar" title="Dirba dabar" onclick="sbOpen()">
+<aside id="rail" class="hidden md:flex fixed right-2 top-[64px] w-[76px] flex-col items-stretch gap-2 z-[5]">
+  <button id="railA" class="flex flex-col items-center pt-3 pb-3 bg-white border rounded-lg shadow-sm hover:bg-gray-50 transition-colors" aria-label="Išskleisti Dirba dabar" title="Dirba dabar" onclick="sbOpen()">
   <div class="flex flex-col items-center text-gray-600"><svg class="w-7 h-7" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Dirba<br>dabar</div><div id="rC" class="empty:hidden mt-1 text-[10px] font-semibold text-sky-800 bg-sky-50 border border-sky-200 rounded px-1"></div></div>
   <div class="w-12 border-t my-2.5"></div>
   <div class="rc"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Auto</div>
@@ -331,7 +331,7 @@ td,th{white-space:nowrap}
   <div class="rs"><span>Nesinchr.</span><b id="rMN"></b></div>
   <div class="rs"><span>Naujokai</span><b id="rNk"></b></div></div>
   </button>
-  <button id="railB" class="flex-1 flex flex-col items-center pt-3 pb-2 border-t hover:bg-gray-50 transition-colors" aria-label="Išskleisti Laikini pakeitimai" title="Laikini pakeitimai" onclick="kpOpen()">
+  <button id="railB" class="flex flex-col items-center pt-3 pb-3 bg-white border rounded-lg shadow-sm hover:bg-gray-50 transition-colors" aria-label="Išskleisti Laikini pakeitimai" title="Laikini pakeitimai" onclick="kpOpen()">
     <div class="flex flex-col items-center text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg><div class="text-[11px] leading-tight text-gray-500 text-center mt-1">Laikini<br>pakeitimai</div></div>
     <div class="w-12 border-t my-2.5"></div>
     <div id="rK" class="flex flex-col items-center gap-1.5"></div>
