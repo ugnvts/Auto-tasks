@@ -688,7 +688,7 @@ function sbR(){
     <div><div class="flex w-full border rounded-md p-0.5 gap-0.5" role="group" aria-label="Grupė">${[['all','Visi'],['auto','Auto'],['man','Rankinis']].map(([g,t])=>`<button class="sg flex-1 ${sbG==g?'on':''}" aria-pressed="${sbG==g}" onclick="sbF('g','${g}')">${t} <span class="text-gray-400 tabular-nums">${gc(g)}</span></button>`).join('')}</div></div>
     <div class="flex flex-wrap items-center gap-1 mt-2.5">${sts.map(v=>`<button class="fc ${sbS==v?'on':''}" aria-pressed="${sbS==v}" onclick="sbF('s','${v}')">${v}</button>`).join('')}${sbG!='auto'?`<span class="w-px h-4 bg-gray-200 mx-1"></span><button class="fc ${sbN?'on':''}" aria-pressed="${!!sbN}" onclick="sbF('n')">Naujokai</button>`:''}</div></div>
   ${L.map(([r,i])=>{const o=open_(i),c_=cur_(i),q=o.filter(t=>!c_.includes(t)),pk=c_.reduce((a,t)=>a+t[2],0),tt=c_.reduce((a,t)=>a+t[3],0),dn=(TK[i]||[]).length-o.length,zs=zonesOf(i),z=zs.join(' + '),m=TM[i]||{},x=sbX[i]||'',el=m.s?NOW-hm(m.s):0,tl=m.s?`Renka ${el} min`:'Nepradėjo',cb=(k,l,v,d)=>`<button class="cb ${x==k?'on':''}" ${d?'disabled':`aria-expanded="${x==k}" onclick="sbD(${i},'${k}')"`}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="flex items-center gap-1 font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV(x==k?'u':'d')}</span>`}</button>`;
-    // Variantas „Kortelė išskleidžiama“: būsena, progresas ir laikas – tik informacija; išskleidžiama visa kortelė (rodyklė būsenos eilutėje)
+    // Variantas „Kortelė išskleidžiama“: būsena, progresas ir laikas – tik informacija; išskleidžiama visa kortelė (rodyklė kortelės apačioje)
     const pc=tt?Math.round(pk/tt*100):0,R=r[6]=='Renka',Ns=r[6]=='Nesinchronizavo',can=o.length>0,ox=can&&x=='k',
       dot={Renka:'bg-green-500',Nesinchronizavo:'bg-amber-500','Laukia užduoties':'bg-blue-500'}[r[6]]||'bg-gray-400',
       txt={Renka:'text-green-800',Nesinchronizavo:'text-amber-800','Laukia užduoties':'text-blue-800'}[r[6]]||'text-gray-700',
@@ -705,14 +705,15 @@ function sbR(){
       <div>
       ${zl.length?`<div class="mt-2 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}
       <div class="mt-2.5 border-t border-gray-100"></div>
-      ${(()=>{const row=`${can?`<span class="shrink-0 text-gray-500">${CV(ox?'d':'r')}</span>`:''}<span class="min-w-0 flex flex-wrap items-center gap-1">${stTags(i)}</span>${can&&(m.s||m.e)?`<span class="ml-auto shrink-0 text-gray-900" title="${tip}">${m.s?el:'–'}${m.e?` / ~${m.e}`:''} min</span>`:''}`,
+      ${(()=>{const row=`<span class="min-w-0 flex flex-wrap items-center gap-1">${stTags(i)}</span>${can&&(m.s||m.e)?`<span class="ml-auto shrink-0 text-gray-900" title="${tip}">${m.s?el:'–'}${m.e?` / ~${m.e}`:''} min</span>`:''}`,
           cl='mt-1 -mx-1.5 px-1.5 py-1.5 w-[calc(100%+12px)] flex items-center gap-2 text-[13px] tabular-nums rounded text-left';
-        return can?`<button class="${cl} hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Išskleisti'} išėjimą: ${r[0]} ${r[1]}" onclick="sbD(${i},'k')">${row}</button>`:`<div class="${cl}">${row}</div>`})()}
+        return `<div class="${cl}">${row}</div>`})()}
       ${ox?`<div class="mt-3 pt-1 border-t text-xs">
         ${sec('Išėjimas',`<div class="grid grid-cols-3 gap-2">${kv('Pradėjo',m.s||'Dar nepradėjo')}${kv('Planuojama trukmė',m.e?`~${m.e} min`:'–')}${kv('Planuojama baigti',end?`~${end}`:'–')}</div>`)}
         ${sec('Užduotys',`<div class="border border-gray-200 rounded divide-y">${c_.map(tr).join('')}</div>`)}
         ${q.length?sec('Eilėje',`<div class="border border-gray-200 rounded divide-y">${q.map(tr).join('')}</div>`):''}
       </div>`:''}
+      ${can?`<button class="-mb-2 mt-1 w-full h-6 flex items-center justify-center rounded text-gray-400 hover:text-gray-700 hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Išskleisti'}: ${r[0]} ${r[1]}" title="${ox?'Suskleisti':'Išskleisti'}" onclick="sbD(${i},'k')">${CV(ox?'u':'d')}</button>`:''}
       </div>
     </div>`}).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'}<div class="h-3"></div>`;
 }
