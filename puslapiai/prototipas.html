@@ -138,6 +138,7 @@ td,th{white-space:nowrap}
 #v-dash .site{display:flex;align-items:center;gap:8px;color:#6b7280;font-weight:500}
 #v-dash .site b{color:#111827;font-weight:500}
 #dock{align-self:stretch}
+@media(min-width:768px){#outer.docked{margin-right:92px}} /* Dashboard'e juosta lieka dešinėje */
 #dock #sb{position:sticky!important;z-index:1!important;top:80px;right:auto;bottom:auto;width:auto!important;height:calc(100vh - 56px - 48px);min-height:420px;border:1px solid #dde1e7;border-radius:12px;box-shadow:none;overflow:hidden;background:#f9fafb}
 .live{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#dcfce7;color:#166534;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
 .live i{width:7px;height:7px;border-radius:50%;background:#16a34a;animation:pl 1.6s ease-in-out infinite}
@@ -343,7 +344,7 @@ td,th{white-space:nowrap}
 <!-- SIDEBAR: išskleistas -->
 <section id="sb" hidden class="fixed right-0 top-14 bottom-0 z-10 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Dirba dabar">
   <button id="sbXb" class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Suskleisti" title="Suskleisti (Esc)" onclick="sbClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
-  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Dirba dabar</div><button id="kpDockBtn" hidden class="ml-auto text-xs border bg-white rounded px-2 py-1 text-gray-700 hover:bg-gray-50" onclick="kpOpen()">Laikini pakeitimai <span id="kpDockN" class="text-gray-500"></span></button></div>
+  <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Dirba dabar</div></div>
   
   <div id="sbScroll" class="flex-1 overflow-y-auto">
   <div class="px-4 pt-3 pb-4 space-y-2">
@@ -857,4 +858,14 @@ function fromHash(){const h=location.hash.slice(1);if(h=='edit'&&cv!='edit')go('
 // Kairiojo meniu žymėjimas pagal atidarytą ekraną
 const _goNav=go;go=function(v,p){_goNav(v,p);nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash')};
 fromHash();addEventListener('hashchange',fromHash);
+// Juosta: išskleidus skydelį juostos nelieka. Dashboard'e „Dirba dabar“ prisegtas visada, todėl juostoje lieka tik
+// „Laikini pakeitimai“; jie atsidaro ant viršaus kaip suskleidžiamas skydelis (2026-10-29).
+const kpEl=document.getElementById('kp');
+function railS(){rail.hidden=false;rail.classList.toggle('md:invisible',(!sb.hidden&&!docked)||!kpEl.hidden);railA.hidden=docked}
+{const o=sbOpen;sbOpen=function(...a){o(...a);railS()}}
+{const c=sbClose;sbClose=function(){c();railS()}}
+{const o=kpOpen;kpOpen=function(){o();railS()}}
+{const c=kpClose;kpClose=function(){c();railS()}}
+{const l=layout;layout=function(){l();railS()}}
+addEventListener('resize',railS);railS();
 </script>
