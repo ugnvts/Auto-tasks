@@ -708,7 +708,7 @@ function sbR(){
       ${ox?`<div class="mt-4 flex items-stretch gap-3">${m.s?kv('Išėjimo trukmė',lt)+kv('Pradėjo',m.s,1)+kv('Planuojama baigti',end?`~${end}`:'–',1):kv('Planuojama išėjimo trukmė',m.e?`~${m.e} min`:'–')}</div>
       <div class="mt-3 border-t border-gray-200 divide-y divide-gray-200">${[...c_,...q].map(tr).join('')}</div>`
       :`${zl.length?`<div class="mt-4 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}
-      <div class="${zl.length?'mt-3':'mt-4'} flex items-center gap-3">${can&&lt?`<span class="shrink-0 inline-flex items-center gap-1 h-6 px-2 rounded border border-gray-200 bg-white text-xs tabular-nums text-gray-900" title="${tip}">${clk}${lt}</span>`:''}<span class="min-w-0 flex-1 flex items-center gap-1">${tags}</span></div>`}
+      <div class="${zl.length?'mt-3':'mt-4'} flex items-center gap-3">${can&&lt?`<span class="shrink-0 w-[104px] inline-flex items-center gap-1 h-6 px-2 rounded border border-gray-200 bg-white text-xs tabular-nums text-gray-900 whitespace-nowrap" title="${tip}">${clk}${lt}</span>`:''}<span class="min-w-0 flex-1 flex items-center gap-1">${tags}</span></div>`}
       </div>
       ${can?`<button class="w-full ${ox?'border-t border-gray-200':''} py-1 flex items-center justify-center text-gray-500 hover:text-indigo-600 hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Plačiau'}: ${r[0]} ${r[1]}" title="${ox?'Suskleisti':'Plačiau'}" onclick="sbD(${i},'k')">${CV(ox?'u':'d')}</button>`:''}
     </div>`}).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'}<div class="h-3"></div>`;
