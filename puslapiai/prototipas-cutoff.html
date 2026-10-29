@@ -645,8 +645,8 @@ const cur_=i=>{const o=open_(i),p=o.filter(t=>t[4]=='Picking');return p.length?p
 // Bendri būsenos tag'ai – trys formos, visur vienodos (kortelė, lentelė, užduoties eilutė):
 // „Renka · 12/30 eil.“ su progresu fone, „Nesinchronizavo“, „Laukia užduoties“
 const SG={Renka:'bg-green-50 border-green-200 text-green-900',Nesinchronizavo:'bg-amber-50 border-amber-200 text-amber-800','Laukia užduoties':'bg-blue-50 border-blue-200 text-blue-800'};
-function stTag(st,pk,tt){const pc=st=='Renka'&&tt?Math.round(pk/tt*100):null;
-  return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${st}${st=='Renka'&&tt?` · ${pk}/${tt} eil.`:''}</span></span>`}
+function stTag(st,pk,tt,cls=''){const pc=st=='Renka'&&tt?Math.round(pk/tt*100):null;
+  return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]} ${cls}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative truncate">${st}${st=='Renka'&&tt?` · ${pk}/${tt} eil.`:''}</span></span>`}
 const taskTag=t=>stTag(t[4]=='Picking'?'Renka':'Nesinchronizavo',t[2],t[3]);
 function stTags(i){const r=N[i],o=open_(i),c=cur_(i),q=o.filter(t=>!c.includes(t)),pk=c.reduce((a,t)=>a+t[2],0),tt=c.reduce((a,t)=>a+t[3],0);
   if(r[6]=='Renka')return stTag('Renka',pk,tt)+(q.length?stTag('Nesinchronizavo'):'');
@@ -689,33 +689,28 @@ function sbR(){
     <div><div class="flex w-full border rounded-md p-0.5 gap-0.5" role="group" aria-label="Grupė">${[['all','Visi'],['auto','Auto'],['man','Rankinis']].map(([g,t])=>`<button class="sg flex-1 ${sbG==g?'on':''}" aria-pressed="${sbG==g}" onclick="sbF('g','${g}')">${t} <span class="text-gray-400 tabular-nums">${gc(g)}</span></button>`).join('')}</div></div>
     <div class="flex flex-wrap items-center gap-1 mt-2.5">${sts.map(v=>`<button class="fc ${sbS==v?'on':''}" aria-pressed="${sbS==v}" onclick="sbF('s','${v}')">${v}</button>`).join('')}${sbG!='auto'?`<span class="w-px h-4 bg-gray-200 mx-1"></span><button class="fc ${sbN?'on':''}" aria-pressed="${!!sbN}" onclick="sbF('n')">Naujokai</button>`:''}</div></div>
   ${L.map(([r,i])=>{const o=open_(i),c_=cur_(i),q=o.filter(t=>!c_.includes(t)),pk=c_.reduce((a,t)=>a+t[2],0),tt=c_.reduce((a,t)=>a+t[3],0),dn=(TK[i]||[]).length-o.length,zs=zonesOf(i),z=zs.join(' + '),m=TM[i]||{},x=sbX[i]||'',el=m.s?NOW-hm(m.s):0,tl=m.s?`Renka ${el} min`:'Nepradėjo',cb=(k,l,v,d)=>`<button class="cb ${x==k?'on':''}" ${d?'disabled':`aria-expanded="${x==k}" onclick="sbD(${i},'${k}')"`}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="flex items-center gap-1 font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV(x==k?'u':'d')}</span>`}</button>`;
-    // Surinkėjo kortelė (2026-10-29): būsena, progresas ir laikas – tik informacija; išskleidžiama visa kortelė (rodyklė kortelės apačioje)
-    const pc=tt?Math.round(pk/tt*100):0,R=r[6]=='Renka',Ns=r[6]=='Nesinchronizavo',can=o.length>0,ox=can&&x=='k',
-      dot={Renka:'bg-green-500',Nesinchronizavo:'bg-amber-500','Laukia užduoties':'bg-blue-500'}[r[6]]||'bg-gray-400',
-      txt={Renka:'text-green-800',Nesinchronizavo:'text-amber-800','Laukia užduoties':'text-blue-800'}[r[6]]||'text-gray-700',
+    // Surinkėjo kortelė pagal juodraštį (2026-10-30). Suskleista: laikas, būsenos tag'ai, zonos, „Plačiau“.
+    // Išskleista: išėjimo laikai ir visos užduotys (dabartinės, po to eilė), „Suskleisti“ – santrauka pakeičiama detalėmis
+    const can=o.length>0,ox=can&&x=='k',R=r[6]=='Renka',
       zl=zs.map(q=>[q,c_.filter(t=>t[1]==q).reduce((a,t)=>a+t[3],0)]).sort((a,b)=>b[1]-a[1]).map(v=>v[0]),
       zc=q=>`<span class="max-w-full truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5" title="${q}">${q}</span>`,
       end=m.s&&m.e?fm(hm(m.s)+m.e):'',
+      lt=m.s?`${el}${m.e?` / ~${m.e}`:''} min`:m.e?`~${m.e} min`:'',
       tip=m.s?`Pradėjo ${m.s}${end?` · planuojama baigti ~${end}`:''}`:`Dar nepradėjo${m.e?` · planuojama išėjimo trukmė ~${m.e} min`:''}`,
-      tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="px-2.5 py-2 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span><span class="ml-auto shrink-0">${taskTag(t)}</span></div><div class="mt-1.5 grid grid-cols-4 gap-2">${f('Banga',d.w)}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div></div>`},
-      sec=(t,b)=>`<div class="mt-2.5" role="group" aria-label="${t}">${b}</div>`, // antraščių nerodome – užtenka įrėminimo
-      kv=(l,v)=>`<div><div class="text-[11px] text-gray-500">${l}</div><div class="font-medium tabular-nums text-gray-900">${v}</div></div>`;
-    return `<div id="sbc${i}" class="mx-3 mt-2 p-3 bg-white border ${ox?'border-indigo-300':'border-gray-200'} rounded-lg transition-colors">
+      clk='<svg class="shrink-0 text-gray-700" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
+      tags=R?stTag('Renka',pk,tt,'flex-1 min-w-0')+(q.length?stTag('Nesinchronizavo'):''):SG[r[6]]?stTag(r[6],0,0,'flex-1 min-w-0'):'',
+      tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="py-2.5 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span></div><div class="mt-1.5 flex items-end gap-2"><div class="flex-1 min-w-0 grid grid-cols-4 gap-2">${f('Banga',d.w)}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div><span class="shrink-0">${taskTag(t)}</span></div></div>`},
+      kv=(l,v,b)=>`<div class="flex-1 min-w-0 ${b?'pl-3 border-l border-gray-200':''}"><div class="text-[11px] text-gray-500">${l}</div><div class="text-[13px] font-medium tabular-nums text-gray-900">${v}</div></div>`;
+    return `<div id="sbc${i}" class="mx-3 mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden transition-colors">
+      <div class="p-4">
       <div class="flex items-center gap-2"><div class="min-w-0"><div class="flex items-center gap-2"><button class="text-[15px] font-semibold text-gray-900 hover:underline text-left" onclick="go('view')">${r[0]} ${r[1]}</button>${r[7]?'<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}</div><div class="text-[11px] text-gray-500 leading-tight">${r[4]}</div></div>
         <div class="ml-auto flex items-center gap-2"><span class="text-xs text-gray-500">Auto</span>${r[7]||!isP(r)?`<button class="tog ${r[5]?'on':''}" style="opacity:${isP(r)?.4:.5};cursor:not-allowed" aria-label="Auto tasks: ${r[0]} ${r[1]}" aria-disabled="true" title="${r[7]?'Naujokui auto tasks įjungti negalima':'Inspektoriams auto tasks visada įjungti, išjungti negalima (R05)'}"></button>`:`<button class="tog ${r[5]?'on':''}" role="switch" aria-checked="${!!r[5]}" aria-label="Auto tasks: ${r[0]} ${r[1]}" onclick="sbTg(${i},${r[5]?0:1})"></button>`}</div></div>
-      <div>
-      ${zl.length?`<div class="mt-2 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}
-      <div class="mt-2.5 border-t border-gray-100"></div>
-      ${(()=>{const row=`<span class="min-w-0 flex flex-wrap items-center gap-1">${stTags(i)}</span>${can&&(m.s||m.e)?`<span class="ml-auto shrink-0 text-gray-900" title="${tip}">${m.s?el:'–'}${m.e?` / ~${m.e}`:''} min</span>`:''}`,
-          cl='mt-1 -mx-1.5 px-1.5 py-1.5 w-[calc(100%+12px)] flex items-center gap-2 text-[13px] tabular-nums rounded text-left';
-        return `<div class="${cl}">${row}</div>`})()}
-      ${ox?`<div class="mt-3 pt-1 border-t text-xs">
-        ${sec('Išėjimas',`<div class="grid grid-cols-3 gap-2">${kv('Pradėjo',m.s||'Dar nepradėjo')}${kv('Planuojama trukmė',m.e?`~${m.e} min`:'–')}${kv('Planuojama baigti',end?`~${end}`:'–')}</div>`)}
-        ${sec('Užduotys',`<div class="border border-gray-200 rounded divide-y">${c_.map(tr).join('')}</div>`)}
-        ${q.length?sec('Eilėje',`<div class="border border-gray-200 rounded divide-y">${q.map(tr).join('')}</div>`):''}
-      </div>`:''}
-      ${can?`<button class="-mb-2 mt-1 w-full h-6 flex items-center justify-center rounded text-gray-400 hover:text-gray-700 hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Išskleisti'}: ${r[0]} ${r[1]}" title="${ox?'Suskleisti':'Išskleisti'}" onclick="sbD(${i},'k')">${CV(ox?'u':'d')}</button>`:''}
+      ${ox?`<div class="mt-4 flex items-stretch gap-3">${m.s?kv('Išėjimo trukmė',lt)+kv('Pradėjo',m.s,1)+kv('Planuojama baigti',end?`~${end}`:'–',1):kv('Planuojama išėjimo trukmė',m.e?`~${m.e} min`:'–')}</div>
+      <div class="mt-3 border-t border-gray-200 divide-y divide-gray-200">${[...c_,...q].map(tr).join('')}</div>`
+      :`<div class="mt-4 flex items-center gap-3">${can&&lt?`<span class="shrink-0 inline-flex items-center gap-1 h-6 px-2 rounded border border-gray-200 bg-white text-xs tabular-nums text-gray-900" title="${tip}">${clk}${lt}</span>`:''}<span class="min-w-0 flex-1 flex items-center gap-1">${tags}</span></div>
+      ${zl.length?`<div class="mt-3 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}`}
       </div>
+      ${can?`<button class="w-full border-t border-gray-200 py-2.5 flex items-center justify-center gap-1 text-[13px] font-medium text-indigo-600 hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Plačiau'}: ${r[0]} ${r[1]}" onclick="sbD(${i},'k')">${ox?'Suskleisti':'Plačiau'}${CV(ox?'u':'d')}</button>`:''}
     </div>`}).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'}<div class="h-3"></div>`;
 }
 
