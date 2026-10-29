@@ -688,8 +688,8 @@ function sbR(){
     <div><div class="flex w-full border rounded-md p-0.5 gap-0.5" role="group" aria-label="Grupė">${[['all','Visi'],['auto','Auto'],['man','Rankinis']].map(([g,t])=>`<button class="sg flex-1 ${sbG==g?'on':''}" aria-pressed="${sbG==g}" onclick="sbF('g','${g}')">${t} <span class="text-gray-400 tabular-nums">${gc(g)}</span></button>`).join('')}</div></div>
     <div class="flex flex-wrap items-center gap-1 mt-2.5">${sts.map(v=>`<button class="fc ${sbS==v?'on':''}" aria-pressed="${sbS==v}" onclick="sbF('s','${v}')">${v}</button>`).join('')}${sbG!='auto'?`<span class="w-px h-4 bg-gray-200 mx-1"></span><button class="fc ${sbN?'on':''}" aria-pressed="${!!sbN}" onclick="sbF('n')">Naujokai</button>`:''}</div></div>
   ${L.map(([r,i])=>{const o=open_(i),c_=cur_(i),q=o.filter(t=>!c_.includes(t)),pk=c_.reduce((a,t)=>a+t[2],0),tt=c_.reduce((a,t)=>a+t[3],0),dn=(TK[i]||[]).length-o.length,zs=zonesOf(i),z=zs.join(' + '),m=TM[i]||{},x=sbX[i]||'',el=m.s?NOW-hm(m.s):0,tl=m.s?`Renka ${el} min`:'Nepradėjo',cb=(k,l,v,d)=>`<button class="cb ${x==k?'on':''}" ${d?'disabled':`aria-expanded="${x==k}" onclick="sbD(${i},'${k}')"`}><span class="min-w-0"><span class="block text-[11px] text-gray-500">${l}</span><span class="flex items-center gap-1 font-medium tabular-nums whitespace-nowrap">${v}</span></span>${d?'':`<span class="text-gray-400">${CV(x==k?'u':'d')}</span>`}</button>`;
-    // Surinkėjo kortelė pagal juodraštį (2026-10-30). Suskleista: laikas, būsenos tag'ai, zonos, „Plačiau“.
-    // Išskleista: išėjimo laikai ir visos užduotys (dabartinės, po to eilė), „Suskleisti“ – santrauka pakeičiama detalėmis
+    // Surinkėjo kortelė pagal juodraštį (2026-10-30). Suskleista: zonos, laikas ir būsenos tag'ai, rodyklė apačioje.
+    // Išskleista: išėjimo laikai ir visos užduotys (dabartinės, po to eilė), rodyklė į viršų – santrauka pakeičiama detalėmis
     const can=o.length>0,ox=can&&x=='k',R=r[6]=='Renka',
       zl=zs.map(q=>[q,c_.filter(t=>t[1]==q).reduce((a,t)=>a+t[3],0)]).sort((a,b)=>b[1]-a[1]).map(v=>v[0]),
       zc=q=>`<span class="max-w-full truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5" title="${q}">${q}</span>`,
@@ -706,10 +706,10 @@ function sbR(){
         <div class="ml-auto flex items-center gap-2"><span class="text-xs text-gray-500">Auto</span>${r[7]||!isP(r)?`<button class="tog ${r[5]?'on':''}" style="opacity:${isP(r)?.4:.5};cursor:not-allowed" aria-label="Auto tasks: ${r[0]} ${r[1]}" aria-disabled="true" title="${r[7]?'Naujokui auto tasks įjungti negalima':'Inspektoriams auto tasks visada įjungti, išjungti negalima (R05)'}"></button>`:`<button class="tog ${r[5]?'on':''}" role="switch" aria-checked="${!!r[5]}" aria-label="Auto tasks: ${r[0]} ${r[1]}" onclick="sbTg(${i},${r[5]?0:1})"></button>`}</div></div>
       ${ox?`<div class="mt-4 flex items-stretch gap-3">${m.s?kv('Išėjimo trukmė',lt)+kv('Pradėjo',m.s,1)+kv('Planuojama baigti',end?`~${end}`:'–',1):kv('Planuojama išėjimo trukmė',m.e?`~${m.e} min`:'–')}</div>
       <div class="mt-3 border-t border-gray-200 divide-y divide-gray-200">${[...c_,...q].map(tr).join('')}</div>`
-      :`<div class="mt-4 flex items-center gap-3">${can&&lt?`<span class="shrink-0 inline-flex items-center gap-1 h-6 px-2 rounded border border-gray-200 bg-white text-xs tabular-nums text-gray-900" title="${tip}">${clk}${lt}</span>`:''}<span class="min-w-0 flex-1 flex items-center gap-1">${tags}</span></div>
-      ${zl.length?`<div class="mt-3 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}`}
+      :`${zl.length?`<div class="mt-4 flex flex-wrap items-center gap-1.5">${zl.map(zc).join('')}</div>`:''}
+      <div class="${zl.length?'mt-3':'mt-4'} flex items-center gap-3">${can&&lt?`<span class="shrink-0 inline-flex items-center gap-1 h-6 px-2 rounded border border-gray-200 bg-white text-xs tabular-nums text-gray-900" title="${tip}">${clk}${lt}</span>`:''}<span class="min-w-0 flex-1 flex items-center gap-1">${tags}</span></div>`}
       </div>
-      ${can?`<button class="w-full border-t border-gray-200 py-2.5 flex items-center justify-center gap-1 text-[13px] font-medium text-indigo-600 hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Plačiau'}: ${r[0]} ${r[1]}" onclick="sbD(${i},'k')">${ox?'Suskleisti':'Plačiau'}${CV(ox?'u':'d')}</button>`:''}
+      ${can?`<button class="w-full border-t border-gray-200 py-1 flex items-center justify-center text-gray-500 hover:text-indigo-600 hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Plačiau'}: ${r[0]} ${r[1]}" title="${ox?'Suskleisti':'Plačiau'}" onclick="sbD(${i},'k')">${CV(ox?'u':'d')}</button>`:''}
     </div>`}).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'}<div class="h-3"></div>`;
 }
 
