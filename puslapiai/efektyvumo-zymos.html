@@ -23,7 +23,7 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 <main class="max-w-6xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold">Efektyvumo korekcijų žymos</h1>
   <p class="text-gray-600 mt-1 max-w-3xl">Visos efektyvumo korekcijų ir sustabdytų zonų būsenos ir vietos, kuriose jos rodomos, kaip įgyvendinta prototipe. Korekcija visada priklauso surinkėjo zonai; veiksmas keliems surinkėjams (lentelėje ar „Laikinų pakeitimų“ skydelyje) uždeda tas pačias zonų korekcijas kiekvienam.</p>
-  <p class="mt-3 text-xs text-gray-600">Spalva rodo kryptį: <span class="tg dn">mažinimas</span> <span class="tg up">didinimas</span>; sustabdyta zona – <span class="tg ts">pilka</span>. Galiojimas: ribotas – „iki 14:00“, neribotas – be prierašo.</p>
+  <p class="mt-3 text-xs text-gray-600">Spalva rodo kryptį: <span class="tg dn">mažinimas</span> <span class="tg up">didinimas</span>; sustabdyta zona – <span class="tg ts">pilka</span>. Galiojimas: ribotas – „iki 14:00“, neribotas – be prierašo. „Dirba dabar“ kortelėje korekcijų ir sustabdytų zonų žymų nėra – visas vaizdas „Laikinų pakeitimų“ skydelyje.</p>
   <div class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
     <span class="flex items-center gap-1.5"><span class="tg dn" id="lgP"></span> efektyvumo korekcija</span>
     <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdyta zona</span>
@@ -37,22 +37,25 @@ const IKU='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="none" stroke=
   IPL='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 6 4.5z"/></svg>',
   ICV='<svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>';
 lgP.innerHTML=IKD+'−10 %';lgS.innerHTML=IPA+'Gėrimai';
-const ST={"Renka":"bg-green-100 text-green-800","Laukia užduoties":"bg-blue-100 text-blue-800","Nesinchronizavo":"bg-amber-100 text-amber-800"};
+// Būsenos tag'ai – tokie pat kaip prototipe (Picker accounts lentelė, „Dirba dabar“)
+const SG={Renka:'bg-green-50 border-green-200 text-green-900',Nesinchronizavo:'bg-amber-50 border-amber-200 text-amber-800','Laukia užduoties':'bg-blue-50 border-blue-200 text-blue-800'};
+const stTag=(st,pk,tt)=>{const pc=st=='Renka'&&tt?Math.round(pk/tt*100):null;return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${st}${st=='Renka'&&tt?` · ${pk}/${tt} eil.`:''}</span></span>`};
+const stTags=c=>c.s=='Renka'?stTag('Renka',...(c.l||[0,0]))+(c.q?stTag('Nesinchronizavo'):''):stTag(c.s);
 const sg=d=>d<0?'−':'+';
 // Atvejai: P – korekcija {v, z: [] = visos zonos, t – iki kada}, S – sustabdytos zonos {z, t}, K – kombinacija, kuri neveikia
 const CASES=[
   {g:'Be korekcijų',n:'Nerijus Petrauskas',s:'Laukia užduoties'},
-  {g:'Korekcija, visos zonos (12)',n:'Aldonas Kazlauskas',s:'Renka',P:{v:-10,z:[]}},
+  {g:'Korekcija, visos zonos (12)',n:'Aldonas Kazlauskas',s:'Renka',l:[12,30],q:1,P:{v:-10,z:[]}},
   {g:'Korekcija, viena zona',n:'Karolis Jankauskas',s:'Nesinchronizavo',P:{v:-20,z:['Alcoholic beverages']}},
-  {g:'Korekcija, kelios zonos, iki laiko',n:'Remigijus Butkus',s:'Renka',P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
-  {g:'Visos zonos, viena pakeista atskirai',n:'Simona Jakštė',s:'Renka',P:[{v:-10,z:Array(11).fill('')},{v:5,z:['Candies']}]},
+  {g:'Korekcija, kelios zonos, iki laiko',n:'Remigijus Butkus',s:'Renka',l:[3,10],P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
+  {g:'Visos zonos, viena pakeista atskirai',n:'Simona Jakštė',s:'Renka',l:[20,46],q:1,P:[{v:-10,z:Array(11).fill('')},{v:5,z:['Candies']}]},
   {g:'Skirtingos zonų korekcijos',n:'Paulius Grigas',s:'Nesinchronizavo',P:[{v:-20,z:['Alcoholic beverages']},{v:10,z:['Groceries','Candies']}]},
-  {g:'Didinimas',n:'Tomas Vaitkus',s:'Renka',P:{v:10,z:[]}},
-  {g:'Sustabdyta viena zona',n:'Ieva Kairytė',s:'Renka',S:{z:['Alcoholic beverages']}},
+  {g:'Didinimas',n:'Tomas Vaitkus',s:'Renka',l:[1,5],P:{v:10,z:[]}},
+  {g:'Sustabdyta viena zona',n:'Ieva Kairytė',s:'Renka',l:[4,9],S:{z:['Alcoholic beverages']}},
   {g:'Sustabdytos kelios zonos, iki laiko',n:'Rūta Mockutė',s:'Laukia užduoties',S:{z:['Alcoholic beverages','Frozen goods'],t:'16:00'}},
-  {g:'Sustabdyta zona kombinacijoje',n:'Justas Navickas',s:'Renka',S:{z:['Bread products']},K:'Frozen goods + Bread products'},
-  {g:'Korekcija ir sustabdyta zona',n:'Jonas Petraitis',s:'Renka',P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']}},
-  {g:'Ilgi zonų pavadinimai',n:'Mantas Kazakevičius',s:'Renka',P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
+  {g:'Sustabdyta zona kombinacijoje',n:'Justas Navickas',s:'Renka',l:[10,38],S:{z:['Bread products']},K:'Frozen goods + Bread products'},
+  {g:'Korekcija ir sustabdyta zona',n:'Jonas Petraitis',s:'Renka',l:[7,22],P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']}},
+  {g:'Ilgi zonų pavadinimai',n:'Mantas Kazakevičius',s:'Renka',l:[15,24],P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
 ];
 const ltZ=n=>n%10==1&&n%100!=11?'zona':n%10>=2&&(n%100<10||n%100>=20)?'zonos':'zonų',zTxt=z=>z.length==1?z[0]:z.length+' '+ltZ(z.length),gZ=z=>z.length?zTxt(z):'12 zonų',till=t=>t?' · iki '+t:'';
 const PL=c=>c.P?[].concat(c.P):[];
@@ -87,11 +90,11 @@ const rail=(c,st)=>`<div class="rc"><div class="text-[11px] font-semibold text-g
 out.innerHTML=`<section class="bg-white border rounded-lg">
   <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
     <p class="text-gray-600 mt-1">Stulpelyje „Laikini pakeitimai“ dešinėje nuo „Būsena“. Zonos su vienoda korekcija (kryptis, dydis, galiojimas) sugrupuotos: viena zona – pavadinimas, kelios – skaičius („−10 % · 12 zonų“). Užvedus pelę – detalės.</p></div>
-  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Atvejis</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Būsena</th><th class="px-4"></th></tr></thead>
-  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4"><span class="text-xs px-2 py-0.5 rounded whitespace-nowrap ${ST[c.s]}">${c.s}</span></td><td class="px-4"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
+  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Atvejis</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Būsena</th><th class="px-4 font-medium">Laikini pakeitimai</th></tr></thead>
+  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4 py-2"><div class="flex items-center gap-1 whitespace-nowrap">${stTags(c)}</div></td><td class="px-4 py-2"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
 </section>
 ${sec('Paskyra: kortelė „Laikini pakeitimai“','Virš zonų. Viena eilutė – viena korekcijų grupė; kelios zonos – žyma „N zonų“ (paspaudus – sąrašas). Sustabdytos zonos toje pačioje kortelėje, kad stabdymą būtų galima atšaukti nesigilinant į zonas. „Nuimti visas“ – kai korekcijų grupių daugiau nei viena.',accCard)}
 ${sec('Paskyra: zonos kortelė','Žyma šalia zonos pavadinimo: korekcijos procentas arba „Sustabdyta“ (su „iki“, kai laikas ribotas). Pakeisti skaičiai paryškinti ir spalvoti, po jais „buvo“. Sustabdyta zona papilkėja; korekcija jai negalioja.',`<div class="grid md:grid-cols-2 gap-3">${['Groceries','Candies','Fresh meat','Alcoholic beverages'].map(zCard).join('')}</div>`)}
-${sec('„Laikinų pakeitimų“ skydelis ir suskleista juosta','Skydelyje – surinkėjai su korekcijomis ar sustabdytomis zonomis; paspaudus eilutę atsidaro paskyra. Suskleistoje juostoje – surinkėjų skaičiai, kaip „Dirba dabar“ dalyje.',`<div class="flex flex-wrap items-start gap-6"><div class="border rounded-lg overflow-hidden w-full max-w-md">${[CASES[4],CASES[10],CASES[8]].map(kpRow).join('')}</div><div class="flex gap-3">${rail(4,2)}${rail(0,0)}</div></div>`)}`;
+${sec('„Laikinų pakeitimų“ skydelis ir suskleista juosta','Skydelyje – surinkėjai su korekcijomis ar sustabdytomis zonomis; paspaudus eilutę atsidaro paskyra. Suskleistoje juostoje – surinkėjų skaičiai, kaip „Dirba dabar“ dalyje. Dashboard\'e juostoje lieka tik šis mygtukas (skydelis atsidaro ant prisegto „Dirba dabar“); išskleidus skydelį juostos nelieka.',`<div class="flex flex-wrap items-start gap-6"><div class="border rounded-lg overflow-hidden w-full max-w-md">${[CASES[4],CASES[10],CASES[8]].map(kpRow).join('')}</div><div class="flex gap-3">${rail(4,2)}${rail(0,0)}</div></div>`)}`;
 </script>
 </body></html>
