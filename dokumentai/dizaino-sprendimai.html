@@ -229,7 +229,7 @@ a { color: var(--accent); }
   <p class="lead">Pamainos vadybininko įrankis surinkimo centre: pagal grafiką ir faktą įjungti ir išjungti surinkėjus, kad jiems būtų automatiškai skiriamos užduotys, ir matyti, kas vyksta dabar.</p>
   <div class="scope">
     <span><b>Picker accounts:</b> lentelė su „Dirba dabar“ sidebar'u, atskiras paskyros langas</span>
-    <span><b>Dashboard:</b> „Dirba dabar“ prisegtas, tobulinama</span>
+    <span><b>Dashboard:</b> „Dirba dabar“ prisegtas, bangų kortelės be pakeitimų</span>
     <span><b>SC nustatymai:</b> pradėta 10-23</span>
     <span><b>Paleidimas:</b> palaipsnis, iš pradžių keliems surinkėjams</span>
   </div>
@@ -300,7 +300,7 @@ a { color: var(--accent); }
   <ul class="d" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px;max-width:85ch;font-size:14px">
     
     <li>SC nustatymai neprototipuoti; daug punktų „Derinama“ (<a href="#h-sc">SC</a>).</li>
-    <li>Dashboard'o vaidmuo, kai veikia auto tasks (<a href="#k-K17">K17</a>), ir prisegto režimo sprendimas su „Laikinais pakeitimais“ (<a href="#f-DD12">DD12</a>).</li>
+    <li>Dashboard'o prisegto režimo sprendimas su „Laikinais pakeitimais“ (<a href="#f-DD12">DD12</a>).</li>
     
     <li>„Dirba dabar“ surinkėjo kortelės elementų paskirtys – pradėta, nebaigta.</li>
   </ul>
@@ -434,7 +434,7 @@ a { color: var(--accent); }
     <details class="item" id="f-DD12"><summary><span class="id">DD12</span><span class="name">Laikinų pakeitimų skydelis</span><span class="status st-wip">Derinama</span></summary><div class="body">
       <p class="desc"><b>Sprendimas (2026-10-28):</b> stebėjimas ir valdymas atskirti; išbandyta kaip variantas 10-27, dabar pagrindinis prototipas. Suskleista juosta dešinėje padalinta į du vertikalius mygtukus: viršuje „Dirba dabar“ (stebėjimas, kaip iki šiol, su auto tasks valdymu), apačioje „Laikini pakeitimai“ su skaičiais (surinkėjai su korekcijomis, su sustabdytomis zonomis) arba „Nėra“. Vienu metu atidarytas vienas skydelis.</p>
       <ul><li>„Laikini pakeitimai“: viršuje „Koreguoti efektyvumą visiems“ ir „Nuimti visiems“; filtras Visi / Korekcijos / Sustabdytos zonos ir paieška; sąrašas – vienas surinkėjas, visos jo korekcijos ir sustabdytos zonos atskiromis eilutėmis (be sutrumpinimų), trukmė; paspaudus – paskyra.</li><li>Skydelis rodo pakeitimus per visas zonas, platesnį vaizdą nei „Dirba dabar“; stalčiuje lieka tik dabartinės zonos pjūvis.</li><li>„Dirba dabar“ santraukos kortelės nebėra; surinkėjo kortelės žymos lieka kaip yra, nespaudžiamos.</li><li>Zonos stabdymas lieka atskiras, tik asmeninis veiksmas (paskyroje); grupinės korekcijos jo neliečia. „Nuimti visiems“ nuima korekcijas, o sustabdytas zonas – tik pažymėjus varnelę „Taip pat atnaujinti sustabdytas zonas (N surinkėjų, M zonų)“, numatyta nepažymėta. Jei yra tik sustabdymai – langelis „Atnaujinti sustabdytas zonas visiems?“. Atšaukimas atkuria abu (2026-10-28).</li><li>Korekcijos visiems langelyje nėra bloko „Dabar / Po taikymo“ – esamus pakeitimus rodo skydelis; lieka viena eilutė „Bus perrašytos N surinkėjų esamos korekcijos“.</li><li>Dashboard'e, kai „Dirba dabar“ prisegtas, „Laikini pakeitimai“ atidaromi mygtuku jo antraštėje (sprendimas laikinas).</li></ul>
-      <p class="open"><b>Atvira:</b> Dashboard'o prisegto režimo sprendimas – su Dashboard tema (<a href="#k-K17">K17</a>).</p>
+      <p class="open"><b>Atvira:</b> Dashboard'o prisegto režimo sprendimas – neaptartas (Dashboard tema 2026-10-29 sprendė tik bangų korteles ir „Dirba dabar“, <a href="#f-DB4">DB4</a>, <a href="#f-DB5">DB5</a>).</p>
     </div></details>
   </div>
 </section>
@@ -445,16 +445,21 @@ a { color: var(--accent); }
   <div class="decision">
     <span><b>Sprendimas (2026-10-22):</b> bangos kairėje, „Dirba dabar“ visada matomas dešinėje. Šis variantas dar bus tobulinamas.</span>
     <span>Prototipas: <a href="https://claude.ai/artifact/U6JvYPom14xE6unYd6fjZ6#dashboard" target="_blank" rel="noopener">Dashboard</a></span>
+    <span><b>Sprendimas (2026-10-29):</b> su auto tasks Dashboard'e pakeitimų nereikia. Bangų kortelės lieka užsakymų pjūvyje, „Dirba dabar“ – be bangų. Jei pilote kils problemų, bus kuriami darbų ticketai su konkrečiomis problemomis.</span>
     <span class="rejected">Atmesta: „Dirba dabar“ kaip suskleidžiamas sidebar'as (variantas A), žr. Archyvą.</span>
   </div>
   <div class="list">
     <details class="item" id="f-DB3"><summary><span class="id">DB3</span><span class="name">Prisegtas „Dirba dabar“</span><span class="status st-ready">Sutarta</span></summary><div class="body">
       <p class="desc">Sidebar'as (<a href="#h-dd">DD</a>) prisegtas dešinėje (440 px), kai bangų stulpeliui lieka bent 600 px. Siauresniame ekrane veikia kaip Picker accounts lange: suskleistas ir išskleidžiamas.</p>
     </div></details>
-    <details class="item" id="f-DB4"><summary><span class="id">DB4</span><span class="name">Stebėsena: zonų apkrova, efektyvumas</span><span class="status st-later">Vėliau</span></summary><div class="body">
-      <p class="desc">Aktyvūs surinkėjai kiekvienoje zonoje, apkrova, efektyvumas, numatoma pabaiga (PM: current load, efficiency, availability).</p>
-      <p class="open"><b>Atvira:</b> <a href="#k-K17">K17</a> kokiomis kryptimis tobulinti Dashboard B.</p>
-      <div class="meta"><span class="ctx">S22</span><span class="was">buvę B1, B2</span></div>
+    <details class="item" id="f-DB4"><summary><span class="id">DB4</span><span class="name">Bangos kortelė be zonų ir užduočių pjūvio</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Bangos kortelė lieka tokia, kokia yra: užsakymų būsenos, rodikliai, pranešimai. Zonų ir užduočių informacija reikalinga tam, kas skirsto darbą; su auto tasks darbą skirsto sistema. Vadovui bangoje svarbu, ar užsakymai bus surinkti laiku, ir tai rodo užsakymų būsenų juosta. Kai sistema užstringa, užtenka esamo pranešimų mechanizmo, vedančio į Unfinished picking tasks.</p>
+      <ul><li>Langų paskirtys (surinkimo centro vadovas, 2026-10-29): Orders to pick – užsakymų kontrolė (lipdukai, tikrinimo lapai, barkodų lyginimas) ir darbuotojų planavimas šiai ir kitai dienai pagal užsakymų dydžius; Unfinished picking tasks – užduočių priskyrimas surinkėjams. Banga × zona yra rankinio skirstymo vienetas, kurį perima variklis.</li>
+      <li>Atsisakyta (2026-10-29): stebėsena pagal zonas (apkrova, efektyvumas) ir numatoma bangos pabaiga. Numatomos pabaigos negalima gauti sudedant surinkėjų užduočių trukmes: bangos pabaigą lemia lėčiausia zona, o būsimos užduotys dar nepaskirtos.</li></ul>
+      <div class="meta"><span class="ctx">S22</span><span class="was">iki 2026-10-29 „Stebėsena: zonų apkrova, efektyvumas“ (buvę B1, B2)</span></div>
+    </div></details>
+    <details class="item" id="f-DB5"><summary><span class="id">DB5</span><span class="name">„Dirba dabar“ be bangų dimensijos</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc">Sidebar'as visuose languose vienodas, bangų žymų, filtrų ir grupavimo jame nėra. Banga yra užduoties savybė, ne žmogaus: surinkėjas per pamainą pereina per kelias bangas, todėl grupavimas pagal bangą nuolat persidėliotų. Su auto tasks vadovo dėmesys pereina nuo darbo eilės prie žmonių, todėl „Dirba dabar“ tampa pagrindiniu jo įrankiu, o bangos kortelė – stebėjimo vieta. Numatytasis skirtukas – „Surinkėjai“ (<a href="#f-DD6">DD6</a>).</p>
     </div></details>
   </div>
 </section>
@@ -636,7 +641,6 @@ a { color: var(--accent); }
     <tr id="k-K14"><td>K14</td><td>Ar reikia riboti surinkėjų skaičių zonoje?</td><td>SC9</td><td>Operacijos</td></tr>
     <tr id="k-K15"><td>K15</td><td>Kokia Frozen zonos priskyrimo logika?</td><td>SC12</td><td>Operacijos</td></tr>
     <tr id="k-K16"><td>K16</td><td>Ar skirstyti užduotis tolygiai tarp zonų?</td><td>SC10</td><td>Operacijos</td></tr>
-    <tr id="k-K17"><td>K17</td><td>Kuriomis kryptimis tobulinti Dashboard B?</td><td>DB</td><td>Vytautas</td></tr>
     <tr id="k-K18"><td>K18</td><td>R02 turinys liko faile review.md ir neperkeltas.</td><td>–</td><td>Vytautas</td></tr>
   </tbody></table></div>
 </section>
@@ -1042,6 +1046,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-10-29</td><td>Dashboard tema (T6) uždaryta: pakeitimų nereikia. DB4 tapo sprendimu „Bangos kortelė be zonų ir užduočių pjūvio“ (stebėsena pagal zonas ir numatoma pabaiga atsisakyta), naujas DB5 „Dirba dabar“ be bangų dimensijos“. K17 atsakytas ir išimtas.</td></tr>
       <tr><td>2026-10-29</td><td>„Dirba dabar“: skirtukas „Surinkėjai“ tapo pirmu ir numatytuoju, „Zonos“ – antru, atsidaro jį pasirinkus.</td></tr>
       <tr><td>2026-10-29</td><td>Paskyros redagavimas: raudonas „!“ ženklas (kombinacijos zona nepriskirta) perkeltas tarp varnelės ir zonos pavadinimo.</td></tr>
       <tr><td>2026-10-29</td><td>„Dirba dabar“ skirtukas „Zonos“: išskleistos zonos surinkėjų eilutėse rolė nerodoma; naujokas pažymimas įprasta violetine žyma „Naujokas“.</td></tr>
