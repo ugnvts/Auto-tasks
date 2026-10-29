@@ -141,7 +141,7 @@ td,th{white-space:nowrap}
 #dock #sb{position:sticky!important;z-index:1!important;top:80px;right:auto;bottom:auto;width:auto!important;height:calc(100vh - 56px - 48px);min-height:420px;border:1px solid #dde1e7;border-radius:12px;box-shadow:none;overflow:hidden;background:#f9fafb}
 #dock #kp{position:sticky!important;z-index:1!important;top:80px;right:auto;bottom:auto;width:auto!important;height:calc(100vh - 56px - 48px);min-height:420px;border:1px solid #dde1e7;border-radius:12px;box-shadow:none;overflow:hidden;background:#f9fafb}
 /* B variantas: juosta visada matoma, skydelis atsidaro šalia jos; atidaryto skydelio mygtukas aktyvus ir be skaičių */
-@media(min-width:768px){#sb,#kp{right:92px;border-right:1px solid #e5e7eb}#outer.docked{margin-right:92px}}
+@media(min-width:768px){#outer.docked{margin-right:92px}}
 #dock #sb,#dock #kp{right:auto}
 #rail .ra{background:#eef2ff!important;border-color:#818cf8!important}
 #rail .ra>.w-12,#rail .ra .rc{display:none}
@@ -864,11 +864,11 @@ function fromHash(){const h=location.hash.slice(1);if(h=='edit'&&cv!='edit')go('
 // Kairiojo meniu žymėjimas pagal atidarytą ekraną
 const _goNav=go;go=function(v,p){_goNav(v,p);nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash')};
 fromHash();addEventListener('hashchange',fromHash);
-// Variantas „Juosta – tik pakeitimai“: juosta matoma visada. Picker accounts – kaip „Juosta – perjungiklis“.
+// Variantas „Juosta – tik pakeitimai“: išskleidus skydelį juostos nelieka (kaip pagrindiniame prototipe).
 // Dashboard'e „Dirba dabar“ prisegtas ir visada atidarytas, todėl jo mygtuko juostoje nėra; lieka tik „Laikini pakeitimai“,
 // kurie atsidaro ant viršaus kaip suskleidžiamas skydelis.
 const kpEl=document.getElementById('kp'),dockEl=document.getElementById('dock');
-function railS(){rail.hidden=false;rail.classList.remove('md:invisible');
+function railS(){rail.hidden=false;rail.classList.toggle('md:invisible',(!sb.hidden&&!docked)||!kpEl.hidden);
   const a=!sb.hidden,b=!kpEl.hidden;railA.classList.toggle('ra',a);railB.classList.toggle('ra',b);
   railA.setAttribute('aria-pressed',a);railB.setAttribute('aria-pressed',b);
   railA.hidden=docked;const kb=document.getElementById('kpDockBtn');if(kb)kb.hidden=true}
