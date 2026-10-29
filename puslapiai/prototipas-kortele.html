@@ -695,7 +695,7 @@ function sbR(){
       end=m.s&&m.e?fm(hm(m.s)+m.e):'',
       tip=m.s?`Pradėjo ${m.s}${end?` · planuojama baigti ~${end}`:''}`:`Dar nepradėjo${m.e?` · planuojama išėjimo trukmė ~${m.e} min`:''}`,
       tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="px-2.5 py-2 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span><span class="ml-auto px-1.5 py-0.5 rounded shrink-0 ${TS[t[4]]}">${t[4]}</span></div><div class="mt-1.5 grid grid-cols-5 gap-2">${f('Banga',d.w)}${f('Eilutės',`${t[2]}/${t[3]}`,'Picked lines / Total lines')}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div></div>`},
-      sec=(t,b)=>`<div class="mt-3 text-[11px] font-semibold uppercase tracking-wide text-gray-500">${t}</div>${b}`,
+      sec=(t,b)=>`<div class="mt-2.5" role="group" aria-label="${t}">${b}</div>`, // antraščių nerodome – užtenka įrėminimo
       kv=(l,v)=>`<div><div class="text-[11px] text-gray-500">${l}</div><div class="font-medium tabular-nums text-gray-900">${v}</div></div>`;
     return `<div id="sbc${i}" class="mx-3 mt-2 p-3 bg-white border ${ox?'border-indigo-300':'border-gray-200'} rounded-lg transition-colors">
       <div class="flex items-center gap-2"><div class="min-w-0"><div class="flex items-center gap-2"><button class="text-[15px] font-semibold text-gray-900 hover:underline text-left" onclick="go('view')">${r[0]} ${r[1]}</button>${r[7]?'<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">Naujokas</span>':''}</div><div class="text-[11px] text-gray-500 leading-tight">${r[4]}</div></div>
@@ -707,9 +707,9 @@ function sbR(){
           cl='mt-1 -mx-1.5 px-1.5 py-1.5 w-[calc(100%+12px)] flex items-center gap-2 text-[13px] tabular-nums rounded text-left';
         return can?`<button class="${cl} hover:bg-gray-50" aria-expanded="${ox}" aria-label="${ox?'Suskleisti':'Išskleisti'} išėjimą: ${r[0]} ${r[1]}" onclick="sbD(${i},'k')">${row}</button>`:`<div class="${cl}">${row}</div>`})()}
       ${ox?`<div class="mt-3 pt-1 border-t text-xs">
-        ${sec('Išėjimas',`<div class="mt-1 grid grid-cols-3 gap-2">${kv('Pradėjo',m.s||'Dar nepradėjo')}${kv('Planuojama trukmė',m.e?`~${m.e} min`:'–')}${kv('Planuojama baigti',end?`~${end}`:'–')}</div>`)}
-        ${sec('Užduotys',`<div class="mt-1 border border-gray-200 rounded divide-y">${c_.map(tr).join('')}</div>`)}
-        ${q.length?sec('Eilėje',`<div class="mt-1 border border-gray-200 rounded divide-y">${q.map(tr).join('')}</div>`):''}
+        ${sec('Išėjimas',`<div class="grid grid-cols-3 gap-2">${kv('Pradėjo',m.s||'Dar nepradėjo')}${kv('Planuojama trukmė',m.e?`~${m.e} min`:'–')}${kv('Planuojama baigti',end?`~${end}`:'–')}</div>`)}
+        ${sec('Užduotys',`<div class="border border-gray-200 rounded divide-y">${c_.map(tr).join('')}</div>`)}
+        ${q.length?sec('Eilėje',`<div class="border border-gray-200 rounded divide-y">${q.map(tr).join('')}</div>`):''}
       </div>`:''}
       </div>
     </div>`}).join('')||'<p class="px-4 py-8 text-center text-gray-500">Pagal filtrus surinkėjų nėra.</p>'}<div class="h-3"></div>`;
