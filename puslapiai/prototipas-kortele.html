@@ -641,13 +641,15 @@ const works=r=>r[5]||r[6]=='Renka'||r[6]=='Nesinchronizavo';
 const open_=i=>(TK[i]||[]).filter(t=>t[4]!='Done');
 const curZ=i=>{const o=open_(i);return (o.find(t=>t[4]=='Picking')||o[0]||[])[1]||''};
 const cur_=i=>{const o=open_(i),p=o.filter(t=>t[4]=='Picking');return p.length?p:o};
-// Bendri būsenos tag'ai (kortelėje ir lentelėje): aktyvus išėjimas, renkant – progresas fone; po jo – nesinchronizuotas darbas eilėje
-function stTags(i){const r=N[i],o=open_(i),c=cur_(i),q=o.filter(t=>!c.includes(t)),pk=c.reduce((a,t)=>a+t[2],0),tt=c.reduce((a,t)=>a+t[3],0),ql=q.reduce((a,t)=>a+t[3],0),
-    tag=(k,txt,pc)=>`<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${k}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${txt}</span></span>`,
-    G='bg-green-50 border-green-200 text-green-900',A='bg-amber-50 border-amber-200 text-amber-800',B='bg-blue-50 border-blue-200 text-blue-800';
-  if(r[6]=='Renka')return (tt?tag(G,`Renka · ${pk}/${tt} eil.`,Math.round(pk/tt*100)):tag(G,'Renka'))+(ql?tag(A,`Nesinchr. · ${ql} eil.`):'');
-  if(r[6]=='Nesinchronizavo')return tag(A,`Nesinchronizavo${tt?` · ${tt} eil.`:''}`);
-  if(r[6]=='Laukia užduoties')return tag(B,'Laukia užduoties');
+// Bendri būsenos tag'ai – trys formos, visur vienodos (kortelė, lentelė, užduoties eilutė):
+// „Renka · 12/30 eil.“ su progresu fone, „Nesinchronizavo“, „Laukia užduoties“
+const SG={Renka:'bg-green-50 border-green-200 text-green-900',Nesinchronizavo:'bg-amber-50 border-amber-200 text-amber-800','Laukia užduoties':'bg-blue-50 border-blue-200 text-blue-800'};
+function stTag(st,pk,tt){const pc=st=='Renka'&&tt?Math.round(pk/tt*100):null;
+  return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${st}${st=='Renka'&&tt?` · ${pk}/${tt} eil.`:''}</span></span>`}
+const taskTag=t=>stTag(t[4]=='Picking'?'Renka':'Nesinchronizavo',t[2],t[3]);
+function stTags(i){const r=N[i],o=open_(i),c=cur_(i),q=o.filter(t=>!c.includes(t)),pk=c.reduce((a,t)=>a+t[2],0),tt=c.reduce((a,t)=>a+t[3],0);
+  if(r[6]=='Renka')return stTag('Renka',pk,tt)+(q.length?stTag('Nesinchronizavo'):'');
+  if(SG[r[6]])return stTag(r[6]);
   return '<span class="text-gray-400">Nerenka</span>'}
 const zonesOf=i=>[...new Set(cur_(i).map(t=>t[1]))];
 function sbD(i,k){sbX[i]=sbX[i]==k?'':k;sbR()}
@@ -694,7 +696,7 @@ function sbR(){
       zc=q=>`<span class="max-w-full truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5" title="${q}">${q}</span>`,
       end=m.s&&m.e?fm(hm(m.s)+m.e):'',
       tip=m.s?`Pradėjo ${m.s}${end?` · planuojama baigti ~${end}`:''}`:`Dar nepradėjo${m.e?` · planuojama išėjimo trukmė ~${m.e} min`:''}`,
-      tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="px-2.5 py-2 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span><span class="ml-auto px-1.5 py-0.5 rounded shrink-0 ${TS[t[4]]}">${t[4]}</span></div><div class="mt-1.5 grid grid-cols-5 gap-2">${f('Banga',d.w)}${f('Eilutės',`${t[2]}/${t[3]}`,'Picked lines / Total lines')}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div></div>`},
+      tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="px-2.5 py-2 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span><span class="ml-auto shrink-0">${taskTag(t)}</span></div><div class="mt-1.5 grid grid-cols-4 gap-2">${f('Banga',d.w)}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div></div>`},
       sec=(t,b)=>`<div class="mt-2.5" role="group" aria-label="${t}">${b}</div>`, // antraščių nerodome – užtenka įrėminimo
       kv=(l,v)=>`<div><div class="text-[11px] text-gray-500">${l}</div><div class="font-medium tabular-nums text-gray-900">${v}</div></div>`;
     return `<div id="sbc${i}" class="mx-3 mt-2 p-3 bg-white border ${ox?'border-indigo-300':'border-gray-200'} rounded-lg transition-colors">
