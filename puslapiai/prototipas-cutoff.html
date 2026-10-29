@@ -139,6 +139,7 @@ td,th{white-space:nowrap}
 #v-dash .site b{color:#111827;font-weight:500}
 #dock{align-self:stretch}
 @media(min-width:768px){#outer.docked{margin-right:92px}} /* Dashboard'e juosta lieka dešinėje */
+#rail.dk{top:80px} /* Dashboard'e juostos viršus sulygiuotas su prisegtu „Dirba dabar“ */
 #dock #sb{position:sticky!important;z-index:1!important;top:80px;right:auto;bottom:auto;width:auto!important;height:calc(100vh - 56px - 48px);min-height:420px;border:1px solid #dde1e7;border-radius:12px;box-shadow:none;overflow:hidden;background:#f9fafb}
 .live{display:inline-flex;align-items:center;gap:6px;height:22px;padding:0 8px;border-radius:999px;background:#dcfce7;color:#166534;font-size:12px;font-weight:600;font-variant-numeric:tabular-nums}
 .live i{width:7px;height:7px;border-radius:50%;background:#16a34a;animation:pl 1.6s ease-in-out infinite}
@@ -862,7 +863,7 @@ fromHash();addEventListener('hashchange',fromHash);
 // Juosta: išskleidus skydelį juostos nelieka. Dashboard'e „Dirba dabar“ prisegtas visada, todėl juostoje lieka tik
 // „Laikini pakeitimai“; jie atsidaro ant viršaus kaip suskleidžiamas skydelis (2026-10-29).
 const kpEl=document.getElementById('kp');
-function railS(){rail.hidden=false;rail.classList.toggle('md:invisible',(!sb.hidden&&!docked)||!kpEl.hidden);railA.hidden=docked}
+function railS(){rail.hidden=false;rail.classList.toggle('dk',docked);rail.classList.toggle('md:invisible',(!sb.hidden&&!docked)||!kpEl.hidden);railA.hidden=docked}
 {const o=sbOpen;sbOpen=function(...a){o(...a);railS()}}
 {const c=sbClose;sbClose=function(){c();railS()}}
 {const o=kpOpen;kpOpen=function(){o();railS()}}
