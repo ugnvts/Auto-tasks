@@ -662,6 +662,8 @@ document.addEventListener('keydown',e=>{if(e.key=='Escape'&&!sb.hidden&&offdlg.h
 function sbF(k,v){sbK.clear();if(k=='g'){sbG=v;sbS='';if(v=='auto')sbN=0;sbDD=0}if(k=='s')sbS=sbS==v?'':v;if(k=='n')sbN=sbN?0:1;sbR()}
 function sbZA(on){document.querySelectorAll('#sbBody tbody tr[aria-expanded]').forEach(t=>{const z=t.children[1].textContent;on?sbZO.add(z):sbZO.delete(z)});sbR()}
 function sbZT(z){sbZO.has(z)?sbZO.delete(z):sbZO.add(z);sbR()}
+// Zonos žyma surinkėjo kortelėje: atidaro „Zonos“ skirtuką su išskleista ta zona
+function sbZone(z){sbT='z';sbZO.add(z);sbR();const t=[...document.querySelectorAll('#sbBody tbody tr[aria-expanded]')].find(r=>r.children[1].textContent==z);if(t){t.scrollIntoView({block:'center'});t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),1600)}}
 function sbJump(i){sbT='p';sbG='all';sbS='';sbN=0;sbDD=0;sbR();const e=document.getElementById('sbc'+i);if(e){e.scrollIntoView({block:'center'});e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),1600)}}
 document.addEventListener('click',e=>{if(sbDD&&e.target.isConnected&&!e.target.closest('#sbdd')){sbDD=0;sbR()}});
 const sbK=new Set();
@@ -693,13 +695,13 @@ function sbR(){
     // Išskleista: išėjimo laikai ir visos užduotys (dabartinės, po to eilė), rodyklė į viršų – santrauka pakeičiama detalėmis
     const can=o.length>0,ox=can&&x=='k',R=r[6]=='Renka',
       zl=zs.map(q=>[q,c_.filter(t=>t[1]==q).reduce((a,t)=>a+t[3],0)]).sort((a,b)=>b[1]-a[1]).map(v=>v[0]),
-      zc=q=>`<span class="max-w-full truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5" title="${q}">${q}</span>`,
+      zc=q=>`<button class="max-w-full truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 text-[13px] font-medium px-2.5 py-0.5 hover:bg-gray-200 hover:border-gray-300" title="Rodyti zonų skirtuke: ${q}" onclick="sbZone('${q.replace(/'/g,"\\'")}')">${q}</button>`,
       end=m.s&&m.e?fm(hm(m.s)+m.e):'',
       lt=m.s?`${el}${m.e?` / ~${m.e}`:''} min`:m.e?`~${m.e} min`:'',
       tip=m.s?`Pradėjo ${m.s}${end?` · planuojama baigti ~${end}`:''}`:`Dar nepradėjo${m.e?` · planuojama išėjimo trukmė ~${m.e} min`:''}`,
       clk='<svg class="shrink-0 text-gray-700" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>',
       tags=R?stTag('Renka',pk,tt,'flex-1 min-w-0')+(q.length?stTag('Nesinchronizavo'):''):SG[r[6]]?stTag(r[6],0,0,'flex-1 min-w-0'):'',
-      tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="py-2.5 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><span class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5" title="${t[1]}">${t[1]}</span></div><div class="mt-1.5 flex items-end gap-2"><div class="flex-1 min-w-0 grid grid-cols-4 gap-2">${f('Banga',d.w)}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div><span class="shrink-0">${taskTag(t)}</span></div></div>`},
+      tr=t=>{const d=TX(t),f=(l,v,h)=>`<div${h?` title="${h}"`:''}><div class="text-[11px] text-gray-500">${l}</div><div class="tabular-nums text-gray-900">${v}</div></div>`;return `<div class="py-2.5 text-xs"><div class="flex items-center gap-2"><a class="text-indigo-600 font-medium hover:underline cursor-pointer shrink-0">${t[0]}</a><button class="min-w-0 truncate rounded-full bg-gray-100 border border-gray-200 text-gray-900 font-medium px-2 py-0.5 hover:bg-gray-200 hover:border-gray-300" title="Rodyti zonų skirtuke: ${t[1]}" onclick="sbZone('${t[1].replace(/'/g,"\\'")}')">${t[1]}</button></div><div class="mt-1.5 flex items-end gap-2"><div class="flex-1 min-w-0 grid grid-cols-4 gap-2">${f('Banga',d.w)}${f('Vnt.',d.pcs,'Unweighted products, pcs')}${f('Kg',d.kg,'Weighed products, kg')}${f('Užsak.',d.o,'Order')}</div><span class="shrink-0">${taskTag(t)}</span></div></div>`},
       kv=(l,v,b)=>`<div class="flex-1 min-w-0 ${b?'pl-3 border-l border-gray-200':''}"><div class="text-[11px] text-gray-500">${l}</div><div class="text-[13px] font-medium tabular-nums text-gray-900">${v}</div></div>`;
     return `<div id="sbc${i}" class="mx-3 mt-2 bg-white border border-gray-200 rounded-lg overflow-hidden transition-colors">
       <div class="px-4 pt-4 ${ox?'pb-4':'pb-3'}">
