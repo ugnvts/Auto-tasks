@@ -1,7 +1,10 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <style>
-.zfl{animation:zfl 2s ease-out}@keyframes zfl{0%,40%{box-shadow:inset 0 0 0 2px #f59e0b;background:#fffbeb}}body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+.zfl{animation:zfl 2s ease-out}@keyframes zfl{0%,40%{box-shadow:inset 0 0 0 2px #f59e0b;background:#fffbeb}}body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}input.sl{-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;outline-offset:6px}
+input.sl::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:2px solid #4f46e5;box-shadow:0 1px 2px rgba(0,0,0,.2);cursor:grab}
+input.sl::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:#fff;border:2px solid #4f46e5;cursor:grab}
+</style></head><body>
 <title>Auto tasks · Prototype</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
@@ -552,14 +555,14 @@ function cOpenSel(){GD={d:'up',p:null,all:false,t:'',sel:[...sel]};cR();document
 function cR(){const D=GD,now=gNow(),tgt=D.sel?D.sel:D.all?gAll():now,ex=tgt.filter(i=>pers(i)),
     seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="GD.d='${v}';if(!KP.${v}.includes(GD.p))GD.p=KP.${v}[1];cR()">${l}</button>`;
   document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${D.sel?`Efficiency adjustment for selected (${D.sel.length})`:'Efficiency adjustment for pickers'}</div><p class="text-gray-500 mt-1">The same adjustment is applied to all zones of the selected pickers. It applies to all tasks, auto and manual. Base efficiency is not changed.</p>
-    ${amt(D,'GD','cR')}
+    ${sld(D,'GD')}
     ${D.sel?'':`<div class="mt-4 font-medium">Apply to</div>`}<div class="mt-1 space-y-1.5" ${D.sel?'hidden':''}>
       <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'checked':''} onchange="GD.all=true;cR()"><span>Everyone, including those starting later <span class="text-gray-500">(${gAll().length})</span></span></label>
       <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'':'checked'} onchange="GD.all=false;cR()"><span>Only those working now <span class="text-gray-500">(${now.length})</span>${D.all?'':` · <button class="text-indigo-700 hover:underline" onclick="event.preventDefault();GD.sl=!GD.sl;cR()">${D.sl?'Hide':'Show'} list</button>`}</span></label>
       ${!D.all&&D.sl?`<div class="ml-6 border rounded max-h-40 overflow-y-auto divide-y text-xs">${now.map(i=>`<div class="px-2.5 py-1">${N[i][0]} ${N[i][1]} <span class="text-gray-500">· ${N[i][5]?'auto':'manual'}, ${N[i][6].toLowerCase()}</span></div>`).join('')}</div><p class="ml-6 text-xs text-gray-500">Manually assigned pickers without a current task are not included.</p>`:''}</div>
     <div class="mt-4 font-medium">Valid</div><div class="mt-1 space-y-1.5"><label class="flex items-center gap-2"><input type="radio" name="ct" ${D.t?'':'checked'} onchange="GD.t='';cR()">Until removed</label><label class="flex items-center gap-2"><input type="radio" name="ct" ${D.t?'checked':''} onchange="GD.t='18:00';cR()">Until a set time${D.t?` <input type="date" value="${D.dt||dToday()}" min="${dToday()}" class="border rounded px-2 py-0.5" onchange="GD.dt=this.value"> <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="GD.t=this.value">`:''}</label></div>
     ${ex.length?`<p class="mt-4 text-gray-600">Existing adjustments of ${ex.length} ${ex.length==1?'picker':'pickers'} will be overwritten.</p>`:''}
-    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Cancel</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600 disabled:opacity-40" ${D.p?'':'disabled'} onclick="cApply()">Apply to ${tgt.length}</button></div>`}
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Cancel</button><button id="korAp" class="px-4 py-1.5 rounded text-white bg-indigo-600 disabled:opacity-40" ${D.p?'':'disabled'} onclick="cApply()">Apply to ${tgt.length}</button></div>`}
 const gSnap=()=>({k:korCp(KOR),pc:JSON.parse(JSON.stringify(PC))}),gRestore=x=>{KOR=x.k;Object.keys(PC).forEach(k=>delete PC[k]);Object.assign(PC,x.pc)},gRe=()=>{render();if(cv=='view')rv()};
 function cApply(){const D=GD,prev=gSnap(),k={d:D.d,p:D.p,t:tLbl(D),tm:D.t,dt:D.dt},tgt=D.sel?D.sel:D.all?gAll():gNow();if(D.sel)sel.clear();
   tgt.forEach(i=>{const z={z:Object.fromEntries(gZ(i).map(q=>[q,{...k}]))};if(i==0)KOR=korN(z);else PC[i]=z});
@@ -602,8 +605,6 @@ function pauR(){const D=KD,rad=(on,l,ch)=>`<label class="flex items-center gap-2
 function pauApply(){const n=KD.pz,t=tLbl(KD);PAU.set(n,t);document.getElementById('kordlg').hidden=true;rv();toast(`${n}: zone paused${t?' until '+t:''}`,()=>{PAU.delete(n);rv()})}
 // Langelis: visoms zonoms (perrašo atskirų zonų korekcijas) arba vienai zonai (viena korekcija zonai, svarbesnė už „visoms zonoms“)
 const IEF='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14l4-4 3 3 5-6"/><path d="M12 7h4v4"/></svg>';
-// Korekcijos dydis: viena mygtukų eilė (−30 … +30); vienos zonos lange – susieti skaičiai
-const amt=(D,o,f)=>`<div class="mt-4 font-medium">Adjustment</div><div class="mt-1 grid grid-cols-6 gap-1">${[...KP.down.slice().reverse().map(v=>['down',v]),...KP.up.map(v=>['up',v])].map(([d,v])=>{const on=!D.cv&&D.d==d&&D.p==v;return `<button class="px-1 py-1 rounded border text-[13px] tabular-nums whitespace-nowrap ${on?DS(d):'hover:bg-gray-50 '+DX(d)}" aria-pressed="${on}" onclick="${o}.d='${d}';${o}.p=${v};${o}.cv=null;${f}()">${sg(d)}${v} %</button>`}).join('')}</div>`;
 function korF(id){const e=document.getElementById(id);if(e){e.focus();const l=e.value.length;e.setSelectionRange(l,l)}}
 // Laukai nesusieti: įrašius skaičių keičiasi tik jis, procentų mygtukai nebežymimi
 function korV(k,v){const z=KD.zs[0];if(!KD.cv)KD.cv=[0,1,2].map(x=>KD.p?adjF(KD,EFF[z][x],x):+EFF[z][x]);KD.cv[k]=v;korR();korF('kv'+k)}
@@ -626,15 +627,27 @@ function korZone(n){const k=KOR?.z[n];KD={zs:[n],d:k?.cv?'mix':k?.d||'down',p:k?
 function korOpen(){KD={zs:azs(),d:'down',p:null,t:'',ex:false,all:true};korR();document.getElementById('kordlg').hidden=false}
 const gZs=(d,p,t)=>Object.entries(KOR.z).filter(([z,k])=>k.d==d&&k.p==p&&k.t==t).map(([z])=>z);
 function korGrp(d,p,t){const zs=gZs(d,p,t),k=KOR.z[zs[0]];KD={zs,d,p,t:k.tm??t,dt:k.dt,ex:true};korR();document.getElementById('kordlg').hidden=false}
+// Korekcijos slankiklis −30…+30 % (žingsnis 10), numatytas vidurys (0 – be pakeitimo); tas pats zonos, visų zonų ir grupiniame lange.
+// Galima tempti ir spausti ant skalės; „0“ arba „Reset“ anuliuoja. Tempiant atnaujinami tik skaičiai, ne visas langas.
+const korNH=D=>!D.all&&D.zs.length==1&&EFF[D.zs[0]]?`<div class="mt-3 rounded border bg-gray-50 px-3 py-2.5"><div class="grid grid-cols-[auto_auto_auto_auto_auto] justify-start items-center gap-x-4 gap-y-1.5"><span></span><span class="text-xs text-gray-500 text-right">Base</span><span></span><span class="text-xs text-gray-500">Temporary</span><span></span>${['SKU/1h','Units/1h','KG/1h'].map((u,k)=>{const b=+EFF[D.zs[0]][k],v=D.cv?D.cv[k]:D.p?adjF(D,b,k):b;return `<span class="text-gray-600">${u}</span><span class="tabular-nums text-right text-gray-500">${b}</span><span class="text-gray-400">→</span><input id="kv${k}" inputmode="numeric" class="w-20 border rounded px-2 py-1 bg-white tabular-nums" value="${v}" oninput="korV(${k},this.value)" aria-label="Temporary ${u}">${+v==b?'<span></span>':(pc=>`<span class="text-sm font-medium tabular-nums ${pc>0?'text-green-700':pc<0?'text-red-700':'text-gray-400'}">${pc>0?'+':pc<0?'−':''}${Math.abs(pc)} %</span>`)(D.cv?(b&&+v?Math.round((+v/b-1)*100):0):D.p?(D.d=='up'?1:-1)*D.p:0)}`}).join('')}</div></div>`:'';
+// Užpildas nuo vidurio (0) iki reikšmės: raudonas mažinant, žalias didinant
+const slBg=v=>{const p=(v+30)/60*100,a=Math.min(50,p),b=Math.max(50,p),c=v<0?'#dc2626':'#16a34a';return `linear-gradient(to right,#e5e7eb ${a}%,${c} ${a}%,${c} ${b}%,#e5e7eb ${b}%)`},
+  sldV=D=>D.cv||!D.p?0:(D.d=='up'?1:-1)*D.p,sgn=x=>x>0?'+':x<0?'−':'',
+  sldH=v=>`<span class="font-medium">Adjustment</span><span class="text-sm font-semibold tabular-nums ${v>0?'text-green-700':v<0?'text-red-700':'text-gray-400'}">${v?sgn(v)+Math.abs(v)+' %':'No change'}</span>`,
+  sldT=(v,o='KD')=>`<div class="relative h-6">${[-30,-20,-10,0,10,20,30].map((x,i)=>`<button type="button" class="absolute -translate-x-1/2 px-1 rounded text-xs tabular-nums whitespace-nowrap hover:bg-gray-100 ${x>0?'text-green-700':x<0?'text-red-700':'text-gray-500'} ${x==v?'font-bold':''}" style="left:calc(9px + (100% - 18px) * ${i/6})" onclick="korS(${x},'${o}')">${sgn(x)}${Math.abs(x)}${x?' %':''}</button>`).join('')}</div><div class="text-right h-5"><button class="text-xs text-indigo-700 hover:underline" ${v?'':'hidden'} onclick="korS(0,'${o}')">Reset</button></div>`,
+  sld=(D,o='KD')=>{const v=sldV(D);return `<div id="korSh" class="mt-4 flex items-center justify-between">${sldH(v)}</div><input id="korSl" type="range" min="-30" max="30" step="10" value="${v}" class="sl block w-full mt-3 cursor-pointer" style="background:${slBg(v)}" oninput="korS(this.value,'${o}')" aria-label="Adjustment percent"><div id="korSt">${sldT(v,o)}</div>`};
+function korS(v,o='KD'){v=+v;const D=o=='GD'?GD:KD;if(v){D.d=v>0?'up':'down';D.p=Math.abs(v)}else D.p=null;D.cv=null;
+  document.getElementById('korSl').value=v;document.getElementById('korSl').style.background=slBg(v);document.getElementById('korSh').innerHTML=sldH(v);document.getElementById('korSt').innerHTML=sldT(v,o);
+  const kn=document.getElementById('korNums');if(kn){ZLS=[];kn.innerHTML=korNH(D)}document.getElementById('korAp').disabled=!korOk(D)}
 function korR(){const D=KD,ov=D.all&&KOR?Object.entries(KOR.z).filter(([z,k])=>k.d!=D.d||k.p!=D.p):[],
     seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="KD.d='${v}';if(!KP.${v}.includes(KD.p))KD.p=KP.${v}[1];korR()">${l}</button>`,
     rad=(c,l,on)=>`<label class="flex items-center gap-2"><input type="radio" name="${c}" ${on?'checked':''} onchange="${l}">`;
   ZLS=[];
   document.getElementById('kordlgB').innerHTML=`<div id="korT"><div class="text-xs font-medium uppercase tracking-wide text-gray-500">Efficiency adjustment</div><div class="mt-0.5 text-lg font-semibold text-gray-900">${D.all?`All assigned zones (${D.zs.length})`:D.zs.length==1?D.zs[0]:zChip(D.zs)}</div></div><p class="text-gray-500 mt-1">Takes effect immediately. Base efficiency in the account is not changed.</p>
-    ${amt(D,'KD','korR')}${!D.all&&D.zs.length==1&&EFF[D.zs[0]]?`<div class="mt-3 rounded border bg-gray-50 px-3 py-2.5"><div class="grid grid-cols-[auto_auto_auto_auto_auto] justify-start items-center gap-x-4 gap-y-1.5"><span></span><span class="text-xs text-gray-500 text-right">Base</span><span></span><span class="text-xs text-gray-500">Temporary</span><span></span>${['SKU/1h','Units/1h','KG/1h'].map((u,k)=>{const b=+EFF[D.zs[0]][k],v=D.cv?D.cv[k]:D.p?adjF(D,b,k):b;return `<span class="text-gray-600">${u}</span><span class="tabular-nums text-right text-gray-500">${b}</span><span class="text-gray-400">→</span><input id="kv${k}" inputmode="numeric" class="w-20 border rounded px-2 py-1 bg-white tabular-nums" value="${v}" oninput="korV(${k},this.value)" aria-label="Temporary ${u}">${+v==b?'<span></span>':(pc=>`<span class="text-sm font-medium tabular-nums ${pc>0?'text-green-700':pc<0?'text-red-700':'text-gray-400'}">${pc>0?'+':pc<0?'−':''}${Math.abs(pc)} %</span>`)(D.cv?(b&&+v?Math.round((+v/b-1)*100):0):D.p?(D.d=='up'?1:-1)*D.p:0)}`}).join('')}</div></div>`:''}
+    ${sld(D)}<div id="korNums">${korNH(D)}</div>
     <div class="mt-4 font-medium">Valid</div><div class="mt-1 space-y-1.5">${rad('kt',"KD.t='';korR()",!D.t)}Until removed</label>${rad('kt',"KD.t='18:00';korR()",!!D.t)}Until a set time${D.t?` <input type="date" value="${D.dt||dToday()}" min="${dToday()}" class="border rounded px-2 py-0.5" onchange="KD.dt=this.value"> <input type="time" value="${D.t}" class="border rounded px-2 py-0.5" onchange="KD.t=this.value">`:''}</label></div>
     ${ov.length?`<div class="mt-4 rounded border border-amber-200 bg-amber-50 px-3 py-2"><div class="text-amber-900">Existing zone adjustments will be overwritten:</div><div class="mt-1">${gRows({z:Object.fromEntries(ov)})}</div></div>`:''}
-    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Cancel</button><button class="px-4 py-1.5 rounded text-white bg-indigo-600 disabled:opacity-40" ${korOk(D)?'':'disabled'} onclick="korApply()">${D.ex?'Save adjustment':'Apply'}</button></div>`}
+    <div class="mt-5 flex justify-end gap-2"><button class="px-3 py-1.5 text-gray-600" onclick="kordlg.hidden=true">Cancel</button><button id="korAp" class="px-4 py-1.5 rounded text-white bg-indigo-600 disabled:opacity-40" ${korOk(D)?'':'disabled'} onclick="korApply()">${D.ex?'Save adjustment':'Apply'}</button></div>`}
 const korCp=K=>K&&{z:Object.fromEntries(Object.entries(K.z).map(([z,k])=>[z,{...k,cv:k.cv&&k.cv.slice()}]))};
 function korApply(){const prev=korCp(KOR),D=KD,k=D.cv?{cv:D.cv.map(Number),d:cvD(D.zs[0],D.cv),p:null,t:tLbl(D),tm:D.t,dt:D.dt}:{d:D.d,p:D.p,t:tLbl(D),tm:D.t,dt:D.dt};KOR=korCp(KOR)||{z:{}};D.zs.forEach(z=>KOR.z[z]={...k});
   document.getElementById('kordlg').hidden=true;rv();render();toast(`Adjustment ${k.cv?'with custom values':pct(k)} applied to ${D.all?'all zones':D.zs.length==1?'zone '+D.zs[0]:D.zs.length+' '+ltZ(D.zs.length)}`,()=>{KOR=prev;rv();render()})}
@@ -895,7 +908,7 @@ kpR();
 </script>
 <script>
 // Pradinis ekranas pagal adresą (#dashboard arba #picker-accounts); apvalkalas keičia adresą perjungdamas skirtukus
-function fromHash(){const h=location.hash.slice(1);if(h=='edit'&&cv!='edit')go('edit',false);else if(h=='picker-accounts'&&cv=='dash')go('list',false);else if(h=='dashboard'&&cv!='dash')go('dash',false)}
+function fromHash(){const h=location.hash.slice(1);if(h=='edit'&&cv!='edit')go('edit',false);else if(h=='view'&&cv!='view')go('view',false);else if(h=='picker-accounts'&&cv=='dash')go('list',false);else if(h=='dashboard'&&cv!='dash')go('dash',false)}
 // Kairiojo meniu žymėjimas pagal atidarytą ekraną
 const _goNav=go;go=function(v,p){_goNav(v,p);nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash')};
 fromHash();addEventListener('hashchange',fromHash);

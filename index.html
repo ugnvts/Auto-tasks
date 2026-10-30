@@ -68,8 +68,6 @@ var PAGES = [
   { id: "picker", name: "Picker accounts", variants: [
     { id: "picker-accounts", name: "With “Working now”", file: "puslapiai/prototipas.html#picker-accounts",
       note: "Picker table and account; “Working now” and “Temporary changes” on the right."},
-    { id: "picker-slideris", name: "Slider adjustment", file: "puslapiai/prototipas-slideris.html#view",
-      note: "Account: the zone efficiency adjustment uses a −30…+30 % slider instead of buttons (open “Adjust efficiency” on a zone)." },
     { id: "picker-cutoff", name: "During cut-off", file: "puslapiai/prototipas-cutoff.html#picker-accounts",
       note: "The same prototype during cut-off: the “Auto tasks” summary shows that auto tasks are paused." }
   ]},
@@ -80,7 +78,7 @@ var PAGES = [
 ];
 // Abu ekranai yra viename prototipe su bendrais duomenimis; perėjus per kairįjį meniu skirtukas persijungia pats.
 // Senos nuorodos iš ankstesnių versijų
-var ALIAS = { "picker-progresas": "picker-accounts", "dashboard-progresas": "dashboard", "picker-pakeitimai": "picker-accounts", "dashboard-pakeitimai": "dashboard", "picker-zonu-kombinacijos": "picker-accounts", "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
+var ALIAS = { "picker-slideris": "picker-accounts", "picker-progresas": "picker-accounts", "dashboard-progresas": "dashboard", "picker-pakeitimai": "picker-accounts", "dashboard-pakeitimai": "dashboard", "picker-zonu-kombinacijos": "picker-accounts", "picker-su-sidebar": "picker-accounts", "picker-be-sidebar": "picker-accounts", "dashboard-b": "dashboard", "dashboard-a": "dashboard" };
 
 var ALL = [];
 PAGES.forEach(function (p) { p.variants.forEach(function (v) { v.page = p; ALL.push(v); }); });
