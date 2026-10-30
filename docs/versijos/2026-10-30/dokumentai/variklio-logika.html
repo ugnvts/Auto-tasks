@@ -1,0 +1,920 @@
+<!doctype html><html><head>
+<meta name="robots" content="noindex, nofollow"><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Auto tasks · Dokumentas · Variklio logika</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky tab bar; overview is a wide swimlane (horizontal scroll) with a click-to-open popover; scenarios as expandable rows */
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --surface-2: #eaeff3;
+  --fg: #16212b;
+  --muted: #566573;
+  --line: #d3dce4;
+  --accent: #0b6e7a;
+  --accent-soft: #d6eef1;
+  --warn: #9a5b00;
+  --pa: #2f6f9f;  --pa-bg: #dcebf6;
+  --pb: #0b6e7a;  --pb-bg: #d6eef1;
+  --pc: #9a5b00;  --pc-bg: #fbe9c8;
+  --pd: #6a4c93;  --pd-bg: #e8e0f3;
+  --pe: #566573;  --pe-bg: #e3e8ec;
+  --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f171e;
+    --surface: #17222b;
+    --surface-2: #1f2d38;
+    --fg: #e4ebf1;
+    --muted: #93a4b3;
+    --line: #2c3c49;
+    --accent: #4fc3d1;
+    --accent-soft: #123a41;
+    --warn: #f0b755;
+    --pa: #7db8e6;  --pa-bg: #16344a;
+    --pb: #4fc3d1;  --pb-bg: #123a41;
+    --pc: #f0b755;  --pc-bg: #3b2a0c;
+    --pd: #bda2e3;  --pd-bg: #2d2347;
+    --pe: #93a4b3;  --pe-bg: #26323c;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f171e;
+  --surface: #17222b;
+  --surface-2: #1f2d38;
+  --fg: #e4ebf1;
+  --muted: #93a4b3;
+  --line: #2c3c49;
+  --accent: #4fc3d1;
+  --accent-soft: #123a41;
+  --warn: #f0b755;
+  --pa: #7db8e6;  --pa-bg: #16344a;
+  --pb: #4fc3d1;  --pb-bg: #123a41;
+  --pc: #f0b755;  --pc-bg: #3b2a0c;
+  --pd: #bda2e3;  --pd-bg: #2d2347;
+  --pe: #93a4b3;  --pe-bg: #26323c;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 16px; line-height: 1.5; }
+a { color: var(--accent); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+header.top { padding: 28px 16px 0; max-width: 1400px; margin: 0 auto; }
+header.top h1 { font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.15; margin: 0; font-weight: 700; text-wrap: balance; }
+.meta { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 10px; }
+
+nav.tabs { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bg); border-bottom: 1px solid var(--line); margin-top: 20px; }
+nav.tabs .in { max-width: 1400px; margin: 0 auto; padding: 0 16px; display: flex; gap: 4px; overflow-x: auto; }
+nav.tabs button { font: inherit; font-weight: 600; font-size: 0.95rem; background: none; border: 0; border-bottom: 3px solid transparent; color: var(--muted); padding: 12px 12px 9px; cursor: pointer; white-space: nowrap; }
+nav.tabs button:hover { color: var(--fg); }
+nav.tabs button[aria-selected="true"] { color: var(--accent); border-bottom-color: var(--accent); }
+nav.tabs .count { font-family: var(--font-mono); font-size: 0.72rem; background: var(--surface-2); border-radius: 999px; padding: 1px 7px; margin-left: 6px; color: var(--muted); }
+
+main { max-width: 1400px; margin: 0 auto; padding: 24px 16px 64px; }
+main.narrow { max-width: 1100px; }
+section.panel { display: grid; gap: 24px; min-width: 0; }
+section.narrowpanel { max-width: 1100px; }
+h2 { font-size: 1.3rem; margin: 0; font-weight: 700; }
+h3 { font-size: 1.02rem; margin: 0; font-weight: 700; }
+.lead { color: var(--muted); max-width: 70ch; margin: 4px 0 0; }
+
+.block { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 18px; display: grid; gap: 12px; min-width: 0; }
+.block ul { margin: 0; padding-left: 1.1em; display: grid; gap: 6px; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 0.93rem; }
+th, td { text-align: left; vertical-align: top; padding: 9px 12px; border-bottom: 1px solid var(--line); }
+th { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); font-weight: 500; background: var(--surface-2); white-space: nowrap; }
+td.k { font-weight: 600; }
+.freq { font-family: var(--font-mono); font-size: 0.78rem; color: var(--muted); }
+.freq.daily { color: var(--warn); font-weight: 500; }
+
+/* overview: swimlane + detail */
+.day-main { min-width: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.lanes-box { position: relative; }
+.legend { display: flex; flex-wrap: wrap; gap: 8px 16px; font-size: 0.85rem; color: var(--muted); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 12px; height: 12px; border-radius: 3px; display: inline-block; border: 1px solid; }
+.lanes-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; }
+table.lanes { min-width: 1500px; table-layout: fixed; }
+table.lanes th.lane { width: 130px; background: var(--surface-2); color: var(--fg); font-family: var(--font-body); font-size: 0.92rem; text-transform: none; letter-spacing: 0; font-weight: 700; white-space: normal; }
+table.lanes thead th { width: 275px; }
+table.lanes thead th:first-child { width: 130px; }
+table.lanes td { padding: 10px; border-right: 1px solid var(--line); }
+table.lanes td:last-child { border-right: 0; }
+.cell { display: grid; gap: 6px; }
+.dash { color: var(--muted); padding: 4px; }
+.card { display: grid; gap: 2px; width: 100%; text-align: left; font: inherit; color: var(--fg); cursor: pointer; padding: 8px 10px; border-radius: 6px; border: 1px solid; }
+.card .cid { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 500; }
+.card .cname { font-weight: 600; font-size: 0.92rem; line-height: 1.3; }
+.card[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--fg); }
+.card.p-A { background: var(--pa-bg); border-color: var(--pa); } .card.p-A .cid { color: var(--pa); }
+.card.p-B { background: var(--pb-bg); border-color: var(--pb); } .card.p-B .cid { color: var(--pb); }
+.card.p-C { background: var(--pc-bg); border-color: var(--pc); } .card.p-C .cid { color: var(--pc); }
+.card.p-D { background: var(--pd-bg); border-color: var(--pd); } .card.p-D .cid { color: var(--pd); }
+.card.p-E { background: var(--pe-bg); border-color: var(--pe); } .card.p-E .cid { color: var(--pe); }
+.legend .p-A i { background: var(--pa-bg); border-color: var(--pa); }
+.legend .p-B i { background: var(--pb-bg); border-color: var(--pb); }
+.legend .p-C i { background: var(--pc-bg); border-color: var(--pc); }
+.legend .p-D i { background: var(--pd-bg); border-color: var(--pd); }
+.legend .p-E i { background: var(--pe-bg); border-color: var(--pe); }
+
+.pop { position: absolute; z-index: 4; width: min(440px, calc(100% - 16px)); background: var(--surface); border: 1px solid var(--fg); border-radius: 8px; padding: 14px 16px 16px; display: grid; gap: 12px; box-shadow: 0 8px 28px rgba(0,0,0,0.18); user-select: text; -webkit-user-select: text; cursor: auto; }
+.pop[hidden] { display: none; }
+.pop .x { position: absolute; top: 6px; right: 8px; font: inherit; font-size: 1.2rem; line-height: 1; color: var(--muted); background: none; border: 0; cursor: pointer; padding: 4px 6px; }
+.pop .x:hover { color: var(--fg); }
+.pop .dtop { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; }
+.pop .did { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+.pop .dph { font-size: 0.8rem; color: var(--muted); }
+.pop h3 { font-size: 1.1rem; line-height: 1.3; }
+.pop .open { font: inherit; font-size: 0.88rem; font-weight: 600; color: var(--accent); background: none; border: 0; padding: 0; cursor: pointer; text-align: left; text-decoration: underline; }
+
+dl.f { margin: 0; display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 6px 14px; font-size: 0.95rem; }
+.pop dl.f { grid-template-columns: 1fr; gap: 2px; }
+.pop dl.f dd { margin-bottom: 8px; }
+dl.f dt { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); padding-top: 3px; }
+dl.f dd { margin: 0; min-width: 0; }
+.cty { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 8px; }
+.cty > div { background: var(--surface-2); border-radius: 4px; padding: 8px 10px; font-size: 0.9rem; min-width: 0; }
+.cty b { display: block; font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 2px; }
+.cty .none { color: var(--muted); }
+.nodiff { color: var(--muted); font-size: 0.9rem; }
+
+/* scenarios */
+.filters { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: end; }
+.filters label { display: grid; gap: 4px; font-size: 0.8rem; font-weight: 600; color: var(--muted); }
+.filters select { font: inherit; font-size: 0.95rem; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 7px 10px; min-width: 200px; }
+.seg { display: flex; flex-wrap: wrap; gap: 6px; }
+.seg button { font: inherit; font-size: 0.85rem; color: var(--fg); background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 12px; cursor: pointer; white-space: nowrap; }
+.seg button .n { font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted); margin-left: 6px; }
+.seg button[aria-pressed="true"] { background: var(--accent-soft); border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.seg button[aria-pressed="true"] .n { color: var(--accent); }
+.seg button.k-conflict[aria-pressed="true"] { background: transparent; border-color: var(--warn); color: var(--warn); }
+.seg button.k-conflict[aria-pressed="true"] .n { color: var(--warn); }
+.result-count { font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); margin-left: auto; padding-bottom: 8px; }
+.phase-head { font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); margin: 8px 0 0; padding-bottom: 6px; border-bottom: 2px solid var(--line); }
+.list { display: grid; gap: 8px; }
+details.sc { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; min-width: 0; }
+details.sc[open] { border-color: var(--accent); }
+details.sc summary { list-style: none; cursor: pointer; padding: 12px 14px; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 4px 12px; align-items: baseline; }
+details.sc summary::-webkit-details-marker { display: none; }
+details.sc summary .id { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent); font-weight: 500; }
+details.sc summary .t { font-weight: 600; min-width: 0; }
+details.sc summary .actor { grid-column: 2; font-size: 0.85rem; color: var(--muted); }
+details.sc .body { padding: 2px 14px 16px 82px; display: grid; gap: 12px; }
+.empty { padding: 24px; text-align: center; color: var(--muted); background: var(--surface); border: 1px dashed var(--line); border-radius: 6px; }
+
+/* questions */
+.q { background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 14px 16px; display: grid; gap: 6px; min-width: 0; }
+.q p { margin: 0; }
+.q .refs { display: flex; flex-wrap: wrap; gap: 4px 0; align-items: center; font-size: 0.82rem; color: var(--muted); }
+.q .refs .lbl { margin-right: 8px; }
+.chip-id { display: inline-block; font-family: var(--font-mono); font-size: 0.74rem; background: var(--accent-soft); color: var(--accent); border: 0; border-radius: 4px; padding: 2px 6px; margin: 0 4px 4px 0; cursor: pointer; }
+.chip-id:hover { text-decoration: underline; }
+
+
+/* evidence + sources + claims */
+.ev { display: inline-block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.03em; border: 1px solid; border-radius: 4px; padding: 1px 6px; white-space: nowrap; background: transparent; }
+.ev-conf { color: var(--accent); border-color: var(--accent); }
+.ev-notes { color: var(--muted); border-color: var(--muted); }
+.ev-conflict { color: var(--warn); border-color: var(--warn); font-weight: 600; }
+.ev-unclear { color: var(--fg); border-color: var(--muted); border-style: dashed; }
+.evline { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; font-size: 0.85rem; color: var(--muted); }
+details.sc summary .sub { grid-column: 2; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; font-size: 0.82rem; color: var(--muted); }
+details.srcbox { margin-top: 16px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+details.srcbox summary { cursor: pointer; padding: 10px 14px; font-weight: 600; font-size: 0.95rem; }
+details.srcbox .in { padding: 0 14px 14px; display: grid; gap: 16px 28px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); font-size: 0.92rem; }
+details.srcbox h4 { margin: 0 0 6px; font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); font-weight: 500; }
+details.srcbox ul { margin: 0; padding-left: 18px; display: grid; gap: 4px; }
+.claims { display: grid; gap: 6px; margin-top: 4px; }
+.claim { border-left: 3px solid var(--line); padding: 2px 0 2px 10px; font-size: 0.92rem; }
+.claim.conf { border-left-color: var(--accent); }
+.claim b { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); font-weight: 500; }
+.q .qtop { display: flex; gap: 8px 10px; align-items: baseline; flex-wrap: wrap; }
+.q .qid { font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent); font-weight: 500; }
+.q .topic { font-size: 0.8rem; color: var(--muted); }
+.q .chk { font-size: 0.85rem; color: var(--warn); margin: 0; }
+.q .cfd { font-size: 0.92rem; margin: 0; }
+.q .cfd b { color: var(--warn); }
+.q .ans { font-size: 0.9rem; color: var(--accent); margin: 0; }
+.q.flash { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.q-head { display: grid; gap: 2px; }
+.q-head h3 { margin: 0; }
+.q-head p { margin: 0; color: var(--muted); font-size: 0.9rem; max-width: 70ch; }
+td ul { margin: 4px 0 0; padding-left: 18px; }
+
+.flow { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; min-width: 0; }
+.block > *, section.panel > * { min-width: 0; }
+.day { display: grid; grid-template-columns: minmax(0, 1fr); }
+.flow span { font-size: 0.85rem; padding: 4px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.flow span + span::before { content: "→"; margin-right: 8px; color: var(--muted); font-weight: 400; }
+details.closedq { border: 1px dashed var(--line); border-radius: 6px; padding: 10px 14px; }
+details.closedq > summary { cursor: pointer; font-weight: 600; color: var(--muted); }
+details.closedq[open] > summary { margin-bottom: 10px; }
+.q.closed { opacity: 0.85; }
+@media (max-width: 1000px) {
+}
+@media (max-width: 640px) {
+  details.sc summary { grid-template-columns: 48px minmax(0, 1fr); }
+  details.sc .body { padding: 2px 14px 16px 14px; }
+  dl.f { grid-template-columns: 1fr; gap: 2px; }
+  dl.f dd { margin-bottom: 8px; }
+  .result-count { margin-left: 0; width: 100%; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .panel { animation: fade 0.15s ease-out; }
+  @keyframes fade { from { opacity: 0.4; } to { opacity: 1; } }
+}
+</style>
+
+<header class="top">
+  <div class="meta">Barbora · surinkimo centrai · atnaujinta 2026-10-29</div>
+  <h1>Auto tasks, Stage II</h1>
+  <details class="srcbox" id="srcbox">
+    <summary>Šaltiniai, pakeitimai ir kaip skaityti</summary>
+    <div class="in">
+      <div>
+        <h4>Šaltiniai</h4>
+        <ul>
+          <li><b><a href="https://barbora.atlassian.net/wiki/x/AwBtt" target="_blank" rel="noopener">PM puslapis „Auto tasks - STAGE II“</a></b>, peržiūrėta 2026-10-23. Prioritetinis šaltinis, niekada neredaguojamas.</li>
+          <li>Workshop 09-28, 10-06, 10-08; Susitikimas 10-06 (žodžiu).</li>
+          <li>Note 10-15 Justinė, Note 10-15 SC vadovas.</li>
+          <li>Review 10-22 (artefaktų peržiūra su PM), SC nustatymai 10-23 (picking center nustatymų intro).</li>
+          <li>Vytauto sprendimai pokalbiuose (10-19, 10-20, 10-21).</li>
+          <li>Visi užrašai: <a href="https://barbora.atlassian.net/wiki/spaces/WN/pages/3303604225" target="_blank" rel="noopener">Confluence „Auto tasks“</a>.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kas pasikeitė · 2026-10-23</h4>
+        <ul>
+          <li>PM puslapyje nauja pagrindinė logika „darbas pirmiau, pickeris po to“ (S05), nustatymų grupės, workshop taisyklės (S18), efektyvumas pagal šalį (LT units, LV ir EE SKU, kg išbrauktas), pickerio % koregavimas (S04).</li>
+          <li>Įrašyti 10-22 ir 10-23 susitikimai. Nauji scenarijai S26–S31, nauji klausimai Q40–Q53; uždaryti Q09, Q11, Q18, Q29, Q35, Q36 ir kt.</li>
+          <li>Scenarijai perrašyti kaip galiojanti taisyklė; iš kur kas atėjo – skirtuke „Žurnalas“. Active pakeistas auto tasks jungikliu.</li>
+          <li>Šis HTML yra pagrindinis šaltinis; Confluence „Algoritmo logika“ nebeatnaujinama.</li>
+        </ul>
+        <h4>Kaip skaityti (LLM)</h4>
+        <ul>
+          <li>Čia variklio logika: ką daro sistema. Kaip tai rodoma ir valdoma – „Dizaino sprendimai“ (ID PA, PK, DD, DB, SC, T, K).</li>
+          <li>Kiekvienam faktui viena vieta; kitur nurodomas ID (S, Q). Prieštaraujant laikomasi PM puslapio, prieštara žymima konfliktu.</li>
+          <li>Žyma „Patikrink“ – Claude išvada, ne šaltinio teiginys. Uždarytas klausimas neištrinamas, tik pažymimas su atsakymu ir data.</li>
+        </ul>
+      </div>
+    </div>
+  </details>
+</header>
+
+<nav class="tabs" aria-label="Skyriai">
+  <div class="in" role="tablist">
+    <button role="tab" id="tab-apzvalga" data-tab="apzvalga" aria-selected="true" aria-controls="p-apzvalga">Apžvalga</button>
+    <button role="tab" id="tab-scenarijai" data-tab="scenarijai" aria-selected="false" aria-controls="p-scenarijai">Scenarijai <span class="count" id="cnt-sc"></span></button>
+    <button role="tab" id="tab-nustatymai" data-tab="nustatymai" aria-selected="false" aria-controls="p-nustatymai">Nustatymų žemėlapis</button>
+    <button role="tab" id="tab-klausimai" data-tab="klausimai" aria-selected="false" aria-controls="p-klausimai">Ką reikia išsiaiškinti <span class="count" id="cnt-q"></span></button>
+    <button role="tab" id="tab-zurnalas" data-tab="zurnalas" aria-selected="false" aria-controls="p-zurnalas">Žurnalas</button>
+  </div>
+</nav>
+
+<main>
+  <!-- APŽVALGA -->
+  <section class="panel" id="p-apzvalga" role="tabpanel" aria-labelledby="tab-apzvalga">
+    <div>
+      <h2>Kas ką daro per dieną</h2>
+      <p class="lead">Paspausk kortelę, kad pamatytum scenarijaus aprašą.</p>
+    </div>
+    <div class="block">
+      <h3>Pagrindinė logika (PM puslapis)</h3>
+      <p class="lead" style="margin:0">Sistema neieško užduoties konkrečiam pickeriui. Ji nuolat klausia: <b>koks kritiškiausias nebaigtas darbas ir kuris laisvas pickeris jį atliks efektyviausiai?</b></p>
+      <div class="flow"><span>Einamoji banga · 100 %</span><span>Bangos rizika</span><span>Kitos bangos X %</span><span>Prioritetinė zona</span><span>Didžiausias likęs darbas</span><span>Laisvas pickeris</span><span>Efektyvumas zonoje</span><span>Leidžiamas dydis</span><span>Priskyrimas</span></div>
+      <p class="lead" style="margin:0">Nustatymų grupės: bangos, cut-off, pajėgumai, zonos, pickerio paskyra, efektyvumas, workshop'ai, gathering, priskyrimas, išimtys. Išimtys: po cut-off ir NONE zonai naujos užduotys neskiriamos. Scenarijus: <button type="button" class="chip-id" data-goto="S05">S05</button></p>
+    </div>
+    <div class="day">
+      <div class="day-main">
+        <div class="legend" id="legend"></div>
+        <div class="lanes-box" id="lanes-box">
+          <div class="lanes-wrap" id="lanes-wrap"><table class="lanes" id="lanes"></table></div>
+          <div class="pop" id="pop" role="dialog" aria-live="polite" hidden></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENARIJAI -->
+  <section class="panel narrowpanel" id="p-scenarijai" role="tabpanel" aria-labelledby="tab-scenarijai" hidden>
+    <div>
+      <h2>Scenarijų katalogas</h2>
+      <p class="lead">Prie kiekvieno scenarijaus matyti, kurie šaltiniai jį mini ir ar yra konfliktas. Confluence yra prioritetinis šaltinis. Šalių skirtumai rodomi tik ten, kur jie yra aprašyti.</p>
+    </div>
+    <div class="filters">
+      <div style="display:grid;gap:4px;font-size:0.8rem;font-weight:600;color:var(--muted)">Žyma
+        <div class="seg" id="f-ev" role="group" aria-label="Filtruoti pagal žymą"></div>
+      </div>
+      <label>Fazė
+        <select id="f-phase"><option value="">Visos</option></select>
+      </label>
+      <span class="result-count" id="res-count" aria-live="polite"></span>
+    </div>
+    <div id="sc-list"></div>
+  </section>
+
+  <!-- NUSTATYMAI -->
+  <section class="panel narrowpanel" id="p-nustatymai" role="tabpanel" aria-labelledby="tab-nustatymai" hidden>
+    <div>
+      <h2>Nustatymų žemėlapis</h2>
+      <p class="lead">Ką kiekvienas nustatymas reiškia varikliui. Kaip jis rodomas ir valdomas – „Dizaino sprendimuose“ (SC, PK, PA, DD).</p>
+    </div>
+    <div class="block"><h3>1 lygis. Surinkimo centras</h3><div class="scroll"><table><thead><tr><th>Nustatymas</th><th>Variklio taisyklė</th><th>Keitimo dažnis</th><th>Scenarijus · dizainas</th></tr></thead><tbody><tr><td class="k">Bangos rinkimo pradžia ir pabaiga</td><td>Šiandien ir rytoj. Užduotys skiriamos tik tarp pradžios ir pabaigos; pabaiga po cut-off. Rytojaus bangoms – nuo kada šiandien galima skirti.</td><td class="freq">retai</td><td>S01, S17 · SC1</td></tr><tr><td class="k">Cut-off</td><td>Iš admin (delivery windows), neredaguojamas, rodomas. Taisyklė: po cut-off naujų auto užduočių nėra.</td><td class="freq">–</td><td>S12 · SC2</td></tr><tr><td class="k">Bangų prioritetai</td><td>Einamoji iki 100 % efektyvumo, kita iki X %. Vėlesnė banga neaišku.</td><td class="freq">retai</td><td>S07 · SC4</td></tr><tr><td class="k">Assign X % over efficiency</td><td>Kraštutiniams atvejams, kai trūksta pickerių ar užsakymai didesni.</td><td class="freq">išimtiniais atvejais</td><td>S28 · DD4</td></tr><tr><td class="k">Zonų prioritetai</td><td>Rikiavimas, nuo kurios zonos pradedama. Vaisiai ir daržovės paskutiniai. Zonoje pirmenybė pickeriui su didžiausiu efektyvumu (LT units, LV ir EE SKU).</td><td class="freq">retai</td><td>S05, S25 · SC5</td></tr><tr><td class="k">Zonų išimtys rytojaus bangoms</td><td>Bananai, daržovės, vaisiai, ryto zona neskiriamos rytojaus bangoms. Nustatymas prie picking zonos.</td><td class="freq">retai</td><td>S17 · SC6</td></tr><tr><td class="k">Zonų kombinacijos</td><td>Zona tik vienoje kombinacijoje; workshop zonos – viena kombinacija.</td><td class="freq">retai</td><td>S09 · SC11</td></tr><tr><td class="k">Zonos minimalūs kiekiai</td><td>Juodraštis SKU 10, units 50. Žemiau ribos – kombinacija.</td><td class="freq">retai</td><td>S08 · SC11</td></tr><tr><td class="k">Workshop nustatymai</td><td>Pradžia ir pabaiga kiekvienai einamosios dienos bangai; BUNS žyma zonai; minimalus kiekis kombinacijai.</td><td class="freq">retai</td><td>S18 · SC3</td></tr><tr><td class="k">Laikas tarp užduočių</td><td>Laukimas po grįžimo, LV ir EE. LT nereikia.</td><td class="freq">retai</td><td>S06 · SC7</td></tr><tr><td class="k">Regionai</td><td>Iš kiek regionų vienu metu skiriama vienam pickeriui. Sąvoka neapibrėžta.</td><td class="freq">neaišku</td><td>S29 · SC8</td></tr><tr><td class="k">Tolygus skirstymas tarp zonų</td><td>Idėja, PM abejoja.</td><td class="freq">neaišku</td><td>S30 · SC10</td></tr><tr><td class="k">Max pickers per zone</td><td>PM išbraukė, 10-23 liko atvira.</td><td class="freq">neaišku</td><td>S31 · SC9</td></tr><tr><td class="k">Gathering settings</td><td>PM sąraše, turinys neaiškus.</td><td class="freq">neaišku</td><td>Q53</td></tr></tbody></table></div></div>
+    <div class="block"><h3>2 lygis. Pickeris</h3><p class="lead" style="margin:0">Visi pickerio nustatymai vedami vienoje vietoje, surinkėjo paskyroje.</p><div class="scroll"><table><thead><tr><th>Nustatymas</th><th>Variklio taisyklė</th><th>Keitimo dažnis</th><th>Scenarijus · dizainas</th></tr></thead><tbody><tr><td class="k">Auto tasks jungiklis</td><td>Ar skiriamos auto užduotys. Pakeitė Active lauką. Inspektoriams visada įjungtas.</td><td class="freq">kasdien</td><td>S14, S26 · PA2</td></tr><tr><td class="k">Naujoko žyma</td><td>Kol uždėta, auto taisyklės netaikomos.</td><td class="freq">kasdien</td><td>S13 · PK3</td></tr><tr><td class="k">Aptarnaujamos zonos</td><td>Taip arba ne kiekvienai zonai; NONE ir workshop zonos be efektyvumo.</td><td class="freq">retai</td><td>S02 · PK4</td></tr><tr><td class="k">Kelios zonos ir kombinacijos</td><td>„Can work in multiple zones“ ir priskirtos kombinacijos (dalis iš SC).</td><td class="freq">retai</td><td>S09 · PK6</td></tr><tr><td class="k">Efektyvumas per zoną</td><td>Required. LT units / 1 h, LV ir EE SKU / 1 h; kg išbrauktas.</td><td class="freq">retai</td><td>S02 · PK4</td></tr><tr><td class="k">Efektyvumo % koregavimas</td><td>Procentas, kuriuo efektyvumas mažinamas ar didinamas visose zonose.</td><td class="freq">pagal situaciją</td><td>S04 · PK7</td></tr><tr><td class="k">Maksimalus kiekis vienam kartui</td><td>Optional. SKU, units, kg, unique orders.</td><td class="freq">retai</td><td>S02 · PK5</td></tr></tbody></table></div></div>
+    <div class="block">
+      <h3>Vėlesnė Stage II fazė ir už sistemos ribų</h3>
+      <ul>
+        <li>Vėlesnė Stage II fazė (PM „Leave for the second phase“): pamainų grafikai (LT Workofo, LV NUMO, EE Virosoft), skyrimas po cut-off, NONE zonos skyrimas, pickerio statistika vietoj suvesto efektyvumo, kitų tipų užduotys (valymas, barcode compare, inspekcija).</li>
+        <li>Už ribų: zonų skirstymas pagal lytį, lipdukų spausdinimas (PV atsakomybė), koordinatorių užduotys.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- KLAUSIMAI -->
+  <section class="panel narrowpanel" id="p-klausimai" role="tabpanel" aria-labelledby="tab-klausimai" hidden>
+    <div>
+      <h2>Ką reikia išsiaiškinti</h2>
+      <p class="lead">Konfliktai, spragos ir prielaidos, surinktos iš šaltinių. Prie konfliktų greta rodoma, ką sako kiekvienas šaltinis. Žyma „Patikrink“ rodo, kad sugretinimą padariau aš ir jis gali būti klaidingas.</p>
+    </div>
+    <div class="filters">
+      <label>Tipas
+        <select id="f-qt"><option value="">Visi</option></select>
+      </label>
+      <span class="result-count" id="res-q" aria-live="polite"></span>
+    </div>
+    <div id="q-groups" style="display:grid;gap:24px"></div>
+  </section>
+  <!-- ŽURNALAS -->
+  <section class="panel narrowpanel" id="p-zurnalas" role="tabpanel" aria-labelledby="tab-zurnalas" hidden>
+    <div>
+      <h2>Sprendimų žurnalas</h2>
+      <p class="lead">Iš kur kas atėjo. Scenarijuose rašoma tik galiojanti taisyklė.</p>
+    </div>
+    <div class="block"><div class="scroll"><table><thead><tr><th>Data</th><th>Šaltinis</th><th>Užfiksuota</th><th>ID</th></tr></thead><tbody><tr><td class="k">2026-10-29</td><td>Vytautas (dizainas)</td><td>Sąvokos: užduotis – užsakymo dalis vienoje zonoje (dydį lemia užsakymas); išėjimas – kelios kartu paskirtos užduotys, surinkėjo programėlėje sujungiamos į vieną rinkimo sąrašą. Kitos bangos % ir maksimalus kiekis riboja išėjimą, ne užduotį; maksimalus kiekis – kiekvienai zonai, kelių zonų išėjime sumuojasi; kombinacija savų parametrų neturi. Rodoma išėjimo, ne užduoties trukmė.</td><td class="freq">S07, S09, Q01, Q56</td></tr><tr><td class="k">2026-10-29</td><td>Vytautas (dizainas)</td><td>„Antra fazė“ pervadinta į „Vėlesnė Stage II fazė“, kad nesipainiotų su projekto etapu Stage II.</td><td class="freq">S12, S15</td></tr><tr><td class="k">2026-10-28</td><td>PM puslapis</td><td>Kitos bangos procentas riboja leistiną išėjimo dydį („Calculate Allowed Assignment Size“), pickerio efektyvumas nesikeičia (S07); X su MIN ir MAX, ne 0 % (Q01 iš dalies). Nauji klausimai: einamosios bangos 100 %–X % (Q54), MIN/MAX prasmė (Q55), trukmės skaičiavimas (Q56).</td><td class="freq">S07, Q01, Q42, Q54–Q56</td></tr><tr><td class="k">2026-10-27</td><td>Vytautas (dizainas)</td><td>Efektyvumo korekcijos – vienas lygis: SC korekcijos lygio nėra, „X % over efficiency“ – ta pati pickerio zonų korekcija daugeliui pickerių vienu veiksmu (S28); paskutinis veiksmas laimi (S04); Q41 atsakymas atnaujintas.</td><td class="freq">S04, S28, Q41</td></tr><tr><td class="k">2026-10-27</td><td>Vytautas (dizainas)</td><td>Asmeninė korekcija: visoms zonoms arba atskirai zonai, zonos korekcija svarbesnė, korekcija visoms zonoms perrašo zonų korekcijas (S04).</td><td class="freq">S04</td></tr><tr><td class="k">2026-10-26</td><td>Vytautas (dizainas)</td><td>Efektyvumo korekcijos: SC korekcija visoms užduotims ir visiems, taip pat naujokams (S28); asmeninė korekcija visoms ar pasirinktoms zonoms, svarbesnė už SC (S04); naujas S32 – užduočių skyrimo zonai stabdymas; Q41 iš dalies atsakytas.</td><td class="freq">S04, S28, S32, Q41</td></tr><tr><td class="k">2026-10-23</td><td>Vytautas</td><td>Dokumentas pertvarkytas: HTML pagrindinis šaltinis, scenarijai kaip galiojanti taisyklė, klausimai atviri / uždaryti, žurnalas atskirai.</td><td class="freq">Visi</td></tr><tr><td class="k">2026-10-23</td><td>SC nustatymai 10-23</td><td>SC nustatymų sąrašas. Bangos pabaiga po cut-off, cut-off – taisyklė, rodoma UI. Kombinacijos žemiau zonos minimalios ribos. Regionų skaičius, tolygus skirstymas, frozen išimtis. LT pradeda nuo bakalėjos.</td><td class="freq">S08, S09, S12, S17, S29–S31, Q29, Q35, Q46, Q49</td></tr><tr><td class="k">2026-10-23</td><td>PM puslapis (peržiūrėta 10-23)</td><td>Nauja pagrindinė logika ir seka, nustatymų grupės. Efektyvumas: LT units, LV ir EE SKU, kg išbrauktas; pickerio % visoms zonoms. Workshop'ai: visa zona vienam pickeriui, BUNS žyma, min kiekis kombinacijai. Max pickers per zone išbrauktas. Kartojimas: gathering dengiamas efektyvumu, patvirtinta visose šalyse. Vėlesnė Stage II fazė papildyta.</td><td class="freq">S02, S04, S05, S18, S19, S21, S31, Q36, Q40–Q53</td></tr><tr><td class="k">2026-10-22</td><td>Review 10-22</td><td>Individualios kombinacijos pickeriui. Laikinas efektyvumo didinimas ir mažinimas. PM: kėlimas visiems dirbantiems. Diskusija dėl KG/val.</td><td class="freq">S04, S09, S28, Q33, Q40, Q41</td></tr><tr><td class="k">2026-10-21</td><td>Vytautas</td><td>Išėjimas = vienu sync paimtos užduotys. Inspektoriai priklauso auto tasks grupei.</td><td class="freq">S26, S27</td></tr><tr><td class="k">2026-10-20</td><td>Vytautas</td><td>Active nebelieka: jo paskirtis pakeista į auto tasks jungiklį.</td><td class="freq">S14, Q05</td></tr><tr><td class="k">2026-10-19</td><td>PM v46, Vytautas</td><td>Nustatymai galioja rankinėms užduotims, X % over efficiency kraštutiniams atvejams, kita banga X %, efektyvumas Required, MAX quantity Optional. Valdymas visiškai rankinis; po cut-off tik rankinė net su įjungtu jungikliu.</td><td class="freq">S01, S02, S07, S12, S16, S18, Q14, Q17</td></tr><tr><td class="k">2026-10-15</td><td>Note Justinė, Note SC vadovas</td><td>Task'e viena zona, NONE neskiriama, po cut-off tik rankinis, unique orders iš efektyvumo dingo, vidurkis dengia gathering, pickeris sinchronizuoja, maksimalus efektyvumas – riba išėjimui.</td><td class="freq">S04, S09, S12, S15, S19, Q08, Q12</td></tr><tr><td class="k">2026-10-08</td><td>Workshop 10-08</td><td>Rytojaus bangų rinkimo pradžia, workshop trigeris, kitai bangai ribotas %, toggle kaip safety switch, LT sunkesni pirmiau, daržovės ir vaisiai paskutiniai, laikas nuo paskutinio item'o.</td><td class="freq">S01, S05–S07, S12, S14, S17–S19, S24, S25</td></tr><tr><td class="k">2026-10-06</td><td>Workshop 10-06, Susitikimas</td><td>Pirmas išleidimas be efektyvumo apskaitos (vidurkis). Min item'ai. Ne surinkimo darbai vadybininkui. Koordinatorių užduotys nesikeičia.</td><td class="freq">S03, S08, S09, S12, S20–S22</td></tr><tr><td class="k">2026-10-05</td><td>PM v42</td><td>Stage I ir II, picker account lentelė, atvejai, NONE ir OOS zonos, frozen išimtys, pertraukos.</td><td class="freq">S05, S10, S12, S14, S15, S18–S20</td></tr><tr><td class="k">2026-09-28</td><td>Workshop 09-28</td><td>Active flag'as auto skyrimui, naujoko žyma, zonos paskyroje, kombinacijos su flag'u, viena zona vienu metu, cut-off iš admin, einamoji banga aukščiausia.</td><td class="freq">S01, S02, S05, S09, S12–S14</td></tr></tbody></table></div></div>
+  </section>
+</main>
+
+<script>
+(function () {
+  var PHASES = {
+    A: "A. Paruošimas",
+    B: "B. Įprastas priskyrimas",
+    C: "C. Išimtys ir kraštiniai atvejai",
+    D: "D. Specifinės užduotys",
+    E: "E. Stebėjimas"
+  };
+
+  var SC = [
+    { id: "S01", ph: "A", s: "Centro nustatymai", t: "SC vadybininkas nustato centro nustatymus", actor: "SC vadybininkas",
+      trig: "Prieš paleidžiant auto tasks arba keičiantis centro taisyklėms.",
+      beh: "Nustatoma pagal PM grupes: bangos (rinkimo pradžia ir pabaiga šiandien ir rytoj), pajėgumai (kitos bangos %), zonos (prioritetai, kombinacijos, minimalūs kiekiai, išimtys rytojaus bangoms), workshop'ai, laikas tarp užduočių. Cut-off neįvedamas, imamas iš admin. Visas sąrašas: Nustatymų žemėlapis.",
+      note: "Zonų prioritetus kiekvienas SC susideda pats. Dizainas: SC1–SC12." },
+    { id: "S02", ph: "A", s: "Pickerio paskyros užvedimas", t: "Vadybininkas užveda pickerio paskyrą", actor: "SC vadybininkas",
+      trig: "Naujas pickeris arba pasikeitę jo duomenys.",
+      beh: "Nurodoma: auto tasks jungiklis, naujoko žyma, aptarnaujamos zonos, ar gali dirbti keliose zonose ir kurios kombinacijos, efektyvumas per zoną (Required), maksimalus kiekis vienam kartui (Optional: SKU, units, kg, unique orders) – vienam išėjimui, kiekvienai zonai atskirai. NONE ir workshop zonoms efektyvumas nevedamas.",
+      note: "Efektyvumo parametras pagal šalį: LT units / 1 h, LV ir EE SKU / 1 h, kg išbrauktas (Q40). Nesuvesti skaičiai: Q33, Q34. Dizainas: PK1–PK6." },
+    { id: "S03", ph: "A", s: "Planavimas į priekį", t: "Vadybininkas planuoja dieną ar dvi į priekį", actor: "SC vadybininkas",
+      trig: "Prieš pamainą arba dieną iš anksto.",
+      beh: "Pirmame išleidime atskiro dienos plano nėra: įjungiama pagal faktą auto tasks jungikliu (Q05 uždarytas). Grafikai lieka Workofo, NUMO, Virosoft, integracija vėlesnėje Stage II fazėje.",
+      note: "Planavimo idėjos dizaino dokumente: P2, P5." },
+    { id: "S04", ph: "A", s: "Laikinas pickerio efektyvumo koregavimas", t: "Vadybininkas laikinai keičia pickerio efektyvumą", actor: "SC vadybininkas",
+      trig: "Pickerio diena kitokia: pasijuto blogai, sunkios prekės, naujokas; arba keičiasi visos SC apkrova (S28).",
+      beh: "Suvesti efektyvumo skaičiai lieka tiesos šaltiniu. Laikina korekcija (procentas, kryptis, trukmė) priklauso pickerio zonai; vienai zonai – viena. Skaičiuojama tik nuo bazinio efektyvumo. Uždedama vienai zonai, visoms pickerio zonoms arba visoms daugelio pickerių zonoms (S28) – tai tas pats veiksmas, skiriasi tik apimtis; paskutinis veiksmas laimi. Galioja, kol vadybininkas nuima, arba iki laiko. Kitos bangos % (S07) taikomas galutiniam efektyvumui.",
+      note: "PM 10-23: pickerio % visoms zonoms. Dizainas 10-27: vienas lygis. Dizainas: PK7, EK1." },
+    { id: "S32", ph: "A", s: "Užduočių skyrimo zonai stabdymas", t: "Pickeriui laikinai neskiriamos vienos zonos užduotys", actor: "SC vadybininkas, sistema",
+      trig: "Pickeris laikinai negali dirbti zonoje, pvz., negali kilnoti sunkių prekių.",
+      beh: "Paskyroje pasirinktai zonai sustabdomas užduočių skyrimas: kol galioja, sistema šiam pickeriui tos zonos užduočių neskiria. Jau pradėtos nenutraukiamos, bazinis efektyvumas ir priskirtos zonos nekeičiami. Galioja, kol vadybininkas atnaujina, arba iki nurodyto laiko. Kombinacija su sustabdyta zona tuo metu neveikia. Gali galioti kartu su % korekcija (S04).",
+      note: "Dizaino sprendimas 2026-10-26. Dizainas: PK8." },
+
+    { id: "S05", ph: "B", s: "Pagrindinė priskyrimo logika", t: "Sistema skiria svarbiausią darbą tinkamiausiam laisvam pickeriui", actor: "Sistema",
+      trig: "Nuolat, kol yra nebaigto darbo ir laisvų pickerių.",
+      beh: "Sistema neieško užduoties konkrečiam pickeriui. Ji nuolat klausia: koks kritiškiausias nebaigtas darbas ir kuris laisvas pickeris jį atliks efektyviausiai. Seka: einamoji banga → aukščiausio prioriteto zona → didžiausias likęs darbas → efektyviausias laisvas pickeris → priskyrimas. Zonoje pirmenybė pickeriui su didžiausiu efektyvumu (LT pagal units, LV ir EE pagal SKU). Jei pickeris jau gavo didelę užduotį, kita didelė kitam efektyviam.",
+      note: "„Evaluate current wave risk“ neapibrėžta (Q42). Po lygiai bangos pradžioje X481: Q16.",
+      cty: { LT: "X481: bangos pradžioje užduotys po lygiai, dienos eigoje pagal užsakymų kiekį. Prioritetas pagal units.", LV: "Prioritetas pagal SKU.", EE: "Prioritetas pagal SKU." } },
+    { id: "S06", ph: "B", s: "Kitos užduoties priskyrimas", t: "Pickeris baigia užduotį, sistema skiria kitą", actor: "Sistema",
+      trig: "Pickeris surinko apie 90 % eilučių.",
+      beh: "Kita užduotis skiriama, kai surinkta apie 90 % eilučių. LV ir EE po grįžimo palaukiama SC nustatytą laiką; LT tarpo nereikia.",
+      note: "Ar 90 % taisyklė ir laukimo laikas yra viena taisyklė: Q20.",
+      cty: { LT: "Tarpo nereikia: SM skiria anksčiau, nei baigiamas rinkimas.", LV: "Reikia laiko grįžti ir sudėti maišus.", EE: "Kaip LV." } },
+    { id: "S07", ph: "B", s: "Kita banga ribotu pajėgumu", t: "Einamosios bangos darbo nebėra, skiriama iš kitos bangos", actor: "Sistema",
+      trig: "Einamojoje bangoje nebėra darbo, o pickeriai laisvi.",
+      beh: "Einamoji banga skiriama iki 100 % pickerio efektyvumo. Kita banga iki X % (SC nustatymas, pvz. 50 %), kad pickeris trumpiau būtų salėje ir greičiau grįžtų, jei atsirastų einamosios bangos užsakymų. Procentas taikomas skaičiuojant leistiną išėjimo dydį (PM „Calculate Allowed Assignment Size“): į kitos bangos išėjimą sudedama mažiau užduočių. Pačios užduotys nemažinamos – jų dydį lemia užsakymas. Pickerio efektyvumas paskyroje nesikeičia ir tai nėra korekcija.",
+      note: "X reikšmė: Q01. Ar skiriama ir dar vėlesnė banga: Q43. Ar SC galima rinkti kelias bangas vienu metu: Q44. Grįžimas: S24. Einamosios bangos 100 %–X %: Q54. MIN/MAX: Q55. Trukmės skaičiavimas: Q56." },
+    { id: "S08", ph: "B", s: "Zonos minimalus kiekis", t: "Zonoje mažai darbo", actor: "Sistema",
+      trig: "Zonoje liko mažiau užduočių nei SC nustatyta riba.",
+      beh: "SC lygio zonos minimalūs kiekiai (PM juodraštis: SKU 10, units 50). Nepasiekus ribos, zonos užduotys kombinuojamos su kita zona (S09), kad pickeris turėtų pakankamai darbo vienam išėjimui.",
+      note: "Ankstesnė mintis „likučiai neskiriami labai efektyviems“ (pickerio lygio riba): ar dar galioja, Q07." },
+    { id: "S09", ph: "B", s: "Zonų kombinacijos", t: "Pickeris renka iš kelių zonų", actor: "Sistema",
+      trig: "Pickeriui leista dirbti keliose zonose ir zonoje mažai darbo.",
+      beh: "SC sukuria kombinacijas; viena zona gali būti tik vienoje kombinacijoje, visos workshop zonos sudaro vieną kombinaciją. Pickeriui priskiriamos konkrečios kombinacijos (dalis iš SC sukurtų). Pirmenybė vienai zonai, o kombinacija naudojama, kai zonoje darbo mažiau nei minimali riba (S08). Pavyzdžiai: Frozen + Milk taip, Grocery + Fruits taip, Frozen + Grocery ne. Kombinacija tik leidžia viename išėjime sujungti kelių zonų užduotis; savų parametrų ji neturi. Maksimalus kiekis nustatomas kiekvienai zonai, todėl kelių zonų išėjime ribos sumuojasi (pvz., 10 duonos + 20 pieno = iki 30 prekių).",
+      note: "Prioriteto formuluotė: Q15. Kombinacijos zona be suvesto efektyvumo: Q33. Dizainas: PK6, SC11.",
+      cty: { LT: "Iš vienos zonos. Frozen + Milk retai (pvz. ne daugiau 10 frozen prie 150 pieno).", LV: "Iš vienos zonos (Justinė), nors anksčiau minėta, kad maišo kasdien.", EE: "Kombinacijos; Frozen + Milk visada." } },
+    { id: "S10", ph: "B", s: "Didelis kiekis vienam pickeriui", t: "Likus mažai laiko, didelis kiekis vienam pickeriui", actor: "Sistema",
+      trig: "Mažai laiko iki atsikrovimo ir yra didelis užsakymas ar papildymas.",
+      beh: "Pirmenybė vienam pickeriui per kelias zonas, ne trims pickeriams po mažą dalį." },
+    { id: "S11", ph: "B", s: "Svorinio užsakymo dalijimas", t: "Užsakymas su keliais sunkiais svoriniais item'ais", actor: "Sistema",
+      trig: "Užsakyme daugiau nei vienas svorinis item'as, sveriantis daugiau nei X kg.",
+      beh: "Užsakymas dalijamas į kelias užduotis, kad ilgiausiai renkamos nebūtų pas vieną pickerį. Papildomas nustatymas, kurį naudotų tik LT.",
+      note: "Q19.",
+      cty: { LT: "Ilgiausiai renkamos užduotys: saldainiai svoriu, mažas skirtumas tarp SKU ir units." } },
+    { id: "S24", ph: "B", s: "Grįžimas į einamąją bangą", t: "Pickeriai grįžta į einamąją bangą", actor: "Sistema, pickeriai",
+      trig: "Pickeriai renka kitą bangą ribotu pajėgumu (S07), o į einamąją bangą prieš cut-off įkrenta užsakymų.",
+      beh: "Ribotas pajėgumas leidžia pickeriui greičiau grįžti ir gauti einamosios bangos darbą.",
+      note: "Ar sistema perskirsto jau priskirtas užduotis: Q30. Patikrink: scenarijų išskyriau pats iš S07." },
+    { id: "S25", ph: "B", s: "Liko tik daržovės ir vaisiai", t: "Liko tik daržovių ir vaisių užduotys", actor: "Sistema",
+      trig: "Laisviems pickeriams nėra kito darbo, tik daržovės, vaisiai ar bananai.",
+      beh: "Daržovės ir vaisiai yra žemiausio prioriteto zona. Jei bangos pradžioje nėra kito darbo, juos skirti galima (PM: „It’s ok? Taip“). Rytojaus bangų daržovės ir vaisiai šiandien neskiriami (S17).",
+      note: "Kuri zona LT pirmoji: Q49.",
+      cty: { LT: "Bananų, vaisių ir daržovių nerenka iškart bangos pradžioje." } },
+    { id: "S27", ph: "B", s: "Išėjimas ir sinchronizavimas", t: "Pickeris paima užduotis sinchronizuodamas", actor: "Pickeris, sistema",
+      trig: "Pickeriui priskirtos užduotys.",
+      beh: "Pickeris užduotis paima „sync“ mygtuku Picker app. Išėjimas į salę = vienu sync paimtos užduotys; priskirtos, bet nesinchronizuotos laikomos eilėje ir nepriklauso dabartiniam išėjimui.",
+      note: "Vytauto apibrėžimas 10-21; PM puslapis to nemini. Būsena „Nesinchronizavo“: dizainas T2." },
+    { id: "S29", ph: "B", s: "Regionų taisyklė", t: "Užduotys iš vieno ar kelių regionų", actor: "Sistema",
+      trig: "Skiriamos užduotys iš skirtingų salės vietų.",
+      beh: "PM: „Assign only 1 region per once?“ – LT tik Frozen zonai, kitur ir kitoms zonoms. 10-23: SC nustato, iš kiek regionų vienu metu skiriamos užduotys vienam pickeriui.",
+      note: "Kas yra „regionas“: Q50." },
+    { id: "S30", ph: "B", s: "Tolygus skirstymas tarp zonų", t: "Pickeriui skiriamos vis kitos zonos", actor: "Sistema",
+      trig: "Pickeris ką tik rinko tam tikroje zonoje.",
+      beh: "Idėja: kitą kartą ta pati zona skiriama rečiau, kad pickeriai rinktų įvairiose zonose. LV ir EE taip skirsto jau dabar.",
+      note: "PM klausia, kam tada efektyvumas: Q51." },
+    { id: "S31", ph: "B", s: "Max pickers per zone", t: "Ribojamas pickerių skaičius zonoje", actor: "Sistema",
+      trig: "Zonoje vienu metu dirba daug pickerių.",
+      beh: "Idėja riboti, kiek pickerių vienu metu dirba vienoje zonoje.",
+      note: "PM eilutę išbraukė („LT neturi“), o 10-23 susitikime ji liko atvira: Q52." },
+
+    { id: "S12", ph: "C", s: "Cut-off", t: "Pasiekiamas cut-off", actor: "Sistema",
+      trig: "Bangos cut-off laikas praėjo.",
+      beh: "Cut-off imamas iš admin (delivery windows) ir neredaguojamas; tai taisyklė, ne nustatymas. Po cut-off naujų auto užduočių pickeriams nėra, net jei jungiklis įjungtas; skiriama rankiniu būdu. Apmokėti papildymai po cut-off taip pat neskiriami. Koordinatorių logika nesikeičia.",
+      note: "Išimtys: workshop'ai turi savo laikus (S18), šaldyti papildymai neaptarti (Q10). Skyrimas po cut-off – vėlesnė Stage II fazė." },
+    { id: "S13", ph: "C", s: "Naujas pickeris", t: "Naujas pickeris", actor: "Sistema, vadybininkas",
+      trig: "Pickeriui uždėta naujoko žyma.",
+      beh: "Kol žyma uždėta, auto taisyklės netaikomos; užduotys skiriamos rankiniu būdu. SC kasdien sprendžia, ar žymą nuimti; ją galima grąžinti.",
+      note: "PM siūlymas rankiniu būdu skirti kitos bangos užsakymus: Q28. Dizainas: PK3, T3." },
+    { id: "S14", ph: "C", s: "Auto tasks išjungtas", t: "Pickeriui išjungtas auto tasks", actor: "Sistema",
+      trig: "Vadybininkas išjungė auto tasks (pertrauka, pamainos pabaiga).",
+      beh: "Naujų auto užduočių neskiriama; einama užduotis baigiama. Pertraukoms atskiros funkcijos nėra, naudojamas tas pats jungiklis. Buvęs Active laukas pakeistas auto tasks jungikliu.",
+      note: "PM klausia, ar reikia aktyvios pamainos ir kad Unfinished picking tasks filtre matysis visos paskyros: Q45.",
+      cty: { LT: "Dvi pertraukos po 30 min per dieną.", LV: "Pertraukos po bangos, aktyvioje pamainoje 15–20 pickerių.", EE: "15 min pertraukos." } },
+    { id: "S15", ph: "C", s: "Užduotis be zonos", t: "Užduotis be pagrindinės zonos (NONE)", actor: "Sistema",
+      trig: "Užduotis neturi zonos arba item perkeltas į kitą zoną.",
+      beh: "NONE zonos užduotys automatiškai neskiriamos, efektyvumas joms nevedamas. Skyrimas – vėlesnė Stage II fazė." },
+    { id: "S16", ph: "C", s: "Rankiniu būdu sukurta užduotis", t: "Rankiniu būdu sukurta užduotis", actor: "SC vadybininkas, sistema",
+      trig: "Vadybininkas sukuria užduotį, pvz. vienam užsakymui.",
+      beh: "Nustatymai galioja užsakymams ir papildymams, automatiškai ir rankiniu būdu sukurtoms užduotims, todėl sistema jas skiria pagal tas pačias taisykles.",
+      note: "Patikrink: tai mano skaitymas." },
+    { id: "S17", ph: "C", s: "Rytojaus bangos", t: "Rytojaus bangos užduotys šiandien", actor: "Sistema",
+      trig: "Rytojaus užsakymai suskaidyti į užduotis.",
+      beh: "SC suveda šiandienos ir rytojaus bangų rinkimo laikus: nuo kada šiandien skiriamos rytojaus bangų užduotys. Rytojaus bangoms neskiriamos išimčių zonos (bananai, daržovės, vaisiai, ryto zona), kad būtų renkamos arčiau pristatymo. Workshop zonos renkamos tik einamąją dieną.",
+      note: "Generavimo ir priskyrimo laikas, laikas kiekvienai bangai ar bendras: Q46. Frozen zonos laikai: Q47." },
+    { id: "S28", ph: "C", s: "Efektyvumo kėlimas", t: "Trūksta pickerių arba užsakymai didesni", actor: "SC vadybininkas, sistema",
+      trig: "Atėjo mažiau pickerių nei planuota arba užsakymai didesni (ar atvirkščiai – apkrova maža).",
+      beh: "„Assign X % over efficiency“: kraštutiniais atvejais vadybininkas vienu veiksmu uždeda tą pačią laikiną korekciją (S04) visoms visų arba dabar dirbančių pickerių zonoms; esamos korekcijos perrašomos. Atskiro SC korekcijos lygio nėra. Taikoma visoms užduotims (auto ir rankiniu būdu) ir visiems pickeriams, taip pat naujokams.",
+      note: "Dizaino sprendimas 2026-10-27 (vienas lygis, PM 10-22 siūlė visiems dirbantiems). Dizainas: EK2, valdoma „Dirba dabar“ sidebar'e." },
+
+    { id: "S18", ph: "D", s: "Workshop'ų užduotys", t: "Workshop'ų užduotys", actor: "Sistema, pickeriai",
+      trig: "Prasideda workshop zonos rinkimo laikas.",
+      beh: "Kiekvienai einamosios dienos bangai SC nustato workshop rinkimo pradžią ir pabaigą. Visos vienos workshop zonos užduotys skiriamos vienam pickeriui, nesvarbu dydis: efektyvumas ir maksimalus kiekis netaikomi, 1 kg = 1 unit. Bandelių zona pažymima BUNS žyma. Jei workshop užduočių mažiau nei minimali riba, skiriama workshop zonų kombinacija.",
+      note: "Reikia workshop zonų sąrašo su laikais (Q13). Minimalus kiekis SKU ar units: Q48.",
+      cty: { LT: "Visas workshop zonas surenka vienas pickeris, viena kombinacija. BUNS 30 min anksčiau. Min kiekis pagal SKU.", LV: "BUNS vienas pickeris, 30 min anksčiau už kitas workshop zonas.", EE: "Bandeles renka patys nuo bangos pradžios ir kombinuoja su ne workshop zonomis." } },
+    { id: "S19", ph: "D", s: "Gathering", t: "Gathering (komplektavimas)", actor: "Sistema, pickeris",
+      trig: "Po rinkimo pickeris komplektuoja užsakymus.",
+      beh: "Atskiros gathering logikos nėra: vidutinis efektyvumas dengia ir komplektavimą, patvirtinta LT, LV ir EE. Vesdami skaičius SC į tai atsižvelgia.",
+      note: "PM nustatymų sąraše vis dar yra „Gathering settings“: Q53.",
+      cty: { LT: "Paskutinė prekė skenuojama aikštelėje, pickeris iškart laisvas.", LV: "Reikia laiko grįžti ir sudėti maišus, 20–30 min.", EE: "Kaip LV." } },
+    { id: "S20", ph: "D", s: "OOS zonos užduotys", t: "OOS zonos užduotys", actor: "Koordinatoriai, pickeriai",
+      trig: "Atsiranda OOS zonos užduotis.",
+      beh: "Koordinatoriams pakeitimų nėra. LT OOS užduotys skiriamos pickeriams; LV ir EE bandė skirti pickeriams ir atsiliepimas „veikia kaip LT“.",
+      note: "Ar OOS patenka į Stage II auto skyrimą: Q27." },
+    { id: "S21", ph: "D", s: "Ne surinkimo darbai", t: "Ne surinkimo darbai (valymas, aikštelė, mokymai)", actor: "SC vadybininkas",
+      trig: "Pickeris turi atlikti kitą darbą.",
+      beh: "Sistemoje šių užduočių nėra; vadybininkas išjungia auto tasks. Kitų tipų užduotys (valymas, barcode compare, užsakymų inspekcija) – vėlesnė Stage II fazė.",
+      cty: { LT: "Dovanų lipdukai yra rinkimo dalis.", LV: "Atskiras procesas.", EE: "Atskiras procesas." } },
+    { id: "S26", ph: "D", s: "Inspektorių užduotys", t: "Inspektoriai auto tasks grupėje", actor: "Sistema",
+      trig: "Atsiranda inspektoriaus užduotis (iš „not found“).",
+      beh: "Inspektorių užduotys jau skiriamos automatiškai, todėl jie priklauso auto tasks grupei; jų auto tasks visada įjungtas.",
+      note: "Vytautas 10-21; PM nemini. Ar galima išjungti: dizaino K10." },
+
+    { id: "S22", ph: "E", s: "Zonų ir pickerių stebėsena", t: "Vadybininkas stebi pickerius per zonas", actor: "SC vadybininkas",
+      trig: "Bangos eigoje.",
+      beh: "PM „Active picker pool“: kiekvienai zonai aktyvūs pickeriai, renkantys, baigiantys, turintys kitas užduotis; kiekvienam pickeriui apkrova, efektyvumas, prieinamumas, priskirtos užduotys.",
+      note: "Dizainas: DD5, DD7, DB4." },
+    { id: "S23", ph: "E", s: "Pickerio vaizdas apie kitą užduotį", t: "Pickeris mato, kiek dar reikės surinkti", actor: "Pickeris",
+      trig: "Pickeris dirba su užduotimi.",
+      beh: "Idėja: matyti priskirtą, bet nesinchronizuotą užduotį (banga, SKU, units, kg) ir laiką iki rinkimo pabaigos; laikrodukas naudingas naujokams.",
+      note: "PM tebeklausia, ar Picker app reikia ko nors: Q22." }
+  ];
+
+  var SRC = { C: "PM puslapis", I: "Workshop 09-28", W: "Workshop 10-06", T: "Workshop 10-08", M: "Susitikimas 10-06", J: "Note 10-15 Justinė", V: "Note 10-15 SC vadovas", R: "Review 10-22", P: "SC nustatymai 10-23", D: "Vytauto sprendimai" };
+  var EV = { conf: "Patvirtinta PM", notes: "Tik užrašuose", conflict: "Konfliktas", unclear: "Neaišku" };
+  var META = {
+    S01: ["CTP", "conf"], S02: ["CIJD", "conf"], S03: ["WD", "notes"], S04: ["CVR", "unclear"], S05: ["CIT", "conflict"],
+    S06: ["CTP", "unclear"], S07: ["CITP", "conf"], S08: ["CWP", "unclear"], S09: ["CWJRP", "conf"], S10: ["C", "conf"],
+    S11: ["C", "unclear"], S12: ["CTJP", "conf"], S13: ["CID", "conf"], S14: ["CWTD", "conf"], S15: ["CJ", "conf"],
+    S16: ["C", "conf"], S17: ["CTP", "conf"], S18: ["CWTP", "conf"], S19: ["CJP", "conf"], S20: ["CMJ", "conflict"],
+    S21: ["CW", "conf"], S22: ["CI", "conf"], S23: ["C", "unclear"], S24: ["T", "notes"], S25: ["CTP", "conf"],
+    S26: ["D", "notes"], S27: ["D", "notes"], S28: ["CVR", "conflict"], S29: ["CP", "unclear"], S30: ["CP", "unclear"], S31: ["CP", "conflict"]
+  };
+  SC.forEach(function (s) { var m = META[s.id]; s.src = m[0].split(""); s.ev = m[1]; });
+  var BYID = {}; SC.forEach(function (s) { BYID[s.id] = s; });
+
+  var LANES = [
+    { lane: "Vadybininkas", cells: [["S01", "S02", "S03"], ["S13"], ["S04", "S22", "S28"], [], ["S21"]] },
+    { lane: "Sistema", cells: [[], ["S05"], ["S06", "S07", "S24", "S08", "S09", "S10", "S11", "S25", "S29", "S30", "S31"], ["S12", "S14", "S15", "S16", "S17"], ["S18", "S19", "S20", "S26"]] },
+    { lane: "Pickeris", cells: [[], ["S27"], ["S23"], [], ["S19"]] }
+  ];
+  var LANE_COLS = ["Prieš dieną", "Bangos pradžia", "Bangos eiga", "Cut-off ir išimtys", "Specifinės užduotys"];
+
+  var QT = {
+    konfliktas: { l: "Konfliktas", d: "Šaltiniai arba vienas šaltinis sau prieštarauja." },
+    spraga: { l: "Spraga", d: "Niekas nepasakė arba šaltinyje lieka klaustukas." },
+    itartina: { l: "Įtartina", d: "Vytauto ar PM pastaba, dar netikrinta." },
+    prielaida: { l: "Prielaida", d: "Mano sugretinimas ar išvada, kurią reikia patvirtinti." }
+  };
+  var QL = [
+    /* atviri */
+    { id: "Q15", k: "konfliktas", g: "Zonos ir kombinacijos", q: "Zonų kombinacijų prioritetas: PM rašo „high priority“, o užrašai – pirmenybė vienai zonai.", r: ["S09"],
+      a: "Iš dalies: SC nustatymai 10-23 – kombinacijos naudojamos, kai zonoje darbo mažiau nei minimali riba. Tada abu teiginiai dera: kombinacijos svarbios, bet įsijungia tik žemiau ribos.",
+      chk: "Suderinimą padariau pats.",
+      c: [["PM puslapis", "Picking zones combinations – high priority."], ["Note 10-15 Justinė", "Algoritme prioritetas vienai zonai."], ["SC nustatymai 10-23", "Nepasiekus minimalaus kiekio zonoje, užduotys kombinuojamos su kita zona."]] },
+    { id: "Q16", k: "konfliktas", g: "Priskyrimo logika", q: "X481 bangos pradžioje užduotis dalija po lygiai, o pagrindinė logika – efektyviausiam pickeriui. Ar X481 tai išimtis, kurią reikia palaikyti?", r: ["S05"],
+      c: [["PM puslapis (X481)", "Po lygiai surinkėjams bangos pradžioje, dienos eigoje pagal užsakymų kiekį."], ["PM puslapis (Solution)", "Most efficient available picker."]] },
+    { id: "Q27", k: "konfliktas", g: "Specifinės užduotys", q: "Ar OOS zonos užduotys patenka į Stage II auto skyrimą pickeriams?", r: ["S20"],
+      c: [["PM puslapis", "Coordinator – no changes required. EE ir LV bandė OOS skirti pickeriams: „works as same as in LT“."], ["Susitikimas 10-06", "Koordinatorių užduočių automatizavimas nesikeičia."]] },
+    { id: "Q41", k: "konfliktas", g: "Efektyvumo valdymas", q: "Kaip vienoje vietoje valdyti momentinį efektyvumą: pickerio % visoms zonoms, „X % over efficiency“ ir kitos bangos X %? Ar kėlimas taikomas tik auto pickeriams, ar visiems dirbantiems?", r: ["S04", "S07", "S28", "S32"],
+      a: "Iš dalies (dizainas 2026-10-27, laukia PM): vienas lygis – laikina korekcija priklauso pickerio zonai; vienai zonai, visoms pickerio zonoms ar daugeliui pickerių uždedama vienu veiksmu, paskutinis veiksmas laimi. Kitos bangos % taikomas galutiniam efektyvumui. Kaip korekcija keičia užduoties dydį – variklio sprendimas.",
+      c: [["PM puslapis", "Pickerio paskyroje „specific % to minimize or maximize efficiency in all PZ“; SC lygyje „Assign X % over efficiency“ kraštutiniams atvejams; kitai bangai X %."], ["Review 10-22", "PM: kėlimas Picker accounts lange turėtų veikti visiems dirbantiems, ir be auto tasks. Reikia laikino didinimo ir mažinimo pickerio puslapyje ir sidebar'e."], ["SC nustatymai 10-23", "Neaišku, kaip sujungti efektyvumo kėlimą su kitos bangos nustatymu; tikslas valdyti einamosios ir kitos bangos boost / decrease."]] },
+    { id: "Q49", k: "konfliktas", g: "Zonos ir kombinacijos", q: "Kuri zona LT renkama pirmiausia: gėrimai ar bakalėja?", r: ["S25", "S01"],
+      c: [["PM puslapis", "LT pirmiausia renka ir sukomplektuoja sunkius gėrimus; sutarta tai dengti efektyvumo nustatymais."], ["SC nustatymai 10-23", "Lietuvoje pradedama nuo bakalėjos."]] },
+    { id: "Q51", k: "konfliktas", g: "Priskyrimo logika", q: "Ar reikia tolygaus skirstymo tarp zonų, jei skiriama pagal efektyvumą?", r: ["S30"],
+      c: [["PM puslapis", "Assign tasks equally of picking zones – „What for we need an efficiency then?“"], ["SC nustatymai 10-23", "LV ir EE taip skirsto dabar; operacijose neišspręsta."]] },
+    { id: "Q52", k: "konfliktas", g: "Zonos ir kombinacijos", q: "Ar reikia riboti pickerių skaičių zonoje?", r: ["S31"],
+      c: [["PM puslapis", "Max picker per picking zone išbraukta: „Don’t need, in LT we don’t have“."], ["SC nustatymai 10-23", "Gali reikėti dėl SC dydžio; poreikis operacijose nepatvirtintas."]] },
+
+    { id: "Q54", k: "spraga", g: "Bangos", q: "Ką reiškia einamajai bangai „it can’t be less than 100 %, but not more than X %“? Ar einamosios bangos užduotis gali būti didesnė nei 100 % pickerio efektyvumo?", r: ["S07"],
+      c: [["PM puslapis 10-28", "Current wave – 100 % (by priorities, efficiencies and max quantities per once) – it can’t be less than 100 %, but not more than X %."], ["PM puslapis", "Eilutė „Assign X % over efficiency“ toje pačioje lentelėje perbraukta."]] },
+    { id: "Q55", k: "spraga", g: "Bangos", q: "Kitos bangos MIN ir MAX: ar tai nustatymo ribos, tarp kurių SC renkasi reikšmę, ar dvi reikšmės, tarp kurių sistema renkasi pati (pvz., pagal einamosios bangos riziką)?", r: ["S07"],
+      c: [["PM puslapis 10-28", "Next wave – X % need to have a setting – (by efficiencies and max quantities per once) – MIN MAX values, it can’t be 0 %."]] },
+    { id: "Q56", k: "spraga", g: "Bangos", q: "Ar kitos bangos sumažintas efektyvumas naudojamas tik išėjimo dydžiui, o trukmė („Planuojama baigti“) skaičiuojama pagal tikrą pickerio efektyvumą?", r: ["S07"],
+      c: [["Vytautas (dizainas) 10-28", "Jei trukmė būtų skaičiuojama su sumažintu efektyvumu, 10 eilučių išėjimui rodytų ~30 min vietoj ~15 min. Dizainas (SC4) numato kitos bangos trukmės stalčiuje nežymėti."]] },
+
+    { id: "Q01", k: "spraga", g: "Bangos", q: "Koks kitos bangos procentas (X)?", r: ["S07"],
+      c: [["PM puslapis", "Next wave – X %, need to have a setting (by efficiencies and max quantities per once)."], ["SC nustatymai 10-23", "Pavyzdys 50 %."], ["PM puslapis 10-28", "Priskyrimo sekoje „Allow Next Wave Capacity (%)“ ir „Calculate Allowed Assignment Size: Current Wave up to 100 % efficiency, Next Wave up to X % efficiency“. Nustatymų lentelėje: „Next wave – X % … MIN MAX values, it can’t be 0 %“."]],
+      a: "Iš dalies: X yra SC nustatymas su MIN ir MAX ribomis, negali būti 0 %; jis riboja kitos bangos išėjimo dydį (PM 10-28). Konkreti reikšmė nežinoma; ribų prasmė – Q55." },
+    { id: "Q03", k: "spraga", g: "Bangos", q: "Nuo kada rytojaus bangų užduotys skiriamos automatiškai?", r: ["S17"],
+      a: "Iš dalies: nuo SC suvesto rytojaus bangos rinkimo pradžios laiko (PM ir SC nustatymai 10-23). Detalės: Q46." },
+    { id: "Q46", k: "spraga", g: "Bangos", q: "Ar rytojaus rinkimo laikas nurodomas kiekvienai bangai, ar vienas bendras? Ar sujungti rytojaus užduočių generavimo ir priskyrimo laiką (pvz. generuojama 13 val., skiriama vėliau)?", r: ["S17"],
+      c: [["SC nustatymai 10-23", "Klausimas Justinei; vieta ne iki galo suprasta."]] },
+    { id: "Q43", k: "spraga", g: "Bangos", q: "Ar skiriama ir dar vėlesnė banga („next next wave“), ir kokiu procentu?", r: ["S07"],
+      c: [["PM puslapis", "Next next wave – ?"]] },
+    { id: "Q44", k: "spraga", g: "Bangos", q: "Ar reikia SC požymio, ar galima vienu metu rinkti kelias bangas (HYPER gali, kiti ne dėl vietos)?", r: ["S07"],
+      c: [["PM puslapis (X864)", "Keletą bangų renkama vienu metu HYPER, kitur ne – reikia požymio, ar galima sekančią priskirinėti."]] },
+    { id: "Q42", k: "spraga", g: "Priskyrimo logika", q: "Ką reiškia „Evaluate current wave risk“ ir kaip tai keičia priskyrimą?", r: ["S05"],
+      c: [["PM puslapis", "Antras pagrindinės sekos žingsnis, be aprašo."], ["PM puslapis 10-28", "Po jo eina naujas žingsnis „Allow Next Wave Capacity (%)“ – galbūt rizikos įvertinimas lemia, ar leisti kitą bangą. Neaprašyta."]] },
+    { id: "Q20", k: "spraga", g: "Priskyrimo logika", q: "Ar 90 % eilučių taisyklė ir laukimo laikas po grįžimo yra viena taisyklė?", r: ["S06"],
+      a: "Iš dalies: laukimo laikas yra SC nustatymas, reikalingas LV ir EE; LT nereikia (PM, SC nustatymai 10-23).",
+      c: [["PM puslapis", "Apie 90 % surinktų eilučių, kad būtų galima priskirti sekančias. Delay for next tasks: LT don’t need, LV, EE."]] },
+    { id: "Q45", k: "spraga", g: "Pickerio nustatymai", q: "Ar auto tasks jungikliui reikia aktyvios pamainos? Ką rodys Unfinished picking tasks filtras?", r: ["S14"],
+      c: [["PM puslapis", "YES / NO – don’t need to have active shift pickers as well? In Unfinished picking tasks filter options we will see ALL picker acc."]] },
+    { id: "Q40", k: "spraga", g: "Pickerio nustatymai", q: "Efektyvumas pagal šalį: LT units / 1 h, LV ir EE SKU / 1 h, kg išbrauktas. Ar paskyroje vedamas tik šalies parametras, ar abu?", r: ["S02"],
+      c: [["PM puslapis", "Efficiency Required: SKU / 1 h – LV, EE; units / 1 h – LT; kg / 1 h išbraukta."], ["Review 10-22", "Vyksta diskusijos dėl KG per valandą atsisakymo."]] },
+    { id: "Q33", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai zonai (taip pat kombinacijos zonai) efektyvumas nesuvestas arba suvestas dalinai?", r: ["S02", "S09"],
+      c: [["PM puslapis", "Efektyvumas Required, elgesys neaprašytas."], ["Review 10-22", "Kaip elgtis, kai pickeriui priskirta kombinacija, bet vienai jos zonai nesuvestas efektyvumas."]] },
+    { id: "Q34", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai maksimalus kiekis vienam kartui nesuvestas: riba netaikoma ar imama numatytoji?", r: ["S02"],
+      chk: "Tikėtina, kad riba netaikoma.",
+      c: [["PM puslapis", "MAX quantity assign per once – Optional."]] },
+    { id: "Q06", k: "spraga", g: "Pickerio nustatymai", q: "Kaip ir kada nuimama naujoko žyma?", r: ["S13"],
+      a: "Iš dalies: rankiniu būdu, SC sprendžia kasdien; žymą galima grąžinti (Vytautas 10-20). Ar yra automatinis kriterijus, neaptarta." },
+    { id: "Q28", k: "spraga", g: "Pickerio nustatymai", q: "Ar naujokui rankiniu būdu skiriami kitos bangos užsakymai yra taisyklė, ar siūlymas?", r: ["S13"],
+      c: [["PM puslapis", "Extra tag, not assign automatically; assign next wave’s orders manually, not current one."]] },
+    { id: "Q39", k: "spraga", g: "Pickerio nustatymai", q: "Ar lieka „Maximum active zones“ parametras?", r: ["S09"],
+      a: "Iš dalies: vienas „Can work in multiple zones“ ir pickeriui priskiriamos konkrečios kombinacijos (Review 10-22). „Maximum active zones“ neaptartas." },
+    { id: "Q23", k: "spraga", g: "Pickerio nustatymai", q: "Kaip greitai suvesti daug parametrų (šablonai, importas)?", r: ["S02"] },
+    { id: "Q10", k: "spraga", g: "Cut-off ir išimtys", q: "Ar šaldyti papildymai yra išimtis po cut-off?", r: ["S12"],
+      c: [["PM puslapis", "Paid successfully – after cut-off no assignation. Frozen items from order additions – discuss during next meeting."]] },
+    { id: "Q47", k: "spraga", g: "Cut-off ir išimtys", q: "Ar Frozen zonai reikia atskirų rinkimo laikų ir logikos?", r: ["S17", "S12"],
+      c: [["PM puslapis", "Do we need to have exception and settings for FROZEN picking zone start and end picking time?"], ["SC nustatymai 10-23", "Sprendžia operacijos, diskusijos vyksta."]] },
+    { id: "Q13", k: "spraga", g: "Workshop'ai ir gathering", q: "Reikia workshop zonų sąrašo su rinkimo pradžios ir pabaigos laikais.", r: ["S18"],
+      a: "Iš dalies: taisyklės aiškios (PM, SC nustatymai 10-23), sąrašo dar nėra." },
+    { id: "Q48", k: "spraga", g: "Workshop'ai ir gathering", q: "Workshop minimalus kiekis kombinacijai: SKU ar units? LV ir EE?", r: ["S18"],
+      c: [["PM puslapis", "MIN quantity – of SKU or UNITS? LT – galim imt tik SKU, LV, EE – ?"]] },
+    { id: "Q53", k: "spraga", g: "Workshop'ai ir gathering", q: "Kas yra PM „Gathering settings“ ir LT „gathering time“, jei gathering dengiamas efektyvumu?", r: ["S19"],
+      c: [["PM puslapis", "Nustatymų sąraše „Gathering settings“; LT atvejai: „by gathering time, when assign for active pickers and when we need to wait for workshops“, „Duration of milk gathering in every wave – GATHERING“."]] },
+    { id: "Q50", k: "spraga", g: "Zonos ir kombinacijos", q: "Kas yra „regionas“ ir kaip skaičiuojamas regionų skaičius?", r: ["S29"],
+      c: [["PM puslapis", "Assign only 1 region per once? – only FROZEN PZ in LT."], ["SC nustatymai 10-23", "Iš kiek skirtingų regionų skiriamos užduotys vienam surinkėjui – skaičiaus input'as."]] },
+    { id: "Q19", k: "spraga", g: "Zonos ir kombinacijos", q: "Kada svorinio užsakymo užduotis dalyti kitam pickeriui ir koks X kg? Tik LT?", r: ["S11"] },
+    { id: "Q22", k: "spraga", g: "Pickeris", q: "Ar pickeriui Picker app reikia matyti kitą užduotį ir likusį laiką?", r: ["S23"],
+      c: [["PM puslapis", "Picker app – Do we need anything for pickers?"]] },
+    { id: "Q30", k: "spraga", g: "Bangos", q: "Kaip pickeris grąžinamas į einamąją bangą: sistema tik nustoja skirti kitą bangą ar perskirsto priskirtas?", r: ["S24"] },
+    { id: "Q25", k: "spraga", g: "Kita", q: "EE atvejų lentelė PM puslapyje neužpildyta: kuris nustatymas kurį atvejį padengia?", r: [],
+      chk: "Lentelė tuščia ir originale, ne tik konvertuojant." },
+    { id: "Q26", k: "spraga", g: "Kita", q: "Pasidomėti capacity management sistemų praktika.", r: [] },
+    { id: "Q07", k: "prielaida", g: "Zonos ir kombinacijos", q: "Ar „likučiai neskiriami labai efektyviems“ dar galioja kaip pickerio lygio riba, ar ją pakeitė zonos minimalūs kiekiai?", r: ["S08"],
+      chk: "Tai mano klausimas: PM minimalūs kiekiai dabar SC lygyje.",
+      c: [["Workshop 10-06", "Vienam ne mažiau 20, kitam galima ir 4."], ["PM puslapis", "Picking zone MIN quantities – medium priority: SKU 10, units 50."]] },
+    { id: "Q37", k: "prielaida", g: "Workshop'ai ir gathering", q: "Ar „rankiniu būdu sukurtos užduotys“ apima ir LT gathering užduotis, kuriamas mygtuku?", r: ["S16", "S19"],
+      chk: "Tai mano klausimas; gali būti nebeaktualu, jei atskiro gathering nėra." },
+
+    /* uždaryti */
+    { id: "Q02", closed: true, k: "spraga", g: "Bangos", q: "Ką daryti, kai einamojoje bangoje lieka 50 %, 30 % ar 10 % pajėgumų?", r: ["S07"],
+      a: "Uždaryta: PM eilutę „Open capacities left“ išbraukė (v46)." },
+    { id: "Q04", closed: true, k: "spraga", g: "Efektyvumo valdymas", q: "Ką daryti, kai pickerių trūksta?", r: ["S28"],
+      a: "Perkelta: sprendimas S28 („X % over efficiency“), atviri klausimai Q41." },
+    { id: "Q05", closed: true, k: "konfliktas", g: "Pickerio nustatymai", q: "Ar „aktyvus“ yra paskyros flag'as, dienos planas, ar abu?", r: ["S14"],
+      a: "Uždaryta 2026-10-20 (Vytautas): atskiro aktyvumo nėra, Active lauko paskirtis pakeista į auto tasks jungiklį." },
+    { id: "Q08", closed: true, k: "konfliktas", g: "Pickerio nustatymai", q: "Ar unique orders per valandą yra efektyvumo parametras?", r: ["S02"],
+      a: "Uždaryta 2026-10-15 (Justinė, PM): ne; unique orders lieka tik maksimaliame kiekyje vienam kartui." },
+    { id: "Q09", closed: true, k: "konfliktas", g: "Cut-off ir išimtys", q: "Ar cut-off yra surinkimo pabaiga, ar auto skyrimo sustabdymas?", r: ["S12"],
+      a: "Uždaryta (PM, SC nustatymai 10-23): po cut-off naujos užduotys pickeriams automatiškai neskiriamos; bangos rinkimo pabaiga yra atskiras laikas po cut-off. Patikrink." },
+    { id: "Q11", closed: true, k: "spraga", g: "Workshop'ai ir gathering", q: "Kaip pickeris užbaigia gathering užduotį Picker app?", r: ["S19"],
+      a: "Nebeaktualu: atskiros gathering užduoties nėra, ją dengia efektyvumas (PM)." },
+    { id: "Q12", closed: true, k: "spraga", g: "Workshop'ai ir gathering", q: "Ar vidutinis efektyvumas gali padengti gathering?", r: ["S19"],
+      a: "Uždaryta: taip, patvirtinta LT, LV ir EE (PM; Justinė 10-15)." },
+    { id: "Q14", closed: true, k: "spraga", g: "Cut-off ir išimtys", q: "Ar sistema skiria rankiniu būdu sukurtas užduotis?", r: ["S16"],
+      a: "Uždaryta 2026-10-15 (PM v46): nustatymai galioja ir rankinėms užduotims. Patikrink: mano skaitymas." },
+    { id: "Q17", closed: true, k: "spraga", g: "Efektyvumo valdymas", q: "Kada naudojamas „Assign X % over efficiency“?", r: ["S28"],
+      a: "Uždaryta (PM v46): kraštutiniais atvejais, ne kasdien." },
+    { id: "Q18", closed: true, k: "spraga", g: "Cut-off ir išimtys", q: "Ar reikia pranešimo apie užduotį be zonos?", r: ["S15"],
+      a: "Uždaryta (PM): „alarm would be nice to have, not must“." },
+    { id: "Q21", closed: true, k: "spraga", g: "Pickerio nustatymai", q: "Kas įjungia pickerį: pats pickeris ar vadybininkas?", r: ["S14"],
+      a: "Uždaryta (SC vadovas 10-15, Vytautas 10-19): vadybininkas rankiniu būdu; pickeris pamainos laiko nenurodo." },
+    { id: "Q29", closed: true, k: "itartina", g: "Cut-off ir išimtys", q: "Ar cut-off yra SC nustatymas, ar sistemos taisyklė?", r: ["S12"],
+      a: "Uždaryta 2026-10-23 (SC nustatymai): taisyklė; cut-off imamas iš admin ir tik rodomas UI." },
+    { id: "Q31", closed: true, k: "konfliktas", g: "Efektyvumo valdymas", q: "Kaip dažnai keičiamas maksimalus efektyvumas?", r: ["S04"],
+      a: "Perkelta į Q41: laikinas koregavimas dabar daromas procentu (PM), o ne keičiant parametrus." },
+    { id: "Q32", closed: true, k: "konfliktas", g: "Pickerio nustatymai", q: "Ar Justinės „max quantity“ yra maksimalus efektyvumas ir ar jame unique orders?", r: ["S02"],
+      a: "Uždaryta (PM): „MAX quantity assign per once“ su SKU, units, kg, unique orders, Optional." },
+    { id: "Q35", closed: true, k: "spraga", g: "Bangos", q: "Kam reikalingas bangos pabaigos laikas?", r: ["S01", "S12"],
+      a: "Uždaryta 2026-10-23 (SC nustatymai): iki kada skiriamos tos bangos užduotys; pabaiga yra po cut-off." },
+    { id: "Q36", closed: true, k: "spraga", g: "Workshop'ai ir gathering", q: "Workshop'ų taisyklė: pickerio ar SC nustatymas?", r: ["S18"],
+      a: "Uždaryta (PM 10-23): SC workshop nustatymai; visa zona vienam pickeriui, efektyvumas netaikomas." },
+    { id: "Q38", closed: true, k: "prielaida", g: "Pickerio nustatymai", q: "Ar išjungus auto tasks einama užduotis nenutraukiama?", r: ["S14"],
+      a: "Uždaryta 2026-10-19 (Vytautas): nenutraukiama, nebeskiriamos tik naujos." }
+  ];
+
+  function el(tag, cls, html) { var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+
+  /* tabs */
+  var TABS = ["apzvalga", "scenarijai", "nustatymai", "klausimai", "zurnalas"];
+  function showTab(name, noHash) {
+    if (typeof closePop === "function") closePop();
+    if (TABS.indexOf(name) < 0) name = "apzvalga";
+    TABS.forEach(function (t) {
+      document.getElementById("p-" + t).hidden = t !== name;
+      document.getElementById("tab-" + t).setAttribute("aria-selected", t === name ? "true" : "false");
+    });
+    if (!noHash) { try { history.replaceState(null, "", "#" + name); } catch (e) {} }
+  }
+  document.querySelectorAll("nav.tabs button").forEach(function (b) {
+    b.addEventListener("click", function () { showTab(b.getAttribute("data-tab")); window.scrollTo(0, 0); });
+  });
+
+  function gotoScenario(id) {
+    showTab("scenarijai");
+    phaseSel.value = ""; setEv("");
+    var d = document.getElementById("sc-" + id);
+    if (d) { d.open = true; d.scrollIntoView({ block: "center" }); }
+  }
+
+  function evHtml(s) { return '<span class="ev ev-' + s.ev + '">' + esc(EV[s.ev]) + "</span>"; }
+  function srcText(s) { return "Šaltiniai: " + s.src.map(function (k) { return SRC[k]; }).join(", "); }
+
+  function ctyHtml(s) {
+    if (!s.cty) return '<div class="nodiff">Šalių skirtumų nėra.</div>';
+    var h = '<div class="cty">';
+    ["LT", "LV", "EE"].forEach(function (cc) {
+      h += "<div><b>" + cc + "</b>" + (s.cty[cc] ? esc(s.cty[cc]) : '<span class="none">Nėra</span>') + "</div>";
+    });
+    return h + "</div>";
+  }
+
+  /* overview: legend, lanes, detail */
+  var legend = document.getElementById("legend");
+  Object.keys(PHASES).forEach(function (k) { legend.appendChild(el("span", "p-" + k, "<i></i>" + esc(PHASES[k]))); });
+
+  var lanesEl = document.getElementById("lanes");
+  (function () {
+    var h = "<thead><tr><th></th>" + LANE_COLS.map(function (c) { return "<th>" + c + "</th>"; }).join("") + "</tr></thead><tbody>";
+    LANES.forEach(function (row) {
+      h += '<tr><th class="lane" scope="row">' + row.lane + "</th>";
+      row.cells.forEach(function (c) {
+        h += "<td>" + (c.length ? '<div class="cell">' + c.map(function (id) {
+          var s = BYID[id];
+          return '<button type="button" class="card p-' + s.ph + '" data-id="' + id + '" aria-pressed="false"><span class="cid">' + id + '</span><span class="cname">' + esc(s.s) + "</span></button>";
+        }).join("") + "</div>" : '<div class="dash">–</div>') + "</td>";
+      });
+      h += "</tr>";
+    });
+    lanesEl.innerHTML = h + "</tbody>";
+  })();
+
+  var pop = document.getElementById("pop");
+  var box = document.getElementById("lanes-box");
+  var wrapEl = document.getElementById("lanes-wrap");
+  var activeId = null;
+  function closePop() {
+    activeId = null; pop.hidden = true;
+    document.querySelectorAll(".card").forEach(function (c) { c.setAttribute("aria-pressed", "false"); });
+  }
+  function placePop() {
+    var card = activeId && document.querySelector('.card[data-id="' + activeId + '"]');
+    if (!card) return;
+    var cr = card.getBoundingClientRect(), br = box.getBoundingClientRect();
+    var wr = wrapEl.getBoundingClientRect();
+    var ph = pop.offsetHeight, pw = pop.offsetWidth;
+    var above = cr.top - 56 >= ph + 10;
+    var top = above ? cr.top - br.top - ph - 8 : cr.bottom - br.top + 8;
+    var left = cr.left - br.left;
+    left = Math.max(8, Math.min(left, br.width - pw - 8));
+    pop.style.top = top + "px"; pop.style.left = left + "px";
+    var vis = cr.right > wr.left && cr.left < wr.right;
+    pop.style.visibility = vis ? "visible" : "hidden";
+  }
+  function showDetail(id) {
+    var s = BYID[id]; if (!s) return;
+    activeId = id;
+    document.querySelectorAll(".card").forEach(function (c) { c.setAttribute("aria-pressed", c.getAttribute("data-id") === id ? "true" : "false"); });
+    var h = '<button type="button" class="x" data-close aria-label="Uždaryti">×</button>';
+    h += '<div class="dtop"><span class="did">' + s.id + '</span><span class="dph">' + esc(PHASES[s.ph]) + "</span></div>";
+    h += "<h3>" + esc(s.t) + "</h3>";
+    h += '<div class="evline">' + evHtml(s) + "<span>" + esc(srcText(s)) + "</span></div>";
+    h += '<dl class="f"><dt>Veikėjas</dt><dd>' + esc(s.actor) + "</dd><dt>Trigeris</dt><dd>" + esc(s.trig) + "</dd><dt>Elgesys</dt><dd>" + esc(s.beh) + "</dd>";
+    if (s.note) h += "<dt>Pastaba</dt><dd>" + esc(s.note) + "</dd>";
+    h += "</dl>" + ctyHtml(s);
+    h += '<button type="button" class="open" data-open="' + s.id + '">Atidaryti scenarijų sąraše</button>';
+    pop.innerHTML = h;
+    pop.hidden = false;
+    placePop();
+  }
+  lanesEl.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-id]");
+    if (!b) return;
+    var id = b.getAttribute("data-id");
+    if (activeId === id) closePop(); else showDetail(id);
+  });
+  pop.addEventListener("click", function (e) {
+    if (e.target.closest("[data-close]")) { closePop(); return; }
+    var b = e.target.closest("[data-open]");
+    if (b) gotoScenario(b.getAttribute("data-open"));
+  });
+  document.addEventListener("click", function (e) {
+    if (!activeId) return;
+    if (e.target.closest("#pop") || e.target.closest(".card")) return;
+    var sel = window.getSelection && window.getSelection();
+    if (sel && String(sel).length) return;
+    closePop();
+  });
+  document.addEventListener("keydown", function (e) { if (e.key === "Escape" && activeId) closePop(); });
+  wrapEl.addEventListener("scroll", placePop);
+  window.addEventListener("resize", placePop);
+
+  /* scenario list */
+  var phaseSel = document.getElementById("f-phase");
+  Object.keys(PHASES).forEach(function (k) { var o = document.createElement("option"); o.value = k; o.textContent = PHASES[k]; phaseSel.appendChild(o); });
+  document.getElementById("cnt-sc").textContent = SC.length;
+
+  var evBox = document.getElementById("f-ev"), evSel = "";
+  [""].concat(Object.keys(EV)).forEach(function (k) {
+    var n = k ? SC.filter(function (s) { return s.ev === k; }).length : SC.length;
+    var b = el("button", k ? "k-" + k : "", esc(k ? EV[k] : "Visi") + '<span class="n">' + n + "</span>");
+    b.type = "button"; b.setAttribute("data-ev", k); b.setAttribute("aria-pressed", k === "" ? "true" : "false");
+    evBox.appendChild(b);
+  });
+  function setEv(k) {
+    evSel = k;
+    evBox.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", b.getAttribute("data-ev") === k ? "true" : "false"); });
+    renderList();
+  }
+  evBox.addEventListener("click", function (e) { var b = e.target.closest("[data-ev]"); if (b) setEv(b.getAttribute("data-ev")); });
+
+  function renderList() {
+    var fp = phaseSel.value;
+    var root = document.getElementById("sc-list");
+    root.innerHTML = "";
+    var shown = 0;
+    Object.keys(PHASES).forEach(function (k) {
+      if (fp && fp !== k) return;
+      var items = SC.filter(function (s) { return s.ph === k && (!evSel || s.ev === evSel); });
+      if (!items.length) return;
+      root.appendChild(el("div", "phase-head", esc(PHASES[k])));
+      var list = el("div", "list");
+      items.forEach(function (s) {
+        shown++;
+        var d = el("details", "sc");
+        d.id = "sc-" + s.id;
+        d.appendChild(el("summary", "", '<span class="id">' + s.id + '</span><span class="t">' + esc(s.t) + '</span><span class="actor">' + esc(s.actor) + '</span><span class="sub">' + evHtml(s) + "<span>" + esc(srcText(s)) + "</span></span>"));
+        var body = el("div", "body");
+        var dl = '<dl class="f"><dt>Trigeris</dt><dd>' + esc(s.trig) + "</dd><dt>Elgesys</dt><dd>" + esc(s.beh) + "</dd>";
+        if (s.note) dl += "<dt>Pastaba</dt><dd>" + esc(s.note) + "</dd>";
+        dl += "<dt>Šaltiniai</dt><dd>" + esc(srcText(s).replace("Šaltiniai: ", "")) + "</dd>";
+        var qs = QL.filter(function (x) { return !x.closed && x.r.indexOf(s.id) >= 0; });
+        if (qs.length) dl += "<dt>Klausimai</dt><dd>" + qs.map(function (x) { return '<button type="button" class="chip-id" data-goq="' + x.id + '">' + x.id + "</button>"; }).join("") + "</dd>";
+        body.innerHTML = dl + "</dl>" + ctyHtml(s);
+        d.appendChild(body);
+        list.appendChild(d);
+      });
+      root.appendChild(list);
+    });
+    if (!shown) root.appendChild(el("p", "empty", "Pagal pasirinktus filtrus scenarijų nėra."));
+    document.getElementById("res-count").textContent = shown + " iš " + SC.length;
+  }
+  phaseSel.addEventListener("change", renderList);
+  renderList();
+  document.getElementById("sc-list").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-goq]");
+    if (b) gotoQuestion(b.getAttribute("data-goq"));
+  });
+
+  /* questions */
+  var qroot = document.getElementById("q-groups");
+  var qtSel = document.getElementById("f-qt");
+  Object.keys(QT).forEach(function (k) {
+    if (!QL.some(function (x) { return x.k === k; })) return;
+    var o = document.createElement("option"); o.value = k; o.textContent = QT[k].l; qtSel.appendChild(o);
+  });
+  document.getElementById("cnt-q").textContent = QL.filter(function (x) { return !x.closed; }).length;
+
+  function renderQ() {
+    var f = qtSel.value, shown = 0;
+    qroot.innerHTML = "";
+    Object.keys(QT).forEach(function (k) {
+      if (f && f !== k) return;
+      var items = QL.filter(function (x) { return x.k === k && !x.closed; });
+      if (!items.length) return;
+      var wrap = el("div", ""); wrap.style.display = "grid"; wrap.style.gap = "10px";
+      wrap.appendChild(el("div", "q-head", "<h3>" + esc(QT[k].l) + " · " + items.length + "</h3><p>" + esc(QT[k].d) + "</p>"));
+      items.forEach(function (it) {
+        shown++;
+        var q = el("div", "q"); q.id = "q-" + it.id;
+        q.appendChild(el("div", "qtop", '<span class="qid">' + it.id + '</span><span class="topic">' + esc(it.g) + "</span>"));
+        q.appendChild(el("p", "", esc(it.q)));
+        if (it.cf) q.appendChild(el("p", "cfd", "<b>Kur prieštara.</b> " + esc(it.cf)));
+        if (it.chk) q.appendChild(el("p", "chk", "<b>Patikrink.</b> " + esc(it.chk)));
+        if (it.a) q.appendChild(el("p", "ans", "<b>Atsakymas.</b> " + esc(it.a)));
+        if (it.c) {
+          var cl = el("div", "claims");
+          it.c.forEach(function (c) { cl.appendChild(el("div", "claim" + (c[0].indexOf("Confluence") === 0 ? " conf" : ""), "<b>" + esc(c[0]) + "</b>" + esc(c[1]))); });
+          q.appendChild(cl);
+        }
+        if (it.r.length) {
+          var refs = el("div", "refs", '<span class="lbl">Susiję scenarijai</span>');
+          it.r.forEach(function (id) {
+            var b = el("button", "chip-id", id); b.type = "button"; b.setAttribute("data-go", id); refs.appendChild(b);
+          });
+          q.appendChild(refs);
+        }
+        wrap.appendChild(q);
+      });
+      qroot.appendChild(wrap);
+    });
+    var closed = QL.filter(function (x) { return x.closed && (!f || x.k === f); });
+    if (closed.length) {
+      var cw = el("details", "closedq"); cw.appendChild(el("summary", "", "Uždaryti · " + closed.length));
+      var cg = el("div", ""); cg.style.display = "grid"; cg.style.gap = "10px";
+      closed.forEach(function (it) {
+        var q = el("div", "q closed"); q.id = "q-" + it.id;
+        q.appendChild(el("div", "qtop", '<span class="qid">' + it.id + '</span><span class="topic">' + esc(it.g) + "</span>"));
+        q.appendChild(el("p", "", esc(it.q)));
+        q.appendChild(el("p", "ans", "<b>Atsakymas.</b> " + esc(it.a)));
+        cg.appendChild(q);
+      });
+      cw.appendChild(cg); qroot.appendChild(cw);
+    }
+    document.getElementById("res-q").textContent = shown + " atviri";
+  }
+  qtSel.addEventListener("change", renderQ);
+  renderQ();
+  qroot.addEventListener("click", function (e) {
+    var b = e.target.closest("[data-go]");
+    if (b) gotoScenario(b.getAttribute("data-go"));
+  });
+  function gotoQuestion(id) {
+    showTab("klausimai");
+    qtSel.value = ""; renderQ();
+    var d = document.getElementById("q-" + id);
+    if (d && d.closest("details.closedq")) d.closest("details.closedq").open = true;
+    if (d) { d.scrollIntoView({ block: "center" }); d.classList.add("flash"); setTimeout(function () { d.classList.remove("flash"); }, 1600); }
+  }
+
+
+  document.getElementById("p-apzvalga").addEventListener("click", function (e) {
+    var b = e.target.closest("[data-goto]"); if (b) gotoScenario(b.getAttribute("data-goto"));
+  });
+
+  /* initial tab from bare hash */
+  var h = (location.hash || "").replace("#", "");
+  showTab(TABS.indexOf(h) >= 0 ? h : "apzvalga", true);
+  window.addEventListener("hashchange", function () {
+    var x = (location.hash || "").replace("#", "");
+    if (TABS.indexOf(x) >= 0) showTab(x, true);
+  });
+})();
+</script>
+
+</body></html>

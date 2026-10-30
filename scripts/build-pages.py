@@ -71,6 +71,7 @@ def release(note):
     while os.path.exists(os.path.join(VER, vid)) or any(v["id"] == vid for v in reg):
         vid, n = f"{day}-{n}", n + 1
     dst = os.path.join(VER, vid)
+    os.makedirs(dst)
     for rel in LATEST:
         src = os.path.join(OUT, rel)
         (shutil.copytree if os.path.isdir(src) else shutil.copy2)(src, os.path.join(dst, rel))
