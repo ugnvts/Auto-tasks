@@ -231,7 +231,7 @@ details.closedq[open] > summary { margin-bottom: 10px; }
 </style>
 
 <header class="top">
-  <div class="meta">Barbora · surinkimo centrai · atnaujinta 2026-10-29</div>
+  <div class="meta">Barbora · surinkimo centrai · atnaujinta 2026-10-30</div>
   <h1>Auto tasks, Stage II</h1>
   <details class="srcbox" id="srcbox">
     <summary>Šaltiniai, pakeitimai ir kaip skaityti</summary>
@@ -583,11 +583,11 @@ details.closedq[open] > summary { margin-bottom: 10px; }
       c: [["PM puslapis", "YES / NO – don’t need to have active shift pickers as well? In Unfinished picking tasks filter options we will see ALL picker acc."]] },
     { id: "Q40", k: "spraga", g: "Pickerio nustatymai", q: "Efektyvumas pagal šalį: LT units / 1 h, LV ir EE SKU / 1 h, kg išbrauktas. Ar paskyroje vedamas tik šalies parametras, ar abu?", r: ["S02"],
       c: [["PM puslapis", "Efficiency Required: SKU / 1 h – LV, EE; units / 1 h – LT; kg / 1 h išbraukta."], ["Review 10-22", "Vyksta diskusijos dėl KG per valandą atsisakymo."]] },
-    { id: "Q33", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai zonai (taip pat kombinacijos zonai) efektyvumas nesuvestas arba suvestas dalinai?", r: ["S02", "S09"],
-      c: [["PM puslapis", "Efektyvumas Required, elgesys neaprašytas."], ["Review 10-22", "Kaip elgtis, kai pickeriui priskirta kombinacija, bet vienai jos zonai nesuvestas efektyvumas."]] },
-    { id: "Q34", k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai maksimalus kiekis vienam kartui nesuvestas: riba netaikoma ar imama numatytoji?", r: ["S02"],
+    { id: "Q33", closed: true, k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai zonai (taip pat kombinacijos zonai) efektyvumas nesuvestas arba suvestas dalinai?", r: ["S02", "S09"],
+      c: [["PM puslapis", "Efektyvumas Required, elgesys neaprašytas."], ["Review 10-22", "Kaip elgtis, kai pickeriui priskirta kombinacija, bet vienai jos zonai nesuvestas efektyvumas."], ["Patvirtinta 2026-10-30", "Zona priskiriama tik su visais efektyvumo skaičiais; kol jų trūksta, paskyros išsaugoti negalima. Priskirtai zonai nepilnų duomenų nebūna (išimtis – NONE ir workshop zonos, joms efektyvumas nevedamas)."]] },
+    { id: "Q34", closed: true, k: "spraga", g: "Pickerio nustatymai", q: "Ką daro algoritmas, kai maksimalus kiekis vienam kartui nesuvestas: riba netaikoma ar imama numatytoji?", r: ["S02"],
       chk: "Tikėtina, kad riba netaikoma.",
-      c: [["PM puslapis", "MAX quantity assign per once – Optional."]] },
+      c: [["PM puslapis", "MAX quantity assign per once – Optional."], ["Patvirtinta 2026-10-30", "Maksimalus kiekis priklauso privalomiems zonos skaičiams: be jo zonos priskirti ir paskyros išsaugoti negalima."]] },
     { id: "Q06", k: "spraga", g: "Pickerio nustatymai", q: "Kaip ir kada nuimama naujoko žyma?", r: ["S13"],
       a: "Iš dalies: rankiniu būdu, SC sprendžia kasdien; žymą galima grąžinti (Vytautas 10-20). Ar yra automatinis kriterijus, neaptarta." },
     { id: "Q28", k: "spraga", g: "Pickerio nustatymai", q: "Ar naujokui rankiniu būdu skiriami kitos bangos užsakymai yra taisyklė, ar siūlymas?", r: ["S13"],
