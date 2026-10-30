@@ -1,6 +1,6 @@
 <!doctype html>
-<html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Efektyvumo žymos</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Efficiency tags</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <style>
@@ -21,12 +21,12 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 </style>
 </head><body>
 <main class="max-w-6xl mx-auto px-4 py-6">
-  <h1 class="text-2xl font-semibold">Efektyvumo korekcijų žymos</h1>
-  <p class="text-gray-600 mt-1 max-w-3xl">Visos efektyvumo korekcijų ir sustabdytų zonų būsenos ir vietos, kuriose jos rodomos, kaip įgyvendinta prototipe. Korekcija visada priklauso surinkėjo zonai; veiksmas keliems surinkėjams (lentelėje ar „Laikinų pakeitimų“ skydelyje) uždeda tas pačias zonų korekcijas kiekvienam.</p>
-  <p class="mt-3 text-xs text-gray-600">Spalva rodo kryptį: <span class="tg dn">mažinimas</span> <span class="tg up">didinimas</span>; sustabdyta zona – <span class="tg ts">pilka</span>. Galiojimas: ribotas – „iki 14:00“, neribotas – be prierašo. „Dirba dabar“ kortelėje korekcijų ir sustabdytų zonų žymų nėra – visas vaizdas „Laikinų pakeitimų“ skydelyje.</p>
+  <h1 class="text-2xl font-semibold">Efficiency adjustment tags</h1>
+  <p class="text-gray-600 mt-1 max-w-3xl">All states of efficiency adjustments and paused zones, and the places where they are shown, as implemented in the prototype. An adjustment always belongs to a picker’s zone; an action for several pickers (in the table or the “Temporary changes” panel) applies the same zone adjustments to each of them.</p>
+  <p class="mt-3 text-xs text-gray-600">Colour shows the direction: <span class="tg dn">decrease</span> <span class="tg up">increase</span>; a paused zone is <span class="tg ts">grey</span>. Validity: limited shows “until 14:00”, indefinite has no label. The “Working now” card shows no adjustment or paused zone tags; the full picture is in the “Temporary changes” panel.</p>
   <div class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
-    <span class="flex items-center gap-1.5"><span class="tg dn" id="lgP"></span> efektyvumo korekcija</span>
-    <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> sustabdyta zona</span>
+    <span class="flex items-center gap-1.5"><span class="tg dn" id="lgP"></span> efficiency adjustment</span>
+    <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> paused zone</span>
   </div>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
@@ -36,32 +36,32 @@ const IKU='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="none" stroke=
   IPA='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>',
   IPL='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 6 4.5z"/></svg>',
   ICV='<svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>';
-lgP.innerHTML=IKD+'−10 %';lgS.innerHTML=IPA+'Gėrimai';
+lgP.innerHTML=IKD+'−10 %';lgS.innerHTML=IPA+'Beverages';
 // Būsenos tag'ai – tokie pat kaip prototipe (Picker accounts lentelė, „Dirba dabar“)
-const SG={Renka:'bg-green-50 border-green-200 text-green-900',Nesinchronizavo:'bg-amber-50 border-amber-200 text-amber-800','Laukia užduoties':'bg-blue-50 border-blue-200 text-blue-800'};
-const stTag=(st,pk,tt)=>{const pc=st=='Renka'&&tt?Math.round(pk/tt*100):null;return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${st}${st=='Renka'&&tt?` · ${pk}/${tt} eil.`:''}</span></span>`};
-const stTags=c=>c.s=='Renka'?stTag('Renka',...(c.l||[0,0]))+(c.q?stTag('Nesinchronizavo'):''):stTag(c.s);
+const SG={Picking:'bg-green-50 border-green-200 text-green-900','Not synced':'bg-amber-50 border-amber-200 text-amber-800','Waiting':'bg-blue-50 border-blue-200 text-blue-800'};
+const stTag=(st,pk,tt)=>{const pc=st=='Picking'&&tt?Math.round(pk/tt*100):null;return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${st}${st=='Picking'&&tt?` · ${pk}/${tt} lines`:''}</span></span>`};
+const stTags=c=>c.s=='Picking'?stTag('Picking',...(c.l||[0,0]))+(c.q?stTag('Not synced'):''):stTag(c.s);
 const sg=d=>d<0?'−':'+';
 // Atvejai: P – korekcija {v, z: [] = visos zonos, t – iki kada}, S – sustabdytos zonos {z, t}, K – kombinacija, kuri neveikia
 const CASES=[
-  {g:'Be korekcijų',n:'Nerijus Petrauskas',s:'Laukia užduoties'},
-  {g:'Korekcija, visos zonos (12)',n:'Aldonas Kazlauskas',s:'Renka',l:[12,30],q:1,P:{v:-10,z:[]}},
-  {g:'Korekcija, viena zona',n:'Karolis Jankauskas',s:'Nesinchronizavo',P:{v:-20,z:['Alcoholic beverages']}},
-  {g:'Korekcija, kelios zonos, iki laiko',n:'Remigijus Butkus',s:'Renka',l:[3,10],P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
-  {g:'Visos zonos, viena pakeista atskirai',n:'Simona Jakštė',s:'Renka',l:[20,46],q:1,P:[{v:-10,z:Array(11).fill('')},{v:5,z:['Candies']}]},
-  {g:'Skirtingos zonų korekcijos',n:'Paulius Grigas',s:'Nesinchronizavo',P:[{v:-20,z:['Alcoholic beverages']},{v:10,z:['Groceries','Candies']}]},
-  {g:'Didinimas',n:'Tomas Vaitkus',s:'Renka',l:[1,5],P:{v:10,z:[]}},
-  {g:'Sustabdyta viena zona',n:'Ieva Kairytė',s:'Renka',l:[4,9],S:{z:['Alcoholic beverages']}},
-  {g:'Sustabdytos kelios zonos, iki laiko',n:'Rūta Mockutė',s:'Laukia užduoties',S:{z:['Alcoholic beverages','Frozen goods'],t:'16:00'}},
-  {g:'Sustabdyta zona kombinacijoje',n:'Justas Navickas',s:'Renka',l:[10,38],S:{z:['Bread products']},K:'Frozen goods + Bread products'},
-  {g:'Korekcija ir sustabdyta zona',n:'Jonas Petraitis',s:'Renka',l:[7,22],P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']}},
-  {g:'Ilgi zonų pavadinimai',n:'Mantas Kazakevičius',s:'Renka',l:[15,24],P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
+  {g:'No adjustments',n:'Nerijus Petrauskas',s:'Waiting'},
+  {g:'Adjustment, all zones (12)',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],q:1,P:{v:-10,z:[]}},
+  {g:'Adjustment, one zone',n:'Karolis Jankauskas',s:'Not synced',P:{v:-20,z:['Alcoholic beverages']}},
+  {g:'Adjustment, several zones, until a time',n:'Remigijus Butkus',s:'Picking',l:[3,10],P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
+  {g:'All zones, one changed separately',n:'Simona Jakštė',s:'Picking',l:[20,46],q:1,P:[{v:-10,z:Array(11).fill('')},{v:5,z:['Candies']}]},
+  {g:'Different zone adjustments',n:'Paulius Grigas',s:'Not synced',P:[{v:-20,z:['Alcoholic beverages']},{v:10,z:['Groceries','Candies']}]},
+  {g:'Increase',n:'Tomas Vaitkus',s:'Picking',l:[1,5],P:{v:10,z:[]}},
+  {g:'One zone paused',n:'Ieva Kairytė',s:'Picking',l:[4,9],S:{z:['Alcoholic beverages']}},
+  {g:'Several zones paused, until a time',n:'Rūta Mockutė',s:'Waiting',S:{z:['Alcoholic beverages','Frozen goods'],t:'16:00'}},
+  {g:'Paused zone in a combination',n:'Justas Navickas',s:'Picking',l:[10,38],S:{z:['Bread products']},K:'Frozen goods + Bread products'},
+  {g:'Adjustment and paused zone',n:'Jonas Petraitis',s:'Picking',l:[7,22],P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']}},
+  {g:'Long zone names',n:'Mantas Kazakevičius',s:'Picking',l:[15,24],P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
 ];
-const ltZ=n=>n%10==1&&n%100!=11?'zona':n%10>=2&&(n%100<10||n%100>=20)?'zonos':'zonų',zTxt=z=>z.length==1?z[0]:z.length+' '+ltZ(z.length),gZ=z=>z.length?zTxt(z):'12 zonų',till=t=>t?' · iki '+t:'';
+const ltZ=n=>n==1?'zone':'zones',zTxt=z=>z.length==1?z[0]:z.length+' '+ltZ(z.length),gZ=z=>z.length?zTxt(z):'12 zones',till=t=>t?' · until '+t:'';
 const PL=c=>c.P?[].concat(c.P):[];
-const tipP=c=>'Efektyvumo korekcija: '+PL(c).map(g=>`${gZ(g.z)} ${sg(g.v)}${Math.abs(g.v)} %${till(g.t)}`).join('; '),
-  tipS=c=>`Sustabdytos zonos: ${c.S.z.join(', ')}${till(c.S.t)}${c.K?` · kombinacija ${c.K} neveikia`:''}`;
-const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`,iki=t=>t?`<span class="text-xs text-gray-500">iki ${t}</span>`:'';
+const tipP=c=>'Efficiency adjustment: '+PL(c).map(g=>`${gZ(g.z)} ${sg(g.v)}${Math.abs(g.v)} %${till(g.t)}`).join('; '),
+  tipS=c=>`Paused zones: ${c.S.z.join(', ')}${till(c.S.t)}${c.K?` · combination ${c.K} inactive`:''}`;
+const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`,iki=t=>t?`<span class="text-xs text-gray-500">until ${t}</span>`:'';
 // Lentelė: išsamios žymos
 const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IK(g.v)}<span class="t">${pct(g.v)} · ${gZ(g.z)}</span></span>`).join('')
   +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'');
@@ -69,32 +69,32 @@ const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IK(g.v
 const EZ={'Groceries':[38,95,42],'Candies':[50,120,20],'Fresh meat':[30,70,55],'Alcoholic beverages':[25,60,40]};
 const KZ={'Groceries':{v:-10},'Candies':{v:5,t:'14:00'}},SZ={'Fresh meat':'','Alcoholic beverages':'16:00'};
 const zChip=n=>n==1?'':`<span class="rounded-full border border-gray-300 bg-gray-100 text-gray-800 font-medium px-2 py-0.5 whitespace-nowrap">${n} ${ltZ(n)}</span>`;
-const sTag=`<span class="tg ts">${IPA}Sustabdyta</span>`;
+const sTag=`<span class="tg ts">${IPA}Paused</span>`;
 const cor=(v,x)=>Math.round(x*(1+v/100));
 const sec=(t,d,b)=>`<section class="bg-white border rounded-lg"><div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">${t}</h2><p class="text-gray-600 mt-1">${d}</p></div><div class="p-4 bg-gray-50 rounded-b-lg">${b}</div></section>`;
 // 1. Paskyros kortelė „Laikini pakeitimai“
-const accCard=`<div class="border rounded-lg px-4 py-2 bg-white max-w-3xl"><div class="flex items-center gap-2 py-1"><span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Laikini pakeitimai</span><button class="ml-auto text-xs text-red-700">Nuimti visas</button></div><div class="divide-y">
-  ${[[11,-10,''],[1,5,'14:00','Candies']].map(([n,v,t,z])=>`<div class="flex flex-wrap items-center gap-2 py-1.5">${n==1?`<span class="font-medium">${z}</span>`:zChip(n)}<span class="tg ${dc(v)}">${pct(v)}</span>${iki(t)}<span class="ml-auto flex gap-2"><button class="bt">Keisti</button><button class="bt text-red-700">Nuimti</button></span></div>`).join('')}
-  ${Object.entries(SZ).map(([z,t])=>`<div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">${z}</span>${sTag}${iki(t)}<span class="ml-auto"><button class="bt text-indigo-700">Atnaujinti zoną</button></span></div>`).join('')}</div></div>`;
+const accCard=`<div class="border rounded-lg px-4 py-2 bg-white max-w-3xl"><div class="flex items-center gap-2 py-1"><span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Temporary changes</span><button class="ml-auto text-xs text-red-700">Remove all</button></div><div class="divide-y">
+  ${[[11,-10,''],[1,5,'14:00','Candies']].map(([n,v,t,z])=>`<div class="flex flex-wrap items-center gap-2 py-1.5">${n==1?`<span class="font-medium">${z}</span>`:zChip(n)}<span class="tg ${dc(v)}">${pct(v)}</span>${iki(t)}<span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt text-red-700">Remove</button></span></div>`).join('')}
+  ${Object.entries(SZ).map(([z,t])=>`<div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">${z}</span>${sTag}${iki(t)}<span class="ml-auto"><button class="bt text-indigo-700">Resume zone</button></span></div>`).join('')}</div></div>`;
 // 2. Zonos kortelė
-const nums=(k,e)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency per hour</div><dl class="grid grid-cols-3 gap-2 mt-1">${['SKU/1h','Units/1h','KG/1h'].map((u,x)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${k?`<span class="font-semibold ${k.v<0?'text-red-700':'text-green-700'}">${cor(k.v,e[x])}</span><span class="block text-xs font-normal text-gray-400">buvo ${e[x]}</span>`:e[x]}</dd></div>`).join('')}</dl></div>`;
+const nums=(k,e)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency per hour</div><dl class="grid grid-cols-3 gap-2 mt-1">${['SKU/1h','Units/1h','KG/1h'].map((u,x)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${k?`<span class="font-semibold ${k.v<0?'text-red-700':'text-green-700'}">${cor(k.v,e[x])}</span><span class="block text-xs font-normal text-gray-400">was ${e[x]}</span>`:e[x]}</dd></div>`).join('')}</dl></div>`;
 const zCard=z=>{const k=KZ[z],pa=z in SZ,t=SZ[z];return `<div class="border rounded p-3 bg-white ${pa?'!bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${z}</span>
-  ${pa?`<span class="tg ts">Sustabdyta${t?' · iki '+t:''}</span>`:''}${k?`<span class="tg ${dc(k.v)}" title="Laikina korekcija${k.t?' iki '+k.t:''}">${pct(k.v)}</span>`:''}
-  <span class="ml-auto flex gap-2">${pa?`<button class="bt text-indigo-700 inline-flex items-center gap-1">${IPL}Atnaujinti zoną</button>`:`<button class="bt">${k?'Keisti korekciją':'Koreguoti efektyvumą'}</button>${k?'<button class="bt text-red-700">Pašalinti korekciją</button>':''}<button class="bt inline-flex items-center gap-1">${IPA}Stabdyti zoną</button>`}</span></div>
+  ${pa?`<span class="tg ts">Paused${t?' · until '+t:''}</span>`:''}${k?`<span class="tg ${dc(k.v)}" title="Temporary adjustment${k.t?' until '+k.t:''}">${pct(k.v)}</span>`:''}
+  <span class="ml-auto flex gap-2">${pa?`<button class="bt text-indigo-700 inline-flex items-center gap-1">${IPL}Resume zone</button>`:`<button class="bt">${k?'Change adjustment':'Adjust efficiency'}</button>${k?'<button class="bt text-red-700">Remove adjustment</button>':''}<button class="bt inline-flex items-center gap-1">${IPA}Pause zone</button>`}</span></div>
   <div class="mt-2 ${pa?'opacity-50':''}">${nums(k,EZ[z])}</div></div>`};
 // 3. „Laikinų pakeitimų“ skydelio eilutės ir suskleista juosta
 const kpRow=c=>`<div class="px-4 py-3 bg-white border-b last:border-0 flex gap-3"><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><span class="font-semibold">${c.n}</span><span class="text-[11px] text-gray-500">${c.s}</span></div><div class="mt-1.5 space-y-1">
   ${PL(c).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="tg ${dc(g.v)} font-medium">${IK(g.v)}${pct(g.v)}</span><span class="text-gray-800">${gZ(g.z)}</span>${iki(g.t)}</div>`).join('')}
   ${c.S?c.S.z.map(z=>`<div class="flex flex-wrap items-center gap-1.5">${sTag}<span class="text-gray-800">${z}</span>${iki(c.S.t)}</div>`).join(''):''}</div></div><span class="self-center text-gray-400">${ICV}</span></div>`;
-const rail=(c,st)=>`<div class="rc">${c||st?`<div class="rs"><span>Korekc.</span><b>${c}</b></div><div class="rs"><span>Sustabd.</span><b>${st}</b></div>`:'<div class="rs"><span>Nėra</span></div>'}</div>`;
+const rail=(c,st)=>`<div class="rc">${c||st?`<div class="rs"><span>Adjusted</span><b>${c}</b></div><div class="rs"><span>Paused</span><b>${st}</b></div>`:'<div class="rs"><span>None</span></div>'}</div>`;
 out.innerHTML=`<section class="bg-white border rounded-lg">
-  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
-    <p class="text-gray-600 mt-1">Stulpelyje „Laikini pakeitimai“ dešinėje nuo „Būsena“. Zonos su vienoda korekcija (kryptis, dydis, galiojimas) sugrupuotos: viena zona – pavadinimas, kelios – skaičius („−10 % · 12 zonų“). Užvedus pelę – detalės.</p></div>
-  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Atvejis</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Būsena</th><th class="px-4 font-medium">Laikini pakeitimai</th></tr></thead>
+  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts table: detailed tags</h2>
+    <p class="text-gray-600 mt-1">In the “Temporary changes” column, right of “Status”. Zones with the same adjustment (direction, amount, validity) are grouped: one zone shows its name, several show a count (“−10 % · 12 zones”). Hover for details.</p></div>
+  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Case</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Status</th><th class="px-4 font-medium">Temporary changes</th></tr></thead>
   <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4 py-2"><div class="flex items-center gap-1 whitespace-nowrap">${stTags(c)}</div></td><td class="px-4 py-2"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
 </section>
-${sec('Paskyra: kortelė „Laikini pakeitimai“','Virš zonų. Viena eilutė – viena korekcijų grupė; kelios zonos – žyma „N zonų“ (paspaudus – sąrašas). Sustabdytos zonos toje pačioje kortelėje, kad stabdymą būtų galima atšaukti nesigilinant į zonas. „Nuimti visas“ – kai korekcijų grupių daugiau nei viena.',accCard)}
-${sec('Paskyra: zonos kortelė','Žyma šalia zonos pavadinimo: korekcijos procentas arba „Sustabdyta“ (su „iki“, kai laikas ribotas). Pakeisti skaičiai paryškinti ir spalvoti, po jais „buvo“. Sustabdyta zona papilkėja; korekcija jai negalioja.',`<div class="grid md:grid-cols-2 gap-3">${['Groceries','Candies','Fresh meat','Alcoholic beverages'].map(zCard).join('')}</div>`)}
-${sec('„Laikinų pakeitimų“ skydelis ir suskleista juosta','Skydelyje – surinkėjai su korekcijomis ar sustabdytomis zonomis; paspaudus eilutę atsidaro paskyra. Suskleistoje juostoje – surinkėjų skaičiai, kaip „Dirba dabar“ dalyje. Dashboard\'e juostoje lieka tik šis mygtukas (skydelis atsidaro ant prisegto „Dirba dabar“); išskleidus skydelį juostos nelieka.',`<div class="flex flex-wrap items-start gap-6"><div class="border rounded-lg overflow-hidden w-full max-w-md">${[CASES[4],CASES[10],CASES[8]].map(kpRow).join('')}</div><div class="flex gap-3">${rail(4,2)}${rail(0,0)}</div></div>`)}`;
+${sec('Account: “Temporary changes” card','Above the zones. One row is one adjustment group; several zones show an “N zones” tag (click for the list). Paused zones are on the same card, so a pause can be undone without digging into the zones. “Remove all” appears when there is more than one adjustment group.',accCard)}
+${sec('Account: zone card','Tag next to the zone name: the adjustment percentage or “Paused” (with “until” when time-limited). Changed numbers are bold and coloured, with “was” below. A paused zone is greyed out; adjustments do not apply to it.',`<div class="grid md:grid-cols-2 gap-3">${['Groceries','Candies','Fresh meat','Alcoholic beverages'].map(zCard).join('')}</div>`)}
+${sec('“Temporary changes” panel and collapsed rail','The panel lists pickers with adjustments or paused zones; clicking a row opens the account. The collapsed rail shows picker counts, like the “Working now” section. On the Dashboard only this button stays in the rail (the panel opens over the pinned “Working now”); when the panel is open the rail is hidden.',`<div class="flex flex-wrap items-start gap-6"><div class="border rounded-lg overflow-hidden w-full max-w-md">${[CASES[4],CASES[10],CASES[8]].map(kpRow).join('')}</div><div class="flex gap-3">${rail(4,2)}${rail(0,0)}</div></div>`)}`;
 </script>
 </body></html>

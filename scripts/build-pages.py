@@ -80,8 +80,8 @@ def release(note):
     idx = os.path.join(dst, "index.html")
     with open(idx, encoding="utf-8") as f:
         s = f.read()
-    s = s.replace("<span>Prototipai</span>", f"<span>Prototipai · {vid}</span>", 1)
-    s = s.replace('href="versijos/">Versijos</a>', 'href="../">Užšaldyta versija · visos versijos</a>', 1)
+    s = s.replace("<span>Prototypes</span>", f"<span>Prototypes · {vid}</span>", 1)
+    s = s.replace('href="versijos/">Versions</a>', 'href="../">Frozen version · all versions</a>', 1)
     with open(idx, "w", encoding="utf-8") as f:
         f.write(s)
     try:
@@ -111,17 +111,17 @@ li{display:flex;flex-wrap:wrap;gap:4px 16px;align-items:baseline;padding:14px 18
 def write_list():
     reg = load_reg()
     e = html.escape
-    rows = ['<li class="latest"><span class="d">naujausia</span><span class="n">Dabartinė versija – keičiasi</span>'
-            '<span class="l"><a href="../">Prototipai</a></span></li>']
+    rows = ['<li class="latest"><span class="d">latest</span><span class="n">Current version – changes</span>'
+            '<span class="l"><a href="../">Prototypes</a></span></li>']
     for v in sorted(reg, key=lambda v: v["id"], reverse=True):
         c = f'<span class="c">{e(v["commit"])}</span>' if v.get("commit") else ""
         rows.append(f'<li><span class="d">{e(v["id"])}</span><span class="n">{e(v["note"])}</span>{c}'
-                    f'<span class="l"><a href="{e(v["id"])}/">Prototipai</a></span></li>')
+                    f'<span class="l"><a href="{e(v["id"])}/">Prototypes</a></span></li>')
     page = (SKELETON
-            + '<title>Auto tasks versijos</title>\n'
+            + '<title>Auto tasks versions</title>\n'
             + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">\n'
-            + f"<style>{LIST_CSS}</style>\n<main><h1>Auto tasks · versijos</h1>"
-            + '<p class="sub">Užšaldytos prototipų versijos nesikeičia – jomis galima remtis per review. Naujausia versija keičiasi.</p>'
+            + f"<style>{LIST_CSS}</style>\n<main><h1>Auto tasks · versions</h1>"
+            + '<p class="sub">Frozen prototype versions never change, so they can be referenced in reviews. The latest version keeps changing.</p>'
             + "<ul>" + "".join(rows) + "</ul></main>\n</body></html>\n")
     os.makedirs(VER, exist_ok=True)
     with open(os.path.join(VER, "index.html"), "w", encoding="utf-8") as f:

@@ -1,4 +1,4 @@
-<title>Auto tasks prototipai</title>
+<title>Auto tasks prototypes</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
 <style>
@@ -47,33 +47,33 @@ iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; bac
 </style>
 
 <header class="bar">
-  <div class="name"><b>Auto tasks</b><span>Prototipai</span></div>
-  <div class="grp" role="tablist" aria-label="Ekranas" id="pages"></div>
-  <div class="grp" role="tablist" aria-label="Variantas" id="variants"></div>
+  <div class="name"><b>Auto tasks</b><span>Prototypes</span></div>
+  <div class="grp" role="tablist" aria-label="Screen" id="pages"></div>
+  <div class="grp" role="tablist" aria-label="Variant" id="variants"></div>
   <div class="note" id="note"></div>
-  <a class="ver" id="verLink" href="versijos/">Versijos</a>
+  <a class="ver" id="verLink" href="versijos/">Versions</a>
 </header>
-<main class="frame"><iframe id="view" title="Prototipas"></iframe></main>
+<main class="frame"><iframe id="view" title="Prototype"></iframe></main>
 
 <script>
 // Ekranai ir jų variantai. Naujas variantas: pridėk eilutę ir failą puslapiai/.
 // Kai ekranas turi vieną variantą, variantų eilutė nerodoma.
 var PAGES = [
   { id: "dashboard", name: "Dashboard", variants: [
-    { id: "dashboard", name: "„Dirba dabar“ prisegtas", file: "puslapiai/prototipas.html#dashboard",
-      note: "Bangos kairėje, „Dirba dabar“ visada matomas dešinėje; juostoje šalia – „Laikini pakeitimai“, atsidaro ant viršaus."},
-    { id: "dashboard-cutoff", name: "Cut-off metu", file: "puslapiai/prototipas-cutoff.html#dashboard",
-      note: "Tas pats prototipas cut-off metu: „Auto tasks“ suvestinėje pranešimas, kad auto užduotys pristabdytos." }
+    { id: "dashboard", name: "“Working now” pinned", file: "puslapiai/prototipas.html#dashboard",
+      note: "Waves on the left, “Working now” always visible on the right; the rail next to it has “Temporary changes”, which opens on top."},
+    { id: "dashboard-cutoff", name: "During cut-off", file: "puslapiai/prototipas-cutoff.html#dashboard",
+      note: "The same prototype during cut-off: the “Auto tasks” summary shows that auto tasks are paused." }
   ]},
   { id: "picker", name: "Picker accounts", variants: [
-    { id: "picker-accounts", name: "Su „Dirba dabar“", file: "puslapiai/prototipas.html#picker-accounts",
-      note: "Surinkėjų lentelė ir paskyra; dešinėje „Dirba dabar“ ir „Laikini pakeitimai“."},
-    { id: "picker-cutoff", name: "Cut-off metu", file: "puslapiai/prototipas-cutoff.html#picker-accounts",
-      note: "Tas pats prototipas cut-off metu: „Auto tasks“ suvestinėje pranešimas, kad auto užduotys pristabdytos." }
+    { id: "picker-accounts", name: "With “Working now”", file: "puslapiai/prototipas.html#picker-accounts",
+      note: "Picker table and account; “Working now” and “Temporary changes” on the right."},
+    { id: "picker-cutoff", name: "During cut-off", file: "puslapiai/prototipas-cutoff.html#picker-accounts",
+      note: "The same prototype during cut-off: the “Auto tasks” summary shows that auto tasks are paused." }
   ]},
-  { id: "zymos", name: "Efektyvumo žymos", variants: [
-    { id: "efektyvumo-zymos", name: "Būsenų katalogas", file: "puslapiai/efektyvumo-zymos.html",
-      note: "Efektyvumo korekcijų ir sustabdytų zonų žymos: lentelėje, paskyroje, „Laikinų pakeitimų“ skydelyje." }
+  { id: "zymos", name: "Efficiency tags", variants: [
+    { id: "efektyvumo-zymos", name: "State catalogue", file: "puslapiai/efektyvumo-zymos.html",
+      note: "Efficiency adjustment and paused zone tags: in the table, the account and the “Temporary changes” panel." }
   ]}
 ];
 // Abu ekranai yra viename prototipe su bendrais duomenimis; perėjus per kairįjį meniu skirtukas persijungia pats.
@@ -101,7 +101,7 @@ function show(v) {
     pages.appendChild(btn(p.name, "", p === v.page, function () { if (p !== cur.page) show(p.variants[0]); }));
   });
   vars.hidden = v.page.variants.length < 2;
-  var l = document.createElement("span"); l.className = "lbl"; l.textContent = "Variantas"; vars.appendChild(l);
+  var l = document.createElement("span"); l.className = "lbl"; l.textContent = "Variant"; vars.appendChild(l);
   v.page.variants.forEach(function (x) {
     vars.appendChild(btn(x.name, String(ALL.indexOf(x) + 1), x === v, function () { if (x !== cur) show(x); }));
   });
