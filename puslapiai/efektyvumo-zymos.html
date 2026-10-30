@@ -66,8 +66,8 @@ const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`,iki=t=>t?`<span clas
 const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IK(g.v)}<span class="t">${pct(g.v)} · ${gZ(g.z)}</span></span>`).join('')
   +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'');
 // Pavyzdinis surinkėjas vietoms: zonų efektyvumas [SKU, Units, KG], korekcijos ir sustabdytos zonos
-const EZ={'Groceries':[38,95,42],'Candies':[50,120,20],'Fresh meat':[30,70,55],'Alcoholic beverages':[25,60,40]};
-const KZ={'Groceries':{v:-10},'Candies':{v:5,t:'14:00'}},SZ={'Fresh meat':'','Alcoholic beverages':'16:00'};
+const EZ={'Groceries':[38,95,42],'Candies':[50,120,20],'Frozen goods':[30,70,55],'Alcoholic beverages':[25,60,40]};
+const KZ={'Groceries':{v:-10},'Candies':{v:5,t:'14:00'}},SZ={'Frozen goods':'','Alcoholic beverages':'16:00'};
 const zChip=n=>n==1?'':`<span class="rounded-full border border-gray-300 bg-gray-100 text-gray-800 font-medium px-2 py-0.5 whitespace-nowrap">${n} ${ltZ(n)}</span>`;
 const sTag=`<span class="tg ts">${IPA}Paused</span>`;
 const cor=(v,x)=>Math.round(x*(1+v/100));
@@ -94,7 +94,7 @@ out.innerHTML=`<section class="bg-white border rounded-lg">
   <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4 py-2"><div class="flex items-center gap-1 whitespace-nowrap">${stTags(c)}</div></td><td class="px-4 py-2"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
 </section>
 ${sec('Account: “Temporary changes” card','Above the zones. One row is one adjustment group; several zones show an “N zones” tag (click for the list). Paused zones are on the same card, so a pause can be undone without digging into the zones. “Remove all” appears when there is more than one adjustment group.',accCard)}
-${sec('Account: zone card','Tag next to the zone name: the adjustment percentage or “Paused” (with “until” when time-limited). Changed numbers are bold and coloured, with “was” below. A paused zone is greyed out; adjustments do not apply to it.',`<div class="grid md:grid-cols-2 gap-3">${['Groceries','Candies','Fresh meat','Alcoholic beverages'].map(zCard).join('')}</div>`)}
+${sec('Account: zone card','Tag next to the zone name: the adjustment percentage or “Paused” (with “until” when time-limited). Changed numbers are bold and coloured, with “was” below. A paused zone is greyed out; adjustments do not apply to it.',`<div class="grid md:grid-cols-2 gap-3">${['Groceries','Candies','Frozen goods','Alcoholic beverages'].map(zCard).join('')}</div>`)}
 ${sec('“Temporary changes” panel and collapsed rail','The panel lists pickers with adjustments or paused zones; clicking a row opens the account. The collapsed rail shows picker counts, like the “Working now” section. On the Dashboard only this button stays in the rail (the panel opens over the pinned “Working now”); when the panel is open the rail is hidden.',`<div class="flex flex-wrap items-start gap-6"><div class="border rounded-lg overflow-hidden w-full max-w-md">${[CASES[4],CASES[10],CASES[8]].map(kpRow).join('')}</div><div class="flex gap-3">${rail(4,2)}${rail(0,0)}</div></div>`)}`;
 </script>
 </body></html>
