@@ -87,7 +87,7 @@ const zCard=z=>{const k=KZ[z],pa=z in SZ,t=SZ[z];return `<div class="border roun
 const kpRow=c=>`<div class="px-4 py-3 bg-white border-b last:border-0 flex gap-3"><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><span class="font-semibold">${c.n}</span><span class="text-[11px] text-gray-500">${c.s}</span></div><div class="mt-1.5 space-y-1">
   ${PL(c).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="tg ${dc(g.v)} font-medium">${IK(g.v)}${pct(g.v)}</span><span class="text-gray-800">${gZ(g.z)}</span>${iki(g.t)}</div>`).join('')}
   ${c.S?c.S.z.map(z=>`<div class="flex flex-wrap items-center gap-1.5">${sTag}<span class="text-gray-800">${z}</span>${iki(c.S.t)}</div>`).join(''):''}</div></div><span class="self-center text-gray-400">${ICV}</span></div>`;
-const rail=(c,st)=>`<div class="rc"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Surink.</div>${c||st?`<div class="rs"><span>Korekc.</span><b>${c}</b></div><div class="rs"><span>Sustabd.</span><b>${st}</b></div>`:'<div class="rs"><span>Nėra</span></div>'}</div>`;
+const rail=(c,st)=>`<div class="rc">${c||st?`<div class="rs"><span>Korekc.</span><b>${c}</b></div><div class="rs"><span>Sustabd.</span><b>${st}</b></div>`:'<div class="rs"><span>Nėra</span></div>'}</div>`;
 out.innerHTML=`<section class="bg-white border rounded-lg">
   <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts lentelė: išsamios žymos</h2>
     <p class="text-gray-600 mt-1">Stulpelyje „Laikini pakeitimai“ dešinėje nuo „Būsena“. Zonos su vienoda korekcija (kryptis, dydis, galiojimas) sugrupuotos: viena zona – pavadinimas, kelios – skaičius („−10 % · 12 zonų“). Užvedus pelę – detalės.</p></div>
