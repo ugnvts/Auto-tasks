@@ -3,12 +3,12 @@
 
 Naudojimas (iš Auto-tasks aplanko):
   python3 scripts/build-pages.py                         – atnaujina naujausią versiją
-  python3 scripts/build-pages.py --release "Aprašas"     – dar ir užšaldo ją kaip datuotą versiją
+  python3 scripts/build-pages.py --release "Aprašas"     – dar ir užšaldo prototipus kaip datuotą versiją
 
 - index.html ir dokumentai/index.html artefakte gauna HTML pradžią automatiškai, čia ji pridedama;
 - visiems puslapiams pridedama noindex žyma, kad nepatektų į paieškos sistemas;
 - naujausia versija (docs/index.html, puslapiai/, dokumentai/) perrašoma kiekvieną kartą, jos ranka netaisyk;
-- docs/versijos/ niekada neperrašomas: ten užšaldytos versijos (docs/versijos/YYYY-MM-DD[-N]/)
+- docs/versijos/ niekada neperrašomas: ten užšaldytos prototipų versijos (docs/versijos/YYYY-MM-DD[-N]/, be dokumentų)
   ir registras versijos.json, iš kurio sugeneruojamas versijų sąrašas docs/versijos/index.html.
 """
 import argparse, datetime, html, json, os, re, shutil, subprocess
@@ -27,6 +27,7 @@ FILES = ["index.html", "dokumentai/index.html"]
 FILES += [os.path.join(d, f) for d in ("puslapiai", "dokumentai")
           for f in sorted(os.listdir(os.path.join(ROOT, d))) if f.endswith(".html") and f != "index.html"]
 LATEST = ["index.html", "puslapiai", "dokumentai"]
+FROZEN = ["index.html", "puslapiai"]  # versijose saugomi tik prototipai
 
 
 def prepare(src):
@@ -64,7 +65,7 @@ def load_reg():
 
 
 def release(note):
-    """Užšaldo dabartinę docs/ naujausią versiją į docs/versijos/<data>[-N]/ – esamų versijų neliečia."""
+    """Užšaldo dabartinius prototipus į docs/versijos/<data>[-N]/ – esamų versijų neliečia."""
     reg = load_reg()
     day = datetime.date.today().isoformat()
     vid, n = day, 2
@@ -72,7 +73,7 @@ def release(note):
         vid, n = f"{day}-{n}", n + 1
     dst = os.path.join(VER, vid)
     os.makedirs(dst)
-    for rel in LATEST:
+    for rel in FROZEN:
         src = os.path.join(OUT, rel)
         (shutil.copytree if os.path.isdir(src) else shutil.copy2)(src, os.path.join(dst, rel))
     # Užšaldytame kataloge: data prie pavadinimo, nuoroda į versijų sąrašą vietoje „Versijos“
@@ -111,16 +112,16 @@ def write_list():
     reg = load_reg()
     e = html.escape
     rows = ['<li class="latest"><span class="d">naujausia</span><span class="n">Dabartinė versija – keičiasi</span>'
-            '<span class="l"><a href="../">Prototipai</a><a href="../dokumentai/">Dokumentai</a></span></li>']
+            '<span class="l"><a href="../">Prototipai</a></span></li>']
     for v in sorted(reg, key=lambda v: v["id"], reverse=True):
         c = f'<span class="c">{e(v["commit"])}</span>' if v.get("commit") else ""
         rows.append(f'<li><span class="d">{e(v["id"])}</span><span class="n">{e(v["note"])}</span>{c}'
-                    f'<span class="l"><a href="{e(v["id"])}/">Prototipai</a><a href="{e(v["id"])}/dokumentai/">Dokumentai</a></span></li>')
+                    f'<span class="l"><a href="{e(v["id"])}/">Prototipai</a></span></li>')
     page = (SKELETON
             + '<title>Auto tasks versijos</title>\n'
             + '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">\n'
             + f"<style>{LIST_CSS}</style>\n<main><h1>Auto tasks · versijos</h1>"
-            + '<p class="sub">Užšaldytos versijos nesikeičia – jomis galima remtis per review. Naujausia versija keičiasi.</p>'
+            + '<p class="sub">Užšaldytos prototipų versijos nesikeičia – jomis galima remtis per review. Naujausia versija keičiasi.</p>'
             + "<ul>" + "".join(rows) + "</ul></main>\n</body></html>\n")
     os.makedirs(VER, exist_ok=True)
     with open(os.path.join(VER, "index.html"), "w", encoding="utf-8") as f:
