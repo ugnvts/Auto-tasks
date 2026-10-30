@@ -48,7 +48,7 @@ const CASES=[
   {g:'Adjustment, all zones (12)',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],q:1,P:{v:-10,z:[]}},
   {g:'Adjustment, one zone',n:'Karolis Jankauskas',s:'Not synced',P:{v:-20,z:['Alcoholic beverages']}},
   {g:'Adjustment, several zones, until a time',n:'Remigijus Butkus',s:'Picking',l:[3,10],P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
-  {g:'All zones, one changed separately',n:'Simona Jakštė',s:'Picking',l:[20,46],q:1,P:[{v:-10,z:Array(11).fill('')},{v:5,z:['Candies']}]},
+  {g:'All zones, one changed separately',n:'Simona Jakštė',s:'Picking',l:[20,46],q:1,P:[{v:-10,z:Array(11).fill('')},{v:10,z:['Candies']}]},
   {g:'Different zone adjustments',n:'Paulius Grigas',s:'Not synced',P:[{v:-20,z:['Alcoholic beverages']},{v:10,z:['Groceries','Candies']}]},
   {g:'Increase',n:'Tomas Vaitkus',s:'Picking',l:[1,5],P:{v:10,z:[]}},
   {g:'One zone paused',n:'Ieva Kairytė',s:'Picking',l:[4,9],S:{z:['Alcoholic beverages']}},
@@ -67,14 +67,14 @@ const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IK(g.v
   +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'');
 // Pavyzdinis surinkėjas vietoms: zonų efektyvumas [SKU, Units, KG], korekcijos ir sustabdytos zonos
 const EZ={'Groceries':[38,95,42],'Candies':[50,120,20],'Frozen goods':[30,70,55],'Alcoholic beverages':[25,60,40]};
-const KZ={'Groceries':{v:-10},'Candies':{v:5,t:'14:00'}},SZ={'Frozen goods':'','Alcoholic beverages':'16:00'};
+const KZ={'Groceries':{v:-10},'Candies':{v:10,t:'14:00'}},SZ={'Frozen goods':'','Alcoholic beverages':'16:00'};
 const zChip=n=>n==1?'':`<span class="rounded-full border border-gray-300 bg-gray-100 text-gray-800 font-medium px-2 py-0.5 whitespace-nowrap">${n} ${ltZ(n)}</span>`;
 const sTag=`<span class="tg ts">${IPA}Paused</span>`;
 const cor=(v,x)=>Math.round(x*(1+v/100));
 const sec=(t,d,b)=>`<section class="bg-white border rounded-lg"><div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">${t}</h2><p class="text-gray-600 mt-1">${d}</p></div><div class="p-4 bg-gray-50 rounded-b-lg">${b}</div></section>`;
 // 1. Paskyros kortelė „Laikini pakeitimai“
 const accCard=`<div class="border rounded-lg px-4 py-2 bg-white max-w-3xl"><div class="flex items-center gap-2 py-1"><span class="text-xs font-semibold uppercase tracking-wide text-gray-500">Temporary changes</span><button class="ml-auto text-xs text-red-700">Remove all</button></div><div class="divide-y">
-  ${[[11,-10,''],[1,5,'14:00','Candies']].map(([n,v,t,z])=>`<div class="flex flex-wrap items-center gap-2 py-1.5">${n==1?`<span class="font-medium">${z}</span>`:zChip(n)}<span class="tg ${dc(v)}">${pct(v)}</span>${iki(t)}<span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt text-red-700">Remove</button></span></div>`).join('')}
+  ${[[11,-10,''],[1,10,'14:00','Candies']].map(([n,v,t,z])=>`<div class="flex flex-wrap items-center gap-2 py-1.5">${n==1?`<span class="font-medium">${z}</span>`:zChip(n)}<span class="tg ${dc(v)}">${pct(v)}</span>${iki(t)}<span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt text-red-700">Remove</button></span></div>`).join('')}
   ${Object.entries(SZ).map(([z,t])=>`<div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">${z}</span>${sTag}${iki(t)}<span class="ml-auto"><button class="bt text-indigo-700">Resume zone</button></span></div>`).join('')}</div></div>`;
 // 2. Zonos kortelė
 const nums=(k,e)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency per hour</div><dl class="grid grid-cols-3 gap-2 mt-1">${['SKU/1h','Units/1h','KG/1h'].map((u,x)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${k?`<span class="font-semibold ${k.v<0?'text-red-700':'text-green-700'}">${cor(k.v,e[x])}</span><span class="block text-xs font-normal text-gray-400">was ${e[x]}</span>`:e[x]}</dd></div>`).join('')}</dl></div>`;

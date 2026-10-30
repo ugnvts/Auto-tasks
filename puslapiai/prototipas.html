@@ -466,7 +466,7 @@ function zSave(){const m=zBad(),b=document.getElementById('zsave');zErr=m.length
 {const _c=cbs;cbs=function(){_c();zTags()}}
 document.getElementById('dl').innerHTML=[["Time card","3360"],["Login name","•••••••••••"],["Shift name","Evening"],["Role",'Picker <span id="vNk" class="ml-1 text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">New picker</span>'],["Shop","X864 Hyper"]].map(([a,b])=>`<div class="grid grid-cols-3 py-3"><dt class="text-gray-500">${a}</dt><dd class="col-span-2">${b}</dd></div>`).join('');
 // Laikinos korekcijos (EK3, EK4): viena % korekcija (kryptis, procentas, zonos) ir zonų stabdymas. Veikia iškart, ne per Edit; bazinis efektyvumas nekeičiamas.
-let KOR=null,KD=null;const PAU=new Map(),KP={down:[5,10,20,30],up:[5,10,15,20]};
+let KOR=null,KD=null;const PAU=new Map(),KP={down:[10,20,30],up:[10,20,30]};
 // Kryptis spalva: mažinimas raudonas, didinimas žalias (žymos, ikonos, kortelės, pasirinkti mygtukai)
 const DT=d=>d=='up'?'border-green-300 bg-green-50 text-green-800':'border-red-300 bg-red-50 text-red-700',DX=d=>d=='up'?'text-green-700':'text-red-700',
   DB=d=>d=='up'?'border-green-200 bg-green-50':'border-red-200 bg-red-50',DS=d=>(d=='up'?'border-green-600 bg-green-50 text-green-800':'border-red-600 bg-red-50 text-red-700')+' font-medium';
@@ -494,7 +494,7 @@ function vNkSet(on){document.getElementById('nk').checked=on;N[0][7]=on?1:0;if(o
 // sidebar'e – grupinis veiksmas daugeliui surinkėjų (ta pati korekcija visoms jų zonoms, esamos perrašomos). Paskutinis veiksmas laimi.
 let GD=null;const ZD=['Groceries','Candies','Fruits, vegetables','Bread products','Chips','Cosmetics','Chemicals','Conservation','Frozen goods','Alcoholic beverages'],
   zAll=(k,ex={})=>({z:Object.fromEntries(ZD.map(z=>[z,ex[z]||k]))});
-const PC={2:zAll({d:'down',p:10,t:''}),3:{z:{'Alcoholic beverages':{d:'down',p:20,t:'14:00'}}},5:zAll({d:'up',p:10,t:''}),7:zAll({d:'down',p:10,t:''},{'Candies':{d:'up',p:5,t:''},'Bread products':{d:'down',p:20,t:''}})};// zonų korekcijos; 0 = Silvija, jos korekcijos paskyroje (KOR)
+const PC={2:zAll({d:'down',p:10,t:''}),3:{z:{'Alcoholic beverages':{d:'down',p:20,t:'14:00'}}},5:zAll({d:'up',p:10,t:''}),7:zAll({d:'down',p:10,t:''},{'Candies':{d:'up',p:10,t:''},'Bread products':{d:'down',p:20,t:''}})};// zonų korekcijos; 0 = Silvija, jos korekcijos paskyroje (KOR)
 const SZ={4:[['Alcoholic beverages','']],5:[['Frozen goods','16:00']]};// sustabdytos zonos [zona, iki kada]; Silvijos – PAU
 const pers=i=>korN(i==0?KOR:PC[i]);
 // Korekcijos ikona pagal kryptį: mažinimas – žemyn, didinimas – aukštyn, skirtingos kryptys – abi
@@ -599,10 +599,9 @@ function pauR(){const D=KD,rad=(on,l,ch)=>`<label class="flex items-center gap-2
 function pauApply(){const {pz:n,t}=KD;PAU.set(n,t);document.getElementById('kordlg').hidden=true;rv();toast(`${n}: zone paused${t?' until '+t:''}`,()=>{PAU.delete(n);rv()})}
 // Langelis: visoms zonoms (perrašo atskirų zonų korekcijas) arba vienai zonai (viena korekcija zonai, svarbesnė už „visoms zonoms“)
 const IEF='<svg class="w-3.5 h-3.5" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 14l4-4 3 3 5-6"/><path d="M12 7h4v4"/></svg>';
-// Korekcijos dydis: viena mygtukų eilė (−30 … −5, +5 … +20) ir laukas savam procentui; vienos zonos lange – susieti skaičiai
-const amt=(D,o,f)=>`<div class="mt-4 font-medium">Adjustment</div><div class="mt-1 grid grid-cols-8 gap-1">${[...KP.down.slice().reverse().map(v=>['down',v]),...KP.up.map(v=>['up',v])].map(([d,v])=>{const on=D.d==d&&D.p==v;return `<button class="px-1 py-1 rounded border text-[13px] tabular-nums whitespace-nowrap ${on?DS(d):'hover:bg-gray-50 '+DX(d)}" aria-pressed="${on}" onclick="${o}.d='${d}';${o}.p=${v};${o}.vk=null;${f}()">${sg(d)}${v} %</button>`}).join('')}</div><label class="mt-2 flex items-center gap-2 text-gray-600">Custom<input id="${o}pc" inputmode="numeric" class="w-16 border rounded px-2 py-1 tabular-nums text-right ${KP[D.d].includes(D.p)?'':DS(D.d)}" value="${sg(D.d)}${D.p}" oninput="amtIn('${o}',this.value)" aria-label="Custom percent">%</label>`;
+// Korekcijos dydis: viena mygtukų eilė (−30 … +30); vienos zonos lange – susieti skaičiai
+const amt=(D,o,f)=>`<div class="mt-4 font-medium">Adjustment</div><div class="mt-1 grid grid-cols-6 gap-1">${[...KP.down.slice().reverse().map(v=>['down',v]),...KP.up.map(v=>['up',v])].map(([d,v])=>{const on=D.d==d&&D.p==v;return `<button class="px-1 py-1 rounded border text-[13px] tabular-nums whitespace-nowrap ${on?DS(d):'hover:bg-gray-50 '+DX(d)}" aria-pressed="${on}" onclick="${o}.d='${d}';${o}.p=${v};${o}.vk=null;${f}()">${sg(d)}${v} %</button>`}).join('')}</div>`;
 function korF(id){const e=document.getElementById(id);if(e){e.focus();const l=e.value.length;e.setSelectionRange(l,l)}}
-function amtIn(o,v){const n=parseInt(String(v).replace('−','-').replace('+',''),10);if(!n||Math.abs(n)>90)return;const D=o=='KD'?KD:GD;D.d=n>0?'up':'down';D.p=Math.abs(n);D.vk=null;(o=='KD'?korR:cR)();korF(o+'pc')}
 function korV(k,v){const b=+EFF[KD.zs[0]][k],n=parseInt(v,10);KD.vk=k;KD.vv=v;if(n>0&&b){const pc=Math.round((n/b-1)*100);if(pc){KD.d=pc>0?'up':'down';KD.p=Math.abs(pc)}}korR();korF('kv'+k)}
 // „Make permanent“: laikina korekcija tampa baziniu efektyvumu (vienai zonai arba korekcijų grupei)
 function korPermAsk(zs){const k=KOR.z[zs[0]],f=b=>Math.round(+b*(1+(k.d=='up'?1:-1)*k.p/100));KD={pm:zs};ZLS=[];
