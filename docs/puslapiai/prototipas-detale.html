@@ -690,14 +690,14 @@ function sbOpen(t,g,s,n){sbK.clear();if(t)sbT=t;if(g!==undefined){sbG=g;sbS=s||'
 function sbClose(){sb.hidden=true;rail.classList.remove('md:invisible');fab.hidden=false;kmenu.hidden=true}
 let sbP=null;
 function sbTab(t){sbT=t;sbP=null;sbR()}
-function sbPick(i){sbP=i;sbT='p';sbR();const t=document.getElementById('tp'),sc=document.getElementById('sbScroll');if(t&&sc)sc.scrollTop=t.parentElement.getBoundingClientRect().top-sc.getBoundingClientRect().top+sc.scrollTop}
+function sbPick(i){sbP=i;sbT='p';sbR();const sc=document.getElementById('sbScroll');if(sc)sc.scrollTop=0}
 document.addEventListener('keydown',e=>{if(e.key=='Escape'&&!sb.hidden&&offdlg.hidden&&kordlg.hidden)sbClose()});
 
 function sbF(k,v){sbK.clear();if(k=='g'){sbG=v;sbS='';if(v=='auto')sbN=0;sbDD=0}if(k=='s')sbS=sbS==v?'':v;if(k=='n')sbN=sbN?0:1;sbR()}
 function sbZA(on){document.querySelectorAll('#sbBody tbody tr[aria-expanded]').forEach(t=>{const z=t.children[1].textContent;on?sbZO.add(z):sbZO.delete(z)});sbR()}
 function sbZT(z){sbZO.has(z)?sbZO.delete(z):sbZO.add(z);sbR()}
 // Zonos žyma surinkėjo kortelėje: atidaro „Zonos“ skirtuką su išskleista ta zona
-function sbZone(z){sbT='z';sbZO.add(z);sbR();const t=[...document.querySelectorAll('#sbBody tbody tr[aria-expanded]')].find(r=>r.children[1].textContent==z);if(t){t.scrollIntoView({block:'center'});t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),1600)}}
+function sbZone(z){sbP=null;sbT='z';sbZO.add(z);sbR();const t=[...document.querySelectorAll('#sbBody tbody tr[aria-expanded]')].find(r=>r.children[1].textContent==z);if(t){t.scrollIntoView({block:'center'});t.classList.add('flash');setTimeout(()=>t.classList.remove('flash'),1600)}}
 function sbJump(i){sbT='p';sbG='all';sbS='';sbN=0;sbDD=0;sbR();const e=document.getElementById('sbc'+i);if(e){e.scrollIntoView({block:'center'});e.classList.add('flash');setTimeout(()=>e.classList.remove('flash'),1600)}}
 document.addEventListener('click',e=>{if(sbDD&&e.target.isConnected&&!e.target.closest('#sbdd')){sbDD=0;sbR()}});
 const sbK=new Set();
@@ -710,6 +710,7 @@ function sbR(){
   tz.classList.toggle('on',sbT=='z');tp.classList.toggle('on',sbT=='p');tz.setAttribute('aria-selected',sbT=='z');tp.setAttribute('aria-selected',sbT=='p');
   const W=N.map((r,i)=>[r,i]).filter(([r])=>works(r));tpn.textContent=W.length;
   if(sb.hidden)return;
+  document.querySelectorAll('#sbScroll > div:first-child,#sbScroll [role=tablist]').forEach(e=>e.hidden=sbP!=null);
   if(sbT=='z'){
     const zs={};W.forEach(([r,i])=>zonesOf(i).forEach(z=>{zs[z]??=[0,0,0];zs[z][r[6]=='Picking'?0:1]++;if(r[7])zs[z][2]++}));
     const rows=Object.entries(zs).sort((a,b)=>(b[1][0]+b[1][1])-(a[1][0]+a[1][1])||a[0].localeCompare(b[0]));
@@ -718,7 +719,10 @@ function sbR(){
     sbBody.innerHTML=`<table class="w-full text-sm bg-white"><thead class="text-xs text-gray-500 border-b"><tr class="text-left"><th class="pl-3 pr-0 w-7">${(()=>{const all=rows.length&&rows.every(([z])=>sbZO.has(z));return `<button class="w-6 h-6 rounded hover:bg-gray-200 text-gray-500 text-xs" aria-label="${all?'Collapse all zones':'Expand all zones'}" title="${all?'Collapse all':'Expand all'}" onclick="sbZA(${all?0:1})">${CV(all?'d':'r')}</button>`})()}</th><th class="py-2 font-normal">Zone</th><th class="px-2 font-normal text-right" title="Picking or has an assigned task in this zone">Active</th><th class="px-2 font-normal text-right">Picking</th><th class="px-2 font-normal text-right">Not synced</th><th class="pl-2 pr-4 font-normal text-right" title="New pickers picking or with a task in this zone">New</th></tr></thead><tbody>${rows.map(([z,[r,n,k]])=>{const o=sbZO.has(z);return `<tr class="${o?'bg-gray-100':'border-b hover:bg-gray-50'} cursor-pointer" onclick="sbZT('${z}')" aria-expanded="${o}"><td class="pl-3 pr-0 text-gray-400 text-center">${CV(o?'d':'r')}</td><td class="py-2.5 font-medium" style="white-space:normal">${z}</td><td class="px-2 text-right tabular-nums font-semibold">${r+n}</td><td class="px-2 text-right tabular-nums">${n0(r)}</td><td class="px-2 text-right tabular-nums">${n0(n)}</td><td class="pl-2 pr-4 text-right tabular-nums">${n0(k)}</td></tr>${o?`<tr class="border-b bg-gray-100"><td colspan="6" class="px-4 pb-3" style="white-space:normal"><ul class="bg-white border border-gray-200 rounded-md divide-y shadow-sm">${zp(z)}</ul></td></tr>`:''}`}).join('')||'<tr><td colspan="6" class="px-4 py-8 text-center text-gray-500">Nobody is picking right now.</td></tr>'}</tbody></table>`;
     return}
   // Surinkėjo vaizdas: sidebar'e rodomas tik pasirinktas surinkėjas, grįžtama „← Pickers“
-  if(sbP!=null){const w=W.find(([r,i])=>i==sbP);if(w){sbBody.innerHTML=`<div class="px-4 py-2.5 border-b sticky top-[47px] bg-white z-[2]"><button class="inline-flex items-center gap-1 text-[13px] font-medium text-indigo-600 hover:underline" onclick="sbPick(null)">${CV('l')}Pickers</button></div>${sbCard(w[0],w[1],1)}<div class="h-3"></div>`;return}sbP=null}
+  // Surinkėjo vaizde tab'ai ir bendros suvestinės paslepiami: tai „Pickers“ sąrašo detalė, grįžtama tik „‹ Pickers“
+  const sbTop=[document.querySelector('#sbScroll > div'),document.querySelector('#sbScroll [role=tablist]')];
+  if(sbP!=null){const w=W.find(([r,i])=>i==sbP);if(w){sbTop.forEach(e=>e.hidden=true);sbBody.innerHTML=`<div class="px-4 py-2.5 border-b sticky top-0 bg-white z-[2] flex items-center gap-2 min-w-0"><button class="shrink-0 inline-flex items-center gap-1 text-[13px] font-medium text-indigo-600 hover:underline" onclick="sbPick(null)">${CV('l')}Pickers</button><span class="text-gray-300">/</span><span class="truncate text-[13px] font-semibold text-gray-900">${w[0][0]} ${w[0][1]}</span></div>${sbCard(w[0],w[1],1)}<div class="h-3"></div>`;return}sbP=null}
+  sbTop.forEach(e=>e.hidden=false);
   const L=W.filter(([r,i])=>(sbK.has(i)||(sbG=='all'||(sbG=='auto'?r[5]:!r[5]))&&(!sbS||r[6]==sbS)&&(!sbN||r[7]))&&(!sbE||eM(i)));
   const gc=g=>W.filter(([r])=>g=='all'||(g=='auto'?r[5]:!r[5])).length;
   const sts=sbG=='man'?['Picking','Not synced']:['Picking','Waiting','Not synced'];
