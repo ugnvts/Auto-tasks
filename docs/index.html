@@ -43,6 +43,8 @@ button.t .k { font-family: var(--f-mono); font-size: 11px; color: var(--muted); 
 button.t[aria-selected="true"] .k { color: var(--accent); }
 button.t:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .note { font-size: 13px; color: var(--muted); min-width: 0; flex: 1 1 220px; }
+.ver { font-size: 13px; font-weight: 500; color: var(--accent); text-decoration: none; white-space: nowrap; }
+.ver:hover { text-decoration: underline; }
 .frame { flex: 1; min-height: 0; position: relative; }
 iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: var(--bg); }
 @media (max-width: 640px) { .grp + .grp { padding-left: 0; border-left: 0; } .note { flex-basis: 100%; } }
@@ -53,6 +55,7 @@ iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; bac
   <div class="grp" role="tablist" aria-label="Ekranas" id="pages"></div>
   <div class="grp" role="tablist" aria-label="Variantas" id="variants"></div>
   <div class="note" id="note"></div>
+  <a class="ver" id="verLink" href="versijos/">Versijos</a>
 </header>
 <main class="frame"><iframe id="view" title="Prototipas"></iframe></main>
 
@@ -136,5 +139,7 @@ window.addEventListener("message", function (e) {
     show(same || PAGES[i].variants[0]);
   }
 });
+// Versijų sąrašas yra tik GitHub Pages svetainėje (docs/versijos/)
+if (!/github\.io$/.test(location.hostname)) document.getElementById("verLink").hidden = true;
 show(fromHash());
 </script>
