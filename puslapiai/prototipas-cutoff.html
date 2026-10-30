@@ -850,7 +850,7 @@ function kpClose(){document.getElementById('kp').hidden=true;if(!docked){rail.cl
 {const _c=sbClose;sbClose=function(){_c();if(!docked)fab2.hidden=false}}
 function kpRail(){const L=kpList(),c=L.filter(i=>pers(i)).length,st=L.filter(i=>stops(i).length).length,b=document.getElementById('rK');if(!b)return;
   // Kaip „Dirba dabar“: pilkai įrėminta kortelė, eilutės su tekstu ir skaičiumi
-  b.innerHTML=`<div class="rc"><div class="text-[11px] font-semibold text-gray-700 pb-0.5">Surink.</div>${L.length?`<div class="rs" title="Surinkėjai su efektyvumo korekcija"><span>Korekc.</span><b>${c}</b></div><div class="rs" title="Surinkėjai su sustabdytomis zonomis"><span>Sustabd.</span><b>${st}</b></div>`:'<div class="rs"><span>Nėra</span></div>'}</div>`;
+  b.innerHTML=`<div class="rc">${L.length?`<div class="rs" title="Surinkėjai su efektyvumo korekcija"><span>Korekc.</span><b>${c}</b></div><div class="rs" title="Surinkėjai su sustabdytomis zonomis"><span>Sustabd.</span><b>${st}</b></div>`:'<div class="rs"><span>Nėra</span></div>'}</div>`;
   const dn=document.getElementById('kpDockN');if(dn)dn.textContent=L.length?'· '+L.length:'';}
 function kpRow(i){const P=pers(i),S=stops(i),r=N[i];
   const cor=P?pGr(P).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="inline-flex items-center gap-1 text-xs font-medium rounded-full border px-1.5 tabular-nums ${DT(g.d)}">${IK(g.d)}${pct(g)}</span><span class="text-gray-800">${gL(g)}</span>${g.t?`<span class="text-xs text-gray-500">iki ${g.t}</span>`:''}</div>`).join(''):'';
