@@ -678,7 +678,7 @@ const NOW=10*60+17,TM={0:{s:'10:09',e:14},2:{s:'10:02',e:30},3:{e:20},4:{s:'10:0
 const EZ={"Groceries":[55,140,48,30,70,25,5],"Fruits, vegetables":[38,95,42,20,50,25,4],"Bread products":[40,90,10,20,45,5,4],"Candies":[45,110,15,25,60,8,4],"Fresh meat":[30,60,35,15,30,20,3]};
 // Bangos boost (SC lygis): einamajai ir kitai bangai atskirai – mygtukas tos bangos kortelėje, atskiri langai. Rodomas rezultatas: einamoji nuo 100 %, kita nuo SC normos (50 %).
 // Šaka „Selective boost“ (2026-11-03): boost'as visiems, bangos lange galima išskirti surinkėjus („Exclude pickers“, tik su auto tasks); atskiri sąrašai bangoms.
-// Išskirtieji kortelėse nežymimi; „N excluded“ pranešime ir bangos žymoje atidaro tą patį langą. Surinkėjo vaizde – boost'o būsena.
+// Išskirtieji kortelėse nežymimi; „N excluded“ pranešime ir bangos žymoje atidaro tą patį langą. Surinkėjo vaizde – tik „In wave boost“; išskyrimas matomas tik lange.
 // Bangai pakeitus statusą jos boost'as dingsta: abu galioja iki einamosios bangos pabaigos. Kelia tik efficiency per hour; auto ir rankinėms užduotims;
 // skaičiuojamas nuo dabartinių surinkėjo skaičių (su asmenine korekcija). Prie surinkėjo informacijos nežymimas – tik pranešimas „Working now“ sąrašo viršuje.
 const WV={cur:'2B',next:'3B',t:'10:00 - 13:00',nt:'13:00 - 15:00',end:'13:00'},BDEF={c:100,n:50},BC=[100,110,120,130,140,150],BN=[50,60,70,80,90,100];
@@ -688,8 +688,8 @@ const bOn=()=>!!(BST.c||BST.n),bIgn=()=>false,
   bTxt=()=>[BST.c&&`${WV.cur} (current) ${BST.c} %${bXn('c')?` · ${bXn('c')} excluded`:''}`,BST.n&&`${WV.next} (next) ${BST.n} %${bXn('n')?` · ${bXn('n')} excluded`:''}`].filter(Boolean).join(' and '),
   // Pranešime „N excluded“ – nuoroda į bangos langą (sąrašas ten, naujo paviršiaus nėra)
   bTxtH=()=>['c','n'].filter(k=>BST[k]).map(k=>`${k=='c'?WV.cur+' (current)':WV.next+' (next)'} ${BST[k]} %${bXn(k)?` · <button class="underline decoration-dotted hover:text-green-700" onclick="bOpen('${k}')">${bXn(k)} excluded</button>`:''}`).join(' and '),
-  bPv=i=>{if(!bOn())return '';const w=['c','n'].filter(k=>bIn(k,i)),x=['c','n'].filter(k=>BST[k]&&!bIn(k,i)),nm=k=>k=='c'?WV.cur:WV.next;
-    return (w.length?`<div class="mx-3 mt-2 flex items-start gap-1.5 rounded border border-green-200 bg-green-50 px-2.5 py-1.5 text-xs text-green-900">${IBO}<span><span class="font-medium">In wave boost:</span> ${w.map(k=>`${nm(k)} ${BST[k]} %`).join(' and ')} · until ${WV.end}</span></div>`:'')+(x.length?`<div class="mx-3 mt-2 rounded border border-gray-200 bg-gray-50 px-2.5 py-1.5 text-xs text-gray-600">Excluded from wave boost: ${x.map(nm).join(' and ')}</div>`:'')},
+  bPv=i=>{if(!bOn())return '';const w=['c','n'].filter(k=>bIn(k,i)),nm=k=>k=='c'?WV.cur:WV.next;
+    return (w.length?`<div class="mx-3 mt-2 flex items-start gap-1.5 rounded border border-green-200 bg-green-50 px-2.5 py-1.5 text-xs text-green-900">${IBO}<span><span class="font-medium">In wave boost:</span> ${w.map(k=>`${nm(k)} ${BST[k]} %`).join(' and ')} · until ${WV.end}</span></div>`:'')},
   IBO='<svg class="w-3.5 h-3.5 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M11.3 1.5 3.5 11h5l-1 7.5L15.5 9h-5l.8-7.5z"/></svg>',
   bE=(i,e)=>e&&bIn('c',i)?Math.round(e/(BST.c/100)):e,
   bChip=id=>{const k=id==WV.cur?'c':id==WV.next?'n':null;if(!k)return '';const v=BST[k];
