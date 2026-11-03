@@ -80,6 +80,7 @@ td,th{white-space:nowrap}
 #v-dash .chk input{width:16px;height:16px;margin:0;accent-color:var(--accent)}
 #v-dash .waves{display:flex;flex-direction:column;gap:32px}
 #v-dash .card{background:var(--card);border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06)}
+#v-dash .card.boosted{box-shadow:0 0 0 2px #22c55e,0 1px 3px rgba(0,0,0,.1)} /* boost'inta banga */
 #v-dash .chead{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:24px}
 #v-dash .ov{display:flex;align-items:center;gap:16px;min-width:0}
 #v-dash .dtg{padding:6px;border-radius:6px;color:var(--fg2)}
@@ -350,6 +351,7 @@ td,th{white-space:nowrap}
 <section id="sb" hidden class="fixed right-0 top-14 bottom-0 z-10 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Working now">
   <button id="sbXb" class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Collapse" title="Collapse (Esc)" onclick="sbClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
   <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Working now</div></div>
+  <div id="sbBoost" class="empty:hidden px-4 pb-2 shrink-0"></div>
   
   <div id="sbScroll" class="flex-1 overflow-y-auto">
   <div class="px-4 pt-3 pb-4 space-y-2">
@@ -731,6 +733,8 @@ const sbK=new Set();
 function sbTg(i,on){sbK.add(i);setA(i,on);render();toast(`Auto tasks ${on?'enabled':'disabled'}: ${N[i][0]} ${N[i][1]}`,()=>{setA(i,on?0:1);render()})}
 function toast(t,u){const e=document.getElementById('toast');e.innerHTML=`<span>${t}</span><button class="text-indigo-300 font-medium">Undo</button>`;e.lastChild.onclick=()=>{u();e.hidden=true};e.hidden=false;clearTimeout(e._t);e._t=setTimeout(()=>e.hidden=true,5000)}
 function sbR(){
+  // Boost'o pranešimas – sidebar'o viršuje po antrašte
+  const bb=document.getElementById('sbBoost');if(bb)bb.innerHTML=bOn()?`<div class="flex items-start gap-1.5 rounded border border-green-200 bg-green-50 px-2.5 py-1.5 text-xs text-green-900">${IBO}<span><span class="font-medium">Wave boost:</span> ${bTxt()} · until ${WV.end}</span></div>`:'';
   const on=N.filter(r=>r[5]),off=N.filter(r=>!r[5]),c=(a,s)=>a.filter(r=>r[6]==s).length;
   rA.textContent=on.length;rAR.textContent=c(on,'Picking');rAL.textContent=c(on,'Waiting');rAN.textContent=c(on,'Not synced');
   rMR.textContent=c(off,'Picking');rMN.textContent=c(off,'Not synced');rNk.textContent=N.filter(r=>r[7]&&works(r)).length;sNa.textContent=rNk.textContent;rB.textContent='';rC.textContent='';
@@ -754,7 +758,7 @@ function sbR(){
   const gc=g=>W.filter(([r])=>g=='all'||(g=='auto'?r[5]:!r[5])).length;
   const sts=sbG=='man'?['Picking','Not synced']:['Picking','Waiting','Not synced'];
   sbBody.innerHTML=`<div class="px-4 py-3 border-b sticky top-[47px] bg-white z-[2]">
-    ${bOn()?`<div class="mb-2 flex items-start gap-1.5 rounded border border-green-200 bg-green-50 px-2.5 py-1.5 text-xs text-green-900">${IBO}<span><span class="font-medium">Wave boost:</span> ${bTxt()} · until ${WV.end}</span></div>`:''}${sbE?(()=>{const all=gAll().filter(eM).length;return `<div class="mb-2 flex items-center gap-2 rounded border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 text-xs text-indigo-900"><span>Showing: ${sbE=='s'?'paused zones':sbE=='c'?'custom values':pct({d:sbE.split('|')[0],p:sbE.split('|')[1]})}</span><span class="text-indigo-700">${L.length} of ${all}${L.length<all?' (others are not working now)':''}</span><button class="ml-auto w-5 h-5 rounded hover:bg-indigo-100" aria-label="Clear filter" onclick="sbE=null;sbR();cBarR()">✕</button></div>`})():''}
+    ${sbE?(()=>{const all=gAll().filter(eM).length;return `<div class="mb-2 flex items-center gap-2 rounded border border-indigo-200 bg-indigo-50 px-2.5 py-1.5 text-xs text-indigo-900"><span>Showing: ${sbE=='s'?'paused zones':sbE=='c'?'custom values':pct({d:sbE.split('|')[0],p:sbE.split('|')[1]})}</span><span class="text-indigo-700">${L.length} of ${all}${L.length<all?' (others are not working now)':''}</span><button class="ml-auto w-5 h-5 rounded hover:bg-indigo-100" aria-label="Clear filter" onclick="sbE=null;sbR();cBarR()">✕</button></div>`})():''}
     <div><div class="flex w-full border rounded-md p-0.5 gap-0.5" role="group" aria-label="Group">${[['all','All'],['auto','Auto'],['man','Manual']].map(([g,t])=>`<button class="sg flex-1 ${sbG==g?'on':''}" aria-pressed="${sbG==g}" onclick="sbF('g','${g}')">${t} <span class="text-gray-400 tabular-nums">${gc(g)}</span></button>`).join('')}</div></div>
     <div class="flex flex-wrap items-center gap-1 mt-2.5">${sts.map(v=>`<button class="fc ${sbS==v?'on':''}" aria-pressed="${sbS==v}" onclick="sbF('s','${v}')">${v}</button>`).join('')}${sbG!='auto'?`<span class="w-px h-4 bg-gray-200 mx-1"></span><button class="fc ${sbN?'on':''}" aria-pressed="${!!sbN}" onclick="sbF('n')">New pickers</button>`:''}</div></div>
   ${L.map(([r,i])=>sbCard(r,i,0)).join('')||'<p class="px-4 py-8 text-center text-gray-500">No pickers match the filters.</p>'}<div class="h-3"></div>`;
@@ -852,7 +856,7 @@ function legend(){return `<div class="lg">`+ST.map(x=>{
 function bcb(k,t,i,n,id){return n?`<button class="bcb ${k}" data-tip="${t}" onclick="dAct('${t}','${id}')">${ic(i,16)}${n}</button>`:`<span class="bcb" tabindex="0" data-tip="${t}">${ic(i,16)}0</span>`}
 function card(w,i){const isOpen=open.has(day+i);
   const notes=(w.notes||[]).map(k=>{const n=NOTE[k];return `<div class="nt">${ic(n.i,24)}<span class="tx">${n.t}</span><button onclick="dAct('${n.a}','${w.id}')">${n.a}</button></div>`}).join('');
-  return `<article class="card${isOpen?' open':''}">
+  return `<article class="card${isOpen?' open':''}${day=='today'&&((w.id==WV.cur&&BST.c)||(w.id==WV.next&&BST.n))?' boosted':''}">
     <div class="chead">
       <div class="ov">
         <button class="dtg" aria-expanded="${isOpen}" aria-label="${isOpen?'Collapse':'Expand'} ${w.id}" onclick="dTog(${i})">${ic('i-chev')}</button>
