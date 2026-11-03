@@ -23,8 +23,8 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 </head><body>
 <main class="max-w-6xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold">Temporary changes tags</h1>
-  <p class="text-gray-600 mt-1 max-w-3xl">How a picker’s temporary adjustment and paused zones are shown, as implemented in the prototype (2026-11-03). A temporary adjustment lowers efficiency for the whole account (all zones) when the picker is unwell, and stays until the shift manager removes it. Zones are paused one by one (e.g. no heavy goods after an injury). Both are managed only in the picker’s account. Raising efficiency is a wave boost on the Dashboard; a new picker’s numbers are changed in Edit.</p>
-  <p class="mt-3 text-xs text-gray-600">An adjustment is <span class="tg dn">red</span>; a paused zone is <span class="tg ts">grey</span>. There is no end time – the manager removes it.</p>
+  <p class="text-gray-600 mt-1 max-w-3xl">How a picker’s reduced efficiency and paused zones are shown, as implemented in the prototype (2026-11-03). “Reduce efficiency” lowers efficiency for the whole account (all zones) when the picker is unwell, and stays until the shift manager removes it. Zones are paused one by one (e.g. no heavy goods after an injury). Both are managed only in the picker’s account. Raising efficiency is a wave boost on the Dashboard; a new picker’s numbers are changed in Edit.</p>
+  <p class="mt-3 text-xs text-gray-600">Reduced efficiency is <span class="tg dn">red</span>; a paused zone is <span class="tg ts">grey</span>. There is no end time – the manager removes it.</p>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
 <script>
@@ -40,20 +40,20 @@ const sg=d=>d<0?'−':'+',pct=v=>`${sg(v)}${Math.abs(v)} %`,dc=v=>v<0?'dn':'up';
 // Atvejai: P – laikina korekcija visai paskyrai (procentas), S – sustabdytos zonos
 const CASES=[
   {g:'No changes',n:'Nerijus Petrauskas',s:'Waiting'},
-  {g:'Adjustment',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],P:-10},
+  {g:'Reduced efficiency',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],P:-10},
   {g:'One zone paused',n:'Ieva Kairytė',s:'Picking',l:[4,9],S:['Alcoholic beverages']},
   {g:'Several zones paused',n:'Rūta Mockutė',s:'Waiting',S:['Alcoholic beverages','Frozen goods']},
-  {g:'Adjustment and paused zone',n:'Jonas Petraitis',s:'Not synced',P:-20,S:['Alcoholic beverages']},
-  {g:'New picker with adjustment',n:'Simona Jakštė',s:'Picking',l:[20,46],P:-10,nk:1},
+  {g:'Reduced efficiency and paused zone',n:'Jonas Petraitis',s:'Not synced',P:-20,S:['Alcoholic beverages']},
+  {g:'New picker with reduced efficiency',n:'Simona Jakštė',s:'Picking',l:[20,46],P:-10,nk:1},
 ];
-const tags=c=>(c.P?`<span class="tg ${dc(c.P)}" title="Temporary adjustment ${pct(c.P)}, all zones">${IK(c.P)}<span class="t">${pct(c.P)}</span></span>`:'')
+const tags=c=>(c.P?`<span class="tg ${dc(c.P)}" title="Efficiency reduced by ${Math.abs(c.P)} %, all zones">${IK(c.P)}<span class="t">${pct(c.P)}</span></span>`:'')
   +(c.S?`<span class="tg ts" title="Paused zones: ${c.S.join(', ')}">${IPA}<span class="t">${c.S.length==1?c.S[0]:c.S.length+' zones'}</span></span>`:'');
 const NK='<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">New picker</span>';
 const sec=(t,d,b)=>`<section class="bg-white border rounded-lg"><div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">${t}</h2><p class="text-gray-600 mt-1">${d}</p></div><div class="p-4 bg-gray-50 rounded-b-lg">${b}</div></section>`;
 const EZ={'Groceries':[38,95,42],'Alcoholic beverages':[25,60,40]};
 const SL='<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>';
 const accCard=`<div class="border border-indigo-200 rounded-lg px-4 py-2 bg-indigo-50/70 max-w-3xl"><div class="flex items-center gap-2 py-1"><span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-indigo-900">${SL}Temporary changes</span></div><div class="divide-y divide-indigo-100">
-  <div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">All zones</span><span class="tg dn">${IKD}−20 %</span><span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt text-red-700">Remove</button></span></div>
+  <div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">Efficiency reduced</span><span class="tg dn">${IKD}−20 %</span><span class="text-xs text-gray-500">all zones</span><span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt text-red-700">Remove</button></span></div>
   <div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">Alcoholic beverages</span><span class="tg ts">${IPA}Paused</span><span class="ml-auto"><button class="bt text-indigo-700">Resume zone</button></span></div></div></div>`;
 const zCard=(z,pa)=>{const e=EZ[z];return `<div class="border rounded p-3 bg-white ${pa?'!bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${z}</span>${pa?'<span class="tg ts">Paused</span>':''}</div>
   <div class="mt-2 bg-gray-50 rounded px-3 py-2 ${pa?'opacity-50':''}"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency per hour</div><dl class="grid grid-cols-3 gap-2 mt-1">${['SKU/1h','Units/1h','KG/1h'].map((u,x)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium"><span class="font-semibold text-red-700">${Math.round(e[x]*.8)}</span><span class="block text-xs font-normal text-gray-400">was ${e[x]}</span></dd></div>`).join('')}</dl></div>
@@ -65,8 +65,8 @@ out.innerHTML=`<section class="bg-white border rounded-lg">
   <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Case</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Role</th><th class="px-4 font-medium">Status</th></tr></thead>
   <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4 py-2"><span class="inline-flex items-center gap-1 whitespace-nowrap">Picker${c.nk?' '+NK:''}${tags(c)}</span></td><td class="px-4 py-2">${c.s=='Picking'?stTag('Picking',...c.l):stTag(c.s)}</td></tr>`).join('')}</tbody></table></div>
 </section>
-${sec('Account: “Temporary changes” card','Above the zones, tinted. One row for the account’s adjustment (all zones) with “Change” and “Remove”; one row per paused zone with “Resume zone”. The “Temporary adjustment” button in the section header opens the same dialog.',accCard)}
+${sec('Account: “Temporary changes” card','Above the zones, tinted. One row for reduced efficiency (all zones) with “Change” and “Remove”; one row per paused zone with “Resume zone”. The “Reduce efficiency” button in the section header is shown only while efficiency is not reduced.',accCard)}
 ${sec('Account: zone card','Adjusted numbers are coloured, with “was” below. The only action is “Pause zone” / “Resume zone”; a paused zone is greyed out.',`<div class="grid md:grid-cols-2 gap-3">${zCard('Groceries')}${zCard('Alcoholic beverages',1)}</div>`)}
-${sec('“Working now” sidebar: picker card','The same tags next to the role. The picker view in the sidebar shows them too; with a wave boost it adds the resulting efficiency.',`<div class="flex flex-wrap gap-3">${[CASES[1],CASES[4],CASES[5]].map(sbCard).join('')}</div>`)}`;
+${sec('“Working now” sidebar: picker card','The same tags next to the role. The picker view in the sidebar shows them too.',`<div class="flex flex-wrap gap-3">${[CASES[1],CASES[4],CASES[5]].map(sbCard).join('')}</div>`)}`;
 </script>
 </body></html>
