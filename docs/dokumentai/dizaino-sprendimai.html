@@ -245,7 +245,7 @@ a { color: var(--accent); }
   <div class="sec-head"><h2 id="h-gloss">Terminai</h2></div>
   <dl class="gloss">
     <dt>Auto tasks jungiklis</dt><dd>Ar surinkėjui automatiškai skiriamos užduotys. Pakeitė buvusį Active lauką.</dd>
-    <dt>Efektyvumas</dt><dd>SKU, units ir kg per valandą kiekvienai zonai. Suvedamas paskyroje ir laikomas tiesos šaltiniu.</dd>
+    <dt>Efektyvumas</dt><dd>SKU ir units per valandą kiekvienai zonai (bent vienas privalomas; kg per valandą nebėra, 2026-11-03). Suvedamas paskyroje ir laikomas tiesos šaltiniu.</dd>
     <dt>Maksimalus efektyvumas</dt><dd>Kiek priskiriama vienam išėjimui į salę („Maks. vienam išėjimui“). Nustatomas kiekvienai zonai; kelių zonų išėjime ribos sumuojasi. Santykis su efektyvumu rodo, kiek laiko surinkėjas bus salėje.</dd>
     <dt>Efektyvumo korekcija</dt><dd>Laikinas surinkėjo efektyvumo didinimas ar mažinimas procentais (±%) vienoje zonoje; vienai zonai – viena. Uždedama vienai zonai, visoms surinkėjo zonoms arba daugeliui surinkėjų. Veiksmas – „Koreguoti efektyvumą“. Bazinis efektyvumas nekeičiamas. Anksčiau – „efektyvumo kėlimas“ (boost), „laikina“ ir „asmeninė korekcija“.</dd>
     <dt>Sustabdyta zona</dt><dd>Surinkėjui laikinai neskiriamos tos zonos užduotys. Tik vieno surinkėjo veiksmas paskyroje – „Stabdyti zoną“ / „Atnaujinti zoną“.</dd>
@@ -366,6 +366,7 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">S13</span><span class="ctx">Q06</span><span class="ctx">Q28</span><span class="was">buvęs A2</span></div>
     </div></details>
     <details class="item" id="f-PK4"><summary><span class="id">PK4</span><span class="name">Aptarnaujamos zonos ir efektyvumas per zoną</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc"><b>Pakeista (2026-11-03):</b> efektyvumas per valandą – tik SKU/1h ir Units/1h (KG/1h nebėra). Zona priskiriama, kai įvestas bent vienas iš jų ir „Max per assignment“ SKU, Units, KG. „Unique orders“ neprivalomas: tuščias reiškia „be ribos“ (lauke ir peržiūroje – „No limit“).</p>
       <p class="desc">Checkbox kiekvienai zonai. Pažymėtai zonai vedama SKU, units ir kg per valandą (unique orders dingo). NONE ir workshop zonoms efektyvumas nevedamas. Dauguma surinkėjų turės visas zonas; LT aktualiausia, LV eina link to.</p>
       <p class="desc"><b>Sprendimas (patvirtinta 2026-10-30):</b> zona priskiriama tik su visais efektyvumo skaičiais – pažymėtai zonai privalomi visi laukai – 3 Efficiency per hour ir 4 „Maks. priskyrimas vienam kartui“; įvedami vienu metu. Kol kuriai nors pažymėtai zonai ar pasirinktos kombinacijos zonai trūksta duomenų, išsaugoti neleidžiama: klaida prie mygtukų, tušti laukai paryškinami raudonai, puslapis nuslenka iki pirmos zonos.</p>
       
@@ -373,6 +374,7 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">S15</span><span class="ctx">Q08</span><span class="ctx">Q33</span><span class="was">buvę A3, A4</span></div>
     </div></details>
     <details class="item" id="f-PK5"><summary><span class="id">PK5</span><span class="name">Maksimalus efektyvumas</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc"><b>Siūlymas (2026-11-03):</b> „Unique orders“ – neprivalomas, tuščias = be ribos. Numatytosios maksimalios reikšmės neįvedame: įrašytas skaičius atrodytų kaip sprendimas konkrečiam surinkėjui; jei SC reikia bendros ribos (pvz. LT pieno zonoje 18 užsakymų), ji priklauso SC ar zonos nustatymams, ne paskyrai.</p>
       <p class="desc">Kiekvienai zonai: SKU, Units, KG, Unique orders vienam išėjimui. Pvz., efektyvumas 100/val. ir max 50 reiškia apie pusvalandį salėje. PM puslapyje Optional.</p>
       <p class="open"><b>Atvira:</b> <a href="#k-K06">K06</a> keitimo dažnis ir unique orders.</p>
       <div class="meta"><span class="ctx">Q31</span><span class="ctx">Q32</span><span class="ctx">Q34</span><span class="was">buvęs A5</span></div>
@@ -1068,6 +1070,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-11-03</td><td>Paskyra: KG/1h pašalintas; privaloma SKU/1h arba Units/1h ir maks. SKU, Units, KG; „Unique orders“ neprivalomas, tuščias = „No limit“ (PK4, PK5).</td></tr>
       <tr><td>2026-11-03</td><td>Būsenos žyma „Picking · 2/6 ln.“ (vietoj „lines“). „Zones“ skirtuke ir surinkėjo vaizdo užduočių eilutėse žymos vienodo pločio (DD8).</td></tr>
       <tr><td>2026-11-03</td><td>„Working now“: kortelėje vietoj korekcijos ir zonų žymų – viena ikona; detalės surinkėjo vaizde po vardu (EK5). Lentelėje be pokyčių.</td></tr>
       <tr><td>2026-11-03</td><td>Paskyra: „Temporary adjustment“ → „Reduce efficiency“; kortelėje „Efficiency reduced“; sumažinus antraštės mygtukas slepiamas (PK7).</td></tr>
