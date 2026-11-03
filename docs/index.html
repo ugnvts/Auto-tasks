@@ -64,20 +64,20 @@ iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; bac
 // Kai ekranas turi vieną variantą, variantų eilutė nerodoma.
 var PAGES = [
   { id: "dashboard", name: "Dashboard", variants: [
-    { id: "dashboard", name: "“Working now” pinned", file: "puslapiai/prototipas.html#dashboard",
-      note: "Waves on the left, “Working now” always visible on the right; the rail next to it has “Temporary changes”, which opens on top."},
+    { id: "dashboard", name: "Dashboard", file: "puslapiai/prototipas.html#dashboard",
+      note: "Waves with the wave boost on the current wave; “Working now” collapsed in the rail on the right."},
     { id: "dashboard-cutoff", name: "During cut-off", file: "puslapiai/prototipas-cutoff.html#dashboard",
       note: "The same prototype during cut-off: the “Auto tasks” summary shows that auto tasks are paused." }
   ]},
   { id: "picker", name: "Picker accounts", variants: [
     { id: "picker-accounts", name: "With “Working now”", file: "puslapiai/prototipas.html#picker-accounts",
-      note: "Picker table and account; “Working now” and “Temporary changes” on the right."},
+      note: "Picker table and account; “Working now” in the rail on the right."},
     { id: "picker-cutoff", name: "During cut-off", file: "puslapiai/prototipas-cutoff.html#picker-accounts",
       note: "The same prototype during cut-off: the “Auto tasks” summary shows that auto tasks are paused." }
   ]},
-  { id: "zymos", name: "Efficiency tags", variants: [
-    { id: "efektyvumo-zymos", name: "State catalogue", file: "puslapiai/efektyvumo-zymos.html",
-      note: "Efficiency adjustment and paused zone tags: in the table, the account and the “Temporary changes” panel." }
+  { id: "zymos", name: "Temporary changes", variants: [
+    { id: "efektyvumo-zymos", name: "Tag catalogue", file: "puslapiai/efektyvumo-zymos.html",
+      note: "Temporary adjustment and paused zone tags: next to the role in the table and sidebar, and in the account." }
   ]}
 ];
 // Abu ekranai yra viename prototipe su bendrais duomenimis; perėjus per kairįjį meniu skirtukas persijungia pats.

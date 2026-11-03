@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Efficiency tags</title>
+<title>Temporary changes tags</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 <script src="https://cdn.tailwindcss.com/3.4.17"></script>
 <style>
@@ -21,13 +21,9 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 </style>
 </head><body>
 <main class="max-w-6xl mx-auto px-4 py-6">
-  <h1 class="text-2xl font-semibold">Efficiency adjustment tags</h1>
-  <p class="text-gray-600 mt-1 max-w-3xl">All states of efficiency adjustments and paused zones, and the places where they are shown, as implemented in the prototype. An adjustment always belongs to a picker’s zone; an action for several pickers (in the table or the “Temporary changes” panel) applies the same zone adjustments to each of them.</p>
-  <p class="mt-3 text-xs text-gray-600">Colour shows the direction: <span class="tg dn">decrease</span> <span class="tg up">increase</span>; a paused zone is <span class="tg ts">grey</span>. Validity: limited shows “until 14:00”, indefinite has no label. The “Working now” card shows no adjustment or paused zone tags; the full picture is in the “Temporary changes” panel.</p>
-  <div class="mt-2 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600">
-    <span class="flex items-center gap-1.5"><span class="tg dn" id="lgP"></span> efficiency adjustment</span>
-    <span class="flex items-center gap-1.5"><span class="tg ts" id="lgS"></span> paused zone</span>
-  </div>
+  <h1 class="text-2xl font-semibold">Temporary changes tags</h1>
+  <p class="text-gray-600 mt-1 max-w-3xl">How a picker’s temporary adjustment and paused zones are shown, as implemented in the prototype (2026-11-03). A temporary adjustment is one value for the whole account (all zones), up or down, and stays until the shift manager removes it. Zones are paused one by one. Both are managed in the picker’s account; the table bulk action applies the same adjustment to the selected pickers.</p>
+  <p class="mt-3 text-xs text-gray-600">Colour shows the direction: <span class="tg dn">decrease</span> <span class="tg up">increase</span>; a paused zone is <span class="tg ts">grey</span>. There is no end time – the manager removes it.</p>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
 <script>
@@ -36,66 +32,41 @@ const IKU='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="none" stroke=
   IPA='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><rect x="5" y="4" width="3.5" height="12" rx="1"/><rect x="11.5" y="4" width="3.5" height="12" rx="1"/></svg>',
   IPL='<svg class="w-3 h-3 shrink-0" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path d="M6 4.5v11a1 1 0 0 0 1.5.86l9-5.5a1 1 0 0 0 0-1.72l-9-5.5A1 1 0 0 0 6 4.5z"/></svg>',
   ICV='<svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg>';
-lgP.innerHTML=IKD+'−10 %';lgS.innerHTML=IPA+'Beverages';
-// Būsenos tag'ai – tokie pat kaip prototipe (Picker accounts lentelė, „Dirba dabar“)
+// Būsenos tag'ai – tokie pat kaip prototipe (Picker accounts lentelė, „Working now“)
 const SG={Picking:'bg-green-50 border-green-200 text-green-900','Not synced':'bg-amber-50 border-amber-200 text-amber-800','Waiting':'bg-blue-50 border-blue-200 text-blue-800'};
 const stTag=(st,pk,tt)=>{const pc=st=='Picking'&&tt?Math.round(pk/tt*100):null;return `<span class="relative inline-flex items-center h-6 px-2 rounded border text-xs font-medium tabular-nums whitespace-nowrap overflow-hidden ${SG[st]}">${pc!=null?`<span class="absolute inset-y-0 left-0 bg-green-200" style="width:${pc}%"></span>`:''}<span class="relative">${st}${st=='Picking'&&tt?` · ${pk}/${tt} lines`:''}</span></span>`};
-const stTags=c=>c.s=='Picking'?stTag('Picking',...(c.l||[0,0]))+(c.q?stTag('Not synced'):''):stTag(c.s);
-const sg=d=>d<0?'−':'+';
-// Atvejai: P – korekcija {v, z: [] = visos zonos, t – iki kada}, S – sustabdytos zonos {z, t}, K – kombinacija, kuri neveikia
+const sg=d=>d<0?'−':'+',pct=v=>`${sg(v)}${Math.abs(v)} %`,dc=v=>v<0?'dn':'up';
+// Atvejai: P – laikina korekcija visai paskyrai (procentas), S – sustabdytos zonos
 const CASES=[
-  {g:'No adjustments',n:'Nerijus Petrauskas',s:'Waiting'},
-  {g:'Adjustment, all zones (12)',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],q:1,P:{v:-10,z:[]}},
-  {g:'Adjustment, one zone',n:'Karolis Jankauskas',s:'Not synced',P:{v:-20,z:['Alcoholic beverages']}},
-  {g:'Adjustment, several zones, until a time',n:'Remigijus Butkus',s:'Picking',l:[3,10],P:{v:-10,z:['Alcoholic beverages','Frozen goods','Groceries'],t:'14:00'}},
-  {g:'All zones, one changed separately',n:'Simona Jakštė',s:'Picking',l:[20,46],q:1,P:[{v:-10,z:Array(11).fill('')},{v:10,z:['Candies']}]},
-  {g:'Different zone adjustments',n:'Paulius Grigas',s:'Not synced',P:[{v:-20,z:['Alcoholic beverages']},{v:10,z:['Groceries','Candies']}]},
-  {g:'Increase',n:'Tomas Vaitkus',s:'Picking',l:[1,5],P:{v:10,z:[]}},
-  {g:'One zone paused',n:'Ieva Kairytė',s:'Picking',l:[4,9],S:{z:['Alcoholic beverages']}},
-  {g:'Several zones paused, until a time',n:'Rūta Mockutė',s:'Waiting',S:{z:['Alcoholic beverages','Frozen goods'],t:'16:00'}},
-  {g:'Paused zone in a combination',n:'Justas Navickas',s:'Picking',l:[10,38],S:{z:['Bread products']},K:'Frozen goods + Bread products'},
-  {g:'Adjustment and paused zone',n:'Jonas Petraitis',s:'Picking',l:[7,22],P:{v:-10,z:['Groceries']},S:{z:['Alcoholic beverages']}},
-  {g:'Long zone names',n:'Mantas Kazakevičius',s:'Picking',l:[15,24],P:{v:-10,z:['Fruits, vegetables - RYTAS']},S:{z:['Weighed, smoked meat products']}},
+  {g:'No changes',n:'Nerijus Petrauskas',s:'Waiting'},
+  {g:'Decrease',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],P:-10},
+  {g:'Increase',n:'Tomas Vaitkus',s:'Picking',l:[1,5],P:20},
+  {g:'One zone paused',n:'Ieva Kairytė',s:'Picking',l:[4,9],S:['Alcoholic beverages']},
+  {g:'Several zones paused',n:'Rūta Mockutė',s:'Waiting',S:['Alcoholic beverages','Frozen goods']},
+  {g:'Adjustment and paused zone',n:'Jonas Petraitis',s:'Not synced',P:-20,S:['Alcoholic beverages']},
+  {g:'New picker with adjustment',n:'Simona Jakštė',s:'Picking',l:[20,46],P:-10,nk:1},
 ];
-const ltZ=n=>n==1?'zone':'zones',zTxt=z=>z.length==1?z[0]:z.length+' '+ltZ(z.length),gZ=z=>z.length?zTxt(z):'12 zones',till=t=>t?' · until '+t:'';
-const PL=c=>c.P?[].concat(c.P):[];
-const tipP=c=>'Efficiency adjustment: '+PL(c).map(g=>`${gZ(g.z)} ${sg(g.v)}${Math.abs(g.v)} %${till(g.t)}`).join('; '),
-  tipS=c=>`Paused zones: ${c.S.z.join(', ')}${till(c.S.t)}${c.K?` · combination ${c.K} inactive`:''}`;
-const dc=v=>v<0?'dn':'up',pct=v=>`${sg(v)}${Math.abs(v)} %`,iki=t=>t?`<span class="text-xs text-gray-500">until ${t}</span>`:'';
-// Lentelė: išsamios žymos
-const A=c=>PL(c).map(g=>`<span class="tg ${dc(g.v)}" title="${tipP(c)}">${IK(g.v)}<span class="t">${pct(g.v)} · ${gZ(g.z)}</span></span>`).join('')
-  +(c.S?`<span class="tg ts" title="${tipS(c)}">${IPA}<span class="t">${zTxt(c.S.z)}</span></span>`:'');
-// Pavyzdinis surinkėjas vietoms: zonų efektyvumas [SKU, Units, KG], korekcijos ir sustabdytos zonos
-const EZ={'Groceries':[38,95,42],'Candies':[50,120,20],'Frozen goods':[30,70,55],'Alcoholic beverages':[25,60,40]};
-const KZ={'Groceries':{v:-10},'Candies':{v:10,t:'14:00'}},SZ={'Frozen goods':'','Alcoholic beverages':'16:00'};
-const zChip=n=>n==1?'':`<span class="rounded-full border border-gray-300 bg-gray-100 text-gray-800 font-medium px-2 py-0.5 whitespace-nowrap">${n} ${ltZ(n)}</span>`;
-const sTag=`<span class="tg ts">${IPA}Paused</span>`;
-const cor=(v,x)=>Math.round(x*(1+v/100));
+const tags=c=>(c.P?`<span class="tg ${dc(c.P)}" title="Temporary adjustment ${pct(c.P)}, all zones">${IK(c.P)}<span class="t">${pct(c.P)}</span></span>`:'')
+  +(c.S?`<span class="tg ts" title="Paused zones: ${c.S.join(', ')}">${IPA}<span class="t">${c.S.length==1?c.S[0]:c.S.length+' zones'}</span></span>`:'');
+const NK='<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">New picker</span>';
 const sec=(t,d,b)=>`<section class="bg-white border rounded-lg"><div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">${t}</h2><p class="text-gray-600 mt-1">${d}</p></div><div class="p-4 bg-gray-50 rounded-b-lg">${b}</div></section>`;
-// 1. Paskyros kortelė „Laikini pakeitimai“
-const accCard=`<div class="border border-indigo-200 rounded-lg px-4 py-2 bg-indigo-50/70 max-w-3xl"><div class="flex items-center gap-2 py-1"><span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-indigo-900"><svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>Temporary changes</span><button class="ml-auto text-xs text-red-700">Remove all</button></div><div class="divide-y divide-indigo-100">
-  ${[[11,-10,''],[1,10,'14:00','Candies']].map(([n,v,t,z])=>`<div class="flex flex-wrap items-center gap-2 py-1.5">${n==1?`<span class="font-medium">${z}</span>`:zChip(n)}<span class="tg ${dc(v)}">${pct(v)}</span>${iki(t)}<span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt">Make permanent</button><button class="bt text-red-700">Remove</button></span></div>`).join('')}
-  ${Object.entries(SZ).map(([z,t])=>`<div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">${z}</span>${sTag}${iki(t)}<span class="ml-auto"><button class="bt text-indigo-700">Resume zone</button></span></div>`).join('')}</div></div>`;
-// 2. Zonos kortelė
-const nums=(k,e)=>`<div class="bg-gray-50 rounded px-3 py-2"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency per hour</div><dl class="grid grid-cols-3 gap-2 mt-1">${['SKU/1h','Units/1h','KG/1h'].map((u,x)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium">${k?`<span class="font-semibold ${k.v<0?'text-red-700':'text-green-700'}">${cor(k.v,e[x])}</span><span class="block text-xs font-normal text-gray-400">was ${e[x]}</span>`:e[x]}</dd></div>`).join('')}</dl></div>`;
-const zCard=z=>{const k=KZ[z],pa=z in SZ,t=SZ[z];return `<div class="border rounded p-3 bg-white ${pa?'!bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${z}</span>
-  ${pa?`<span class="tg ts">Paused${t?' · until '+t:''}</span>`:''}${k?`<span class="tg ${dc(k.v)}" title="Temporary adjustment${k.t?' until '+k.t:''}">${pct(k.v)}</span>`:''}
-</div>
-  <div class="mt-2 ${pa?'opacity-50':''}">${nums(k,EZ[z])}</div>
-  <div class="mt-3 flex flex-wrap gap-2">${pa?`<button class="bt text-indigo-700 inline-flex items-center gap-1">${IPL}Resume zone</button>`:`<button class="bt">${k?'Change adjustment':'Adjust efficiency'}</button>${k?'<button class="bt">Make permanent</button><button class="bt text-red-700">Remove adjustment</button>':''}<button class="bt inline-flex items-center gap-1">${IPA}Pause zone</button>`}</div></div>`};
-// 3. „Laikinų pakeitimų“ skydelio eilutės ir suskleista juosta
-const kpRow=c=>`<div class="px-4 py-3 bg-white border-b last:border-0 flex gap-3"><div class="min-w-0 flex-1"><div class="flex items-center gap-2"><span class="font-semibold">${c.n}</span><span class="text-[11px] text-gray-500">${c.s}</span></div><div class="mt-1.5 space-y-1">
-  ${PL(c).map(g=>`<div class="flex flex-wrap items-center gap-1.5"><span class="tg ${dc(g.v)} font-medium">${IK(g.v)}${pct(g.v)}</span><span class="text-gray-800">${gZ(g.z)}</span>${iki(g.t)}</div>`).join('')}
-  ${c.S?c.S.z.map(z=>`<div class="flex flex-wrap items-center gap-1.5">${sTag}<span class="text-gray-800">${z}</span>${iki(c.S.t)}</div>`).join(''):''}</div></div><span class="self-center text-gray-400">${ICV}</span></div>`;
-const rail=(c,st)=>`<div class="rc">${c||st?`<div class="rs"><span>Adjusted</span><b>${c}</b></div><div class="rs"><span>Paused</span><b>${st}</b></div>`:'<div class="rs"><span>None</span></div>'}</div>`;
+const EZ={'Groceries':[38,95,42],'Alcoholic beverages':[25,60,40]};
+const SL='<svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></svg>';
+const accCard=`<div class="border border-indigo-200 rounded-lg px-4 py-2 bg-indigo-50/70 max-w-3xl"><div class="flex items-center gap-2 py-1"><span class="inline-flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-indigo-900">${SL}Temporary changes</span></div><div class="divide-y divide-indigo-100">
+  <div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">All zones</span><span class="tg dn">${IKD}−20 %</span><span class="ml-auto flex gap-2"><button class="bt">Change</button><button class="bt text-red-700">Remove</button></span></div>
+  <div class="flex flex-wrap items-center gap-2 py-1.5"><span class="font-medium">Alcoholic beverages</span><span class="tg ts">${IPA}Paused</span><span class="ml-auto"><button class="bt text-indigo-700">Resume zone</button></span></div></div></div>`;
+const zCard=(z,pa)=>{const e=EZ[z];return `<div class="border rounded p-3 bg-white ${pa?'!bg-gray-50':''}"><div class="flex flex-wrap items-center gap-2"><span class="font-medium ${pa?'text-gray-500':''}">${z}</span>${pa?'<span class="tg ts">Paused</span>':''}</div>
+  <div class="mt-2 bg-gray-50 rounded px-3 py-2 ${pa?'opacity-50':''}"><div class="text-xs font-semibold uppercase tracking-wide text-gray-500">Efficiency per hour</div><dl class="grid grid-cols-3 gap-2 mt-1">${['SKU/1h','Units/1h','KG/1h'].map((u,x)=>`<div><dt class="text-xs text-gray-500">${u}</dt><dd class="tabular-nums font-medium"><span class="font-semibold text-red-700">${Math.round(e[x]*.8)}</span><span class="block text-xs font-normal text-gray-400">was ${e[x]}</span></dd></div>`).join('')}</dl></div>
+  <div class="mt-3"><button class="bt inline-flex items-center gap-1">${pa?IPL+'Resume zone':IPA+'Pause zone'}</button></div></div>`};
+const sbCard=c=>`<div class="bg-white border rounded-lg px-4 py-3 w-80"><div class="flex items-center gap-2"><span class="text-[15px] font-semibold">${c.n}</span>${c.nk?NK:''}</div><div class="flex items-center gap-1 text-[11px] text-gray-500">Picker${tags(c)}</div></div>`;
 out.innerHTML=`<section class="bg-white border rounded-lg">
-  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts table: detailed tags</h2>
-    <p class="text-gray-600 mt-1">In the “Temporary changes” column, right of “Status”. Zones with the same adjustment (direction, amount, validity) are grouped: one zone shows its name, several show a count (“−10 % · 12 zones”). Hover for details.</p></div>
-  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Case</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Status</th><th class="px-4 font-medium">Temporary changes</th></tr></thead>
-  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4 py-2"><div class="flex items-center gap-1 whitespace-nowrap">${stTags(c)}</div></td><td class="px-4 py-2"><div class="flex flex-wrap items-center gap-1.5">${A(c)}</div></td></tr>`).join('')}</tbody></table></div>
+  <div class="px-5 py-4 border-b"><h2 class="text-lg font-semibold">Picker accounts table: tags next to the role</h2>
+    <p class="text-gray-600 mt-1">No separate column. The adjustment shows its percentage; paused zones show the zone name or “N zones”. Hover for details.</p></div>
+  <div class="overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs uppercase text-gray-500 border-b"><tr class="text-left"><th class="px-4 py-2 font-medium normal-case text-gray-400">Case</th><th class="px-4 font-medium">Name</th><th class="px-4 font-medium">Role</th><th class="px-4 font-medium">Status</th></tr></thead>
+  <tbody>${CASES.map(c=>`<tr class="border-b last:border-0"><td class="px-4 py-2.5 text-xs text-gray-500 whitespace-nowrap">${c.g}</td><td class="px-4 font-medium whitespace-nowrap">${c.n}</td><td class="px-4 py-2"><span class="inline-flex items-center gap-1 whitespace-nowrap">Picker${c.nk?' '+NK:''}${tags(c)}</span></td><td class="px-4 py-2">${c.s=='Picking'?stTag('Picking',...c.l):stTag(c.s)}</td></tr>`).join('')}</tbody></table></div>
 </section>
-${sec('Account: “Temporary changes” card','Above the zones, tinted so it stands apart from the zone cards. One row is one adjustment group; several zones show an “N zones” tag (click for the list). Paused zones are on the same card, so a pause can be undone without digging into the zones. “Remove all” appears when there is more than one adjustment group.',accCard)}
-${sec('Account: zone card','Tag next to the zone name: the adjustment percentage or “Paused” (with “until” when time-limited). Actions are below the numbers. Changed numbers are bold and coloured, with “was” below. A paused zone is greyed out; adjustments do not apply to it.',`<div class="grid md:grid-cols-2 gap-3">${['Groceries','Candies','Frozen goods','Alcoholic beverages'].map(zCard).join('')}</div>`)}
-${sec('“Temporary changes” panel and collapsed rail','The panel lists pickers with adjustments or paused zones; clicking a row opens the account. The collapsed rail shows picker counts, like the “Working now” section. On the Dashboard only this button stays in the rail (the panel opens over the pinned “Working now”); when the panel is open the rail is hidden.',`<div class="flex flex-wrap items-start gap-6"><div class="border rounded-lg overflow-hidden w-full max-w-md">${[CASES[4],CASES[10],CASES[8]].map(kpRow).join('')}</div><div class="flex gap-3">${rail(4,2)}${rail(0,0)}</div></div>`)}`;
+${sec('Account: “Temporary changes” card','Above the zones, tinted. One row for the account’s adjustment (all zones) with “Change” and “Remove”; one row per paused zone with “Resume zone”. The “Temporary adjustment” button in the section header opens the same dialog.',accCard)}
+${sec('Account: zone card','Adjusted numbers are coloured, with “was” below. The only action is “Pause zone” / “Resume zone”; a paused zone is greyed out.',`<div class="grid md:grid-cols-2 gap-3">${zCard('Groceries')}${zCard('Alcoholic beverages',1)}</div>`)}
+${sec('“Working now” sidebar: picker card','The same tags next to the role. The picker view in the sidebar shows them too; with a wave boost it adds the resulting efficiency.',`<div class="flex flex-wrap gap-3">${[CASES[1],CASES[5],CASES[6]].map(sbCard).join('')}</div>`)}`;
 </script>
 </body></html>
