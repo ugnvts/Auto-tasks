@@ -273,7 +273,7 @@ td,th{white-space:nowrap}
           <h3 class="font-medium mt-6 pb-2 border-b">Auto tasks</h3>
           <dl id="vAuto" class="text-sm divide-y"></dl>
           <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zones and efficiency for auto tasks <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3></div>
-          <p class="mt-2 text-sm text-gray-500">Used to size auto tasks. Manual assignment isn't limited by these numbers.</p>
+          <p class="mt-2 text-sm text-gray-500">Used to size auto tasks.</p>
           <div id="korCard" class="mt-3 empty:hidden"></div>
           <div id="effView" class="mt-3 space-y-3"></div>
           <h3 class="font-medium mt-6 pb-2 border-b">Multiple zones</h3>
@@ -302,7 +302,7 @@ td,th{white-space:nowrap}
             <div class="space-y-3"><label class="flex gap-3 items-start"><input id="ea" type="checkbox" class="mt-1 disabled:opacity-40" onchange="VA=this.checked;N[0][5]=VA?1:0"><span>Auto tasks<br><span class="text-gray-500">Tasks are assigned automatically.</span></span></label>
             <label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="eaSync()"><span>New picker<br><span class="text-gray-500">While checked, auto tasks cannot be enabled; tasks are assigned manually.</span></span></label></div></div>
           <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Zones and efficiency for auto tasks</h3>
-            <p class="text-gray-500 mb-2">Used to size auto tasks; manual assignment isn't limited by these numbers. Select zones and enter SKU/1h or Units/1h for each.</p>
+            <p class="text-gray-500 mb-2">Used to size auto tasks. Select zones and enter SKU/1h or Units/1h for each.</p>
             <div class="flex flex-wrap items-center gap-2 mb-2"><button class="border border-indigo-600 text-indigo-700 px-3 py-1 rounded" onclick="allZ(1)">Enable all zones</button><button class="border px-3 py-1 rounded" onclick="allZ(0)">Disable all</button><span id="zc" class="text-gray-500 ml-auto"></span></div>
             <input id="zq" placeholder="Search zones…" class="w-full border rounded px-3 py-2 mb-2" oninput="zones()">
             <div id="zl" class="border rounded divide-y"></div>
@@ -569,7 +569,7 @@ function cOpen(){GD={d:'up',p:null,all:true,t:'',sl:false};cR();document.getElem
 function cOpenSel(){GD={d:'up',p:null,all:false,t:'',sel:[...sel]};cR();document.getElementById('kordlg').hidden=false}
 function cR(){const D=GD,now=gNow(),tgt=D.sel?D.sel:D.all?gAll():now,ex=tgt.filter(i=>pers(i)),
     seg=(v,l)=>`<button class="flex-1 py-1.5 rounded ${D.d==v?'bg-white shadow-sm font-medium '+DX(v):'text-gray-600'}" aria-pressed="${D.d==v}" onclick="GD.d='${v}';if(!KP.${v}.includes(GD.p))GD.p=KP.${v}[1];cR()">${l}</button>`;
-  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${D.sel?`Temporary adjustment for selected (${D.sel.length})`:'Temporary adjustment for pickers'}</div><p class="text-gray-500 mt-1">The same temporary adjustment is applied to all zones of the selected pickers until it is removed in their accounts. It applies to auto tasks only. Base efficiency is not changed.</p>
+  document.getElementById('kordlgB').innerHTML=`<div id="korT" class="font-semibold text-base">${D.sel?`Temporary adjustment for selected (${D.sel.length})`:'Temporary adjustment for pickers'}</div><p class="text-gray-500 mt-1">The same temporary adjustment is applied to all zones of the selected pickers until it is removed in their accounts. It applies to auto tasks. Base efficiency is not changed.</p>
     ${sld(D,'GD')}
     ${D.sel?'':`<div class="mt-4 font-medium">Apply to</div>`}<div class="mt-1 space-y-1.5" ${D.sel?'hidden':''}>
       <label class="flex items-start gap-2"><input type="radio" name="ck" class="mt-1" ${D.all?'checked':''} onchange="GD.all=true;cR()"><span>Everyone, including those starting later <span class="text-gray-500">(${gAll().length})</span></span></label>
@@ -697,7 +697,7 @@ function bPace(){const k=BK,p=WV.pace[k],d=k=='c'?BDEF.c:BDEF.n,f=BV/d,w=k=='c'?
 function bOpen(k){BK=k;BV=BST[k]||(k=='c'?BDEF.c:BDEF.n);bR();document.getElementById('kordlg').hidden=false}
 function bR(){const k=BK,c=k=='c',a=c?BC:BN,d=c?BDEF.c:BDEF.n;
   document.getElementById('kordlgB').innerHTML=`<div id="korT"><div class="text-xs font-medium uppercase tracking-wide text-gray-500">Boost ${c?'current':'next'} wave</div><div class="mt-0.5 text-lg font-semibold text-gray-900">${c?WV.cur:WV.next} - ${c?WV.t:WV.nt} <span class="ml-1 align-middle text-xs font-normal rounded-full bg-gray-100 border border-gray-200 text-gray-600 px-2 py-0.5">${c?'Current wave':'Next wave'}</span></div></div>
-    <p class="text-gray-500 mt-1">${c?'Raises efficiency per hour of all pickers for this wave’s auto tasks.':'All pickers get more of this wave’s auto tasks while the current wave is being picked.'} Manual assignment isn’t affected. Ends automatically at ${WV.end}, when ${WV.cur} finishes.</p>
+    <p class="text-gray-500 mt-1">${c?'Raises efficiency per hour of all pickers for this wave’s auto tasks.':'All pickers get more of this wave’s auto tasks while the current wave is being picked.'} Ends automatically at ${WV.end}, when ${WV.cur} finishes.</p>
     <div class="mt-4 flex items-baseline justify-between"><span class="font-medium">Efficiency</span><span class="text-xs text-gray-500">${c?'default 100 %':'SC setting 50 %'}</span></div>
     <input id="bsl" type="range" min="${a[0]}" max="${a[a.length-1]}" step="10" value="${BV}" class="sl block w-full mt-3 cursor-pointer" style="background:${bBg(BV,a)}" oninput="bS(this.value)" aria-label="Efficiency for ${c?WV.cur:WV.next}"><div id="btk" class="mt-3">${bTk(a,BV,d)}</div>
     <div id="bpace" class="mt-4">${bPace()}</div>
