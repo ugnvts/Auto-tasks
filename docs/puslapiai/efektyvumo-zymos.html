@@ -23,8 +23,8 @@ body{margin:0;background:var(--bg);color:#111827;font:14px Inter,system-ui,sans-
 </head><body>
 <main class="max-w-6xl mx-auto px-4 py-6">
   <h1 class="text-2xl font-semibold">Temporary changes tags</h1>
-  <p class="text-gray-600 mt-1 max-w-3xl">How a picker’s temporary adjustment and paused zones are shown, as implemented in the prototype (2026-11-03). A temporary adjustment is one value for the whole account (all zones), up or down, and stays until the shift manager removes it. Zones are paused one by one. Both are managed in the picker’s account; the table bulk action applies the same adjustment to the selected pickers.</p>
-  <p class="mt-3 text-xs text-gray-600">Colour shows the direction: <span class="tg dn">decrease</span> <span class="tg up">increase</span>; a paused zone is <span class="tg ts">grey</span>. There is no end time – the manager removes it.</p>
+  <p class="text-gray-600 mt-1 max-w-3xl">How a picker’s temporary adjustment and paused zones are shown, as implemented in the prototype (2026-11-03). A temporary adjustment lowers efficiency for the whole account (all zones) when the picker is unwell, and stays until the shift manager removes it. Zones are paused one by one (e.g. no heavy goods after an injury). Both are managed only in the picker’s account. Raising efficiency is a wave boost on the Dashboard; a new picker’s numbers are changed in Edit.</p>
+  <p class="mt-3 text-xs text-gray-600">An adjustment is <span class="tg dn">red</span>; a paused zone is <span class="tg ts">grey</span>. There is no end time – the manager removes it.</p>
   <div id="out" class="mt-6 space-y-8"></div>
 </main>
 <script>
@@ -40,8 +40,7 @@ const sg=d=>d<0?'−':'+',pct=v=>`${sg(v)}${Math.abs(v)} %`,dc=v=>v<0?'dn':'up';
 // Atvejai: P – laikina korekcija visai paskyrai (procentas), S – sustabdytos zonos
 const CASES=[
   {g:'No changes',n:'Nerijus Petrauskas',s:'Waiting'},
-  {g:'Decrease',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],P:-10},
-  {g:'Increase',n:'Tomas Vaitkus',s:'Picking',l:[1,5],P:20},
+  {g:'Adjustment',n:'Aldonas Kazlauskas',s:'Picking',l:[12,30],P:-10},
   {g:'One zone paused',n:'Ieva Kairytė',s:'Picking',l:[4,9],S:['Alcoholic beverages']},
   {g:'Several zones paused',n:'Rūta Mockutė',s:'Waiting',S:['Alcoholic beverages','Frozen goods']},
   {g:'Adjustment and paused zone',n:'Jonas Petraitis',s:'Not synced',P:-20,S:['Alcoholic beverages']},
@@ -68,6 +67,6 @@ out.innerHTML=`<section class="bg-white border rounded-lg">
 </section>
 ${sec('Account: “Temporary changes” card','Above the zones, tinted. One row for the account’s adjustment (all zones) with “Change” and “Remove”; one row per paused zone with “Resume zone”. The “Temporary adjustment” button in the section header opens the same dialog.',accCard)}
 ${sec('Account: zone card','Adjusted numbers are coloured, with “was” below. The only action is “Pause zone” / “Resume zone”; a paused zone is greyed out.',`<div class="grid md:grid-cols-2 gap-3">${zCard('Groceries')}${zCard('Alcoholic beverages',1)}</div>`)}
-${sec('“Working now” sidebar: picker card','The same tags next to the role. The picker view in the sidebar shows them too; with a wave boost it adds the resulting efficiency.',`<div class="flex flex-wrap gap-3">${[CASES[1],CASES[5],CASES[6]].map(sbCard).join('')}</div>`)}`;
+${sec('“Working now” sidebar: picker card','The same tags next to the role. The picker view in the sidebar shows them too; with a wave boost it adds the resulting efficiency.',`<div class="flex flex-wrap gap-3">${[CASES[1],CASES[4],CASES[5]].map(sbCard).join('')}</div>`)}`;
 </script>
 </body></html>

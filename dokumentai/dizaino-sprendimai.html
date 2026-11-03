@@ -326,6 +326,7 @@ a { color: var(--accent); }
       <div class="meta"><span class="ctx">S14</span><span class="ctx">Q05</span><span class="ctx">Q21</span><span class="was">buvęs A1</span></div>
     </div></details>
     <details class="item" id="f-PA3"><summary><span class="id">PA3</span><span class="name">Grupinis įjungimas ir išjungimas</span><span class="status st-ready">Sutarta</span></summary><div class="body">
+      <p class="desc"><b>Pakeista (2026-11-03):</b> bulk veiksmo „Koreguoti efektyvumą“ nebėra – laikinos korekcijos tik paskyroje.</p>
       <p class="desc">Sistemoje jau yra bulk actions meniu. Pažymėjus kelias eilutes, jame prie esamų pasirinkimų atsiranda: „Įjungti auto tasks“, „Išjungti auto tasks“, „Koreguoti efektyvumą“ (laikina korekcija visoms pažymėtų surinkėjų zonoms, <a href="#f-EK2">EK2</a>) ir esamas sistemos veiksmas „Ištrinti“ (patvirtinimas su vardų sąrašu). Lentelė – darbo dienos pradžios įrankis: čia pasirenkami surinkėjai, kuriems įjungiami auto tasks (2026-10-28). Išjungti visiems galima per sidebar'o ⋮ (<a href="#f-DD3">DD3</a>).</p>
       <div class="meta"><span class="was">buvęs D01</span></div>
     </div></details>
@@ -538,6 +539,7 @@ a { color: var(--accent); }
   </div>
   <div class="list">
     <details class="item" id="f-EK1"><summary><span class="id">EK1</span><span class="name">Vienas korekcijų lygis</span><span class="status st-wip">Derinama</span></summary><div class="body">
+      <p class="desc"><b>Patikslinta (2026-11-03, vėliau):</b> efektyvumo kėlimas visada susijęs su einamąja ir kita banga – tai bangos boost (<a href="#f-EK6">EK6</a>). Laikina korekcija – tik mažinimas, kai surinkėjas negaluoja (−10/−20/−30 %, visoms zonoms, iki nuėmimo), arba zonos stabdymas; valdoma tik paskyroje. Bulk korekcijos lentelėje nebėra. Naujoko skaičiai – per „Edit“.</p>
       <p class="desc"><b>Sprendimas (2026-11-03), supaprastinimas:</b> korekcijų sistema turi būti kuo paprastesnė ir neįpareigojanti. Laikina korekcija – viena visai paskyrai (visoms zonoms), didinimas arba mažinimas, galioja, kol pamainos vadovas nuima („Until removed“, be datos). Zonų korekcijų nebėra; zonų stabdymas lieka. Naujoko skaičiai keičiami tik per „Edit“ – tai bazės keitimas, ne laikina korekcija. Mažinimas – kai surinkėjas negaluoja; didinimas – atskiriems surinkėjams (bulk lentelėje pažymėtiems), kai didesnį krūvį gali dirbti tik dalis; visiems aktyviems – bangos boost (<a href="#f-EK6">EK6</a>). Žemiau esantis tekstas – ankstesnė versija.</p>
       <ul><li>Pamatas: surinkėjo efektyvumas per zoną (<a href="#f-PK4">PK4</a>) ir SC kitos bangos taisyklė (<a href="#f-SC4">SC4</a>).</li><li>Laikina korekcija: vienai surinkėjo zonai – viena (kryptis, procentas, trukmė). Skaičiuojama tik nuo bazinio efektyvumo. Kitos bangos % taikomas galutiniam efektyvumui.</li><li>Visi veiksmai rašo į tas pačias zonų korekcijas: paskyroje vienai zonai arba visoms surinkėjo zonoms (<a href="#f-PK7">PK7</a>), sidebar'e visoms pasirinktų surinkėjų zonoms (<a href="#f-EK2">EK2</a>). Esamos korekcijos perrašomos; apie tai įspėjama prieš veiksmą.</li><li>Taikoma visoms užduotims (auto ir rankiniu būdu) ir visiems surinkėjams, taip pat naujokams.</li><li>Kodėl taip: vadovui nereikia žinoti kitų lygių; valdymui nereikia pirmenybių, išimčių ir kilmės saugojimo; algoritmas skaito vieną skaičių zonai.</li></ul>
     </div></details>
@@ -1060,6 +1062,7 @@ a { color: var(--accent); }
     <section class="sec">
       <h2>Pakeitimų žurnalas</h2>
       <div class="mx"><table class="log"><tbody>
+      <tr><td>2026-11-03</td><td>Laikina korekcija – tik mažinimas (slankiklis −30…0 %), tik paskyroje; bulk korekcija lentelėje pašalinta (EK1, PA3). Kėlimas – tik bangos boost.</td></tr>
       <tr><td>2026-11-03</td><td>Korekcijų supaprastinimas (EK1, PK7, EK5, DD12, EK6): viena laikina korekcija paskyrai (+/−, iki nuėmimo), bulk lentelėje lieka; „Laikinų pakeitimų“ skydelio ir stulpelio nėra – žymos prie rolės; boost'as nuo dabartinių skaičių, be „Ignore“. Dashboard'e „Working now“ suskleistas (DB3).</td></tr>
       <tr><td>2026-10-30</td><td>Patvirtinta taisyklė (PK4 → Sutarta): zona priskiriama tik su visais efektyvumo skaičiais, be jų išsaugoti negalima. Variklio logikoje Q33 ir Q34 uždaryti. Prototipe taip veikia nuo 10-28.</td></tr>
       <tr><td>2026-10-30</td><td>Kelios zonos (PK6): kombinacijų sąrašas nesuskleidžiamas, prierašas „from SC settings“ išimtas; pažymėjus „Can work in multiple zones“ pažymimos visos kombinacijos, atžymėjus visas kombinacijas atžymimas ir jis.</td></tr>
