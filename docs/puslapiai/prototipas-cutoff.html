@@ -351,7 +351,8 @@ td,th{white-space:nowrap}
 <section id="sb" hidden class="fixed right-0 top-14 bottom-0 z-10 bg-gray-50 border-l shadow-2xl flex flex-col text-sm" style="width:min(440px,100vw)" aria-label="Working now">
   <button id="sbXb" class="absolute -left-[18px] top-2.5 z-[4] w-9 h-9 rounded-full bg-white border shadow-md text-gray-700 hover:bg-gray-100 flex items-center justify-center" aria-label="Collapse" title="Collapse (Esc)" onclick="sbClose()"><svg class="w-4 h-4" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 5l5 5-5 5"/></svg></button>
   <div class="flex items-center gap-2 pl-7 pr-4 h-14 shrink-0 text-gray-600"><svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M9.6 2.2a1 1 0 0 1 .2 1.4L7 7.5h10l-2.8-3.9a1 1 0 1 1 1.6-1.2l3.7 5.1H21a1 1 0 0 1 0 2h-.3l-1.5 9.6A2.5 2.5 0 0 1 16.7 21H7.3a2.5 2.5 0 0 1-2.5-1.9L3.3 9.5H3a1 1 0 0 1 0-2h1.5l3.7-5.1a1 1 0 0 1 1.4-.2z"/><path d="M9 12.5v4M12 12.5v4M15 12.5v4" stroke="#fff" stroke-width="1.7" stroke-linecap="round"/></svg><div class="font-semibold text-lg text-gray-900">Working now</div></div>
-  <div id="sbBoost" class="empty:hidden px-4 pb-2 shrink-0"></div>
+  <!-- Pranešimai po antrašte: boost ir cut-off vienas po kito -->
+  <div class="px-4 pb-2 shrink-0 space-y-2"><div id="sbBoost" class="empty:hidden"></div><div class="flex gap-2 rounded border border-amber-200 bg-amber-50 text-amber-900 text-xs px-2.5 py-2" role="status"><svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v4l2.5 1.5"/></svg><span><b>Cut-off.</b> Auto tasks are paused until the next wave (13:00). Tasks are assigned manually; “Picking” includes manual tasks.</span></div></div>
   
   <div id="sbScroll" class="flex-1 overflow-y-auto">
   <div class="px-4 pt-3 pb-4 space-y-2">
@@ -359,7 +360,6 @@ td,th{white-space:nowrap}
       <div class="flex items-center justify-between h-6 -mr-1.5"><div class="text-[13px] font-semibold text-gray-800">Auto tasks</div>
         <div class="flex items-center gap-1"><button id="kb" class="w-8 h-8 rounded text-gray-500 hover:bg-gray-100 text-lg leading-none disabled:opacity-40 disabled:cursor-not-allowed" aria-label="Auto tasks actions" aria-haspopup="true" onclick="kOpen(this)">⋮</button></div></div>
       <div class="grid grid-cols-4 gap-3 mt-1"><div class="st"><span>Enabled</span><b id="cnt"></b></div><div class="st"><span>Picking</span><b id="sR"></b></div><div class="st" title="Waiting"><span>Waiting</span><b id="sL"></b></div><div class="st" title="Not synced"><span>Not synced</span><b id="sN"></b></div></div>
-      <div class="mt-2.5 flex gap-2 rounded border border-amber-200 bg-amber-50 text-amber-900 text-xs px-2.5 py-2" role="status"><svg class="w-4 h-4 shrink-0" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10" cy="10" r="7.5"/><path d="M10 6v4l2.5 1.5"/></svg><span><b>Cut-off.</b> Auto tasks are paused until the next wave (13:00). Tasks are assigned manually; “Picking” includes manual tasks.</span></div>
     </div>
     <div class="sc">
       <div class="h-6 flex items-center text-[13px] font-semibold text-gray-800">Manual assignment</div>
