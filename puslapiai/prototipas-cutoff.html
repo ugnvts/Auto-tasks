@@ -272,7 +272,8 @@ td,th{white-space:nowrap}
           <dl class="text-sm divide-y" id="dl"></dl>
           <h3 class="font-medium mt-6 pb-2 border-b">Auto tasks</h3>
           <dl id="vAuto" class="text-sm divide-y"></dl>
-          <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zones and efficiency <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3><button id="korBtn" class="ml-auto text-sm border border-indigo-600 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-50" onclick="korOpen()">Reduce efficiency</button></div>
+          <div class="flex flex-wrap items-end gap-2 mt-6 pb-2 border-b"><h3 class="font-medium">Zones and efficiency for auto tasks <span id="effN" class="text-gray-400 font-normal text-sm"></span></h3><button id="korBtn" class="ml-auto text-sm border border-indigo-600 text-indigo-700 px-3 py-1 rounded hover:bg-indigo-50" onclick="korOpen()">Reduce efficiency</button></div>
+          <p class="mt-2 text-sm text-gray-500">Used to size auto tasks. Manual assignment isn't limited by these numbers.</p>
           <div id="korCard" class="mt-3 empty:hidden"></div>
           <div id="effView" class="mt-3 space-y-3"></div>
           <h3 class="font-medium mt-6 pb-2 border-b">Multiple zones</h3>
@@ -296,9 +297,12 @@ td,th{white-space:nowrap}
             <div class="grid sm:grid-cols-2 gap-4"><label>Shop<select id="sp" class="mt-1 w-full border rounded px-3 py-2"><option>X016 Liepkalnis</option><option selected>X864 HYPER</option><option>X500 Akropolis</option><option>X532 Olinda</option></select></label><div class="hidden sm:block"></div>
             <label>Time card<input id="tc" class="mt-1 w-full border rounded px-3 py-2" value="3360"></label><label>Shift name<input id="sh" class="mt-1 w-full border rounded px-3 py-2" value="Evening"></label>
             <label>Role<select id="ro" class="mt-1 w-full border rounded px-3 py-2"><option>Picker</option><option>Inspector</option></select></label>
-            <div class="sm:pt-[33px]"><label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="VA=VA&&!this.checked"><span>New picker<br><span class="text-gray-500">While checked, auto tasks cannot be enabled; tasks are assigned manually.</span></span></label></div></div></div>
-          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Zones and efficiency</h3>
-            <p class="text-gray-500 mb-2">Select zones and enter efficiency for each selected zone manually.</p>
+            </div></div>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Auto tasks</h3>
+            <div class="space-y-3"><label class="flex gap-3 items-start"><input id="ea" type="checkbox" class="mt-1 disabled:opacity-40" onchange="VA=this.checked;N[0][5]=VA?1:0"><span>Auto tasks<br><span class="text-gray-500">Tasks are assigned automatically.</span></span></label>
+            <label class="flex gap-3 items-start"><input id="nk" type="checkbox" checked class="mt-1" onchange="eaSync()"><span>New picker<br><span class="text-gray-500">While checked, auto tasks cannot be enabled; tasks are assigned manually.</span></span></label></div></div>
+          <div><h3 class="text-lg font-semibold pb-2 border-b mb-3">Zones and efficiency for auto tasks</h3>
+            <p class="text-gray-500 mb-2">Used to size auto tasks; manual assignment isn't limited by these numbers. Select zones and enter SKU/1h or Units/1h for each.</p>
             <div class="flex flex-wrap items-center gap-2 mb-2"><button class="border border-indigo-600 text-indigo-700 px-3 py-1 rounded" onclick="allZ(1)">Enable all zones</button><button class="border px-3 py-1 rounded" onclick="allZ(0)">Disable all</button><span id="zc" class="text-gray-500 ml-auto"></span></div>
             <input id="zq" placeholder="Search zones…" class="w-full border rounded px-3 py-2 mb-2" oninput="zones()">
             <div id="zl" class="border rounded divide-y"></div>
@@ -436,7 +440,9 @@ let cv='dash';const hist=[];
 function back(){go(hist.pop()||'dash',false)}
 function menu(b,i){mi=i;const m=document.getElementById('rmenu'),r=b.getBoundingClientRect();m.style.top=r.bottom+4+'px';m.style.left=Math.max(8,r.right-128)+'px';m.hidden=false}
 document.addEventListener('click',e=>{if(!e.target.closest('#rmenu,[data-menu]'))document.getElementById('rmenu').hidden=true});
-function go(v,push=true){try{parent.postMessage({proto:v},'*')}catch(e){}document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
+// Redagavimas: auto tasks varnelė neaktyvi, kol uždėta naujoko žyma (kaip peržiūroje)
+function eaSync(){const n=document.getElementById('nk').checked,a=document.getElementById('ea');if(n){VA=false;N[0][5]=0}a.checked=VA;a.disabled=n}
+function go(v,push=true){if(v=='edit')setTimeout(eaSync);try{parent.postMessage({proto:v},'*')}catch(e){}document.getElementById('rmenu').hidden=true;if(push&&v!=cv)hist.push(cv);cv=v;if(v=='view')rv();['dash','list','view','edit'].forEach(k=>document.getElementById('v-'+k).classList.toggle('hidden',k!=v));nDash.classList.toggle('on',v=='dash');nList.classList.toggle('on',v!='dash');scrollTo(0,0)}
 function allZ(on){if(on)Z.forEach(n=>EFF[n]??=[]);else Object.keys(EFF).forEach(k=>delete EFF[k]);zones()}
 function zones(){const q=document.getElementById('zq').value.toLowerCase();document.getElementById('zc').textContent=Z.filter(n=>EFF[n]).length+' of 52 enabled';
   const inp=(i,u,v,n,k)=>`<label class="flex flex-col gap-1 text-xs text-gray-500 whitespace-nowrap">${u}<input id="z${i}${u.replace(/\W/g,'')}" class="w-full border rounded px-2 py-1 text-sm text-gray-900 bg-white ${zErr&&zReq(n,k)&&!zF(n,k)?'border-red-500 bg-red-50':''}" value="${v??''}" oninput="zEf('${n}',${k},this.value)"></label>`;
