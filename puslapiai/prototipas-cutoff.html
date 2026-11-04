@@ -514,7 +514,7 @@ function vNkSet(on){document.getElementById('nk').checked=on;N[0][7]=on?1:0;if(o
 // sidebar'e – grupinis veiksmas daugeliui surinkėjų (ta pati korekcija visoms jų zonoms, esamos perrašomos). Paskutinis veiksmas laimi.
 let GD=null;const ZD=['Groceries','Candies','Fruits, vegetables','Bread products','Chips','Cosmetics','Chemicals','Conservation','Frozen goods','Alcoholic beverages'],
   zAll=(k,ex={})=>({z:Object.fromEntries(ZD.map(z=>[z,ex[z]||k]))});
-const PC={2:zAll({d:'down',p:10,t:''}),3:zAll({d:'down',p:20,t:''}),5:zAll({d:'down',p:10,t:''}),7:zAll({d:'down',p:30,t:''})};// laikina korekcija visai paskyrai (visoms zonoms vienoda); 0 = Silvija – KOR
+const PC={3:zAll({d:'down',p:20,t:''}),5:zAll({d:'down',p:10,t:''})};// laikina korekcija visai paskyrai (visoms zonoms vienoda); 0 = Silvija – KOR
 const SZ={4:[['Alcoholic beverages','']],5:[['Frozen goods','']]};// sustabdytos zonos [zona, iki kada]; Silvijos – PAU
 const pers=i=>korN(i==0?KOR:PC[i]);
 // Korekcijos ikona pagal kryptį: mažinimas – žemyn, didinimas – aukštyn, skirtingos kryptys – abi
