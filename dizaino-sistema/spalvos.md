@@ -92,16 +92,19 @@ HTML prototipas naudoja standartinį Tailwind (v3). Su DS jis sutampa ne visur:
 | Naujoko žyma `violet-50` / `violet-700` | #f5f3ff / #6d28d9 | `purple/50` / `purple/700` – DS purple yra Tailwind violet; sąsajoje dar nenaudojamas |
 | Temporary changes (indigo) | indigo | `indigo/*` – sutampa |
 
-Būsenų tag'ams reikės paletės, kurios Picker accounts dizainuose dar nebuvo (blue, yellow/amber, purple). Prieš kuriant komponentus reikia sutarti, ar žalią imti iš `Emerald` (kaip prototipe), ar iš `green` (kaip esamuose toast'uose ir Cell).
+Būsenų tag'ams reikės paletės, kurios Picker accounts dizainuose dar nebuvo (blue, yellow/amber, purple).
+
+**Sprendimas (2026-11-04): design system yra tiesos šaltinis.** Figmoje naudojamos DS spalvos jų DS pavadinimais, net jei hex skiriasi nuo prototipo. Žalia – `green/*`, kaip esamuose toast'uose ir Cell (ne `Emerald`). Prototipas laikomas eskizu: jo Tailwind spalvos Figmoje pakeičiamos artimiausiu DS stiliumi tuo pačiu pavadinimu (`green-100` → DS `green/100`, `amber-*` → DS `yellow/*`, `violet-*` → DS `purple/*`).
 
 ## Taisyklės kuriant naujus dizainus (kol DS netvarkytas)
 
+- Design system yra tiesos šaltinis: jokių hex reikšmių ar spalvų iš prototipo, tik DS stiliai.
 - Naudoti tik spalvas iš lentelių „Naudojamos spalvos pagal vaidmenį“; naujas paletes (blue, yellow, purple) – tik būsenų tag'ams, sutarus.
 - Tekstas: `gray/900` pagrindinis, `gray/700` pavadinimai, `gray/500` antrinis. Nuorodos – `indigo/600`.
 - Neperrašyti spalvų instance'uose, jei komponentas turi variantą.
 
 ## Kiti žingsniai
 
-- [ ] Sutarti žalios paletės pasirinkimą (`green` ar `Emerald`) būsenų tag'ams.
+- [x] Žalia būsenų tag'ams – DS `green/*` (2026-11-04: DS yra tiesos šaltinis).
 - [ ] Nuspręsti dėl semantinių kintamųjų (tekstas, paviršiai, būsenos) – pagal vaidmenų lenteles.
 - [ ] Nuspręsti dėl paveikslėlių stilių ir nenaudojamų palečių (tik po aptarimo).
