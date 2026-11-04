@@ -735,6 +735,8 @@ function sbTab(t){sbT=t;sbP=null;sbFrom='p';sbR()}
 let sbFrom='p';
 function sbPick(i){if(i!=null){if(sbP==null)sbFrom=sbT;sbT='p'}else sbT=sbFrom;sbP=i;sbR();const sc=document.getElementById('sbScroll');if(sc)sc.scrollTop=0}
 document.addEventListener('keydown',e=>{if(e.key=='Escape'&&!sb.hidden&&offdlg.hidden&&kordlg.hidden)sbClose()});
+// Paspaudus už sidebar'o ribų – uždaromas (išskyrus juostą, mobilų mygtuką ir atidarytus langus); composedPath, nes turinys perpiešiamas
+document.addEventListener('click',e=>{if(sb.hidden||docked)return;const p=e.composedPath();if(['sb','rail','fab','kordlg','offdlg','epop','kmenu','toast','dtoast'].some(id=>p.includes(document.getElementById(id))))return;sbClose()});
 
 function sbF(k,v){sbK.clear();if(k=='g'){sbG=v;sbS='';if(v=='auto')sbN=0;sbDD=0}if(k=='s')sbS=sbS==v?'':v;if(k=='n')sbN=sbN?0:1;sbR()}
 function sbZA(on){document.querySelectorAll('#sbBody tbody tr[aria-expanded]').forEach(t=>{const z=t.children[1].textContent;on?sbZO.add(z):sbZO.delete(z)});sbR()}
