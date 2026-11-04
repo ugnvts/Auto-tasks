@@ -80,3 +80,15 @@ Kalba – anglų, kaip ir visa DS. **Įrašyta į Figmą 2026-11-04** (abiejų r
 - B. Teksto savybė „Label“ ir ikonos „Instance swap“.
 - C. Ikonos kaip jungikliai („Leading icon“, „Trailing icon“) vietoj `Icon` varianto.
 - D. Išimti `Size` (viena reikšmė), sujungti `Type=Icon only` su `Icon=Only`, susieti Danger su `Button`.
+
+## Rastos problemos (2026-11-04, nekeista)
+
+Svarbiausios pirmiau.
+
+1. **Perrašymai, kurie blokuoja DS atnaujinimus.** Picker accounts dizainuose beveik visi `Button` instance'ai turi perrašytus fono, teksto stiliaus, šešėlio ir aukščio laukus – su **tomis pačiomis** reikšmėmis kaip komponente (pvz., Primary: fill `indigo/600`, `shadow/sm`, h38; tekstas `white`, `text-sm/leading-5/font-medium`). Dabar jie atrodo teisingai, bet pakeitus mygtuką DS šie instance'ai pakeitimo negaus. Taisymas – dizainuose „Reset all overrides“, DS liesti nereikia.
+2. **Disabled daromas trimis būdais:** be ikonos – permatomumas 40 %, su ikona – 50 %, Icon only – be permatomumo, fonas `gray/200` ir ikona `gray/400`.
+3. **Du skirtingi pavojingo veiksmo mygtukai:** `Action Panel/Button/Red` (paskyroje „Delete account“, švelnus `red/100` fonas) ir `Modals/Button/Red` (modalo „Delete“). Nėra taisyklės, kada kurį. Be to, Red mygtukai neturi Disabled, neturi šešėlio, o dydį vadina `Breakpoint`, ne `Size`.
+4. **Secondary Focus nevienodas:** su ikona fonas `indigo/50`, be ikonos – `indigo/100`.
+5. **Ikonos įrašytos komponente:** tekstiniuose mygtukuose „Mail“, Icon only – „Plus sm“; nėra „Instance swap“ savybės, nėra teksto savybės (žr. B).
+
+Kiti mygtukų komponentai Picker accounts dizainuose: `Navbars/Icon button`, `toast/dismiss button`, `Modals/Dismiss button` – specializuoti, atskirai neperžiūrėti.
