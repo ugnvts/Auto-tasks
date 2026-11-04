@@ -49,11 +49,11 @@ Komponente ikona įrašyta kaip „Mail“ – ją reikia pakeisti instance'e ra
 - Matmenys: aukštis 38, paddingas 17/9 (su ikona prieš tekstą 15/9), kampai 6, tarpas iki ikonos 8.
 - Tekstas: `text-sm/leading-5/font-medium`. Spalvos: Primary `indigo/600` (hover `indigo/700`), tekstas `white`; White – `white`, rėmelis `gray/300`, tekstas `gray/700`, hover `gray/50`; Secondary – `indigo/100`, tekstas `indigo/700`, hover `indigo/200`. Šešėlis `shadow/sm`, fokusas – ring efekto stilius.
 - `Action Panel/Button/Red` savybės: `Breakpoint` (Desktop 38 px, Mobile 42 px), `State` (Default, Hover, Focus). Fonas `red/100` (hover `red/200`), tekstas `red/700`.
-- Aprašymų nėra nė viename komponente.
+- Aprašymai: `Button` ir `Action Panel/Button/Red` rinkiniuose – nuo 2026-11-04 (žr. žemiau).
 
 ## Aprašymų juodraštis Figmai
 
-Kalba – anglų, kaip ir visa DS (pakeisime, jei reikia lietuviškai). Perkelti į Figmą tik patvirtinus.
+Kalba – anglų, kaip ir visa DS. **Įrašyta į Figmą 2026-11-04** (abiejų rinkinių `description`; variantai nekeisti). Kituose failuose matysis po bibliotekos publikavimo.
 
 **`Button` (komponentų rinkinio aprašymas):**
 
