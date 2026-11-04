@@ -16,6 +16,10 @@ Naujas ekrano variantas: atskiras failas `puslapiai/` + eilutė `PAGES` sąraše
 `archyvas/` – 2026-10-22 review failas, GitHub Pages bandymas ir atmesti variantai (`atmesti-variantai/`); tik šiame kompiuteryje, ne git.
 Versijų istorija – vietinis git.
 
+## Dizaino sistema
+
+Figma dizaino sistemos dokumentacija (pamatai, komponentai, principai) – atskirame repo `~/Documents/Barbora-dizaino-sistema`. Kuriant Figmoje – naudoti tik jame aprašytus DS stilius ir komponentus.
+
 ## GitHub Pages
 
 `docs/` – svetainės kopija GitHub Pages'ui (sugeneruota, ranka netaisyti).
