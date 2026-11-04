@@ -726,7 +726,8 @@ function stTags(i){const r=N[i],o=open_(i),c=cur_(i),q=o.filter(t=>!c.includes(t
 const zonesOf=i=>[...new Set(cur_(i).map(t=>t[1]))];
 function sbD(i,k){sbX[i]=sbX[i]==k?'':k;sbR()}
 function sbOpen(t,g,s,n){sbK.clear();if(t)sbT=t;if(g!==undefined){sbG=g;sbS=s||'';sbN=n?1:0}sb.hidden=false;rail.classList.add('md:invisible');fab.hidden=true;sbR();sb.querySelector('button').focus()}
-function sbClose(){sb.hidden=true;rail.classList.remove('md:invisible');fab.hidden=false;kmenu.hidden=true}
+// Uždarius sidebar'ą – grįžta į numatytą būseną (surinkėjų sąrašas, be atidaryto surinkėjo)
+function sbClose(){sb.hidden=true;rail.classList.remove('md:invisible');fab.hidden=false;kmenu.hidden=true;sbP=null;sbT='p';sbFrom='p';const sc=document.getElementById('sbScroll');if(sc)sc.scrollTop=0}
 let sbP=null;
 function sbTab(t){sbT=t;sbP=null;sbFrom='p';sbR()}
 // Surinkėjo vaizdas atidaromas ir iš „Zones“ skirtuko; „‹“ grąžina ten, iš kur atėjo
