@@ -18,7 +18,7 @@ Versijų istorija – vietinis git.
 
 ## Dizaino sistema
 
-Figma dizaino sistemos dokumentacija (pamatai, komponentai, principai) – atskirame repo `~/Documents/Barbora-dizaino-sistema`. Kuriant Figmoje – naudoti tik jame aprašytus DS stilius ir komponentus.
+Admin dizaino sistemos (Figma) dokumentacija – pamatai, komponentai, principai – atskirame repo `~/Documents/Admin-dizaino-sistema`. Kuriant Figmoje – naudoti tik jame aprašytus DS stilius ir komponentus.
 
 ## GitHub Pages
 
