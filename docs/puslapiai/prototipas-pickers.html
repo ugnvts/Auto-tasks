@@ -238,6 +238,7 @@ td,th{white-space:nowrap}
           <button id="pgTa" role="tab" class="pgt" onclick="pgTab('all')">All pickers</button>
           <button id="pgTl" role="tab" class="pgt" onclick="pgTab('live')">Working now <span id="pgNl" class="ml-1 text-xs tabular-nums rounded-full bg-gray-100 px-1.5 py-0.5 text-gray-600"></span></button>
           <button id="pgTz" role="tab" class="pgt" onclick="pgTab('zones')">Zones</button>
+          <button id="pgTw" role="tab" class="pgt" onclick="pgTab('waves')">Waves</button>
         </div>
         <div id="pgAll">
         <div class="flex flex-wrap items-center gap-2 mt-5 text-sm">
@@ -264,7 +265,7 @@ td,th{white-space:nowrap}
         </table></div>
         <p id="foot" class="text-center text-sm text-gray-500 mt-4"></p>
         </div>
-        <div id="pgLive" class="hidden mt-5"><div id="pgWave"></div><div id="pgBody" class="mt-4"></div></div>
+        <div id="pgLive" class="hidden mt-5"><div id="pgWave"></div><div id="pgBody"></div></div>
       </section>
 
       <!-- PERŽIŪRA -->
@@ -1002,63 +1003,85 @@ addEventListener('resize',railS);railS();
 .pgt{padding:10px 12px;font-size:14px;font-weight:500;color:#6b7280;border-bottom:2px solid transparent;margin-bottom:-1px}
 .pgt:hover{color:#111827}
 .pgt.on{color:#4338ca;border-bottom-color:#4f46e5}
-.pgc > div{margin:0!important}
 </style>
 <script>
-// Tab'ai: All pickers (paruošimas: sąrašas, auto įjungimas) | Working now (stebėjimas: surinkėjai) | Zones (stebėjimas: zonos).
-// Working now ir Zones viršuje – bangų juosta: einamoji ir kita banga, surinkėjai ir likusios eilutės (iš priskirtų užduočių; viena užduotis – viena banga).
-// „Picking“ – sinchronizuotos (renkamos) užduotys, „Not synced“ – priskirtos, ateis su kita sinchronizacija.
-let pgT='all',pgP=null,pgW='',pgFin=0,pgG='all',pgS='',pgN=0;const pgZO=new Set();
+// Tab'ai: All pickers (paruošimas) | Working now (srautas) | Zones | Waves (2026-11-12, 2 iteracija).
+// Visuose stebėjimo pjūviuose – ta pati surinkėjo eilutė (vardas, rolė, zona, banga, būsena, laikas, auto); grupių antraštės – pjūvio santraukos.
+// Zona ir banga – dabartinio išėjimo (sinchronizuotų užduočių); „Not synced“ – priskirtos, ateis su kita sinchronizacija.
+// Grupuotame pjūvyje eilutė rodo tos grupės užduotis, o grupuojamas stulpelis – kitas zonas / bangas („+ …“). Bangų eilutės – iš priskirtų užduočių (A variantas).
+let pgT='all',pgF={g:'',s:''},pgN=0,pgFin=0;const pgZO=new Set(),pgWO=new Set([WV.cur,WV.next]),pgX=new Set();
 const pgWork=()=>N.map((r,i)=>[r,i]).filter(([r])=>works(r)),
-  pW=i=>[...new Set(open_(i).map(t=>TX(t).w))],
-  pgBoth=i=>{const w=pW(i);return w.includes(WV.cur)&&w.includes(WV.next)},
-  wOk=i=>!pgW||(pgW=='both'?pgBoth(i):pW(i).includes(pgW)),
-  // Baigia rinkti: išėjime praėjo ≥ 80 % numatytos trukmės – netrukus reikės naujų užduočių
-  pgFinOk=i=>{const m=TM[i],r=N[i];if(!m||!m.s||r[6]!='Picking')return false;const e=bE(i,m.e);return e&&NOW-hm(m.s)>=.8*e};
-function pgWS(){const W=pgWork(),S={};
-  [WV.cur,WV.next].forEach(w=>{const s={p:new Set(),q:new Set(),lp:0,lq:0};W.forEach(([r,i])=>open_(i).forEach(t=>{if(TX(t).w!=w)return;const l=t[3]-t[2];if(t[4]=='Picking'){s.p.add(i);s.lp+=l}else{s.q.add(i);s.lq+=l}}));s.all=new Set([...s.p,...s.q]);S[w]=s});
-  S.both=W.filter(([r,i])=>pgBoth(i)).length;return S}
-function pgWaveH(){const S=pgWS(),card=(w,k)=>{const s=S[w],c=k=='c',on=pgW==w,ps=!c&&BP;
-  return `<div class="rounded-lg border bg-white ${on?'border-indigo-400 ring-1 ring-indigo-300':BST[k]?'border-green-300':ps?'border-amber-300':'border-gray-200'}">
-    <div class="flex flex-wrap items-center gap-2 px-4 pt-3"><span class="font-semibold text-gray-900">${w}</span><span class="text-sm text-gray-500 tabular-nums">${c?WV.t:WV.nt}</span><span class="text-xs rounded-full bg-gray-100 border border-gray-200 text-gray-600 px-2 py-0.5">${c?'Current wave':'Next wave'}</span><span class="ml-auto">${bChip(w)}</span></div>
-    <button class="w-full text-left px-4 pb-3 pt-2 rounded-b-lg hover:bg-gray-50" aria-pressed="${on}" title="${on?'Show all pickers':`Show pickers with ${w} tasks`}" onclick="pgWf('${w}')">
-      <div class="flex flex-wrap items-baseline gap-x-5"><span><span class="text-2xl font-semibold tabular-nums">${s.all.size}</span> <span class="text-sm text-gray-600">${s.all.size==1?'picker':'pickers'}</span></span><span><span class="text-2xl font-semibold tabular-nums">${s.lp+s.lq}</span> <span class="text-sm text-gray-600">lines left</span></span></div>
-      <div class="mt-1.5 flex flex-wrap gap-x-5 gap-y-1 text-xs text-gray-600"><span title="Synced tasks the pickers are picking now"><span class="inline-block w-2 h-2 rounded-full bg-green-500 mr-1"></span>Picking: <b class="tabular-nums text-gray-900">${s.p.size}</b> · ${s.lp} ln.</span><span title="Assigned tasks the pickers get with the next sync"><span class="inline-block w-2 h-2 rounded-full bg-amber-400 mr-1"></span>Not synced: <b class="tabular-nums text-gray-900">${s.q.size}</b> · ${s.lq} ln.</span></div>
-    </button></div>`};
-  return `<div class="grid md:grid-cols-2 gap-3">${card(WV.cur,'c')}${card(WV.next,'n')}</div>
-  ${S.both||pgW?`<div class="mt-2 flex flex-wrap items-center gap-2 text-sm">${S.both?`<button class="fc ${pgW=='both'?'on':''}" aria-pressed="${pgW=='both'}" title="Pickers with tasks from ${WV.cur} and ${WV.next}" onclick="pgWf('both')">${S.both} ${S.both==1?'picker has':'pickers have'} tasks from both waves</button>`:''}${pgW?`<button class="text-indigo-600 hover:underline" onclick="pgWf('')">Clear wave filter</button>`:''}</div>`:''}`}
-function pgWf(w){pgW=pgW==w?'':w;pgR()}
-function pgLiveH(){const W=pgWork(),L=W.filter(([r,i])=>(pgG=='all'||(pgG=='auto'?r[5]:!r[5]))&&(!pgS||r[6]==pgS)&&(!pgN||r[7])&&wOk(i)),
-    gc=g=>W.filter(([r])=>g=='all'||(g=='auto'?r[5]:!r[5])).length,sts=pgG=='man'?['Picking','Not synced']:['Picking','Waiting','Not synced'];
-  return `<div class="flex flex-wrap items-center gap-2"><div class="inline-flex border rounded-md p-0.5 gap-0.5 bg-white" role="group" aria-label="Group">${[['all','All'],['auto','Auto'],['man','Manual']].map(([g,t])=>`<button class="sg px-3 ${pgG==g?'on':''}" aria-pressed="${pgG==g}" onclick="pgG='${g}';pgS='';if(pgG=='auto')pgN=0;pgR()">${t} <span class="text-gray-400 tabular-nums">${gc(g)}</span></button>`).join('')}</div>
-    <span class="w-px h-5 bg-gray-200 mx-1"></span>${sts.map(v=>`<button class="fc ${pgS==v?'on':''}" aria-pressed="${pgS==v}" onclick="pgS=pgS=='${v}'?'':'${v}';pgR()">${v}</button>`).join('')}${pgG!='auto'?`<button class="fc ${pgN?'on':''}" aria-pressed="${!!pgN}" onclick="pgN=pgN?0:1;pgR()">New pickers</button>`:''}</div>
-  <div class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3 items-start pgc">${L.map(([r,i])=>sbCard(r,i,0)).join('')}</div>${L.length?'':'<p class="py-10 text-center text-gray-500">No pickers match the filters.</p>'}`}
-function pgZonesH(){const W=pgWork().filter(([r,i])=>wOk(i)&&(!pgFin||pgFinOk(i))),zs={};
-  W.forEach(([r,i])=>{const ts=open_(i);[...new Set(ts.map(t=>t[1]))].forEach(z=>{const o=zs[z]??={a:new Set(),p:new Set(),q:new Set(),n:new Set(),l:{}};o.a.add(i);if(r[7])o.n.add(i);ts.filter(t=>t[1]==z).forEach(t=>{(t[4]=='Picking'?o.p:o.q).add(i);const w=TX(t).w;o.l[w]=(o.l[w]||0)+t[3]-t[2]})})});
-  const rows=Object.entries(zs).sort((a,b)=>b[1].a.size-a[1].a.size||a[0].localeCompare(b[0])),n0=v=>v||'<span class="text-gray-300">0</span>',all=rows.length&&rows.every(([z])=>pgZO.has(z)),fc=pgWork().filter(([r,i])=>wOk(i)&&pgFinOk(i)).length;
-  const zp=z=>W.filter(([r,i])=>open_(i).some(t=>t[1]==z)).map(([r,i])=>{const ts=open_(i).filter(t=>t[1]==z),c=ts.filter(t=>t[4]=='Picking'),pk=c.reduce((a,t)=>a+t[2],0),tt=c.reduce((a,t)=>a+t[3],0),ws=[...new Set(ts.map(t=>TX(t).w))].sort();
-    return `<li><button class="w-full flex flex-wrap items-center gap-2 px-3 py-2 text-left hover:bg-gray-50" title="Show picker" onclick="pgPick(${i})"><span class="text-[13px] font-medium text-gray-900">${r[0]} ${r[1]}</span>${r[7]?'<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">New</span>':''}${pgFinOk(i)?'<span class="text-xs rounded-full border border-gray-300 bg-gray-50 text-gray-700 px-1.5">Finishing</span>':''}<span class="ml-auto flex items-center gap-2"><span class="text-xs text-gray-500 tabular-nums">${ws.join(', ')}</span>${c.length?stTag('Picking',pk,tt,'w-[124px]'):''}${ts.some(t=>t[4]!='Picking')?stTag('Not synced',0,0,'w-[124px]'):''}</span></button></li>`}).join('');
-  return `<div class="flex flex-wrap items-center gap-2"><button class="fc ${pgFin?'on':''}" aria-pressed="${!!pgFin}" title="Pickers whose run has passed 80 % of its planned duration – they will need new tasks soon" onclick="pgFin=pgFin?0:1;pgR()">Finishing picking <span class="tabular-nums text-gray-400">${fc}</span></button></div>
-  <div class="mt-3 bg-white border rounded overflow-x-auto"><table class="w-full text-sm"><thead class="text-xs text-gray-500 border-b"><tr class="text-left"><th class="pl-3 pr-0 w-8"><button class="w-6 h-6 rounded hover:bg-gray-200 text-gray-500" aria-label="${all?'Collapse all zones':'Expand all zones'}" title="${all?'Collapse all':'Expand all'}" onclick="pgZA(${all?0:1})">${CV(all?'d':'r')}</button></th><th class="py-2 font-normal">Zone</th><th class="px-3 font-normal text-right" title="Picking or has an assigned task in this zone">Active</th><th class="px-3 font-normal text-right" title="Picking a synced task in this zone">Picking</th><th class="px-3 font-normal text-right" title="Has assigned tasks in this zone that are not synced yet">Next tasks assigned</th><th class="px-3 font-normal text-right" title="New pickers picking or with a task in this zone">New</th><th class="px-3 font-normal text-right border-l" title="Lines left in assigned ${WV.cur} tasks">${WV.cur} lines left</th><th class="pl-3 pr-4 font-normal text-right" title="Lines left in assigned ${WV.next} tasks">${WV.next} lines left</th></tr></thead><tbody>
-  ${rows.map(([z,o])=>{const op=pgZO.has(z);return `<tr class="${op?'bg-gray-100':'border-b hover:bg-gray-50'} cursor-pointer" onclick="pgZT('${z.replace(/'/g,"\\'")}')" aria-expanded="${op}"><td class="pl-3 pr-0 text-gray-400 text-center">${CV(op?'d':'r')}</td><td class="py-2.5 font-medium">${z}</td><td class="px-3 text-right tabular-nums font-semibold">${o.a.size}</td><td class="px-3 text-right tabular-nums">${n0(o.p.size)}</td><td class="px-3 text-right tabular-nums">${n0(o.q.size)}</td><td class="px-3 text-right tabular-nums">${n0(o.n.size)}</td><td class="px-3 text-right tabular-nums border-l">${n0(o.l[WV.cur])}</td><td class="pl-3 pr-4 text-right tabular-nums">${n0(o.l[WV.next])}</td></tr>${op?`<tr class="border-b bg-gray-100"><td colspan="8" class="px-4 pb-3"><ul class="bg-white border border-gray-200 rounded-md divide-y shadow-sm">${zp(z)}</ul></td></tr>`:''}`}).join('')||`<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">${pgFin||pgW?'No pickers match the filters.':'Nobody is picking right now.'}</td></tr>`}</tbody></table></div>`}
+  tW=t=>TX(t).w,
+  pgFinOk=i=>{const m=TM[i],r=N[i];if(!m||!m.s||r[6]!='Picking')return false;const e=bE(i,m.e);return e&&NOW-hm(m.s)>=.8*e},
+  pgOk=(r,i)=>(!pgN||r[7])&&(!pgFin||pgFinOk(i)),
+  byL=(ts,f)=>{const m={};ts.forEach(t=>{const k=f(t);m[k]=(m[k]||0)+t[3]});return Object.keys(m).sort((a,b)=>m[b]-m[a])},
+  NA='<span class="text-gray-300">–</span>',
+  more=a=>a.length?`${a[0]}${a.length>1?` <span class="text-gray-500" title="${a.slice(1).join(', ')}">+${a.length-1}</span>`:''}`:NA,
+  others=a=>a.length?`<span class="text-gray-500" title="Also ${a.join(', ')}">+ ${a.join(', ')}</span>`:NA,
+  NEWT='<span class="text-xs bg-violet-50 text-violet-700 border border-violet-200 px-1.5 rounded">New</span>';
+function pgSt(ts){const p=ts.filter(t=>t[4]=='Picking');return (p.length?stTag('Picking',p.reduce((a,t)=>a+t[2],0),p.reduce((a,t)=>a+t[3],0)):'')+(ts.some(t=>t[4]!='Picking')?stTag('Not synced'):'')}
+function pgTime(i){const m=TM[i];if(!m)return NA;const me=bE(i,m.e);
+  if(m.s){const el=NOW-hm(m.s),end=me?fm(hm(m.s)+me):'';return `<span title="Started ${m.s}${end?' · planned finish ~'+end:''}">${el}${me?' / ~'+me:''} min</span>`}
+  return `<span class="text-gray-500" title="Not started yet · planned run duration ~${me} min">~${me} min</span>`}
+const pgAuto=(r,i)=>r[7]||!isP(r)?`<button class="tog ${r[5]?'on':''}" style="opacity:${isP(r)?.4:.5};cursor:not-allowed" aria-label="Auto tasks: ${r[0]} ${r[1]}" aria-disabled="true" title="${r[7]?'Auto tasks cannot be enabled for a new picker':'Auto tasks are always on for inspectors and cannot be disabled (R05)'}" onclick="event.stopPropagation()"></button>`
+  :`<button class="tog ${r[5]?'on':''}" role="switch" aria-checked="${!!r[5]}" aria-label="Auto tasks: ${r[0]} ${r[1]}" onclick="event.stopPropagation();sbTg(${i},${r[5]?0:1})"></button>`;
+// Surinkėjo eilutė; ctx = {k:'z'|'w', v} grupuotame pjūvyje
+function pgRow(i,ctx){const r=N[i],all=open_(i),cur=cur_(i),ts=ctx?all.filter(t=>ctx.k=='z'?t[1]==ctx.v:tW(t)==ctx.v):null,key=(ctx?ctx.k+':'+ctx.v:'')+'|'+i,ox=pgX.has(key),
+    zc=ctx&&ctx.k=='z'?others(byL(all,t=>t[1]).filter(z=>z!=ctx.v)):more(byL(ctx?ts:cur,t=>t[1])),
+    wc=ctx&&ctx.k=='w'?others(byL(all,tW).filter(w=>w!=ctx.v)):more(byL(ctx?ts:cur,tW)),
+    st=ctx?pgSt(ts):stTags(i);
+  return `<tr class="border-b cursor-pointer ${ox?'bg-indigo-50/40':'hover:bg-gray-50'}" aria-expanded="${ox}" onclick="pgXT('${key}')">
+    <td class="pl-3 pr-0 w-8 text-gray-400">${CV(ox?'d':'r')}</td>
+    <td class="py-2.5 pr-3"><div class="flex items-center gap-1.5 whitespace-nowrap"><span class="font-medium text-gray-900">${r[0]} ${r[1]}</span>${r[7]?NEWT:''}${sbIco(i)}</div></td>
+    <td class="px-3 text-gray-600">${r[4]}</td><td class="px-3">${zc}</td><td class="px-3 tabular-nums">${wc}</td>
+    <td class="px-3"><div class="flex items-center gap-1">${st}</div></td><td class="px-3 tabular-nums text-gray-700 whitespace-nowrap">${pgTime(i)}</td><td class="pl-3 pr-4 text-right">${pgAuto(r,i)}</td></tr>
+    ${ox?`<tr class="border-b bg-indigo-50/40"><td></td><td colspan="7" class="pb-3 pr-4">${pgDet(i)}</td></tr>`:''}`}
+// Išskleista eilutė: laikini pakeitimai, laikai, visos užduotys (dabartinės, po to eilėje)
+function pgDet(i){const all=open_(i),m=TM[i]||{},me=bE(i,m.e),lim=sbLim(i);
+  if(!all.length)return `<div class="bg-white border rounded-md px-3 py-2">${lim}<p class="${lim?'mt-2':''} text-sm text-gray-500">No tasks assigned yet.</p></div>`;
+  const c=cur_(i),q=all.filter(t=>!c.includes(t));
+  return `<div class="bg-white border rounded-md px-3 py-2">${lim}<div class="flex flex-wrap gap-x-6 gap-y-1 text-xs text-gray-600 ${lim?'mt-2':''}">${m.s?`<span>Started <b class="text-gray-900 tabular-nums">${m.s}</b></span>`:''}${m.s&&me?`<span>Planned finish <b class="text-gray-900 tabular-nums">~${fm(hm(m.s)+me)}</b></span>`:''}${!m.s&&me?`<span>Planned run duration <b class="text-gray-900">~${me} min</b></span>`:''}</div>
+    <div class="overflow-x-auto"><table class="mt-1 w-full text-xs"><thead class="text-gray-500"><tr class="text-left"><th class="font-normal py-1.5 pr-3">Task</th><th class="font-normal pr-3">Zone</th><th class="font-normal pr-3">Wave</th><th class="font-normal pr-3 text-right">Pcs</th><th class="font-normal pr-3 text-right">Kg</th><th class="font-normal pr-3 text-right">Orders</th><th class="font-normal">Status</th></tr></thead><tbody>
+    ${[...c,...q].map(t=>{const d=TX(t);return `<tr class="border-t"><td class="py-1.5 pr-3 whitespace-nowrap"><a class="text-indigo-600 hover:underline cursor-pointer">${t[0]}</a></td><td class="pr-3">${t[1]}</td><td class="pr-3">${d.w}</td><td class="pr-3 text-right tabular-nums">${d.pcs}</td><td class="pr-3 text-right tabular-nums">${d.kg}</td><td class="pr-3 text-right tabular-nums">${d.o}</td><td>${stTag(t[4]=='Picking'?'Picking':'Not synced',t[2],t[3],'w-[124px]')}</td></tr>`}).join('')}</tbody></table></div></div>`}
+function pgXT(k){pgX.has(k)?pgX.delete(k):pgX.add(k);pgR()}
+const pgHead=(zl,wl)=>`<thead class="text-xs text-gray-500 border-b"><tr class="text-left"><th class="w-8"></th><th class="py-2.5 font-medium">Name</th><th class="px-3 font-medium">Role</th><th class="px-3 font-medium">${zl}</th><th class="px-3 font-medium">${wl}</th><th class="px-3 font-medium">Status</th><th class="px-3 font-medium" title="Run duration so far / planned">Time</th><th class="pl-3 pr-4 font-medium text-right">Auto tasks</th></tr></thead>`,
+  pgTbl=(h,b)=>`<div class="mt-3 bg-white border rounded overflow-x-auto"><table class="w-full text-sm">${h}<tbody>${b}</tbody></table></div>`;
+// Bendri filtrai visiems pjūviams
+function pgChips(extra){const W=pgWork(),n=W.filter(([r])=>r[7]).length,f=W.filter(([r,i])=>pgFinOk(i)).length,any=pgN||pgFin||pgF.g;
+  return `<div class="flex flex-wrap items-center gap-2">${extra||''}<button class="fc ${pgN?'on':''}" aria-pressed="${!!pgN}" onclick="pgN=pgN?0:1;pgR()">New pickers <span class="tabular-nums text-gray-400">${n}</span></button><button class="fc ${pgFin?'on':''}" aria-pressed="${!!pgFin}" title="Run has passed 80 % of its planned duration – will need new tasks soon" onclick="pgFin=pgFin?0:1;pgR()">Finishing picking <span class="tabular-nums text-gray-400">${f}</span></button>${any?`<button class="text-sm text-indigo-600 hover:underline px-1" onclick="pgN=0;pgFin=0;pgF={g:'',s:''};pgR()">Clear filters</button>`:''}</div>`}
+// Working now: santraukos kaip sidebar'e (Auto tasks, Manual assignment) – skaičiai yra filtrai
+function pgSum(g,s){pgF=pgF.g==g&&pgF.s==s?{g:'',s:''}:{g,s};pgR()}
+function pgLiveH(){const W=pgWork(),on=W.filter(([r])=>r[5]),man=W.filter(([r])=>!r[5]),c=(a,s)=>a.filter(([r])=>r[6]==s).length,
+    num=(g,s,v,l)=>{const a=pgF.g==g&&pgF.s==s;return `<button class="min-w-[84px] text-left rounded-md px-2.5 py-1.5 ${a?'bg-indigo-50 ring-1 ring-indigo-300':'hover:bg-gray-100'}" aria-pressed="${a}" onclick="pgSum('${g}','${s}')"><div class="text-xl font-semibold tabular-nums leading-tight">${v}</div><div class="text-xs text-gray-600">${l}</div></button>`},
+    box=(t,b)=>`<div class="bg-white border rounded-lg px-2 py-2"><div class="px-2.5 text-xs font-semibold uppercase tracking-wide text-gray-500">${t}</div><div class="mt-1 flex flex-wrap gap-1">${b}</div></div>`,
+    L=W.filter(([r,i])=>(!pgF.g||(pgF.g=='auto'?r[5]:!r[5]))&&(!pgF.s||r[6]==pgF.s)&&pgOk(r,i));
+  return `<div class="grid md:grid-cols-[3fr_2fr] gap-3">${box('Auto tasks',num('auto','',on.length,'On')+num('auto','Picking',c(on,'Picking'),'Picking')+num('auto','Waiting',c(on,'Waiting'),'Waiting')+num('auto','Not synced',c(on,'Not synced'),'Not synced'))}${box('Manual assignment',num('man','Picking',c(man,'Picking'),'Picking')+num('man','Not synced',c(man,'Not synced'),'Not synced'))}</div>
+  <div class="mt-4">${pgChips()}</div>${pgTbl(pgHead('Zone','Wave'),L.map(([r,i])=>pgRow(i)).join('')||'<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">No pickers match the filters.</td></tr>')}`}
+// Zones: grupė = zona; antraštė – dirba, renka, nesinchronizavo, naujokai; dešinėje – likusios eilutės pagal bangą
+function pgGH(open,click,body){return `<tr class="bg-gray-100 border-b cursor-pointer hover:bg-gray-200/60" aria-expanded="${open}" onclick="${click}"><td class="pl-3 pr-0 w-8 text-gray-500">${CV(open?'d':'r')}</td><td colspan="7" class="py-2.5 pr-4">${body}</td></tr>`}
+const pgN_=(v,l,t)=>`<span class="text-sm text-gray-600 whitespace-nowrap"${t?` title="${t}"`:''}><b class="tabular-nums ${v?'text-gray-900':'text-gray-400'}">${v}</b> ${l}</span>`;
+function pgZonesH(){const W=pgWork().filter(([r,i])=>pgOk(r,i)),zs={};
+  W.forEach(([r,i])=>{const ts=open_(i);[...new Set(ts.map(t=>t[1]))].forEach(z=>{const o=zs[z]??={a:[],p:0,q:0,n:0,l:{}},zt=ts.filter(t=>t[1]==z);o.a.push(i);if(zt.some(t=>t[4]=='Picking'))o.p++;if(zt.some(t=>t[4]!='Picking'))o.q++;if(r[7])o.n++;zt.forEach(t=>o.l[tW(t)]=(o.l[tW(t)]||0)+t[3]-t[2])})});
+  const rows=Object.entries(zs).sort((a,b)=>b[1].a.length-a[1].a.length||a[0].localeCompare(b[0])),all=rows.length&&rows.every(([z])=>pgZO.has(z));
+  const tg=`<button class="fc" onclick="pgZA(${all?0:1})">${all?'Collapse all':'Expand all'}</button><span class="w-px h-5 bg-gray-200 mx-1"></span>`;
+  return `${pgChips(tg)}${pgTbl(pgHead('Other zones','Wave'),rows.map(([z,o])=>{const op=pgZO.has(z);return pgGH(op,`pgZT('${z.replace(/'/g,"\\'")}')`,`<div class="flex flex-wrap items-center gap-x-4 gap-y-1"><span class="font-semibold text-gray-900 mr-1">${z}</span>${pgN_(o.a.length,'working','Picking or has an assigned task in this zone')}${pgN_(o.p,'picking')}${pgN_(o.q,'not synced','Has assigned tasks in this zone that are not synced yet')}${pgN_(o.n,'new')}<span class="ml-auto text-xs text-gray-500 tabular-nums" title="Lines left in assigned tasks of this zone">Lines left: ${[WV.cur,WV.next].map(w=>`${w} <b class="text-gray-700">${o.l[w]||0}</b>`).join(' · ')}</span></div>`)+(op?o.a.map(i=>pgRow(i,{k:'z',v:z})).join(''):'')}).join('')||`<tr><td colspan="8" class="px-4 py-8 text-center text-gray-500">${pgN||pgFin?'No pickers match the filters.':'Nobody is picking right now.'}</td></tr>`)}`}
 function pgZT(z){pgZO.has(z)?pgZO.delete(z):pgZO.add(z);pgR()}
-function pgZA(on){document.querySelectorAll('#pgBody tbody tr[aria-expanded]').forEach(t=>{const z=t.children[1].textContent;on?pgZO.add(z):pgZO.delete(z)});pgR()}
-function pgDetH(){const r=N[pgP];return `<button class="inline-flex items-center gap-1 text-sm font-medium text-indigo-600 hover:underline" onclick="pgPick(null)">${CV('l')}${pgT=='zones'?'Zones':'Working now'}</button><div class="mt-3 max-w-xl pgc">${sbCard(r,pgP,1)}</div>`}
-function pgPick(i){pgP=i;pgR();scrollTo(0,0)}
-function pgTab(t){pgT=t;pgP=null;pgR()}
-function pgR(){const t=pgT,ids={a:'all',l:'live',z:'zones'};Object.keys(ids).forEach(k=>{const b=document.getElementById('pgT'+k),on=ids[k]==t;if(!b)return;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
+function pgZA(on){document.querySelectorAll('#pgBody tr.bg-gray-100 .font-semibold').forEach(e=>{const z=e.textContent;on?pgZO.add(z):pgZO.delete(z)});pgR()}
+// Waves: grupė = banga; antraštė – surinkėjai su tos bangos užduotimis, surinkta iš priskirtų eilučių, boost / pauzė
+function pgWavesH(){const W=pgWork().filter(([r,i])=>pgOk(r,i));
+  return `${pgChips()}${pgTbl(pgHead('Zone','Other wave'),[WV.cur,WV.next].map(w=>{const c=w==WV.cur,ps=W.filter(([r,i])=>open_(i).some(t=>tW(t)==w)),ts=ps.flatMap(([r,i])=>open_(i).filter(t=>tW(t)==w)),tot=ts.reduce((a,t)=>a+t[3],0),pk=ts.reduce((a,t)=>a+t[2],0),pc=tot?Math.round(pk/tot*100):0,op=pgWO.has(w);
+    return pgGH(op,`pgWT('${w}')`,`<div class="flex flex-wrap items-center gap-x-4 gap-y-1.5"><span class="font-semibold text-gray-900">${w}</span><span class="text-sm text-gray-500 tabular-nums -ml-2">${c?WV.t:WV.nt}</span><span class="text-xs rounded-full bg-white border border-gray-200 text-gray-600 px-2 py-0.5">${c?'Current wave':'Next wave'}</span>${pgN_(ps.length,ps.length==1?'picker with tasks':'pickers with tasks')}<span class="inline-flex items-center gap-2 text-sm text-gray-600 whitespace-nowrap" title="Lines in tasks assigned to pickers"><span class="w-24 h-1.5 rounded-full bg-gray-300 overflow-hidden"><span class="block h-full bg-green-500" style="width:${pc}%"></span></span><span><b class="tabular-nums text-gray-900">${pk}</b> of <b class="tabular-nums text-gray-900">${tot}</b> assigned lines picked</span></span><span class="ml-auto" onclick="event.stopPropagation()">${bChip(w)}</span></div>`)+(op?ps.map(([r,i])=>pgRow(i,{k:'w',v:w})).join('')||`<tr class="border-b"><td></td><td colspan="7" class="py-3 text-gray-500">No pickers have ${w} tasks.</td></tr>`:'')}).join(''))}`}
+function pgWT(w){pgWO.has(w)?pgWO.delete(w):pgWO.add(w);pgR()}
+function pgTab(t){pgT=t;pgR()}
+function pgR(){const t=pgT,ids={a:'all',l:'live',z:'zones',w:'waves'};Object.keys(ids).forEach(k=>{const b=document.getElementById('pgT'+k),on=ids[k]==t;if(!b)return;b.classList.toggle('on',on);b.setAttribute('aria-selected',on)});
   const el=id=>document.getElementById(id);if(!el('pgAll'))return;
   el('pgAll').classList.toggle('hidden',t!='all');el('pgLive').classList.toggle('hidden',t=='all');el('pgCreate').classList.toggle('hidden',t!='all');
-  el('pgNl').textContent=pgWork().length;if(t=='all')return;
-  if(pgP!=null&&!works(N[pgP]))pgP=null;
-  el('pgWave').innerHTML=pgP!=null?'':pgWaveH();el('pgBody').innerHTML=pgP!=null?pgDetH():t=='live'?pgLiveH():pgZonesH()}
-// Kortelių veiksmai veikia puslapyje: surinkėjo vaizdas, zonos žyma → Zones tab'as, išskleidimai ir auto jungiklis perpiešia tab'ą
-sbPick=i=>{if(i==null){pgPick(null);return}pgPick(i)};
-sbZone=z=>{pgT='zones';pgP=null;pgZO.add(z);pgR()};
+  el('pgNl').textContent=pgWork().length;if(t=='all')return;el('pgWave').innerHTML='';
+  el('pgBody').innerHTML=t=='live'?pgLiveH():t=='zones'?pgZonesH():pgWavesH()}
 {const s=sbR;sbR=function(){s();pgR()}}
 {const r=render;render=function(){r();pgR()}}
-// Adresas: #working-now, #zones – tie tab'ai; #picker-accounts – All pickers
-function pgHash(){const h=location.hash.slice(1),m={'working-now':'live','zones':'zones','picker-accounts':'all'};if(m[h]){if(cv!='list')go('list',false);pgTab(m[h])}}
+// Adresas: #working-now, #zones, #waves – tie tab'ai; #picker-accounts – All pickers
+function pgHash(){const h=location.hash.slice(1),m={'working-now':'live','zones':'zones','waves':'waves','picker-accounts':'all'};if(m[h]){if(cv!='list')go('list',false);pgTab(m[h])}}
 addEventListener('hashchange',pgHash);pgHash();pgR();
 </script>
 
