@@ -442,7 +442,7 @@ function renderView(p){var insp=isInsp(p);var zs=assigned(p);var effOn=p.eff>0;v
  if(!zs.length){h+='<div class="empty" style="border:1px dashed var(--g300);border-radius:8px;margin-top:16px">No zones assigned. Edit the account to assign zones.</div></div>';}
  else{
   var hasEff=hasEffZones(p);
-  h+='<div class="ztool"><button class="effbtn'+(effOn?' on':'')+'" id="veff"'+(hasEff?'':' disabled')+'>'+(effOn?'Efficiency reduced <span class="badge b-red">'+I.down.replace('width="20" height="20"','width="14" height="14"')+'−'+p.eff+' %</span>':'Reduce efficiency')+'</button>'+(effOn?'<button class="link tl" id="vclr">Clear</button>':'')+'<span class="cnt">'+zs.length+' zones</span></div>';
+  h+='<div class="ztool"><button class="effbtn'+(effOn?' on':'')+'" id="veff"'+(hasEff?'':' disabled')+'>'+(effOn?'Reduce efficiency <span class="badge b-red">'+I.down.replace('width="20" height="20"','width="14" height="14"')+'−'+p.eff+' %</span>':'Reduce efficiency')+'</button>'+(effOn?'<button class="link tl" id="vclr">Clear</button>':'')+'<span class="cnt">'+zs.length+' zones</span></div>';
   h+='<div class="zblock">';
   if(p.paused.length)h+='<div class="psum"><span>'+I.pause+p.paused.length+(p.paused.length===1?' zone paused':' zones paused')+'</span><button class="btn btn-p" id="vres" style="height:32px">Resume all</button></div>';
   h+='<div class="zlist"><div class="zr none"><div class="zh"><span class="nm">NONE</span><span class="sp"></span><span class="znote">'+I.info+'Tasks from the NONE zone are never assigned automatically.</span></div></div>';
