@@ -1,0 +1,547 @@
+<!doctype html>
+<html lang="lt"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<style>body{margin:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Picker accounts preview</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: admin shell (dark sidebar, top bar), one content column; screens switch by hash (#table, #view-N, #edit-N, #create).
+   Single light theme on purpose – it reproduces the light admin product UI from the Figma designs (Tailwind gray / indigo). */
+:root{
+  color-scheme:light;
+  --bg:#f9fafb; --card:#ffffff; --side:#1f2937; --side-fg:#d1d5db; --side-mut:#9ca3af;
+  --g50:#f9fafb; --g100:#f3f4f6; --g200:#e5e7eb; --g300:#d1d5db; --g400:#9ca3af; --g500:#6b7280; --g600:#4b5563; --g700:#374151; --g800:#1f2937; --g900:#111827;
+  --ind50:#eef2ff; --ind100:#e0e7ff; --ind500:#6366f1; --ind600:#4f46e5; --ind700:#4338ca;
+  --red50:#fef2f2; --red100:#fee2e2; --red200:#fecaca; --red600:#dc2626; --red700:#b91c1c; --red300:#fca5a5;
+  --grn600:#059669; --blue50:#eff6ff; --blue700:#1d4ed8; --brand:#e30613;
+  --f:Inter,system-ui,-apple-system,"Segoe UI",sans-serif;
+  --sh-sm:0 1px 2px rgba(0,0,0,.05); --sh:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+  --sh-lg:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05); --sh-xl:0 20px 25px -5px rgba(0,0,0,.1),0 10px 10px -5px rgba(0,0,0,.04);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--g900);font-family:var(--f);font-size:14px;line-height:20px}
+button,input,select{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0;padding:0}
+button:disabled{cursor:default}
+:focus-visible{outline:2px solid var(--ind600);outline-offset:2px}
+.num{font-variant-numeric:tabular-nums}
+svg{flex:none}
+
+/* shell */
+.app{display:flex;min-height:100%}
+.side{width:240px;flex:none;background:var(--side);color:var(--side-fg);padding-bottom:24px}
+.logo{height:56px;display:flex;align-items:center;padding:0 20px;background:#111827;font-weight:800;font-size:24px;letter-spacing:.04em;color:var(--brand)}
+.nav-g{display:flex;align-items:center;gap:10px;padding:10px 16px;color:#fff;font-weight:500}
+.nav-i{display:block;padding:7px 16px 7px 46px;color:var(--side-mut);font-size:13px;text-decoration:none}
+.nav-i.cur{color:#fff;background:#374151}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{height:56px;background:#fff;border-bottom:1px solid var(--g200);display:flex;align-items:center;justify-content:flex-end;gap:24px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px));font-weight:500;color:var(--g600)}
+.top .cur{color:var(--g900);box-shadow:inset 0 -2px 0 var(--red600);height:56px;display:flex;align-items:center}
+.avatar{width:30px;height:30px;border-radius:50%;background:#991b1b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px}
+.page{padding-block:24px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:1600px;margin:0 auto}
+@media (min-width:900px){.page{padding-left:32px;padding-right:32px}}
+.narrow{max-width:896px;margin:0 auto}
+@media (max-width:900px){.side{display:none}.top{justify-content:space-between}}
+
+/* type + common controls */
+h1{font-size:24px;line-height:32px;font-weight:700;margin:0}
+h2{font-size:18px;line-height:28px;font-weight:500;margin:0}
+.muted{color:var(--g500)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;height:38px;padding:0 16px;border-radius:6px;font-weight:500;white-space:nowrap;border:1px solid transparent;box-shadow:var(--sh-sm)}
+.btn-p{background:var(--ind600);color:#fff}.btn-p:hover:not(:disabled){background:var(--ind700)}
+.btn-w{background:#fff;border-color:var(--g300);color:var(--g700)}.btn-w:hover:not(:disabled){background:var(--g50)}
+.btn-s{background:var(--ind100);color:var(--ind700);box-shadow:none}.btn-s:hover{background:#c7d2fe}
+.btn-r{background:var(--red100);color:var(--red700);box-shadow:none}.btn-r:hover{background:var(--red200)}
+.btn-danger{background:var(--red600);color:#fff}
+.btn:disabled{opacity:.5}
+.link{color:var(--ind600);font-weight:500}.link:hover{color:var(--ind700)}
+.tl{padding:9px 4px;font-weight:500}
+.badge{display:inline-flex;align-items:center;gap:4px;height:20px;padding:0 10px;border-radius:999px;font-size:12px;font-weight:500;white-space:nowrap}
+.b-gray{background:var(--g100);color:var(--g800)}
+.b-red{background:var(--red100);color:#991b1b}
+.b-ind{background:var(--ind100);color:#3730a3}
+.icon-g{color:var(--g500)}
+.cb{width:16px;height:16px;accent-color:var(--ind600);margin:0;flex:none}
+.tip{position:relative;display:inline-flex}
+.tip[data-tip]:hover::after,.tip[data-tip]:focus-visible::after{content:attr(data-tip);position:absolute;left:50%;top:calc(100% + 8px);transform:translateX(-50%);background:var(--g900);color:#fff;font-size:12px;line-height:16px;padding:6px 10px;border-radius:6px;white-space:nowrap;z-index:40;pointer-events:none}
+
+/* toggle */
+.tg{width:44px;height:24px;border-radius:999px;background:var(--g200);position:relative;transition:background .15s;flex:none;border:0}
+.tg::after{content:"";position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .15s}
+.tg[aria-checked="true"]{background:var(--ind600)}
+.tg[aria-checked="true"]::after{left:22px}
+.tg:disabled{opacity:.5}
+
+/* page header */
+.ph{display:flex;flex-wrap:wrap;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:16px}
+.summary{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;margin-top:8px;font-weight:500;color:var(--g500)}
+.summary span{display:inline-flex;align-items:center;gap:8px}
+.summary b{color:var(--g900);font-weight:500}
+.crumbs{display:flex;align-items:center;gap:12px;color:var(--g500);font-weight:500;font-size:13px;margin-bottom:8px}
+.crumbs a{color:var(--g500);text-decoration:none}.crumbs a:hover{color:var(--g700)}
+
+/* filters */
+.filters{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:16px}
+.fbtn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 13px 0 17px;border:1px solid var(--g300);border-radius:6px;background:#fff;color:var(--g700);font-weight:500;box-shadow:var(--sh-sm);white-space:nowrap}
+.fbtn:hover{background:var(--g50)}
+.fbtn.on{border-color:var(--ind600)}
+.fbtn .cnt{min-width:20px;height:20px;border-radius:999px;background:var(--ind100);color:var(--ind700);font-size:12px;display:inline-flex;align-items:center;justify-content:center;padding:0 6px}
+.pop{position:absolute;z-index:50;width:322px;background:#fff;border-radius:8px;box-shadow:var(--sh-lg);border:1px solid var(--g200)}
+.pop-b{padding:16px;display:flex;flex-direction:column;gap:12px}
+.pop-f{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:16px;border-top:1px solid var(--g200)}
+.pop-f .r{display:flex;gap:8px}
+.inp{height:38px;width:100%;border:1px solid var(--g300);border-radius:6px;padding:0 12px;background:#fff;box-shadow:var(--sh-sm)}
+.inp:focus{outline:2px solid var(--ind600);outline-offset:-1px;border-color:var(--ind600)}
+.inp.err{border-color:var(--red300);color:var(--red700)}
+.inp.r{text-align:right}
+.opt{display:flex;align-items:center;gap:12px;font-weight:500;color:var(--g700)}
+.sopt{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 16px;text-align:left}
+.sopt:hover{background:var(--g50)}
+
+/* table */
+.tblw{position:relative}
+.tbl-card{background:#fff;border-radius:8px;box-shadow:var(--sh);overflow-x:auto;position:relative;z-index:1}
+table{border-collapse:collapse;width:100%;min-width:1100px}
+th{background:var(--g50);color:var(--g500);font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;text-align:left;padding:12px 24px;white-space:nowrap}
+td{padding:14px 24px;border-top:1px solid var(--g200);white-space:nowrap;color:var(--g500);height:52px}
+td.r,th.r{text-align:right}
+tr.sel td{background:var(--ind50)}
+a.btn,a.nm,a.link{text-decoration:none}
+td .nm{color:var(--ind600);font-weight:400}
+td .nm:hover{text-decoration:underline}
+.at{display:flex;align-items:center;gap:8px}
+.at .ic{display:flex;gap:4px}
+.dots{width:24px;height:24px;border-radius:50%;background:var(--g100);display:inline-flex;align-items:center;justify-content:center;color:var(--g500)}
+.dots:hover{background:var(--g200)}
+.menu{position:absolute;z-index:60;min-width:200px;background:#fff;border-radius:6px;box-shadow:var(--sh-lg);border:1px solid var(--g200);padding:4px 0}
+.menu button{display:block;width:100%;text-align:left;padding:8px 16px;color:var(--g700)}
+.menu button:hover{background:var(--g100)}
+.menu hr{border:0;border-top:1px solid var(--g200);margin:4px 0}
+.menu .del{color:var(--red700)}
+.empty{padding:48px;text-align:center;color:var(--g500)}
+.pager{display:flex;align-items:center;justify-content:space-between;padding:16px 0;color:var(--g500);font-weight:500}
+
+/* bulk bar */
+.bulk{position:relative;z-index:2;background:var(--g800);color:#fff;border-radius:8px 8px 0 0;height:54px;display:flex;align-items:center;gap:8px;padding:0 16px;margin-bottom:0}
+.bulk::after{content:"";position:absolute;left:38px;bottom:-4px;width:8px;height:8px;background:var(--g800);transform:rotate(45deg)}
+.bulk .acts{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto}
+.bulk .ba{padding:9px 17px;font-weight:500;color:#e5e7eb;white-space:nowrap;border-radius:6px}
+.bulk .ba:hover:not(:disabled){color:#fff;background:rgba(255,255,255,.08)}
+.bulk .ba:disabled{opacity:.5}
+.bulk .ba.del{color:#fca5a5}
+.bulk .sep{width:1px;height:38px;background:var(--g500)}
+.bulk .cnt{margin-left:auto;font-weight:500;white-space:nowrap}
+.tblw.has-bulk .tbl-card{border-top-left-radius:0;border-top-right-radius:0}
+
+/* cards / sections (view + edit) */
+.card{background:#fff;border-radius:8px;box-shadow:var(--sh);padding:32px}
+.sec+.sec{margin-top:32px}
+.sec-h{padding-bottom:8px;border-bottom:1px solid var(--g200);margin-bottom:0}
+.sec-h p{margin:4px 0 0;color:var(--g500)}
+.rowv{display:grid;grid-template-columns:240px 1fr;gap:24px;align-items:center;padding:14px 0;border-bottom:1px solid var(--g200)}
+.rowv .k{color:var(--g500);font-weight:500}
+.rowv .v{display:flex;align-items:center;gap:16px;min-width:0;flex-wrap:wrap}
+@media (max-width:640px){.rowv{grid-template-columns:1fr;gap:6px}}
+.yn{display:inline-flex;align-items:center;gap:8px}
+
+/* zones (view) */
+.ztool{display:flex;flex-wrap:wrap;align-items:center;gap:12px;padding:16px 0}
+.ztool .cnt{margin-left:auto;color:var(--g500)}
+.effbtn{display:inline-flex;align-items:center;gap:8px;height:38px;padding:0 13px;border:1px solid var(--g300);border-radius:6px;background:#fff;color:var(--g700);font-weight:500;box-shadow:var(--sh-sm)}
+.effbtn.on{border-color:var(--red600)}
+.effbtn:disabled{opacity:.5}
+.zblock{position:relative}
+.psum{background:var(--g800);color:#fff;border-radius:8px 8px 0 0;padding:8px 16px 16px;margin-bottom:-8px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.psum span{display:inline-flex;align-items:center;gap:6px;font-weight:500}
+.zlist{border:1px solid var(--g300);border-radius:8px;background:#fff;overflow:hidden;position:relative}
+.zr{padding:16px;border-bottom:1px solid var(--g200);display:flex;flex-direction:column;gap:16px;scroll-margin-top:80px}
+.zr:last-child{border-bottom:0}
+.zr.paused,.zr.none{background:var(--g50)}
+.zh{display:flex;align-items:center;gap:8px;min-height:38px;flex-wrap:wrap}
+.zh .nm{font-weight:500;color:var(--g900)}
+.zr.paused .zh .nm,.zr.none .zh .nm{color:var(--g500)}
+.zh .sp{flex:1}
+.combo{display:inline-flex;align-items:center;gap:8px;flex-wrap:wrap}
+.combo .tags{display:inline-flex;gap:4px;flex-wrap:wrap}
+.vals{display:flex;align-items:center;gap:24px}
+.vals .grp{display:flex;gap:24px}
+.vals .blk{display:flex;flex-direction:column;gap:16px}
+.vals .lbl{font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--g500)}
+.vals .stats{display:flex;gap:16px}
+.vals .st{width:96px;display:flex;flex-direction:column}
+.vals .st small{font-size:12px;line-height:16px;color:var(--g500)}
+.vals .st b{font-weight:600;color:var(--g900)}
+.vals .st b.red{color:var(--red600)}
+.vals .st b.dash{font-weight:400;color:var(--g500)}
+.vals .st i{font-style:normal;font-size:12px;line-height:16px;color:var(--g500);min-height:16px}
+.vals .dv{width:1px;align-self:stretch;background:var(--g200)}
+.vals .sp{flex:1}
+.znote{display:inline-flex;align-items:center;gap:8px;font-size:12px;color:var(--g500)}
+@media (max-width:760px){.vals{flex-wrap:wrap}.vals .grp{flex-wrap:wrap}}
+
+/* combos block */
+.cblock{border:1px solid var(--g300);border-radius:8px;background:#fff;overflow:hidden}
+.crow{display:flex;gap:8px;padding:16px;border-bottom:1px solid var(--g200)}
+.crow:last-child{border-bottom:0}
+.crow .content{display:flex;flex-direction:column;gap:8px;min-width:0;flex:1}
+.crow .tags{display:flex;flex-wrap:wrap;gap:4px}
+.crow .cbw{padding-top:2px}
+.tagbtn{cursor:pointer}
+.tagbtn:hover{text-decoration:underline}
+.errmsg{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1px solid var(--red300);background:var(--red50);color:#991b1b;border-radius:6px}
+
+/* edit form */
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.fcol{display:flex;flex-direction:column;gap:24px;margin-top:24px;max-width:400px}
+@media (max-width:640px){.fgrid{grid-template-columns:1fr}}
+.fld label{display:block;font-weight:500;color:var(--g700);margin-bottom:4px}
+.sel{height:38px;width:100%;border:1px solid var(--g300);border-radius:6px;padding:0 12px;background:#fff;box-shadow:var(--sh-sm)}
+.chk{display:flex;gap:12px;align-items:flex-start;margin-top:24px}
+.chk .cb{margin-top:2px}
+.chk b{font-weight:500;color:var(--g700)}
+.chk p{margin:0;color:var(--g500)}
+.chk.dis b{color:var(--g400)}
+.etool{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:16px 0}
+.efields{display:flex;gap:24px;padding-left:28px;flex-wrap:wrap}
+.efields .g{display:flex;flex-direction:column;gap:8px}
+.efields .g .lbl{font-size:12px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;color:var(--g500)}
+.efields .ins{display:flex;gap:8px}
+.efields .fi{width:136px}
+.efields .fi label{display:block;color:var(--g700);font-weight:500;margin-bottom:4px}
+.efields .dv{width:1px;background:var(--g200)}
+.ferr{color:var(--red600);padding-left:28px;margin-top:-8px}
+.zr .nm.conf{color:var(--red600)!important}
+.footer{border-top:1px solid var(--g200);margin-top:32px;padding-top:24px;display:flex;flex-direction:column;gap:20px}
+.footer .acts{display:flex;justify-content:flex-end;gap:8px;flex-wrap:wrap}
+.lnote{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--g500);padding-bottom:20px;border-bottom:1px solid var(--g200)}
+
+/* modal */
+.ov{position:fixed;inset:0;background:rgba(107,114,128,.75);display:flex;align-items:center;justify-content:center;z-index:100;padding:16px}
+.modal{background:#fff;border-radius:8px;box-shadow:var(--sh-xl);width:512px;max-width:100%;position:relative}
+.modal .mb{padding:24px;display:flex;flex-direction:column;gap:20px}
+.modal .mb h3{font-size:18px;line-height:24px;font-weight:500;margin:0}
+.modal .mb p{margin:4px 0 0;color:var(--g500)}
+.modal .mf{display:flex;align-items:center;gap:8px;padding:16px 24px;border-top:1px solid var(--g200)}
+.modal .mf .sp{flex:1}
+.modal .x{position:absolute;top:16px;right:16px;color:var(--g400)}
+.slab{font-weight:500;color:var(--g700)}
+.slider{padding:8px 4px 0}
+.track{position:relative;height:6px;border-radius:3px;background:var(--g200);margin:14px 10px}
+.fillr{position:absolute;top:0;bottom:0;right:0;background:var(--red600);border-radius:3px}
+.thumb{position:absolute;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border-radius:50%;background:#fff;border:1px solid var(--g300);box-shadow:var(--sh)}
+.thumb:hover{border-color:var(--g400);box-shadow:var(--sh-lg)}
+.scale{display:flex;justify-content:space-between}
+.scale button{font-weight:600;color:var(--g700);padding:4px 8px;border-radius:6px}
+.scale button:hover{background:var(--g100)}
+.scale button.on{background:var(--red50);color:var(--red700)}
+.scale button.on:hover{background:var(--red100)}
+
+/* toasts */
+.toasts{position:fixed;right:max(24px,env(safe-area-inset-right,0px));bottom:max(24px,env(safe-area-inset-bottom,0px));display:flex;flex-direction:column-reverse;gap:16px;z-index:200;width:min(400px,calc(100vw - 32px))}
+.toast{display:flex;align-items:flex-start;gap:12px;background:var(--g50);border:1px solid #a7f3d0;border-left:4px solid #34d399;border-radius:6px;padding:12px 16px;box-shadow:var(--sh-lg);background:#ecfdf5;color:#065f46;font-weight:500}
+.toast.err{background:var(--red50);border-color:var(--red200);border-left-color:#f87171;color:#991b1b}
+.toast span{flex:1}
+.toast button{color:inherit}
+.proto-note{font-size:12px;color:var(--g500);margin-top:24px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="app">
+  <aside class="side" aria-label="Main menu">
+    <div class="logo">BARBORA</div>
+    <div class="nav-g"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="3" width="12" height="15" rx="2"/><path d="M7 7h6M7 10h6M7 13h4"/></svg>Tasks</div>
+    <span class="nav-i">Order picking statistics</span><span class="nav-i">Unfinished picking tasks</span><span class="nav-i">Orders to pick</span>
+    <div class="nav-g"><svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"/></svg>Pickers</div>
+    <a class="nav-i cur" href="#table">Picker accounts</a>
+    <div class="nav-g"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2l7 4v8l-7 4-7-4V6z"/></svg>Service management</div>
+    <span class="nav-i">Picking zones</span>
+  </aside>
+  <div class="main">
+    <header class="top"><span class="cur">Picking</span><span>Assortment</span><span>Reports</span><span>eShop Content</span><span class="avatar">VP</span></header>
+    <main class="page" id="page"></main>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div id="layer"></div>
+
+<script>
+(function(){
+/* ---------- icons ---------- */
+var I={
+ loc:'<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clip-rule="evenodd"/></svg>',
+ check:'<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.7-9.3a1 1 0 00-1.4-1.4L9 10.6 7.7 9.3a1 1 0 00-1.4 1.4l2 2a1 1 0 001.4 0l4-4z" clip-rule="evenodd"/></svg>',
+ pause:'<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>',
+ down:'<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v3.586L7.707 9.293a1 1 0 00-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 10.586V7z" clip-rule="evenodd"/></svg>',
+ dots:'<svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor"><path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z"/></svg>',
+ filter:'<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="1.5"><path d="M3 4h18l-7 8.5V19l-4 1v-7.5z"/></svg>',
+ plus:'<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd"/></svg>',
+ plussm:'<svg width="16" height="16" viewBox="0 0 20 20" fill="currentColor" class="icon-g"><path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/></svg>',
+ x:'<svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M4.3 4.3a1 1 0 011.4 0L10 8.6l4.3-4.3a1 1 0 111.4 1.4L11.4 10l4.3 4.3a1 1 0 01-1.4 1.4L10 11.4l-4.3 4.3a1 1 0 01-1.4-1.4L8.6 10 4.3 5.7a1 1 0 010-1.4z" clip-rule="evenodd"/></svg>',
+ xred:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#dc2626" stroke-width="2"><path d="M5 5l10 10M15 5L5 15"/></svg>',
+ okgreen:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#059669" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>',
+ info:'<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6b7280" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 11v5M12 8h.01"/></svg>',
+ err:'<svg width="20" height="20" viewBox="0 0 20 20" fill="#dc2626"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-8-5a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1zm0 8a1 1 0 100 2 1 1 0 000-2z" clip-rule="evenodd"/></svg>',
+ hat:'<svg width="20" height="20" viewBox="0 0 20 20" fill="#6b7280"><path d="M4.91101 14.4999C4.5759 14.4999 4.25451 14.6204 4.01755 14.8347C3.78059 15.049 3.64746 15.3397 3.64746 15.6428C3.64746 15.9459 3.78059 16.2366 4.01755 16.451C4.25451 16.6653 4.5759 16.7857 4.91101 16.7857H15.099C15.799 16.7857 16.3625 16.2748 16.3625 15.6428C16.3625 15.0108 15.799 14.4999 15.099 14.4999H4.91101ZM15.0952 4.92826C14.773 4.92826 14.4685 4.9854 14.1753 5.06312C13.8308 4.30725 13.2466 3.66051 12.4965 3.2044C11.7463 2.74829 10.8636 2.50321 9.95972 2.50003C9.05581 2.49685 8.17109 2.73572 7.41701 3.18655C6.66293 3.63737 6.07323 4.27998 5.72221 5.03341C5.45708 4.96689 5.18359 4.93155 4.90848 4.92826C4.1347 4.92541 3.38552 5.17405 2.79739 5.62889C2.20926 6.08372 1.82131 6.7145 1.70419 7.40633C1.58707 8.09817 1.74858 8.80505 2.15929 9.39822C2.57 9.9914 3.2026 10.4314 3.94187 10.6381V13.0713H15.9456V10.6713C16.6301 10.5044 17.2349 10.1383 17.6665 9.62951C18.0981 9.12075 18.3326 8.49762 18.3337 7.85634C18.3337 7.07976 17.9926 6.33499 17.3855 5.78587C16.7784 5.23675 15.955 4.92826 15.0965 4.92826H15.0952Z"/></svg>',
+ bread:'<svg width="20" height="20" viewBox="0 0 20 20" fill="#6b7280"><path d="M12.1997 3.0223C14.9191 0.0473901 20.2669 4.20496 17.1275 7.33601L7.30211 17.1351C5.38091 19.0512 1.14836 17.1979 2.0423 13.6679C2.29965 12.8462 2.8753 12.1612 3.64143 11.7649C4.64631 11.2472 6.09489 11.2618 7.04422 11.9608C7.29273 12.1438 7.64783 12.1708 7.86611 11.9528C8.09197 11.7272 8.07002 11.3516 7.80331 11.1759C6.57021 10.3635 5.33969 10.1468 3.83419 10.4373C3.84644 7.85886 7.03061 6.60678 8.96348 7.96358C9.21587 8.14075 9.56523 8.15028 9.78078 7.92998C10.0101 7.69558 10.0143 7.30916 9.75051 7.11418C9.08027 6.61885 8.29499 6.296 7.44934 6.23651C8.17252 4.27612 10.7216 3.05741 12.4663 4.41813C12.7202 4.61621 13.0905 4.63855 13.3191 4.41185C13.5429 4.1899 13.5373 3.82436 13.287 3.63266C12.9555 3.37886 12.5931 3.16478 12.1997 3.0223Z"/></svg>',
+ back:'<svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 10H4m5-5l-5 5 5 5"/></svg>',
+ eye:'<svg width="18" height="18" viewBox="0 0 20 20" fill="currentColor"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"/><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"/></svg>'
+};
+
+/* ---------- data ---------- */
+var ZONES=[ // name, workshop, bakery, efficiency zone
+ ['Confectionery Cakes',1,1],['Hot line',1,0],['Gastronomy',1,0],['Fresh meat',1,0],['Fresh poultry',1,0],['Weighed cheese',1,0],
+ ['Pampers / Toilet Paper',0,0],['Cosmetics',0,0],['Cofee, tea, candy',0,0],['Chemicals',0,0],['Chips',0,0],['Conservation',0,0],
+ ['Fruits, vegetables',0,0],['Frozen goods',0,0],['Non-alcoholic beverages',0,0],['Soft drinks',0,0],['Candies',0,0],['Alcoholic beverages',0,0],
+ ['Bread products',0,0],['Milk, fish, poultry',0,0],['Groceries',0,0],
+ ['Kiaušiniai',0,0],['Easter',0,0],['Stationery Goods',0,0],['Flowers',0,0],['Christmas',0,0],['Food bank',0,0],['Press',0,0]
+].map(function(z,i){return {name:z[0],ws:!!z[1],bakery:!!z[2],idx:i};});
+var COMBOS=[['Fresh meat','Fresh poultry'],['Fruits, vegetables','Groceries','Bread products'],['Frozen goods','Cosmetics','Chemicals','Conservation'],['Chips','Candies','Soft drinks','Non-alcoholic beverages','Alcoholic beverages'],['Milk, fish, poultry','Weighed cheese']];
+var PAT=[['58','','13','29',''],['','112','','',''],['42','105','20','45','3'],['36','','','',''],['51','120','','60',''],['','74','15','40',''],['29','70','12','','2'],['47','133','','',''],['','96','18','','4'],['33','82','25','62','6'],['60','','','',''],['','88','','35',''],['38','91','14','','']];
+function baseZones(inspector){var m={};ZONES.forEach(function(z,i){if(i>20)return;var p=PAT[(i-6+13)%13];m[z.name]=z.ws||inspector?{sku:'',un:'',ms:'',mu:'',mo:''}:{sku:p[0],un:p[1],ms:p[2],mu:p[3],mo:p[4]};});return m;}
+var P=[
+ [1,'Silvija','Švaikevičiūtė','Picker',1,0,0,'3360','Evening',0,[],[]],
+ [2,'Nerijus','Petrauskas','Picker',0,1,0,'4200','Evening',20,[],[]],
+ [3,'Aldonas','Kazlauskas','Picker',0,1,1,'4327','Evening',0,[],[0,1,3]],
+ [4,'Karolis','Jankauskas','Picker',0,1,0,'7854','Evening',0,['Groceries'],[]],
+ [5,'Remigijus','Stankevičius','Picker',1,0,1,'1756','Evening',0,[],[0,1]],
+ [6,'Tomas','Vasiliauskas','Picker',0,1,0,'7142','Evening',20,['Weighed cheese','Non-alcoholic beverages'],[]],
+ [7,'Silvestr','Žukauskas','Inspector',0,1,0,'3975','Evening',0,[],[]],
+ [8,'Darius','Butkus','Picker',0,1,1,'1758','Morning',0,[],[0,1,2,3]],
+ [9,'Aleksandr','Paulauskas','Inspector',0,1,0,'1270','Morning',0,[],[]],
+ [10,'Tautvydas','Urbonas','Picker',0,0,1,'1432','Morning',0,[],[0,3]],
+ [11,'Alma','Kavaliauskienė','Inspector',0,1,0,'8574','Morning',0,[],[]],
+ [12,'Gediminas','Kairys','Picker',0,0,0,'2214','Morning',0,[],[]]
+].map(function(r){var insp=r[3]==='Inspector';return {id:r[0],fn:r[1],ln:r[2],role:r[3],isNew:!!r[4],auto:!!r[5],mz:!!r[6],tc:r[7],shift:r[8],eff:r[9],paused:r[10].slice(),combos:r[11].slice(),zones:baseZones(insp),login:(r[1]+'.'+r[2]).toLowerCase()};});
+var nextId=13;
+function byId(id){return P.filter(function(p){return p.id===+id;})[0];}
+function isInsp(p){return p.role==='Inspector';}
+function assigned(p){return Object.keys(p.zones);} // assigned zone names
+function hasEffZones(p){return !isInsp(p)&&assigned(p).some(function(n){var z=p.zones[n];return z.sku||z.un;});}
+function canAuto(p){return !p.isNew&&assigned(p).length>0;}
+function effZoneCount(p){return assigned(p).length;}
+
+/* ---------- helpers ---------- */
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+var $page=document.getElementById('page'),$layer=document.getElementById('layer');
+function toast(msg,err){var t=document.createElement('div');t.className='toast'+(err?' err':'');t.innerHTML=(err?I.err:I.check.replace('currentColor','#34d399'))+'<span>'+esc(msg)+'</span><button aria-label="Close">'+I.x+'</button>';t.querySelector('button').onclick=function(){t.remove();};document.getElementById('toasts').appendChild(t);setTimeout(function(){t.remove();},6000);}
+function closeLayer(){$layer.innerHTML='';}
+function place(pop,anchor,alignRight){document.body.appendChild(pop);var r=anchor.getBoundingClientRect();var w=pop.offsetWidth;var left=alignRight?r.right-w:r.left;left=Math.max(8,Math.min(left,window.innerWidth-w-8));pop.style.left=(left+window.scrollX)+'px';pop.style.top=(r.bottom+window.scrollY+8)+'px';}
+var openPop=null;function closePop(){if(openPop){openPop.remove();openPop=null;}}
+document.addEventListener('click',function(e){if(openPop&&!openPop.contains(e.target)&&!e.target.closest('[data-pop]'))closePop();});
+document.addEventListener('keydown',function(e){if(e.key==='Escape'){closePop();closeLayer();}});
+
+/* ---------- table ---------- */
+var sel={};var F={name:'',ln:'',tc:'',shift:'',auto:'',temp:[],role:[],mz:''};
+var FILTERS=[['name','Name','text'],['ln','Last name','text'],['auto','Auto tasks','single',['On','Off']],['temp','Temporary changes','multi',['Reduced efficiency','Paused zones']],['role','Role','multi',['Picker','New picker','Inspector']],['mz','Multiple zones','single',['Yes','No']],['tc','Time card','text'],['shift','Shift name','text']];
+function roleKey(p){return isInsp(p)?'Inspector':(p.isNew?'New picker':'Picker');}
+function visible(){return P.filter(function(p){
+ if(F.name&&p.fn.toLowerCase().indexOf(F.name.toLowerCase())<0)return false;
+ if(F.ln&&p.ln.toLowerCase().indexOf(F.ln.toLowerCase())<0)return false;
+ if(F.tc&&p.tc.indexOf(F.tc)<0)return false;
+ if(F.shift&&p.shift.toLowerCase().indexOf(F.shift.toLowerCase())<0)return false;
+ if(F.auto&&(F.auto==='On')!==p.auto)return false;
+ if(F.mz&&(F.mz==='Yes')!==p.mz)return false;
+ if(F.role.length&&F.role.indexOf(roleKey(p))<0)return false;
+ if(F.temp.length){var ok=(F.temp.indexOf('Reduced efficiency')>=0&&p.eff>0)||(F.temp.indexOf('Paused zones')>=0&&p.paused.length>0);if(!ok)return false;}
+ return true;});}
+function fActive(k){var v=F[k];return Array.isArray(v)?v.length:(v?1:0);}
+function renderTable(){
+ var vis=visible();var selIds=Object.keys(sel).filter(function(k){return sel[k];}).map(Number);var selP=selIds.map(byId).filter(Boolean);
+ var pk=P.filter(function(p){return !isInsp(p);});
+ var nAuto=pk.filter(function(p){return p.auto;}).length,nPause=P.filter(function(p){return p.paused.length;}).length,nEff=P.filter(function(p){return p.eff>0;}).length;
+ var h='<div class="wrap"><div class="ph"><div><h1>Picker accounts</h1><div class="summary">'+
+  '<span class="icon-g">'+I.loc+'<b>X016</b>&nbsp;Liepkalnis</span>'+
+  '<span>'+I.check.replace('currentColor','#6b7280')+'With auto tasks: <b class="num">'+nAuto+'</b></span>'+
+  (nPause?'<span>'+I.pause.replace('currentColor','#6b7280')+'With paused zones: <b class="num">'+nPause+'</b></span>':'')+
+  (nEff?'<span>'+I.down.replace('currentColor','#6b7280')+'With reduced efficiency: <b class="num">'+nEff+'</b></span>':'')+
+  '</div></div><a class="btn btn-p" href="#create">'+I.plus+'Create</a></div>';
+ h+='<div class="filters">'+I.filter;FILTERS.forEach(function(f){var a=fActive(f[0]);h+='<button class="fbtn'+(a?' on':'')+'" data-pop="'+f[0]+'">'+f[1]+(a?'<span class="cnt">'+a+'</span>':'')+'</button>';});h+='</div>';
+ h+='<div class="tblw'+(selP.length?' has-bulk':'')+'">';
+ if(selP.length){
+  var en=selP.some(function(p){return !isInsp(p)&&!p.auto&&canAuto(p);}),di=selP.some(function(p){return !isInsp(p)&&p.auto;}),re=selP.some(hasEffZones),rs=selP.some(function(p){return p.paused.length;});
+  h+='<div class="bulk" role="toolbar" aria-label="Bulk actions"><div class="acts"><button class="ba" data-b="en"'+(en?'':' disabled')+'>Enable auto tasks</button><button class="ba" data-b="di"'+(di?'':' disabled')+'>Disable auto tasks</button><button class="ba" data-b="re"'+(re?'':' disabled')+'>Reduce efficiency</button><button class="ba" data-b="rs"'+(rs?'':' disabled')+'>Resume paused zones</button><span class="sep"></span><button class="ba del" data-b="del">Delete accounts</button></div><span class="cnt">'+selP.length+(selP.length===1?' item':' items')+' selected</span></div>';
+ }
+ var allSel=vis.length&&vis.every(function(p){return sel[p.id];}),someSel=vis.some(function(p){return sel[p.id];});
+ h+='<div class="tbl-card"><table><thead><tr><th style="width:64px"><input type="checkbox" class="cb" id="cb-all" aria-label="Select all"'+(allSel?' checked':'')+'></th><th>Name</th><th>Last name</th><th>Auto tasks</th><th>Role</th><th>Multiple zones</th><th class="r">Time card</th><th>Shift name</th><th style="width:72px"></th></tr></thead><tbody>';
+ if(!vis.length)h+='<tr><td colspan="9" class="empty">No pickers match the filters.</td></tr>';
+ vis.forEach(function(p){var dis=isInsp(p)||!canAuto(p);var on=isInsp(p)?true:p.auto;
+  var icons='';if(p.paused.length)icons+='<span class="tip icon-g" tabindex="0" data-tip="'+p.paused.length+(p.paused.length===1?' zone paused':' zones paused')+'">'+I.pause+'</span>';if(p.eff)icons+='<span class="tip icon-g" tabindex="0" data-tip="Efficiency −'+p.eff+' %">'+I.down+'</span>';
+  h+='<tr class="'+(sel[p.id]?'sel':'')+'"><td><input type="checkbox" class="cb" data-sel="'+p.id+'" aria-label="Select '+esc(p.fn)+'"'+(sel[p.id]?' checked':'')+'></td>'+
+  '<td><a class="nm" href="#view-'+p.id+'">'+esc(p.fn)+'</a></td><td><a class="nm" href="#view-'+p.id+'">'+esc(p.ln)+'</a></td>'+
+  '<td><div class="at"><button class="tg" role="switch" aria-checked="'+on+'" data-tg="'+p.id+'"'+(dis?' disabled':'')+' aria-label="Auto tasks"></button>'+(icons?'<span class="ic">'+icons+'</span>':'')+'</div></td>'+
+  '<td>'+(isInsp(p)?'Inspector':'Picker')+(p.isNew?' <span class="badge b-gray" style="margin-left:6px">New</span>':'')+'</td><td>'+(p.mz?'Yes':'No')+'</td><td class="r num">'+p.tc+'</td><td>'+p.shift+'</td>'+
+  '<td class="r"><button class="dots" data-menu="'+p.id+'" aria-label="Actions for '+esc(p.fn)+'">'+I.dots+'</button></td></tr>';});
+ h+='</tbody></table></div></div><div class="pager"><span>← Previous</span><span><span style="color:#4f46e5">1 - '+vis.length+'</span> of '+vis.length+'</span><span>Next →</span></div>';
+ h+='<p class="proto-note">Prototype data. Select rows to see bulk actions; ⋮ opens the row menu.</p></div>';
+ $page.innerHTML=h;
+ var ca=document.getElementById('cb-all');if(ca)ca.indeterminate=!allSel&&someSel;
+ ca&&(ca.onchange=function(){vis.forEach(function(p){sel[p.id]=ca.checked;});renderTable();});
+ $page.querySelectorAll('[data-sel]').forEach(function(c){c.onchange=function(){sel[c.dataset.sel]=c.checked;renderTable();};});
+ $page.querySelectorAll('[data-tg]').forEach(function(b){b.onclick=function(){var p=byId(b.dataset.tg);p.auto=!p.auto;toast(p.auto?'Auto tasks turned on.':'Auto tasks turned off.');renderTable();};});
+ $page.querySelectorAll('[data-menu]').forEach(function(b){b.onclick=function(e){e.stopPropagation();rowMenu(byId(b.dataset.menu),b);};});
+ $page.querySelectorAll('[data-pop]').forEach(function(b){b.onclick=function(e){e.stopPropagation();filterPop(b.dataset.pop,b);};});
+ $page.querySelectorAll('[data-b]').forEach(function(b){b.onclick=function(){bulk(b.dataset.b,selP);};});
+}
+function rowMenu(p,anchor){closePop();var m=document.createElement('div');m.className='menu';m.setAttribute('data-pop','m');
+ var h='<button data-a="view">View</button><button data-a="edit">Edit</button>';if(hasEffZones(p))h+='<button data-a="eff">Reduce efficiency</button>';if(p.paused.length)h+='<button data-a="res">Resume paused zones</button>';h+='<hr><button class="del" data-a="del">Delete account</button>';
+ m.innerHTML=h;place(m,anchor,true);openPop=m;
+ m.onclick=function(e){var a=e.target.closest('[data-a]');if(!a)return;closePop();var k=a.dataset.a;
+  if(k==='view')go('view-'+p.id);else if(k==='edit')go('edit-'+p.id);else if(k==='eff')effModal([p],renderTable);else if(k==='res'){p.paused=[];toast('Paused zones resumed.');renderTable();}else if(k==='del')delModal([p]);};}
+function bulk(k,ps){
+ if(k==='en'){var sk=0;ps.forEach(function(p){if(isInsp(p)||p.auto)return;if(canAuto(p))p.auto=true;else sk++;});toast('Auto tasks turned on.'+(sk?' New pickers and pickers without zones were skipped.':''));}
+ else if(k==='di'){var si=ps.some(isInsp);ps.forEach(function(p){if(!isInsp(p))p.auto=false;});toast('Auto tasks turned off.'+(si?' Inspectors were skipped.':''));}
+ else if(k==='re'){effModal(ps,renderTable);return;}
+ else if(k==='rs'){ps.forEach(function(p){p.paused=[];});toast('Paused zones resumed.');}
+ else if(k==='del'){delModal(ps);return;}
+ renderTable();}
+function filterPop(k,anchor){closePop();var f=FILTERS.filter(function(x){return x[0]===k;})[0];var pop=document.createElement('div');pop.className='pop';pop.setAttribute('data-pop',k);var cur=F[k];var tmp=Array.isArray(cur)?cur.slice():cur;
+ function body(){if(f[2]==='text')return '<div class="pop-b"><input class="inp" id="fi-'+k+'" placeholder="Enter filter text" value="'+esc(tmp)+'"></div>';
+  if(f[2]==='single')return '<div style="padding:8px 0">'+f[3].map(function(o){return '<button class="sopt" data-o="'+o+'"><span>'+o+'</span>'+(tmp===o?I.okgreen:'')+'</button>';}).join('')+'</div>';
+  return '<div class="pop-b">'+f[3].map(function(o,i){return '<label class="opt"><input type="checkbox" class="cb" id="fo-'+k+'-'+i+'" data-o="'+o+'"'+(tmp.indexOf(o)>=0?' checked':'')+'>'+o+'</label>';}).join('')+'</div>';}
+ function draw(){pop.innerHTML=body()+'<div class="pop-f"><button class="link tl" data-f="clear">Clear</button><div class="r"><button class="btn btn-w" data-f="cancel">Cancel</button><button class="btn btn-p" data-f="apply">Apply</button></div></div>';}
+ draw();place(pop,anchor,false);openPop=pop;var fi=pop.querySelector('input.inp');fi&&fi.focus();
+ pop.onclick=function(e){var o=e.target.closest('.sopt');if(o){tmp=tmp===o.dataset.o?'':o.dataset.o;draw();return;}var b=e.target.closest('[data-f]');if(!b)return;
+  if(f[2]==='text')tmp=pop.querySelector('input.inp').value.trim();
+  if(f[2]==='multi')tmp=[].slice.call(pop.querySelectorAll('input[data-o]:checked')).map(function(c){return c.dataset.o;});
+  if(b.dataset.f==='clear'){F[k]=Array.isArray(cur)?[]:'';}else if(b.dataset.f==='apply'){F[k]=tmp;}closePop();renderTable();};
+ pop.onkeydown=function(e){if(e.key==='Enter'&&f[2]==='text'){F[k]=pop.querySelector('input.inp').value.trim();closePop();renderTable();}};}
+function delModal(ps){var one=ps.length===1;$layer.innerHTML='<div class="ov" role="dialog" aria-modal="true"><div class="modal"><div class="mb"><div style="display:flex;gap:16px"><span style="width:40px;height:40px;border-radius:50%;background:var(--red100);display:flex;align-items:center;justify-content:center;flex:none">'+I.err+'</span><div><h3>'+(one?'Delete account?':'Delete accounts?')+'</h3><p>'+(one?esc(ps[0].fn+' '+ps[0].ln)+' will be deleted.':ps.length+' accounts will be deleted.')+'</p></div></div></div><div class="mf"><span class="sp"></span><button class="btn btn-w" data-m="c">Cancel</button><button class="btn btn-danger" data-m="ok">Delete</button></div></div></div>';
+ $layer.onclick=function(e){var b=e.target.closest('[data-m]');if(!b)return;if(b.dataset.m==='ok'){ps.forEach(function(p){P.splice(P.indexOf(p),1);delete sel[p.id];});toast(one?'Account deleted.':'Accounts deleted.');closeLayer();route();}else closeLayer();};}
+
+/* ---------- efficiency modal ---------- */
+function effModal(ps,after){var bulkMode=ps.length>1;var cur=bulkMode?0:ps[0].eff;var val=cur;var targets=ps.filter(hasEffZones);
+ function draw(){var pos=[30,20,10,0];var pct=val/30*100;
+  var desc=bulkMode?'Applies to '+targets.length+' selected pickers. Replaces their current efficiency adjustments.':'Applies to all assigned zones ('+effZoneCount(ps[0])+').';
+  $layer.innerHTML='<div class="ov" role="dialog" aria-modal="true" aria-labelledby="eh"><div class="modal"><button class="x" data-m="c" aria-label="Close">'+I.x+'</button><div class="mb"><div><h3 id="eh">Reduce efficiency</h3><p>'+desc+'</p></div><div><div class="slab">Reduce by</div><div class="slider"><div class="track" id="trk"><div class="fillr" style="left:'+(100-pct)+'%"></div><button class="thumb" id="thumb" style="left:'+(100-pct)+'%" aria-label="Reduction '+val+' %" role="slider" aria-valuemin="-30" aria-valuemax="0" aria-valuenow="'+(-val)+'"></button></div><div class="scale">'+pos.map(function(v){return '<button data-v="'+v+'" class="'+(val===v&&v>0?'on':'')+'">'+(v?'−'+v+' %':'0')+'</button>';}).join('')+'</div></div></div></div><div class="mf">'+(cur?'<button class="link tl" data-m="clear">Clear</button>':'')+'<span class="sp"></span><button class="btn btn-w" data-m="c">Cancel</button><button class="btn btn-p" data-m="save"'+(val&&val!==cur||bulkMode&&val?'':' disabled')+'>Save</button></div></div></div>';
+  var th=document.getElementById('thumb');th.onkeydown=function(e){if(e.key==='ArrowLeft'||e.key==='ArrowDown'){val=Math.min(30,val+10);draw();document.getElementById('thumb').focus();}if(e.key==='ArrowRight'||e.key==='ArrowUp'){val=Math.max(0,val-10);draw();document.getElementById('thumb').focus();}};
+  var trk=document.getElementById('trk');function fromX(x){var r=trk.getBoundingClientRect();var t=Math.max(0,Math.min(1,(x-r.left)/r.width));val=Math.round((1-t)*3)*10;draw();}
+  trk.onpointerdown=function(e){fromX(e.clientX);var mv=function(ev){fromX(ev.clientX);};var up=function(){window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);};window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);};}
+ draw();
+ $layer.onclick=function(e){var v=e.target.closest('[data-v]');if(v){val=+v.dataset.v;draw();return;}var b=e.target.closest('[data-m]');if(!b)return;
+  if(b.dataset.m==='save'){targets.forEach(function(p){p.eff=val;});toast('Efficiency reduced.');closeLayer();after();}
+  else if(b.dataset.m==='clear'){targets.forEach(function(p){p.eff=0;});toast('Efficiency adjustment cleared.');closeLayer();after();}
+  else closeLayer();};}
+
+/* ---------- view page ---------- */
+function tagsHtml(list,cls){return list.map(function(n){return '<span class="badge b-gray'+(cls||'')+'">'+esc(n)+'</span>';}).join('');}
+function comboOf(p,name){if(!p.mz)return null;for(var i=0;i<p.combos.length;i++){var c=COMBOS[p.combos[i]];if(c.indexOf(name)>=0)return c;}return null;}
+function renderView(p){var insp=isInsp(p);var zs=assigned(p);var effOn=p.eff>0;var dis=!canAuto(p)||insp;
+ var h='<div class="crumbs"><a href="#table">Picker accounts</a><span>›</span><span>'+esc(p.fn+' '+p.ln)+'</span></div>'+
+ '<div class="ph"><h1 style="display:flex;align-items:center;gap:12px"><a href="#table" aria-label="Back" style="color:var(--g700)">'+I.back+'</a>Account</h1><div style="display:flex;gap:8px"><button class="btn btn-r" id="vdel">Delete account</button><a class="btn btn-p" href="#edit-'+p.id+'">Edit</a></div></div><div class="narrow"><div class="card">';
+ h+='<div><h2 style="font-size:20px;font-weight:600">'+esc(p.fn+' '+p.ln)+'</h2><div class="muted">'+(insp?'Inspector':'Picker')+'</div></div>';
+ h+='<div class="sec" style="margin-top:24px"><div class="sec-h"><h2>Personal information</h2></div><div class="rowv"><span class="k">First name</span><span class="v">'+esc(p.fn)+'</span></div><div class="rowv"><span class="k">Last name</span><span class="v">'+esc(p.ln)+'</span></div></div>';
+ h+='<div class="sec"><div class="sec-h"><h2>Employee information</h2></div><div class="rowv"><span class="k">Time card</span><span class="v num">'+p.tc+'</span></div><div class="rowv"><span class="k">Login name</span><span class="v"><span id="lg">••••••••••••</span><button class="btn btn-w" id="lgb" style="height:32px">'+I.eye+'Show</button></span></div><div class="rowv"><span class="k">Shift name</span><span class="v">'+p.shift+'</span></div><div class="rowv"><span class="k">Role</span><span class="v">'+(insp?'Inspector':'Picker')+'</span></div><div class="rowv"><span class="k">Shop</span><span class="v">X016 Liepkalnis</span></div></div>';
+ // auto task assignment
+ h+='<div class="sec"><div class="sec-h"><h2>Auto task assignment</h2><p>Tasks are sized from the zones and efficiency below.</p></div>';
+ if(!insp)h+='<div class="rowv"><span class="k">New picker</span><span class="v"><button class="tg" role="switch" id="vnp" aria-checked="'+p.isNew+'" aria-label="New picker"></button><span class="muted">While on, auto tasks cannot be enabled.</span></span></div>';
+ h+='<div class="rowv"><span class="k">Auto tasks</span><span class="v"><button class="tg" role="switch" id="vat" aria-checked="'+(insp?true:p.auto)+'"'+(dis?' disabled':'')+' aria-label="Auto tasks"></button><span class="muted">'+(insp?'Always on for inspectors.':(p.isNew?'Turn off New picker to enable auto tasks.':(!zs.length?'Assign zones to enable auto tasks.':(p.auto?'On: tasks are assigned automatically.':'Off: tasks are assigned manually.'))))+'</span></span></div>';
+ h+='<div class="rowv"><span class="k">Can work in multiple zones</span><span class="v"><span class="yn">'+(p.mz?I.okgreen+'Yes':I.xred+'No')+'</span></span></div>';
+ if(p.mz&&p.combos.length)h+='<div class="rowv" style="align-items:start"><span class="k" style="padding-top:2px">Allowed zone combinations</span><span class="v" style="display:block"><div class="cblock">'+p.combos.map(function(i){return '<div class="crow"><div class="tags" style="display:flex;flex-wrap:wrap;gap:4px">'+tagsHtml(COMBOS[i])+'</div></div>';}).join('')+'</div></span></div>';
+ h+='</div>';
+ // zones
+ h+='<div class="sec"><div class="sec-h" style="border:0"><h2>Zones and efficiency</h2><p>Used to size auto tasks.</p></div>';
+ if(!zs.length){h+='<div class="empty" style="border:1px dashed var(--g300);border-radius:8px;margin-top:16px">No zones assigned. Edit the account to assign zones.</div></div>';}
+ else{
+  var hasEff=hasEffZones(p);
+  h+='<div class="ztool"><button class="effbtn'+(effOn?' on':'')+'" id="veff"'+(hasEff?'':' disabled')+'>'+(effOn?'Reduce efficiency <span class="badge b-red">'+I.down.replace('width="20" height="20"','width="14" height="14"')+'−'+p.eff+' %</span>':'Reduce efficiency')+'</button>'+(effOn?'<button class="link tl" id="vclr">Clear</button>':'')+'<span class="cnt">'+zs.length+' zones</span></div>';
+  h+='<div class="zblock">';
+  if(p.paused.length)h+='<div class="psum"><span>'+I.pause+p.paused.length+(p.paused.length===1?' zone paused':' zones paused')+'</span><button class="btn btn-p" id="vres" style="height:32px">Resume all</button></div>';
+  h+='<div class="zlist"><div class="zr none"><div class="zh"><span class="nm">NONE</span><span class="sp"></span><span class="znote">'+I.info+'Tasks from the NONE zone are never assigned automatically.</span></div></div>';
+  ZONES.forEach(function(z){if(zs.indexOf(z.name)<0)return;var v=p.zones[z.name];var paused=p.paused.indexOf(z.name)>=0;var c=comboOf(p,z.name);var ws=z.ws||insp;
+   var head='<div class="zh">'+(paused?'<span class="icon-g">'+I.pause+'</span>':'')+'<span class="nm">'+esc(z.name)+'</span>'+(z.ws?'<span class="tip" tabindex="0" data-tip="Workshop">'+I.hat+'</span>':'')+(z.bakery?'<span class="tip" tabindex="0" data-tip="Bakery workshop zone">'+I.bread+'</span>':'')+(c?'<span class="combo">'+I.plussm+'<span class="tags">'+tagsHtml(c.filter(function(n){return n!==z.name;}))+'</span></span>':'')+'<span class="sp"></span>';
+   var btn='<button class="btn '+(paused?'btn-p':'btn-w')+'" data-z="'+esc(z.name)+'" data-act="'+(paused?'res':'pause')+'">'+(paused?'Resume':'Pause')+'</button>';
+   if(ws){h+='<div class="zr'+(paused?' paused':'')+'" id="z-'+z.idx+'">'+head+btn+'</div></div>';return;}
+   function stat(lbl,val,eff){if(!val)return '<div class="st"><small>'+lbl+'</small><b class="dash">–</b><i></i></div>';var shown=effOn&&eff?Math.round(+val*(100-p.eff)/100):val;return '<div class="st"><small>'+lbl+'</small><b class="num'+(effOn&&eff&&!paused?' red':'')+'">'+shown+'</b><i class="num">'+(effOn&&eff?'was '+val:'')+'</i></div>';}
+   h+='<div class="zr'+(paused?' paused':'')+'" id="z-'+z.idx+'">'+head+'</div><div class="vals"><div class="grp"><div class="blk"><span class="lbl">Efficiency per hour</span><div class="stats">'+stat('SKU/1h',v.sku,1)+stat('Units/1h',v.un,1)+'</div></div><span class="dv"></span><div class="blk"><span class="lbl">Max per assignment</span><div class="stats">'+stat('SKU',v.ms)+stat('Units',v.mu)+stat('Orders',v.mo)+'</div></div></div><span class="sp"></span>'+btn+'</div></div>';});
+  h+='</div></div></div>';}
+ h+='</div></div>';
+ $page.innerHTML=h;
+ document.getElementById('lgb').onclick=function(){var l=document.getElementById('lg');var shown=l.textContent!=='••••••••••••';l.textContent=shown?'••••••••••••':p.login;this.lastChild.textContent=shown?'Show':'Hide';};
+ document.getElementById('vdel').onclick=function(){delModal([p]);};
+ var np=document.getElementById('vnp');np&&(np.onclick=function(){p.isNew=!p.isNew;if(p.isNew&&p.auto){p.auto=false;toast('Auto tasks turned off.');}renderView(p);});
+ var at=document.getElementById('vat');at&&!at.disabled&&(at.onclick=function(){p.auto=!p.auto;toast(p.auto?'Auto tasks turned on.':'Auto tasks turned off.');renderView(p);});
+ var ve=document.getElementById('veff');ve&&(ve.onclick=function(){effModal([p],function(){renderView(p);});});
+ var vc=document.getElementById('vclr');vc&&(vc.onclick=function(){p.eff=0;toast('Efficiency adjustment cleared.');renderView(p);});
+ var vr=document.getElementById('vres');vr&&(vr.onclick=function(){p.paused=[];toast('Paused zones resumed.');renderView(p);});
+ $page.querySelectorAll('[data-act]').forEach(function(b){b.onclick=function(){var n=b.dataset.z;if(b.dataset.act==='res'){p.paused.splice(p.paused.indexOf(n),1);toast('Zone resumed.');renderView(p);}else pauseModal(p,n);};});}
+function pauseModal(p,n){$layer.innerHTML='<div class="ov" role="dialog" aria-modal="true"><div class="modal"><button class="x" data-m="c" aria-label="Close">'+I.x+'</button><div class="mb"><div><h3>Pause zone</h3><p>'+esc(n)+': no new tasks for this picker. Started tasks continue.</p></div></div><div class="mf"><span class="sp"></span><button class="btn btn-w" data-m="c">Cancel</button><button class="btn btn-p" data-m="ok">Confirm</button></div></div></div>';
+ $layer.onclick=function(e){var b=e.target.closest('[data-m]');if(!b)return;if(b.dataset.m==='ok'){p.paused.push(n);toast('Zone paused.');closeLayer();renderView(p);}else closeLayer();};}
+
+/* ---------- edit / create ---------- */
+var D=null;
+function draftFrom(p){if(!p)return {id:null,fn:'',ln:'',tc:'',shift:'',role:'Picker',isNew:false,auto:false,mz:false,combos:[],zones:{},vals:{},tried:false};
+ var vals={};ZONES.forEach(function(z){var v=p.zones[z.name];vals[z.name]=v?JSON.parse(JSON.stringify(v)):{sku:'',un:'',ms:'',mu:'',mo:''};});
+ var zones={};assigned(p).forEach(function(n){zones[n]=true;});
+ return {id:p.id,fn:p.fn,ln:p.ln,tc:p.tc,shift:p.shift,role:p.role,isNew:p.isNew,auto:p.auto,mz:p.mz,combos:p.combos.slice(),zones:zones,vals:vals,tried:false};}
+function dInsp(){return D.role==='Inspector';}
+function zAssigned(n){var z=ZONES.filter(function(x){return x.name===n;})[0];if(!D.zones[n])return false;if(z.ws||dInsp())return true;var v=D.vals[n]||{};return !!(v.sku||v.un);}
+function anyAssigned(){return Object.keys(D.zones).some(function(n){return D.zones[n]&&zAssigned(n);});}
+function conflictsOf(ci){return COMBOS[ci].filter(function(n){return !zAssigned(n);});}
+function zoneConflict(n){if(!D.mz)return false;return D.combos.some(function(ci){return COMBOS[ci].indexOf(n)>=0&&!zAssigned(n);});}
+function renderEdit(){var create=!D.id;var insp=dInsp();var autoDis=D.isNew||!anyAssigned()||insp;if(autoDis&&!insp)D.auto=false;
+ var nSel=ZONES.filter(function(z){return D.zones[z.name];}).length;
+ var h='<div class="crumbs"><a href="#table">Picker accounts</a><span>›</span><span>'+(create?'Create account':esc(D.fn+' '+D.ln))+'</span></div><div class="ph"><h1 style="display:flex;align-items:center;gap:12px"><a href="'+(create?'#table':'#view-'+D.id)+'" aria-label="Back" style="color:var(--g700)">'+I.back+'</a>'+(create?'Create account':'Edit account')+'</h1></div><div class="narrow"><form class="card" id="ef" novalidate>';
+ h+='<div class="sec"><div class="sec-h"><h2>Personal information</h2></div><div class="fgrid"><div class="fld"><label for="e-fn">First name</label><input class="inp" id="e-fn" value="'+esc(D.fn)+'"></div><div class="fld"><label for="e-ln">Last name</label><input class="inp" id="e-ln" value="'+esc(D.ln)+'"></div></div></div>';
+ h+='<div class="sec"><div class="sec-h"><h2>Employee details</h2></div><div class="fcol"><div class="fld"><label for="e-tc">Time card</label><input class="inp" id="e-tc" value="'+esc(D.tc)+'"></div><div class="fld"><label for="e-sh">Shift name</label><input class="inp" id="e-sh" value="'+esc(D.shift)+'"></div><div class="fld"><label for="e-role">Role</label><select class="sel" id="e-role"><option'+(insp?'':' selected')+'>Picker</option><option'+(insp?' selected':'')+'>Inspector</option></select></div><div class="fld"><label for="e-shop">Shop</label><select class="sel" id="e-shop"><option>X016 Liepkalnis</option></select></div></div></div>';
+ h+='<div class="sec"><div class="sec-h"><h2>Auto task assignment</h2><p>Tasks are sized from the zones and efficiency below.</p></div>';
+ if(!insp)h+='<label class="chk"><input type="checkbox" class="cb" id="e-np"'+(D.isNew?' checked':'')+'><span><b>New picker</b><p>While checked, auto tasks cannot be enabled</p></span></label>';
+ h+='<label class="chk'+(autoDis&&!insp?' dis':'')+'"><input type="checkbox" class="cb" id="e-at"'+((insp||D.auto)?' checked':'')+(autoDis?' disabled':'')+'><span><b>Auto tasks</b><p>'+(insp?'Always on for inspectors.':'Tasks are assigned automatically. Cannot be enabled while New picker is checked or no zones are assigned.')+'</p></span></label></div>';
+ h+='<div class="sec"><div class="sec-h"><h2>Zones and efficiency</h2><p>'+(insp?'Select the zones the inspector checks.':'Select zones and enter SKU/1h or Units/1h for each.')+'</p></div>';
+ h+='<div class="etool"><button type="button" class="btn btn-s" id="e-all">Select all</button><button type="button" class="btn btn-s" id="e-none">Select none</button><span class="muted">'+nSel+' of '+ZONES.length+' enabled</span></div>';
+ h+='<div class="zlist"><div class="zr none"><div class="zh"><input type="checkbox" class="cb" disabled aria-label="NONE"><span class="nm">NONE</span><span class="sp"></span><span class="znote">'+I.info+'Tasks from the NONE zone are never assigned automatically.</span></div></div>';
+ ZONES.forEach(function(z){var on=!!D.zones[z.name];var conf=zoneConflict(z.name);var c=D.mz?(function(){for(var i=0;i<D.combos.length;i++){var cc=COMBOS[D.combos[i]];if(cc.indexOf(z.name)>=0)return cc;}return null;})():null;
+  var v=D.vals[z.name]||(D.vals[z.name]={sku:'',un:'',ms:'',mu:'',mo:''});var needEff=on&&!z.ws&&!insp;var err=needEff&&D.tried&&!(v.sku||v.un);
+  h+='<div class="zr" id="ez-'+z.idx+'"><div class="zh"><input type="checkbox" class="cb" data-zc="'+esc(z.name)+'" id="zc-'+z.idx+'"'+(on?' checked':'')+'><label for="zc-'+z.idx+'" class="nm'+(conf?' conf':'')+'">'+esc(z.name)+'</label>'+(z.ws?'<span class="tip" tabindex="0" data-tip="Workshop">'+I.hat+'</span>':'')+(z.bakery?'<span class="tip" tabindex="0" data-tip="Bakery workshop zone">'+I.bread+'</span>':'')+(c?'<span class="combo">'+I.plussm+'<span class="tags">'+tagsHtml(c.filter(function(n){return n!==z.name;}))+'</span></span>':'')+'</div>';
+  if(needEff){function fi(k,l){return '<div class="fi"><label for="v-'+z.idx+'-'+k+'">'+l+'</label><input class="inp r num'+(err&&(k==='sku'||k==='un')?' err':'')+'" inputmode="numeric" id="v-'+z.idx+'-'+k+'" data-zv="'+esc(z.name)+'" data-k="'+k+'" value="'+esc(v[k])+'"></div>';}
+   h+='<div class="efields"><div class="g"><span class="lbl">Efficiency per hour</span><div class="ins">'+fi('sku','SKU/1h')+fi('un','Units/1h')+'</div></div><span class="dv"></span><div class="g"><span class="lbl">Max per assignment</span><div class="ins">'+fi('ms','SKU')+fi('mu','Units')+fi('mo','Orders')+'</div></div></div>'+(err?'<div class="ferr">Enter SKU/1h or Units/1h.</div>':'');}
+  h+='</div>';});
+ h+='</div>';
+ h+='<div style="margin-top:24px;padding-top:16px;border-top:1px solid var(--g200)"><label class="chk" style="margin-top:0"><input type="checkbox" class="cb" id="e-mz"'+(D.mz?' checked':'')+'><span><b>Can work in multiple zones</b><p>The picker can get tasks from several zones at once, based on the selected combinations.</p></span></label>';
+ if(D.mz){h+='<div style="display:flex;align-items:baseline;gap:8px;margin:24px 0 16px"><b style="font-weight:500">Allowed zone combinations</b><span class="muted">'+D.combos.length+' of '+COMBOS.length+' selected</span></div><div class="cblock">';
+  COMBOS.forEach(function(cz,ci){var on=D.combos.indexOf(ci)>=0;var cf=on?conflictsOf(ci):[];
+   h+='<div class="crow"><span class="cbw"><input type="checkbox" class="cb" data-cc="'+ci+'" aria-label="Combination '+(ci+1)+'"'+(on?' checked':'')+'></span><div class="content"><div class="tags">'+cz.map(function(n){var bad=cf.indexOf(n)>=0;var z=ZONES.filter(function(x){return x.name===n;})[0];return bad?'<button type="button" class="badge b-red tagbtn" data-goto="'+z.idx+'">'+esc(n)+'</button>':'<span class="badge b-gray">'+esc(n)+'</span>';}).join('')+'</div>'+(cf.length?'<div class="errmsg">'+I.err+(cf.length===1?'1 zone in this combination is not assigned to the picker.':cf.length+' zones in this combination are not assigned to the picker.')+'</div>':'')+'</div></div>';});
+  h+='</div>';}
+ h+='</div></div>';
+ h+='<div class="footer">'+(create?'<div class="lnote">'+I.info+'Picker login name will be created automatically after creation of the account. You can view picker information in pickers profile page.</div>':'')+'<div class="acts"><a class="btn btn-w" href="'+(create?'#table':'#view-'+D.id)+'">Cancel</a>'+(create?'':'<button type="button" class="btn btn-w" id="e-next">Save and next picker</button>')+'<button type="submit" class="btn btn-p">'+(create?'Create':'Save')+'</button></div></div></form></div>';
+ var y=window.scrollY;$page.innerHTML=h;window.scrollTo(0,y);
+ function bindInp(id,k){var el=document.getElementById(id);el.oninput=function(){D[k]=el.value;};}
+ bindInp('e-fn','fn');bindInp('e-ln','ln');bindInp('e-tc','tc');bindInp('e-sh','shift');
+ document.getElementById('e-role').onchange=function(){D.role=this.value;if(D.role==='Inspector')D.isNew=false;renderEdit();};
+ var np=document.getElementById('e-np');np&&(np.onchange=function(){D.isNew=np.checked;if(D.isNew)D.auto=false;renderEdit();});
+ var at=document.getElementById('e-at');at.onchange=function(){D.auto=at.checked;};
+ document.getElementById('e-all').onclick=function(){ZONES.forEach(function(z){D.zones[z.name]=true;});renderEdit();};
+ document.getElementById('e-none').onclick=function(){D.zones={};renderEdit();};
+ $page.querySelectorAll('[data-zc]').forEach(function(c){c.onchange=function(){D.zones[c.dataset.zc]=c.checked;if(!c.checked)delete D.zones[c.dataset.zc];renderEdit();};});
+ $page.querySelectorAll('[data-zv]').forEach(function(i){i.oninput=function(){D.vals[i.dataset.zv][i.dataset.k]=i.value.replace(/[^\d]/g,'');};i.onchange=function(){renderEdit();var el=document.getElementById(i.id);el&&el.focus();};});
+ document.getElementById('e-mz').onchange=function(){D.mz=this.checked;if(D.mz&&!D.combos.length)D.combos=COMBOS.map(function(_,i){return i;});renderEdit();};
+ $page.querySelectorAll('[data-cc]').forEach(function(c){c.onchange=function(){var ci=+c.dataset.cc;if(c.checked)D.combos.push(ci);else D.combos.splice(D.combos.indexOf(ci),1);if(!D.combos.length)D.mz=false;renderEdit();};});
+ $page.querySelectorAll('[data-goto]').forEach(function(b){b.onclick=function(){var r=document.getElementById('ez-'+b.dataset.goto);r.scrollIntoView({behavior:'smooth',block:'center'});var z=ZONES[+b.dataset.goto];var f=D.zones[z.name]?document.getElementById('v-'+z.idx+'-sku'):document.getElementById('zc-'+z.idx);f&&setTimeout(function(){f.focus({preventScroll:true});},300);};});
+ document.getElementById('ef').onsubmit=function(e){e.preventDefault();save(false);};
+ var nx=document.getElementById('e-next');nx&&(nx.onclick=function(){save(true);});}
+function save(next){D.tried=true;var create=!D.id;var missing=ZONES.some(function(z){return D.zones[z.name]&&!z.ws&&!dInsp()&&!zAssigned(z.name);});var conf=D.mz&&D.combos.some(function(ci){return conflictsOf(ci).length;});
+ if(!D.fn||!D.ln||!D.tc){toast('Fill in first name, last name and time card.',true);renderEdit();return;}
+ if(missing||conf){toast(conf?'Assign all zones of the selected combinations before saving.':'Enter SKU/1h or Units/1h for the selected zones.',true);renderEdit();return;}
+ var p=create?{id:nextId++,paused:[],eff:0,login:(D.fn+'.'+D.ln).toLowerCase()}:byId(D.id);
+ p.fn=D.fn;p.ln=D.ln;p.tc=D.tc;p.shift=D.shift||'—';p.role=D.role;p.isNew=dInsp()?false:D.isNew;p.auto=dInsp()?true:(D.auto&&!D.isNew&&anyAssigned());p.mz=D.mz;p.combos=D.combos.slice().sort();
+ var zs={};ZONES.forEach(function(z){if(D.zones[z.name])zs[z.name]=dInsp()||z.ws?{sku:'',un:'',ms:'',mu:'',mo:''}:JSON.parse(JSON.stringify(D.vals[z.name]));});p.zones=zs;p.paused=p.paused.filter(function(n){return zs[n];});
+ if(create){P.push(p);toast('Account created.');go('view-'+p.id);return;}
+ toast('Changes saved.');
+ if(next){var i=P.indexOf(p);var n=P[(i+1)%P.length];go('edit-'+n.id);}else go('view-'+p.id);}
+
+/* ---------- routing ---------- */
+var curRoute=(location.hash||'').replace('#','');
+function go(h){curRoute=h;if(/^https?:$/.test(location.protocol)){try{if(location.hash.replace('#','')!==h)history.replaceState(null,'','#'+h);}catch(e){}}route();}
+window.__go=go;
+document.addEventListener('click',function(e){var a=e.target.closest('a[href^="#"]');if(!a)return;e.preventDefault();go(a.getAttribute('href').slice(1));});
+function route(){closePop();closeLayer();var h=curRoute;var m;
+ if((m=h.match(/^view-(\d+)$/))&&byId(m[1])){renderView(byId(m[1]));}
+ else if((m=h.match(/^edit-(\d+)$/))&&byId(m[1])){D=draftFrom(byId(m[1]));renderEdit();}
+ else if(h==='create'){D=draftFrom(null);renderEdit();}
+ else renderTable();
+ window.scrollTo(0,0);}
+window.addEventListener('hashchange',function(){curRoute=location.hash.replace('#','');route();});route();
+})();
+</script>
