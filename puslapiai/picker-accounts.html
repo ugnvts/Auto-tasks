@@ -295,18 +295,18 @@ var ZONES=[ // name, workshop, bakery, efficiency zone
  ['Pampers / Toilet Paper',0,0],['Cosmetics',0,0],['Cofee, tea, candy',0,0],['Chemicals',0,0],['Chips',0,0],['Conservation',0,0],
  ['Fruits, vegetables',0,0],['Frozen goods',0,0],['Non-alcoholic beverages',0,0],['Soft drinks',0,0],['Candies',0,0],['Alcoholic beverages',0,0],
  ['Bread products',0,0],['Milk, fish, poultry',0,0],['Groceries',0,0],
- ['Kiaušiniai',0,0],['Easter',0,0],['Stationery Goods',0,0],['Flowers',0,0],['Christmas',0,0],['Food bank',0,0],['Press',0,0]
+ ['Kiaušiniai',0,0],['Easter',0,0],['Stationery Goods',0,0],['Flowers',0,0],['Christmas',0,0],['Food bank',0,0],['Press',0,0],['UAT Milk',0,0]
 ].map(function(z,i){return {name:z[0],ws:!!z[1],bakery:!!z[2],idx:i};});
-var COMBOS=[['Fresh meat','Fresh poultry'],['Fruits, vegetables','Groceries','Bread products'],['Frozen goods','Cosmetics','Chemicals','Conservation'],['Chips','Candies','Soft drinks','Non-alcoholic beverages','Alcoholic beverages'],['Milk, fish, poultry','Weighed cheese']];
+var COMBOS=[['Pampers / Toilet Paper','Cofee, tea, candy'],['Fruits, vegetables','Groceries','Bread products'],['Frozen goods','Cosmetics','Chemicals','Conservation'],['Chips','Candies','Soft drinks','Non-alcoholic beverages','Alcoholic beverages'],['Milk, fish, poultry','UAT Milk']];
 var PAT=[['58','','13','29',''],['','112','','',''],['42','105','20','45','3'],['36','','','',''],['51','120','','60',''],['','74','15','40',''],['29','70','12','','2'],['47','133','','',''],['','96','18','','4'],['33','82','25','62','6'],['60','','','',''],['','88','','35',''],['38','91','14','','']];
 function baseZones(inspector){var m={};ZONES.forEach(function(z,i){if(i>20)return;var p=PAT[(i-6+13)%13];m[z.name]=z.ws||inspector?{sku:'',un:'',ms:'',mu:'',mo:''}:{sku:p[0],un:p[1],ms:p[2],mu:p[3],mo:p[4]};});return m;}
 var P=[
  [1,'Silvija','Švaikevičiūtė','Picker',1,0,0,'3360','Evening',0,[],[]],
- [2,'Nerijus','Petrauskas','Picker',0,1,0,'4200','Evening',20,[],[]],
+ [2,'Nerijus','Petrauskas','Picker',0,1,0,'4200','Evening',10,[],[]],
  [3,'Aldonas','Kazlauskas','Picker',0,1,1,'4327','Evening',0,[],[0,1,3]],
  [4,'Karolis','Jankauskas','Picker',0,1,0,'7854','Evening',0,['Groceries'],[]],
  [5,'Remigijus','Stankevičius','Picker',1,0,1,'1756','Evening',0,[],[0,1]],
- [6,'Tomas','Vasiliauskas','Picker',0,1,0,'7142','Evening',20,['Weighed cheese','Non-alcoholic beverages'],[]],
+ [6,'Tomas','Vasiliauskas','Picker',0,1,0,'7142','Evening',10,['Weighed cheese','Non-alcoholic beverages'],[]],
  [7,'Silvestr','Žukauskas','Inspector',0,1,0,'3975','Evening',0,[],[]],
  [8,'Darius','Butkus','Picker',0,1,1,'1758','Morning',0,[],[0,1,2,3]],
  [9,'Aleksandr','Paulauskas','Inspector',0,1,0,'1270','Morning',0,[],[]],
@@ -412,11 +412,11 @@ function delModal(ps){var one=ps.length===1;$layer.innerHTML='<div class="ov" ro
 
 /* ---------- efficiency modal ---------- */
 function effModal(ps,after){var bulkMode=ps.length>1;var cur=bulkMode?0:ps[0].eff;var val=cur;var targets=ps.filter(hasEffZones);
- function draw(){var pos=[30,20,10,0];var pct=val/30*100;
+ function draw(){var pos=[15,10,5,0];var pct=val/15*100;
   var desc=bulkMode?'Applies to '+targets.length+' selected pickers. Replaces their current efficiency adjustments.':'Applies to all assigned zones ('+effZoneCount(ps[0])+').';
-  $layer.innerHTML='<div class="ov" role="dialog" aria-modal="true" aria-labelledby="eh"><div class="modal"><button class="x" data-m="c" aria-label="Close">'+I.x+'</button><div class="mb"><div><h3 id="eh">Reduce efficiency</h3><p>'+desc+'</p></div><div><div class="slab">Reduce by</div><div class="slider"><div class="track" id="trk"><div class="fillr" style="left:'+(100-pct)+'%"></div><button class="thumb" id="thumb" style="left:'+(100-pct)+'%" aria-label="Reduction '+val+' %" role="slider" aria-valuemin="-30" aria-valuemax="0" aria-valuenow="'+(-val)+'"></button></div><div class="scale">'+pos.map(function(v){return '<button data-v="'+v+'" class="'+(val===v&&v>0?'on':'')+'">'+(v?'−'+v+' %':'0')+'</button>';}).join('')+'</div></div></div></div><div class="mf">'+(cur?'<button class="link tl" data-m="clear">Clear</button>':'')+'<span class="sp"></span><button class="btn btn-w" data-m="c">Cancel</button><button class="btn btn-p" data-m="save"'+(val&&val!==cur||bulkMode&&val?'':' disabled')+'>Save</button></div></div></div>';
-  var th=document.getElementById('thumb');th.onkeydown=function(e){if(e.key==='ArrowLeft'||e.key==='ArrowDown'){val=Math.min(30,val+10);draw();document.getElementById('thumb').focus();}if(e.key==='ArrowRight'||e.key==='ArrowUp'){val=Math.max(0,val-10);draw();document.getElementById('thumb').focus();}};
-  var trk=document.getElementById('trk');function fromX(x){var r=trk.getBoundingClientRect();var t=Math.max(0,Math.min(1,(x-r.left)/r.width));val=Math.round((1-t)*3)*10;draw();}
+  $layer.innerHTML='<div class="ov" role="dialog" aria-modal="true" aria-labelledby="eh"><div class="modal"><button class="x" data-m="c" aria-label="Close">'+I.x+'</button><div class="mb"><div><h3 id="eh">Reduce efficiency</h3><p>'+desc+'</p></div><div><div class="slab">Reduce by</div><div class="slider"><div class="track" id="trk"><div class="fillr" style="left:'+(100-pct)+'%"></div><button class="thumb" id="thumb" style="left:'+(100-pct)+'%" aria-label="Reduction '+val+' %" role="slider" aria-valuemin="-15" aria-valuemax="0" aria-valuenow="'+(-val)+'"></button></div><div class="scale">'+pos.map(function(v){return '<button data-v="'+v+'" class="'+(val===v&&v>0?'on':'')+'">'+(v?'−'+v+' %':'0')+'</button>';}).join('')+'</div></div></div></div><div class="mf">'+(cur?'<button class="link tl" data-m="clear">Clear</button>':'')+'<span class="sp"></span><button class="btn btn-w" data-m="c">Cancel</button><button class="btn btn-p" data-m="save"'+(val&&val!==cur||bulkMode&&val?'':' disabled')+'>Save</button></div></div></div>';
+  var th=document.getElementById('thumb');th.onkeydown=function(e){if(e.key==='ArrowLeft'||e.key==='ArrowDown'){val=Math.min(15,val+5);draw();document.getElementById('thumb').focus();}if(e.key==='ArrowRight'||e.key==='ArrowUp'){val=Math.max(0,val-5);draw();document.getElementById('thumb').focus();}};
+  var trk=document.getElementById('trk');function fromX(x){var r=trk.getBoundingClientRect();var t=Math.max(0,Math.min(1,(x-r.left)/r.width));val=Math.round((1-t)*3)*5;draw();}
   trk.onpointerdown=function(e){fromX(e.clientX);var mv=function(ev){fromX(ev.clientX);};var up=function(){window.removeEventListener('pointermove',mv);window.removeEventListener('pointerup',up);};window.addEventListener('pointermove',mv);window.addEventListener('pointerup',up);};}
  draw();
  $layer.onclick=function(e){var v=e.target.closest('[data-v]');if(v){val=+v.dataset.v;draw();return;}var b=e.target.closest('[data-m]');if(!b)return;
