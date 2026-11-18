@@ -1,0 +1,347 @@
+<!doctype html>
+<html lang="lt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Auto tasks valdymas</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Prezentacija tekstų rašytojui: trys Picker accounts lygiai, langų paskirtis ir elementų paskirtis.
+   Kiekviena skaidrė – vienas ekrano aukštis (scroll-snap); ← → / PgUp PgDn perjungia. */
+:root {
+  --bg: #eef0f3; --slide: #ffffff; --fg: #17202a; --muted: #5f6b78; --line: #d8dde3; --chip: #f3f5f7;
+  --accent: #4f46e5; --accent-bg: #eceafd;
+  --red: #dc2626; --red-bg: #fde8e8;
+  --green: #15803d; --green-bg: #e3f6ea;
+  --gray-row: #f6f7f9;
+  --l1: #e8f0fb; --l1-fg: #1e4f91;
+  --l2: #fdf3e2; --l2-fg: #8a5300;
+  --l3: #ecebfd; --l3-fg: #4338ca;
+  --f-body: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #11161c; --slide: #181f27; --fg: #e3e8ee; --muted: #97a3b0; --line: #2b3540; --chip: #212a34;
+  --accent: #9d97ff; --accent-bg: #2a2850; --red: #f87171; --red-bg: #3a1f22; --green: #4ade80; --green-bg: #17301f;
+  --gray-row: #1f2730; --l1: #1a2a3f; --l1-fg: #9cc3f5; --l2: #33281a; --l2-fg: #f2c27a; --l3: #262553; --l3-fg: #b7b2ff;
+  color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #11161c; --slide: #181f27; --fg: #e3e8ee; --muted: #97a3b0; --line: #2b3540; --chip: #212a34;
+  --accent: #9d97ff; --accent-bg: #2a2850; --red: #f87171; --red-bg: #3a1f22; --green: #4ade80; --green-bg: #17301f;
+  --gray-row: #1f2730; --l1: #1a2a3f; --l1-fg: #9cc3f5; --l2: #33281a; --l2-fg: #f2c27a; --l3: #262553; --l3-fg: #b7b2ff;
+  color-scheme: dark; }
+
+* { box-sizing: border-box; margin: 0; }
+html { scroll-snap-type: y mandatory; }
+body { background: var(--bg); color: var(--fg); font-family: var(--f-body); font-size: 16px; line-height: 1.5; }
+.s { scroll-snap-align: start; min-height: 100vh; padding: 24px 16px; display: flex; align-items: center; justify-content: center; }
+.card { background: var(--slide); border: 1px solid var(--line); border-radius: 16px; width: 100%; max-width: 1180px; padding: 40px 48px; position: relative; }
+.no { position: absolute; top: 16px; right: 24px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.kick { font-family: var(--f-mono); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+h1 { font-size: 40px; line-height: 1.15; font-weight: 600; letter-spacing: -.01em; }
+h2 { font-size: 32px; line-height: 1.2; font-weight: 600; letter-spacing: -.01em; }
+.q { font-size: 20px; color: var(--muted); margin-top: 8px; }
+.lead { font-size: 20px; max-width: 760px; margin-top: 16px; }
+.cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 40px; margin-top: 32px; align-items: start; }
+.ui { font-family: var(--f-mono); font-size: 13px; background: var(--chip); border: 1px solid var(--line); border-radius: 4px; padding: 1px 6px; white-space: nowrap; }
+.lvl { display: inline-block; font-family: var(--f-mono); font-size: 12px; font-weight: 500; border-radius: 4px; padding: 2px 8px; }
+.lvl.e { background: var(--l1); color: var(--l1-fg); } .lvl.v { background: var(--l2); color: var(--l2-fg); } .lvl.t { background: var(--l3); color: var(--l3-fg); }
+
+/* Elementų sąrašas */
+.els { display: flex; flex-direction: column; gap: 16px; }
+.el { display: grid; grid-template-columns: 24px 1fr; gap: 8px; }
+.el .n { width: 24px; height: 24px; border-radius: 50%; background: var(--fg); color: var(--slide); font-size: 12px; font-weight: 600; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.el b { font-weight: 600; }
+.el p { color: var(--muted); font-size: 15px; }
+.mk { display: inline-flex; width: 18px; height: 18px; border-radius: 50%; background: var(--fg); color: var(--slide); font-size: 11px; font-weight: 600; align-items: center; justify-content: center; flex: none; }
+
+/* Supaprastinti eskizai */
+.wf { border: 1px solid var(--line); border-radius: 12px; background: var(--slide); padding: 20px; font-size: 14px; box-shadow: 0 1px 2px rgba(0,0,0,.04); }
+.wf-h { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+.wf-h b { font-size: 16px; }
+.wf-h .sp { flex: 1; }
+.sec { border-top: 1px solid var(--line); padding-top: 12px; margin-top: 12px; }
+.sec > .t { font-weight: 600; font-size: 14px; display: flex; align-items: center; gap: 8px; }
+.sec > .d { color: var(--muted); font-size: 12px; }
+.ghost { height: 8px; border-radius: 4px; background: var(--chip); margin: 8px 0; }
+.ghost.w60 { width: 60%; } .ghost.w40 { width: 40%; }
+.row { display: flex; align-items: center; gap: 8px; padding: 8px 0; }
+.row .k { min-width: 92px; color: var(--muted); font-size: 13px; }
+.row .hint { color: var(--muted); font-size: 12px; }
+.tg { width: 32px; height: 18px; border-radius: 9px; background: var(--line); position: relative; flex: none; }
+.tg::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; }
+.tg.on { background: var(--accent); } .tg.on::after { left: 16px; }
+.tg.dis { opacity: .45; }
+.cb { width: 16px; height: 16px; border-radius: 4px; border: 1.5px solid var(--muted); flex: none; position: relative; }
+.cb.on { background: var(--accent); border-color: var(--accent); }
+.cb.on::after { content: ""; position: absolute; left: 4px; top: 1px; width: 5px; height: 9px; border: solid #fff; border-width: 0 2px 2px 0; transform: rotate(45deg); }
+.cb.dis { opacity: .4; }
+.btn { display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 6px; border: 1px solid var(--line); font-size: 12px; font-weight: 500; white-space: nowrap; background: var(--slide); }
+.btn.p { background: var(--accent); border-color: var(--accent); color: #fff; }
+.badge { display: inline-flex; align-items: center; gap: 2px; font-size: 11px; font-weight: 500; border-radius: 4px; padding: 1px 6px; background: var(--chip); }
+.badge.r { background: var(--red-bg); color: var(--red); }
+.zone { border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; margin-top: 8px; display: flex; align-items: center; gap: 12px; }
+.zone .nm { font-weight: 500; min-width: 64px; }
+.zone .vals { display: flex; gap: 16px; font-size: 12px; color: var(--muted); }
+.zone .vals b { color: var(--fg); font-size: 14px; display: block; }
+.zone .vals b.red { color: var(--red); }
+.zone .vals i { font-style: normal; font-size: 11px; display: block; }
+.zone .sp { flex: 1; }
+.zone.paused { background: var(--gray-row); }
+.zone.paused .nm, .zone.paused .vals { opacity: .55; }
+.inp { display: inline-block; width: 52px; height: 24px; border: 1px solid var(--line); border-radius: 4px; font-size: 12px; padding: 2px 6px; }
+.ico { width: 14px; height: 14px; flex: none; }
+.ico.r { color: var(--red); } .ico.i { color: var(--accent); }
+.psum { display: flex; align-items: center; gap: 8px; background: var(--accent-bg); color: var(--accent); border-radius: 8px; padding: 6px 12px; margin-top: 8px; font-size: 13px; font-weight: 500; }
+.psum .sp { flex: 1; }
+table.tb { width: 100%; border-collapse: collapse; font-size: 13px; }
+.tb th { text-align: left; font-weight: 500; color: var(--muted); font-size: 12px; padding: 6px 8px; border-bottom: 1px solid var(--line); }
+.tb td { padding: 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.tb tr.sel td { background: var(--accent-bg); }
+.tb .at { display: flex; align-items: center; gap: 6px; }
+.bulk { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: var(--chip); border-radius: 8px; padding: 8px; margin-bottom: 8px; font-size: 12px; }
+.bulk .c { font-weight: 600; margin-right: 6px; }
+.menu { position: absolute; right: 8px; top: 100%; background: var(--slide); border: 1px solid var(--line); border-radius: 8px; box-shadow: 0 8px 24px rgba(0,0,0,.12); padding: 4px 0; font-size: 12px; min-width: 168px; z-index: 2; }
+.menu div { padding: 6px 12px; }
+.menu hr { border: 0; border-top: 1px solid var(--line); margin: 4px 0; }
+.menu .del { color: var(--red); }
+.wrapmenu { position: relative; }
+
+/* 1 skaidrė: trys sluoksniai */
+.stack { display: flex; flex-direction: column; gap: 12px; margin-top: 32px; }
+.layer { display: grid; grid-template-columns: 200px 1fr 1fr; gap: 24px; align-items: center; border-radius: 12px; padding: 20px 24px; }
+.layer.t { background: var(--l3); } .layer.v { background: var(--l2); } .layer.e { background: var(--l1); }
+.layer .nm { font-weight: 600; font-size: 18px; }
+.layer.t .nm { color: var(--l3-fg); } .layer.v .nm { color: var(--l2-fg); } .layer.e .nm { color: var(--l1-fg); }
+.layer .nm small { display: block; font-weight: 400; font-size: 13px; opacity: .85; }
+.layer .qq { font-size: 17px; }
+.layer .what { font-size: 14px; color: var(--muted); }
+
+/* Prieš / po */
+.ba { display: grid; grid-template-columns: 1fr 48px 1fr; gap: 16px; align-items: center; margin-top: 32px; }
+.ba .arr { font-size: 28px; color: var(--muted); text-align: center; }
+.ba .cap { font-family: var(--f-mono); font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+.notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
+.note { border-left: 3px solid var(--line); padding-left: 12px; font-size: 15px; }
+.note b { display: block; }
+.note p { color: var(--muted); }
+
+/* Taisyklės */
+.rules { display: grid; grid-template-columns: 1fr 1fr; gap: 16px 32px; margin-top: 32px; }
+.rule { border: 1px solid var(--line); border-radius: 12px; padding: 16px 20px; }
+.rule b { display: block; font-size: 16px; margin-bottom: 4px; }
+.rule .str { margin-top: 8px; font-family: var(--f-mono); font-size: 12px; color: var(--muted); }
+.rule .str span { color: var(--fg); background: var(--chip); border-radius: 4px; padding: 1px 6px; display: inline-block; margin-top: 4px; }
+
+/* Matrica */
+table.mx { width: 100%; border-collapse: collapse; margin-top: 32px; font-size: 15px; }
+.mx th, .mx td { padding: 10px 12px; border-bottom: 1px solid var(--line); text-align: left; }
+.mx thead th { font-weight: 500; font-size: 13px; }
+.mx td.c { text-align: center; width: 150px; }
+.mx thead th.c { text-align: center; }
+.yes { color: var(--green); font-weight: 600; }
+.dash { color: var(--line); }
+.mx .w { color: var(--muted); font-size: 13px; }
+
+.foot { margin-top: 32px; font-size: 13px; color: var(--muted); }
+
+@media (max-width: 900px) {
+  .card { padding: 32px 20px; }
+  h1 { font-size: 30px; } h2 { font-size: 24px; } .q, .lead { font-size: 17px; }
+  .cols, .rules, .notes { grid-template-columns: 1fr; }
+  .layer { grid-template-columns: 1fr; gap: 6px; }
+  .ba { grid-template-columns: 1fr; } .ba .arr { transform: rotate(90deg); }
+  .mx td.c { width: auto; }
+  .tb .hide-m { display: none; }
+  .zone { flex-wrap: wrap; }
+}
+@media print { html { scroll-snap-type: none; } .s { min-height: auto; page-break-after: always; } }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-down" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M10 6.5v7M7 10.5l3 3 3-3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8.3 7.3v5.4M11.7 7.3v5.4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></symbol>
+</svg>
+
+<!-- 1 -->
+<section class="s" id="s1"><div class="card">
+  <span class="no">1 / 7</span>
+  <div class="kick">Picker accounts · Auto tasks</div>
+  <h1>Trys lygiai, trys klausimai</h1>
+  <p class="lead">Kiekvienas langas atsako į vieną vadovo klausimą. Jei žinai klausimą, žinai, kuriame lange ieškoti veiksmo.</p>
+  <div class="stack">
+    <div class="layer t"><div class="nm">Lentelė<small>Picker accounts</small></div><div class="qq">Ką įjungti <b>daugeliui</b> iš karto?</div><div class="what">Auto tasks grupei, efektyvumo mažinimas, sustabdytų zonų atnaujinimas</div></div>
+    <div class="layer v"><div class="nm">Peržiūra<small>View · Account</small></div><div class="qq">Kas šiam žmogui <b>šiandien kitaip</b>?</div><div class="what">Auto tasks, New picker, efektyvumo mažinimas, zonų stabdymas</div></div>
+    <div class="layer e"><div class="nm">Redagavimas<small>Edit / Create account</small></div><div class="qq">Koks šio žmogaus <b>pamatas</b>?</div><div class="what">Zonos, efektyvumas per valandą, maks. vienam išėjimui, kombinacijos</div></div>
+  </div>
+  <p class="foot">Skaitoma iš apačios: pamatas suvedamas retai, ant jo kasdien uždedami laikini pakeitimai vienam žmogui arba visai grupei.</p>
+</div></section>
+
+<!-- 2 -->
+<section class="s" id="s2"><div class="card">
+  <span class="no">2 / 7</span>
+  <div class="kick"><span class="lvl e">Edit / Create account</span></div>
+  <h2>Redagavimas – pamatas</h2>
+  <p class="q">„Koks šio žmogaus pamatas?“ Atidaromas retai: kai atsiranda naujas žmogus arba pasikeičia jo zonos ar efektyvumas.</p>
+  <div class="cols">
+    <div class="wf" aria-label="Redagavimo lango eskizas">
+      <div class="wf-h"><b>Edit account</b><span class="sp"></span><span class="btn">Cancel</span><span class="btn p">Save</span></div>
+      <div class="sec"><div class="t">Personal information · Employee details</div><div class="ghost w60"></div><div class="ghost w40"></div></div>
+      <div class="sec"><div class="t"><span class="mk">1</span>Auto task assignment</div><div class="d">Tasks are sized from the zones and efficiency below.</div>
+        <div class="row"><span class="cb on"></span><b>New picker</b><span class="hint">While checked, auto tasks cannot be enabled</span></div>
+        <div class="row"><span class="cb dis"></span><b style="opacity:.5">Auto tasks</b></div>
+        <div class="row"><span class="mk">3</span><span class="cb on"></span><b>Can work in multiple zones</b><span class="hint">+ combinations</span></div>
+      </div>
+      <div class="sec"><div class="t"><span class="mk">2</span>Zones and efficiency</div><div class="d">Select zones and enter SKU/1h or Units/1h for each.</div>
+        <div class="zone"><span class="cb on"></span><span class="nm">Dry</span><span class="vals"><span>Efficiency per hour<br><span class="inp">120</span></span><span>Max per assignment<br><span class="inp">40</span></span></span></div>
+        <div class="zone"><span class="cb on"></span><span class="nm">Chilled</span><span class="vals"><span>Efficiency per hour<br><span class="inp">100</span></span><span>Max per assignment<br><span class="inp"></span></span></span></div>
+      </div>
+    </div>
+    <div class="els">
+      <div class="el"><span class="n">1</span><div><b>Auto task assignment</b><p>Pradinės būsenos: <span class="ui">New picker</span> ir <span class="ui">Auto tasks</span> varnelės. Kol uždėta New picker, Auto tasks varnelė neaktyvi.</p></div></div>
+      <div class="el"><span class="n">2</span><div><b>Zones and efficiency</b><p>Kurias zonas žmogus renka ir kiek per valandą (<span class="ui">SKU/1h</span> arba <span class="ui">Units/1h</span>). <span class="ui">Max per assignment</span> neprivalomas: tuščias reiškia „be ribos“.</p></div></div>
+      <div class="el"><span class="n">3</span><div><b>Can work in multiple zones</b><p>Leidžia vienu išėjimu rinkti iš kelių zonų. Kartu pasirenkamos leidžiamos zonų kombinacijos.</p></div></div>
+      <div class="el"><span class="n">!</span><div><b>Tekstų tonas</b><p>Čia viskas <b>pastovu</b> ir išsaugoma mygtuku <span class="ui">Save</span>. Laikinų pakeitimų čia nėra.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 3 -->
+<section class="s" id="s3"><div class="card">
+  <span class="no">3 / 7</span>
+  <div class="kick"><span class="lvl v">View · Account</span></div>
+  <h2>Peržiūra – šiandien kitaip</h2>
+  <p class="q">„Kas šiam žmogui šiandien kitaip?“ Viskas čia veikia iš karto, be <span class="ui">Save</span>.</p>
+  <div class="cols">
+    <div class="wf" aria-label="Peržiūros lango eskizas">
+      <div class="wf-h"><b>Jonas Petrauskas</b><span class="sp"></span><span class="btn p">Edit</span></div>
+      <div class="sec"><div class="t"><span class="mk">1</span>Auto task assignment</div>
+        <div class="row"><span class="k">New picker</span><span class="tg"></span><span class="hint">While on, auto tasks cannot be enabled.</span></div>
+        <div class="row"><span class="k">Auto tasks</span><span class="tg on"></span><span class="hint">On: tasks are assigned automatically.</span></div>
+      </div>
+      <div class="sec"><div class="t">Zones and efficiency</div>
+        <div class="row"><span class="mk">2</span><span class="btn">Reduce efficiency <span class="badge r"><svg class="ico"><use href="#i-down"/></svg>−10 %</span></span><span class="hint" style="text-decoration:underline">Clear</span></div>
+        <div class="psum"><svg class="ico"><use href="#i-pause"/></svg>1 zone paused<span class="sp"></span><span class="btn p">Resume all</span></div>
+        <div class="zone"><span class="nm">Chilled</span><span class="vals"><span>Units/1h<b class="red">90</b><i>was 100</i></span></span><span class="sp"></span><span class="mk">3</span><span class="btn">Pause</span></div>
+        <div class="zone paused"><svg class="ico i"><use href="#i-pause"/></svg><span class="nm">Frozen</span><span class="vals"><span>Units/1h<b>80</b></span></span><span class="sp"></span><span class="btn p">Resume</span></div>
+      </div>
+    </div>
+    <div class="els">
+      <div class="el"><span class="n">1</span><div><b>Jungikliai</b><p><span class="ui">Auto tasks</span> – ar užduotys skiriamos automatiškai. <span class="ui">New picker</span> – kol įjungtas, auto tasks įjungti negalima. Užuomina šalia jungiklio paaiškina, kodėl jis neaktyvus.</p></div></div>
+      <div class="el"><span class="n">2</span><div><b>Reduce efficiency</b><p>Tik mažinimas: <b>−5, −10 arba −15 %</b>, visoms žmogaus zonoms. Mygtuke matyti dabartinė korekcija, <span class="ui">Clear</span> ją nuima.</p></div></div>
+      <div class="el"><span class="n">3</span><div><b>Pause / Resume</b><p>Zona sustabdoma vienam žmogui: naujų tos zonos užduočių jis negauna, pradėtos tęsiamos. <span class="ui">Resume all</span> atnaujina visas iš karto.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 4 -->
+<section class="s" id="s4"><div class="card">
+  <span class="no">4 / 7</span>
+  <div class="kick"><span class="lvl v">View · Account</span></div>
+  <h2>Laikinas pakeitimas nekeičia pamato</h2>
+  <p class="q">Pamatas lieka toks, koks suvestas redagavime. Peržiūroje rodoma, kas šiandien uždėta ant jo.</p>
+  <div class="ba">
+    <div><div class="cap">Pamatas (Edit)</div>
+      <div class="wf">
+        <div class="zone"><span class="nm">Chilled</span><span class="vals"><span>Units/1h<b>100</b></span></span></div>
+        <div class="zone"><span class="nm">Frozen</span><span class="vals"><span>Units/1h<b>80</b></span></span></div>
+      </div></div>
+    <div class="arr" aria-hidden="true">→</div>
+    <div><div class="cap">Šiandien (View)</div>
+      <div class="wf">
+        <div class="zone"><span class="nm">Chilled</span><span class="vals"><span>Units/1h<b class="red">90</b><i>was 100</i></span></span><span class="sp"></span><span class="badge r"><svg class="ico"><use href="#i-down"/></svg>−10 %</span></div>
+        <div class="zone paused"><svg class="ico i"><use href="#i-pause"/></svg><span class="nm">Frozen</span><span class="vals"><span>Units/1h<b>80</b></span></span><span class="sp"></span><span class="btn p">Resume</span></div>
+      </div></div>
+  </div>
+  <div class="notes">
+    <div class="note"><b>Skaičius rodomas su pradiniu</b><p>Sumažintas skaičius raudonas, po juo – <span class="ui">was 100</span>. Iš karto matyti, iš kur jis atsirado.</p></div>
+    <div class="note"><b>Nuėmus grįžtama į pamatą</b><p><span class="ui">Clear</span> ir <span class="ui">Resume</span> nieko neperskaičiuoja: lieka tai, kas suvesta redagavime.</p></div>
+    <div class="note"><b>Bendras pavadinimas</b><p>Abu pakeitimai kartu vadinami <span class="ui">Temporary changes</span>. Žodis „temporary“ vartojamas tik šiam pavadinimui.</p></div>
+  </div>
+</div></section>
+
+<!-- 5 -->
+<section class="s" id="s5"><div class="card">
+  <span class="no">5 / 7</span>
+  <div class="kick"><span class="lvl t">Picker accounts</span></div>
+  <h2>Lentelė – daugeliui iš karto</h2>
+  <p class="q">„Ką įjungti daugeliui?“ Dažniausiai naudojama pamainos pradžioje. Veiksmai tie patys kaip peržiūroje, tik keliems žmonėms.</p>
+  <div class="cols">
+    <div>
+      <div class="bulk"><span class="mk">1</span><span class="c">2 items selected</span><span class="btn">Enable auto tasks</span><span class="btn">Disable auto tasks</span><span class="btn">Reduce efficiency</span><span class="btn">Resume paused zones</span></div>
+      <div class="wf wrapmenu" style="padding:8px 12px">
+        <table class="tb">
+          <thead><tr><th></th><th>Name</th><th class="hide-m">Role</th><th>Auto tasks</th><th></th></tr></thead>
+          <tbody>
+            <tr class="sel"><td><span class="cb on"></span></td><td>Jonas</td><td class="hide-m">Picker</td><td><div class="at"><span class="tg on"></span><span class="mk">2</span><svg class="ico r"><use href="#i-down"/></svg><svg class="ico i"><use href="#i-pause"/></svg></div></td><td>⋮</td></tr>
+            <tr class="sel"><td><span class="cb on"></span></td><td>Alma</td><td class="hide-m">Picker</td><td><div class="at"><span class="tg"></span></div></td><td>⋮</td></tr>
+            <tr><td><span class="cb"></span></td><td>Karolis</td><td class="hide-m">Picker <span class="badge">New</span></td><td><div class="at"><span class="tg dis"></span></div></td><td style="position:relative">⋮ <span class="mk">3</span>
+              <div class="menu"><div>View</div><div>Edit</div><div>Reduce efficiency</div><div>Resume paused zones</div><hr><div class="del">Delete account</div></div></td></tr>
+            <tr><td><span class="cb"></span></td><td>Silvija</td><td class="hide-m">Inspector</td><td><div class="at"><span class="tg on dis"></span></div></td><td>⋮</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="els">
+      <div class="el"><span class="n">1</span><div><b>Bulk actions</b><p>Atsiranda pažymėjus eilutes. <span class="ui">Reduce efficiency</span> pakeičia esamas pažymėtų žmonių korekcijas. Netinkamus žmones veiksmas praleidžia ir pasako tai pranešime.</p></div></div>
+      <div class="el"><span class="n">2</span><div><b>Ikonos po jungikliu</b><p>Rodo, kam šiandien kas pakeista: <svg class="ico r" style="vertical-align:-2px"><use href="#i-down"/></svg> sumažintas efektyvumas, <svg class="ico i" style="vertical-align:-2px"><use href="#i-pause"/></svg> sustabdytos zonos. Detalės pateikiamos tooltip'e.</p></div></div>
+      <div class="el"><span class="n">3</span><div><b>Eilutės meniu ⋮</b><p>Tas pats vienam žmogui, neatidarant paskyros. Rodomi tik tie veiksmai, kuriuos galima atlikti.</p></div></div>
+    </div>
+  </div>
+</div></section>
+
+<!-- 6 -->
+<section class="s" id="s6"><div class="card">
+  <span class="no">6 / 7</span>
+  <div class="kick">Taisyklės, kurias turi paaiškinti tekstai</div>
+  <h2>Kodėl kažkas neaktyvu ar praleista</h2>
+  <div class="rules">
+    <div class="rule"><b>New picker blokuoja Auto tasks</b>Įjungus New picker, auto tasks išsijungia. Kol jis įjungtas, auto tasks įjungti negalima.
+      <div class="str"><span>While on, auto tasks cannot be enabled.</span><br><span>Turn off New picker to enable auto tasks.</span></div></div>
+    <div class="rule"><b>Be zonų auto tasks neveikia</b>Užduotis galima skirti tik tada, kai žmogui priskirta bent viena zona.
+      <div class="str"><span>Assign zones to enable auto tasks.</span></div></div>
+    <div class="rule"><b>Inspektoriui auto tasks visada įjungti</b>Jungiklis rodomas įjungtas, bet jo pakeisti negalima.
+      <div class="str"><span>Always on for inspectors.</span></div></div>
+    <div class="rule"><b>Grupiniai veiksmai praleidžia netinkamus</b>Veiksmas atliekamas visiems tinkamiems žmonėms, o pranešimas pasako, ką praleido.
+      <div class="str"><span>Auto tasks turned on. New pickers and pickers without zones were skipped.</span></div></div>
+    <div class="rule"><b>Efektyvumas tik mažinamas</b>Galima rinktis tik −5, −10 arba −15 %. Korekcija taikoma visoms žmogaus zonoms. Didinimo nėra.
+      <div class="str"><span>Reduce by</span> <span>Applies to all assigned zones (4).</span></div></div>
+    <div class="rule"><b>Pradėtos užduotys nenutraukiamos</b>Sustabdžius zoną, naujų tos zonos užduočių žmogus nebegauna, o jau pradėtas užbaigia.
+      <div class="str"><span>Frozen: no new tasks for this picker. Started tasks continue.</span></div></div>
+  </div>
+</div></section>
+
+<!-- 7 -->
+<section class="s" id="s7"><div class="card">
+  <span class="no">7 / 7</span>
+  <div class="kick">Santrauka</div>
+  <h2>Kur kas daroma</h2>
+  <table class="mx">
+    <thead><tr><th>Veiksmas</th><th class="c"><span class="lvl e">Edit / Create</span></th><th class="c"><span class="lvl v">View</span></th><th class="c"><span class="lvl t">Lentelė</span></th></tr></thead>
+    <tbody>
+      <tr><td>Zonos, efektyvumas, maks. vienam išėjimui, kombinacijos</td><td class="c yes">✓</td><td class="c"><span class="w">rodoma</span></td><td class="c dash">–</td></tr>
+      <tr><td><span class="ui">Auto tasks</span> įjungti / išjungti</td><td class="c yes">✓</td><td class="c yes">✓</td><td class="c yes">✓ <span class="w">ir grupei</span></td></tr>
+      <tr><td><span class="ui">New picker</span></td><td class="c yes">✓ <span class="w">varnelė</span></td><td class="c yes">✓ <span class="w">jungiklis</span></td><td class="c"><span class="w">žyma „New“</span></td></tr>
+      <tr><td><span class="ui">Reduce efficiency</span> (−5 / −10 / −15 %)</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓ <span class="w">ir grupei</span></td></tr>
+      <tr><td><span class="ui">Pause</span> zoną</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c dash">–</td></tr>
+      <tr><td><span class="ui">Resume</span> sustabdytas zonas</td><td class="c dash">–</td><td class="c yes">✓</td><td class="c yes">✓ <span class="w">ir grupei</span></td></tr>
+    </tbody>
+  </table>
+  <p class="foot">Edit – pastovu, išsaugoma. View – laikina, veikia iš karto. Lentelė – tie patys laikini veiksmai daugeliui žmonių.</p>
+</div></section>
+
+<script>
+// ← → / PgUp PgDn perjungia skaidres
+(function () {
+  var ss = [].slice.call(document.querySelectorAll(".s"));
+  function cur() { var y = window.scrollY + window.innerHeight / 3, i = 0; ss.forEach(function (s, k) { if (s.offsetTop <= y) i = k; }); return i; }
+  document.addEventListener("keydown", function (e) {
+    var d = (e.key === "ArrowRight" || e.key === "ArrowDown" || e.key === "PageDown" || e.key === " ") ? 1 : (e.key === "ArrowLeft" || e.key === "ArrowUp" || e.key === "PageUp") ? -1 : 0;
+    if (!d) return; e.preventDefault();
+    var t = ss[Math.max(0, Math.min(ss.length - 1, cur() + d))]; t.scrollIntoView({ behavior: "smooth" });
+  });
+})();
+</script>
+</body>
+</html>
